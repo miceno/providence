@@ -355,71 +355,71 @@
         <list code="date_types" hierarchical="0" system="0" vocabulary="1">
             <labels>
                 <label locale="ca_ES">
-                    <name>Dublin Core Date Types</name>
+                    <name>Tipus de dates Dublin Core</name>
                 </label>
             </labels>
             <items>
                 <item idno="available" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Date available</name_singular>
-                            <name_plural>Date available</name_plural>
+                            <name_singular>Data disponible</name_singular>
+                            <name_plural>Dates disponibles</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="creation" enabled="1" default="1">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Date(s) of creation</name_singular>
-                            <name_plural>Date(s) creation</name_plural>
+                            <name_singular>Data de creació</name_singular>
+                            <name_plural>Dates de creació</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="recordKeeping" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Date(s) of record-keeping activity</name_singular>
-                            <name_plural>Date(s) of record-keeping activity</name_plural>
+                            <name_singular>Data d'agregació</name_singular>
+                            <name_plural>Dates d'agregació</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="publication" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Date(s) of publication</name_singular>
-                            <name_plural>Date(s) of publication</name_plural>
+                            <name_singular>Data de publicació</name_singular>
+                            <name_plural>Dates de publicació</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="broadcast" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Date(s) broadcast</name_singular>
-                            <name_plural>Date(s) broadcast</name_plural>
+                            <name_singular>Data de difusió</name_singular>
+                            <name_plural>Dates de difusió</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="bulk" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Bulk date(s)</name_singular>
-                            <name_plural>Bulk date(s)</name_plural>
+                            <name_singular>Data predominant</name_singular>
+                            <name_plural>Dates predominants</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="normal" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Normal date(s)</name_singular>
-                            <name_plural>Normal date(s)</name_plural>
+                            <name_singular>Data normalitzada</name_singular>
+                            <name_plural>Dates normalitzades</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="inclusive" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Inclusive date(s)</name_singular>
-                            <name_plural>Inclusive date(s)</name_plural>
+                            <name_singular>Data inclusiva</name_singular>
+                            <name_plural>Dates inclusives</name_plural>
                         </label>
                     </labels>
                 </item>
