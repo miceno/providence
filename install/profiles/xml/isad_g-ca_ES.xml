@@ -256,7 +256,7 @@
         <list code="occurrence_types" hierarchical="1" system="0" vocabulary="0">
             <labels>
                 <label locale="ca_ES">
-                    <name>Tipus d'Occurrence</name>
+                    <name>Tipus d'Ocurrències</name>
                 </label>
             </labels>
             <items>
@@ -273,7 +273,7 @@
         <list code="occurrence_sources" hierarchical="1" system="0" vocabulary="0">
             <labels>
                 <label locale="ca_ES">
-                    <name>Fonts d'Ocurrenci sources</name>
+                    <name>Fonts d'Ocurrències</name>
                 </label>
             </labels>
             <items>
@@ -290,7 +290,7 @@
         <list code="storage_location_types" hierarchical="1" system="0" vocabulary="0">
             <labels>
                 <label locale="ca_ES">
-                    <name>Storage location types</name>
+                    <name>Tipus d'Ubicacions d'emmagatzematge</name>
                 </label>
             </labels>
             <items>
@@ -305,48 +305,48 @@
                 <item idno="building" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>building</name_singular>
-                            <name_plural>buildings</name_plural>
+                            <name_singular>edifici</name_singular>
+                            <name_plural>edificis</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="floor" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>floor</name_singular>
-                            <name_plural>floors</name_plural>
+                            <name_singular>planta</name_singular>
+                            <name_plural>plantes</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="room" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>room</name_singular>
-                            <name_plural>rooms</name_plural>
+                            <name_singular>sala</name_singular>
+                            <name_plural>sales</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="cabinet" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>cabinet</name_singular>
-                            <name_plural>cabinets</name_plural>
+                            <name_singular>armari</name_singular>
+                            <name_plural>armaris</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="drawer" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>drawer</name_singular>
-                            <name_plural>drawer</name_plural>
+                            <name_singular>calaix</name_singular>
+                            <name_plural>calaixos</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="shelf" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>shelf</name_singular>
-                            <name_plural>shelf</name_plural>
+                            <name_singular>prestatge</name_singular>
+                            <name_plural>prestatges</name_plural>
                         </label>
                     </labels>
                 </item>
