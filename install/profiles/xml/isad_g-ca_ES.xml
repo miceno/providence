@@ -428,7 +428,7 @@
         <list code="language_types" hierarchical="0" system="0" vocabulary="1">
             <labels>
                 <label locale="ca_ES">
-                    <name>Languages</name>
+                    <name>Idiomes</name>
                 </label>
             </labels>
             <items>
@@ -443,104 +443,104 @@
                 <item idno="ara" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Arabic</name_singular>
-                            <name_plural>Arabic</name_plural>
+                            <name_singular>àrab</name_singular>
+                            <name_plural>àrab</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="ben" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Bengali</name_singular>
-                            <name_plural>Bengali</name_plural>
+                            <name_singular>bengali</name_singular>
+                            <name_plural>bengali</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="chi" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Chinese</name_singular>
-                            <name_plural>Chinese</name_plural>
+                            <name_singular>xinès</name_singular>
+                            <name_plural>xinès</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="eng" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>English</name_singular>
-                            <name_plural>English</name_plural>
+                            <name_singular>anglès</name_singular>
+                            <name_plural>anglès</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="fre" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>French</name_singular>
-                            <name_plural>French</name_plural>
+                            <name_singular>francès</name_singular>
+                            <name_plural>francès</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="ger" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>German</name_singular>
-                            <name_plural>German</name_plural>
+                            <name_singular>alemany</name_singular>
+                            <name_plural>alemany</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="hin" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Hindustani</name_singular>
-                            <name_plural>Hindustani</name_plural>
+                            <name_singular>hindú</name_singular>
+                            <name_plural>hindú</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="ita" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Italian</name_singular>
-                            <name_plural>Italian</name_plural>
+                            <name_singular>italià</name_singular>
+                            <name_plural>italià</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="jpn" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Jananese</name_singular>
-                            <name_plural>Japanese</name_plural>
+                            <name_singular>japonès</name_singular>
+                            <name_plural>japonès</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="may" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Malay</name_singular>
-                            <name_plural>Malay</name_plural>
+                            <name_singular>malay</name_singular>
+                            <name_plural>malay</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="por" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Portuguese</name_singular>
-                            <name_plural>Portuguese</name_plural>
+                            <name_singular>portuguès</name_singular>
+                            <name_plural>portuguès</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="rus" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Russian</name_singular>
-                            <name_plural>Russian</name_plural>
+                            <name_singular>rus</name_singular>
+                            <name_plural>rus</name_plural>
                         </label>
                     </labels>
                 </item>
                 <item idno="spa" enabled="1" default="0">
                     <labels>
                         <label locale="ca_ES" preferred="1">
-                            <name_singular>Spanish</name_singular>
-                            <name_plural>Spanish</name_plural>
+                            <name_singular>espanyol</name_singular>
+                            <name_plural>espanyol</name_plural>
                         </label>
                     </labels>
                 </item>
