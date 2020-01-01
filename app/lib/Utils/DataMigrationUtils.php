@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2010-2017 Whirl-i-Gig
+ * Copyright 2010-2019 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -314,7 +314,14 @@
 				return null;
 			}
 			if (isset($pa_options['dontCreate']) && $pa_options['dontCreate']) {
-				if ($o_log) { $o_log->logNotice(_t("Not adding \"%1\" to list %2 as dontCreate option is set", $ps_item_idno, $pm_list_code_or_id)); }
+				if ($o_log) { 
+					$o_config = Configuration::load();
+					if((bool)$o_config->get('log_import_dont_create_events_as_errors')) {
+						$o_log->logError(_t("Not adding \"%1\" to list %2 because dontCreate option is set", $ps_item_idno, $pm_list_code_or_id)); 
+					} else {
+						$o_log->logNotice(_t("Not adding \"%1\" to list %2 because dontCreate option is set", $ps_item_idno, $pm_list_code_or_id)); 
+					}
+				}
 				return false;
 			}
 			//
@@ -602,7 +609,14 @@
 				$va_name['surname'] = $va_tmp[0];
 				
 				if(sizeof($va_tmp) > 1) {
-					$va_name['forename'] = $va_tmp[1];
+					$va_tmp2 = array_filter(preg_split("![ ]+!", $va_tmp[1]), function($v) { return (bool)strlen(trim($v)); });
+					
+					if (sizeof($va_tmp2) > 1) {
+						$va_name['middlename'] = array_pop($va_tmp2);
+						$va_name['forename'] = join(" ", $va_tmp2);
+					} else {
+						$va_name['forename'] = $va_tmp[1];
+					}
 				}
 			} elseif (strpos($ps_text, '_') !== false) {
 				// is underscore delimited
@@ -696,7 +710,20 @@
 		}
 		# -------------------------------------------------------
 		/**
+		 * Set attributes on instance from values array
 		 *
+		 * @param BundleableLabelableBaseModel $pt_instance
+		 * @param int $pn_locale_id
+		 * @param array $pa_values
+		 * @param array Options include:
+		 *		skipExistingValues = Skip add of value if it already exists for this instance. [Default is true]
+		 *		log = If KLogger instance is passed then actions will be logged. [Default is null]
+		 *		separateUpdatesForAttributes = Perform a separate update() for each attribute. This will ensure that an error triggered by any value will not affect setting on others, but is detrimental to performance. [Default is false]
+		 *		delimiter = Delimiter to split values on. [Default is null]
+		 *		matchOn = Optional list indicating sequence of checks for an existing record; values of array can be "label", "idno". Ex. array("idno", "label") will first try to match on idno and then label if the first match fails. For entities only you may also specifiy "displayname", "surname" and "forename" to match on the text of the those label fields exclusively. If "none" is specified alone no matching is performed.
+		 *		outputErrors = Print errors to console. [Default is false]
+		 *
+		 * @return bool True on success, false on error 		
 		 */
 		private static function _setAttributes($pt_instance, $pn_locale_id, $pa_values, $pa_options=null) {
 			$o_log = (isset($pa_options['log']) && $pa_options['log'] instanceof KLogger) ? $pa_options['log'] : null;
@@ -734,7 +761,11 @@
                                 $pt_instance->addAttribute(
                                     array_merge($va_v, array(
                                         'locale_id' => $pn_locale_id
-                                    )), $vs_element, null, ['skipExistingValues' => (caGetOption('skipExistingValues', $pa_options, false) || caGetOption('skipExistingValues', $va_values, false)), 'matchOn' => caGetOption('matchOn', $va_values, null)]);
+                                    )), $vs_element, null, [
+                                    	'skipExistingValues' => (caGetOption('skipExistingValues', $pa_options, true) 
+                                    		|| 
+                                    		caGetOption('skipExistingValues', $va_values, true)), // default to skipping attribute values if they already exist (until v1.7.9 default was _not_ to skip)
+                                    	'matchOn' => caGetOption('matchOn', $va_values, null)]);
                             }
 						} else {
 							// scalar value (simple single value attribute)
@@ -855,6 +886,8 @@
 		 *				  ignoreParent = Don't take into account parent_id value when looking for matching rows [Default is false]
 		 *				  ignoreType = Don't take into account type_id value when looking for matching rows [Default is false]
 		 *				  separateUpdatesForAttributes = Perform a separate update() for each attribute. This will ensure that an error triggered by any value will not affect setting on others, but is detrimental to performance. [Default is false]
+		 *				  skipExistingValues = Skip add of value if it already exists for this instance. [Default is true]
+		 *
 		 * @return bool|BaseModel|mixed|null
 		 */
 		static function getIDFor($ps_table, $pa_label, $pn_parent_id, $pn_type_id, $pn_locale_id, $pa_values=null, $pa_options=null) {
@@ -994,12 +1027,13 @@
 									$vs_idno_fld => $vs_idno ? $vs_idno : ($pa_label['_originalText'] ? $pa_label['_originalText'] : $vs_label)
 								);
 								if (!$pb_ignore_parent && $vn_parent_id) { $va_find_vals['parent_id'] = $vn_parent_id; }
-							
+								
 								if (
 									($vs_idno || trim($pa_label['_originalText'] || $vs_label)) 
 									&& 
-									($vn_id = ($vs_table_class::find($va_find_vals, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types))))
+									($vn_id = ($vs_table_class::find($va_find_vals, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true))))
 								) {
+									print "GOT ID=$vn_id";
 									break(3);
 								}
 								break;
@@ -1015,17 +1049,17 @@
 							// entities only
 							$va_params = array($vs_label_spec => array('displayname' => $pa_label['displayname']));
 							if (!$pb_ignore_parent && $vn_parent_id) { $va_params['parent_id'] = $vn_parent_id; }
-							$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types));
+							$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true));
 						} elseif($vs_table_class == 'ca_entities') {
 							// entities only
 							$va_params = array($vs_label_spec => array('forename' => $pa_label['forename'], 'middlename' => $pa_label['middlename'], 'surname' => $pa_label['surname']));
 							if (!$pb_ignore_parent) { $va_params['parent_id'] = $vn_parent_id; }
-							$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types));
+							$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true));
 						} else {
 							$va_params = array($vs_label_spec => array($vs_label_display_fld => $pa_label[$vs_label_display_fld]));
 							if (!$pb_ignore_parent && $vn_parent_id) { $va_params['parent_id'] = $vn_parent_id; }
 							
-							$vn_id = ($vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types)));
+							$vn_id = ($vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true)));
 						}
 						if ($vn_id) { break(2); }
 						break;
@@ -1037,7 +1071,7 @@
 						$va_params = array('preferred_labels' => array('surname' => $pa_label['surname']));
 						if (!$pb_ignore_parent && $vn_parent_id) { $va_params['parent_id'] = $vn_parent_id; }
 						
-						$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types));
+						$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true));
 						if ($vn_id) { break(2); }
 						break;
 					case 'forename':
@@ -1045,7 +1079,7 @@
 						$va_params = array('preferred_labels' => array('forename' => $pa_label['forename']));
 						if (!$pb_ignore_parent && $vn_parent_id) { $va_params['parent_id'] = $vn_parent_id; }
 						
-						$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types));
+						$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true));
 						if ($vn_id) { break(2); }
 						break;
 					case 'displayname':
@@ -1053,7 +1087,7 @@
 						$va_params = array('preferred_labels' => array('displayname' => $pa_label['displayname']));
 						if (!$pb_ignore_parent && $vn_parent_id) { $va_params['parent_id'] = $vn_parent_id; }
 						
-						$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types));
+						$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true));
 						if ($vn_id) { break(2); }
 						break;
 					case 'none':
@@ -1066,7 +1100,7 @@
 						$vs_element = array_pop($va_tmp);
 						if ($t_instance->hasField($vs_element) || $t_instance->hasElement($vs_element)) {
 							$va_params = array($vs_element => $pa_label[$vs_label_display_fld]);
-							$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types));
+							$vn_id = $vs_table_class::find($va_params, array('returnAs' => 'firstId', 'purifyWithFallback' => true, 'transaction' => $pa_options['transaction'], 'restrictToTypes' => $va_restrict_to_types, 'dontIncludeSubtypesInTypeRestriction' => true));
 							if ($vn_id) { break(2); }
 						}
 						break;
@@ -1077,7 +1111,17 @@
 				//
 				// Create new row
 				//
-				if (caGetOption('dontCreate', $pa_options, false)) { return false; }
+				if (caGetOption('dontCreate', $pa_options, false)) { 
+					if ($o_log) { 
+						$o_config = Configuration::load();
+						if((bool)$o_config->get('log_import_dont_create_events_as_errors')) {
+							$o_log->logError(_t("Not adding \"%1\" (%2) as %3 because dontCreate option is set", $vs_label, $vs_idno, $ps_table)); 
+						} else {
+							$o_log->logNotice(_t("Not adding \"%1\" (%2) as %3 because dontCreate option is set", $vs_label, $vs_idno, $ps_table)); 
+						}
+					}
+					return false; 
+				}
 				if ($o_event) { $o_event->beginItem($ps_event_source, $vs_table_class, 'I'); }
 
 				// If we're creating a new item, it's probably a good idea to *NOT* use a
@@ -1135,7 +1179,7 @@
 							}
 						}
 					}
-					$t_instance->set('media', $pa_values['media']);
+					$t_instance->set('media', $pa_values['media'], ['original_filename' => basename($pa_values['media'])]);
 				}
 
 				$t_instance->insert();

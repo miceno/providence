@@ -200,8 +200,16 @@
 						continue;
 					}
 
-					// can't sort on related tables!?
-					if ($va_tmp[0] != $this->ops_tablename) { continue; }
+					if ($va_tmp[0] != $this->ops_tablename) { 
+					    // Sort on related tables
+						if (($t_rel = Datamodel::getInstance($va_tmp[0], true)) && method_exists($t_rel, "getLabelTableInstance") && ($t_rel_label = $t_rel->getLabelTableInstance())) {
+                            $va_display_list[$vn_i]['is_sortable'] = true; 
+                            $types = array_merge(caGetOption('restrict_to_relationship_types', $va_display_item['settings'], [], ['castTo' => 'array']), caGetOption('restrict_to_types', $va_display_item['settings'], [], ['castTo' => 'array']));
+                            
+                            $va_display_list[$vn_i]['bundle_sort'] = "{$va_tmp[0]}.preferred_labels.".$t_rel->getLabelSortField().((is_array($types) && sizeof($types)) ? "|".join(",", $types) : "");
+                        }
+						continue; 
+					}
 					
 					if ($t_instance->hasField($va_tmp[1])) {
 						if($t_instance->getFieldInfo($va_tmp[1], 'FIELD_TYPE') == FT_MEDIA) { // sorting media fields doesn't really make sense and can lead to sql errors
@@ -218,8 +226,26 @@
 					}
 					
 					if (isset($va_attribute_list[$va_tmp[1]]) && $va_sortable_elements[$va_attribute_list[$va_tmp[1]]]) {
-						$va_display_list[$vn_i]['is_sortable'] = true;
-						$va_display_list[$vn_i]['bundle_sort'] = $va_display_item['bundle_name'];
+                        $va_display_list[$vn_i]['is_sortable'] = true;
+                        $va_display_list[$vn_i]['bundle_sort'] = $va_display_item['bundle_name'];
+					    if(ca_metadata_elements::getElementDatatype($va_tmp[1]) === __CA_ATTRIBUTE_VALUE_CONTAINER__) {
+					        // If container includes a field type this is typically "preferred" for sorting use that in place of the container aggregate
+					        $elements = ca_metadata_elements::getElementsForSet($va_tmp[1]);
+					        foreach($elements as $e) {
+					            switch($e['datatype']) {
+					                case __CA_ATTRIBUTE_VALUE_DATERANGE__:
+					                case __CA_ATTRIBUTE_VALUE_CURRENCY__:
+					                case __CA_ATTRIBUTE_VALUE_NUMERIC__:
+					                case __CA_ATTRIBUTE_VALUE_NUMERIC__:
+					                case __CA_ATTRIBUTE_VALUE_INTEGER__:
+					                case __CA_ATTRIBUTE_VALUE_TIMECODE__:
+					                case __CA_ATTRIBUTE_VALUE_TIMECODE__:
+					                case __CA_ATTRIBUTE_VALUE_LENGTH__:
+					                    $va_display_list[$vn_i]['bundle_sort'] = "{$va_display_item['bundle_name']}.{$e['element_code']}";
+					                    break(2);
+					            }
+					        }
+					    }
 						continue;
 					}
 				}
@@ -228,33 +254,25 @@
  			$this->view->setVar('display_list', $va_display_list);
  			
  			# --- print forms used for printing search results as labels - in tools show hide under page bar
- 			$this->view->setVar('label_formats', caGetAvailablePrintTemplates('labels', array('table' => $this->ops_tablename, 'type' => 'label')));
+ 			$this->view->setVar('label_formats', caGetAvailablePrintTemplates('labels', array('table' => $this->ops_tablename, 'type' => 'label', 'restrictToTypes' => $this->opn_type_restriction_id)));
  			
  			# --- export options used to export search results - in tools show hide under page bar
  			$vn_table_num = Datamodel::getTableNum($this->ops_tablename);
 
 			//default export formats, not configurable
-			$va_export_options = array(
-				array(
-					'name' => _t('Tab delimited'),
-					'code' => '_tab'
-				),
-				array(
-					'name' => _t('Comma delimited (CSV)'),
-					'code' => '_csv'
-				),
-				array(
-					'name' => _t('Spreadsheet with media icons (XLSX)'),
-					'code' => '_xlsx'
-				),
-                array(
-                    'name' => _t('Word processing (DOCX)'),
-                    'code' => '_docx'
-                )				
-			);
+			$va_export_options = [];
+			
+			$include_export_options = $this->request->config->getList($this->ops_tablename.'_standard_results_export_formats');
+			foreach(
+			    ['tab' => _t('Tab delimited'), 'csv' => _t('Comma delimited (CSV)'), 
+			    'xlsx' => _t('Spreadsheet (XLSX)'), 'docx' => _t('Word processing (DOCX)')] as $ext => $name) {
+			    if (!is_array($include_export_options) || in_array($ext, $include_export_options)) {
+			        $va_export_options[] = ['name' => $name, 'code' => "_{$ext}"];
+			    }
+			}
 			
 			// merge default formats with drop-in print templates
-			$va_export_options = array_merge($va_export_options, caGetAvailablePrintTemplates('results', array('showOnlyIn' => ['search_browse_'.$this->opo_result_context->getCurrentView()], 'table' => $this->ops_tablename)));
+			$va_export_options = array_merge($va_export_options, caGetAvailablePrintTemplates('results', array('showOnlyIn' => ['search_browse_'.$this->opo_result_context->getCurrentView()], 'table' => $this->ops_tablename, 'restrictToTypes' => $this->opn_type_restriction_id)));
 			
 			$this->view->setVar('export_formats', $va_export_options);
 			$this->view->setVar('current_export_format', $this->opo_result_context->getParameter('last_export_type'));
@@ -496,6 +514,15 @@
 						$vs_file_extension = 'txt';
 						$vs_mimetype = "text/plain";
 					default:
+					    if(substr($ps_output_type, 0, 5) === '_docx') {
+					        $va_template_info = caGetPrintTemplateDetails('results', substr($ps_output_type, 6));
+                            if (!is_array($va_template_info)) {
+                                $this->postError(3110, _t("Could not find view for PDF"),"BaseFindController->PrintSummary()");
+                                return;
+                            }
+                            $this->render($va_template_info['path']);
+                            return;	
+					    }
 						break;
 				}
 

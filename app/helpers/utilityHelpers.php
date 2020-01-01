@@ -607,6 +607,28 @@ function caFileIsIncludable($ps_file) {
 		// @see http://php.net/manual/en/regexp.reference.unicode.php
 		//return preg_replace("/[^\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{N}\p{P}\p{Zp}\p{Zs}\p{S}]|➔/", '', strip_tags($ps_text));
 	}
+	# ---------------------------------------
+	/**
+	  * Repair common errors in hand-written JSON
+	  *
+	  * @param string $json The JSON-encoded data as a string
+	  * @return mixed Decoded JSON data as data structure (Eg. array)
+	  */
+	function caRepairJson($json) {
+	    json_decode($json, TRUE);
+	    if(json_last_error()){
+            // try encode newlines
+            //$json = preg_replace("![\r\n]!", "\\\\n", $json);	
+            
+            // try to remove training commas
+            $json = preg_replace('/[,]{1}[\n\r\t ]*([\]\}]+)/i', '\1', $json);
+            
+            // try to convert curly quotes
+            $json = preg_replace('/[“”]+/', '"', $json);
+               
+        }
+        return $json;
+	}
 	# ----------------------------------------
 	/**
 	 * Return text with quotes escaped for use in a tab or comma-delimited file
@@ -753,7 +775,10 @@ function caFileIsIncludable($ps_file) {
 	function caModRewriteIsAvailable() {
 		global $g_mod_write_is_available;
 		if (is_bool($g_mod_write_is_available)) { return $g_mod_write_is_available; }
-		if (function_exists('apache_get_modules')) {
+		if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false) {
+		    $g_mod_write_is_available = true;
+		    return true; // assume you have rules set up in you nginx config to handle index.php rewrite
+		} elseif (function_exists('apache_get_modules')) {
 			return $g_mod_write_is_available = (bool)in_array('mod_rewrite', apache_get_modules());
 		} else {
 			return $g_mod_write_is_available = (bool)((getenv('HTTP_MOD_REWRITE') == 'On') ? true : false);
@@ -1427,6 +1452,23 @@ function caFileIsIncludable($ps_file) {
 	}
 	# ---------------------------------------
 	/**
+	  * Determine if two mimetypes are equivalent. Mimetypes may be specific or include wildcards.
+	  *
+	  * @param string $mimetype1 A specific or wildcard mimetype. Eg. image/jpeg or image/*.
+	  * @param string $mimetype2 A specific or wildcard mimetype. Eg. image/jpeg or image/*.
+	  * @return bool
+	  */
+	function caCompareMimetypes($mimetype1, $mimetype2) {
+		$t1 = explode('/', $mimetype1);
+		$t2 = explode('/', $mimetype2);
+		
+		if ($t1[0] !== $t2[0]) { return false; }
+		if (($t1[1] === $t2[1]) || ($t1[1] === '*') || ($t2[1] === '*')) { return true; }
+		
+		return false;
+	}
+	# ---------------------------------------
+	/**
 	  * Creates an md5-based cached key from an array of options
 	  *
 	  * @param array $pa_options An options array
@@ -1860,7 +1902,8 @@ function caFileIsIncludable($ps_file) {
 	 * @return string escaped parameter value, surrounded with single quotes and ready for use
 	 */
 	function caEscapeShellArg($ps_text) {
-		return escapeshellarg($ps_text);
+		// Don't escape on Windows as many of our exec()'s rely upon sending "%" characters...
+		return caIsWindows() ? $ps_text : escapeshellarg($ps_text);
 	}
 	# ------------------------------------------------------------------------------------------------
 	/**
@@ -1992,6 +2035,7 @@ function caFileIsIncludable($ps_file) {
 	 *		caseSensitive = do case sensitive comparisons when checking the option value against the validValues list [default=false]
 	 *		castTo = array|int|string|float|bool
 	 *		delimiter = A delimiter, or array of delimiters, to break a string option value on. When this option is set an array will always be returned. [Default is null]
+	 *		defaultOnEmptyString = Force use of default value when option is set to an empty string). [Default is false]
 	 * @return mixed
 	 */
 	function caGetOption($pm_option, $pa_options, $pm_default=null, $pa_parse_options=null) {
@@ -2020,6 +2064,7 @@ function caFileIsIncludable($ps_file) {
 		} else {
 			$vm_val = (isset($pa_options[$pm_option]) && !is_null($pa_options[$pm_option])) ? $pa_options[$pm_option] : $pm_default;
 		}
+		if (isset($pa_parse_options['defaultOnEmptyString']) && $pa_parse_options['defaultOnEmptyString'] && is_string($vm_val) && (strlen($vm_val) === 0)) { $vm_val = $pm_default; }
 
 		if (
 			((is_string($vm_val) && !isset($pa_parse_options['castTo'])) || (isset($pa_parse_options['castTo']) && ($pa_parse_options['castTo'] == 'string')))
@@ -2119,7 +2164,7 @@ function caFileIsIncludable($ps_file) {
 	 * @param array $pa_array The array to sanitize
 	 * @param array $pa_options
 	 *        allowStdClass = stdClass object array values are allowed. This is useful for arrays that are about to be passed to json_encode [Default=false]
-	 *		  removeNonCharacterData = remove non-character data from all array value. This option leaves all character data in-place [Default=false]
+	 *		  removeNonCharacterData = remove non-character data from all array values. This option leaves all character data in-place [Default=false]
 	 * @return array The sanitized array
 	 */
 	function caSanitizeArray($pa_array, $pa_options=null) {
@@ -2135,7 +2180,7 @@ function caFileIsIncludable($ps_file) {
 					continue;
 				}
 
-				if (((strlen($vm_v) < 8192) && (!preg_match("!^\X+$!", $vm_v))) || (!mb_detect_encoding($vm_v))) {
+				if (((!empty($vm_v) && strlen($vm_v) < 8192) && (!preg_match("!^\X+$!", $vm_v))) || (!mb_detect_encoding($vm_v))) {
 					unset($pa_array[$vn_k]);
 					continue;
 				}
@@ -2327,11 +2372,14 @@ function caFileIsIncludable($ps_file) {
 	 * Return search result instance for given table and id list
 	 * @param string $ps_table the table name
 	 * @param array $pa_ids a list of primary key values
-	 * @param null|array $pa_options @see BundlableLabelableBaseModelWithAttributes::makeSearchResult
+	 * @param null|array $pa_options Options include and option from BundlableLabelableBaseModelWithAttributes::makeSearchResult as well as :
+	 *		transaction = transaction to execute queries within. [Default is null]
+	 * @see BundlableLabelableBaseModelWithAttributes::makeSearchResult
 	 * @return null|SearchResult
 	 */
 	function caMakeSearchResult($ps_table, $pa_ids, $pa_options=null) {
 		if ($t_instance = Datamodel::getInstanceByTableName('ca_objects', true)) {	// get an instance of a model inherits from BundlableLabelableBaseModelWithAttributes; doesn't matter which one
+			if ($trans = caGetOption('transaction', $pa_options, null)) { $t_instance->setTransaction($trans); }
 			return $t_instance->makeSearchResult($ps_table, $pa_ids, $pa_options);
 		}
 		return null;
@@ -3080,6 +3128,75 @@ function caFileIsIncludable($ps_file) {
 	}
 	# ----------------------------------------
 	/**
+	 * Get weight unit type as Zend constant, e.g. 'ft.' = Zend_Measure_Length::KILOGRAM
+	 * @param string $ps_unit
+	 * @param array $pa_options Options include:
+	 *		short = return short name for unit (ex. for kilograp, return "kg", for pounds return "lbs")
+	 * @return null|string
+	 */
+	function caGetWeightUnitType($ps_unit, $pa_options=null) {
+		$vb_return_short = caGetOption('short', $pa_options, false);
+		$vb_return_code = caGetOption('code', $pa_options, false);
+		
+		switch(strtolower(str_replace(".", "", $ps_unit))) {
+            case "lbs":
+            case 'lbs.':
+            case 'lb':
+            case 'lb.':
+            case 'pound':
+            case 'pounds':
+                return $vb_return_short ? 'lbs' :  Zend_Measure_Weight::POUND;
+                break;
+            case 'kg':
+            case 'kg.':
+            case 'kilo':
+            case 'kilos':
+            case 'kilogram':
+            case 'kilograms':
+                return $vb_return_short ? 'kg' : Zend_Measure_Weight::KILOGRAM;
+                break;
+            case 'g':
+            case 'g.':
+            case 'gram':
+            case 'grams':
+                return $vb_return_short ? 'g' : Zend_Measure_Weight::GRAM;
+                break;
+            case 'mg':
+            case 'mg.':
+            case 'milligram':
+            case 'milligrams':
+                return $vb_return_short ? 'mg' : Zend_Measure_Weight::MILLIGRAM;
+                break;
+            case 'oz':
+            case 'oz.':
+            case 'ounce':
+            case 'ounces':
+                return $vb_return_short ? 'oz' : Zend_Measure_Weight::OUNCE;
+                break;
+            case 'ton':
+            case 'tons':
+            case 'tonne':
+            case 'tonnes':
+            case 't':
+            case 't.':
+                return $vb_return_short ? 't' : Zend_Measure_Weight::TON;
+                break;
+            case 'stone':
+                return $vb_return_short ? 'stone' : Zend_Measure_Weight::STONE;
+                break;
+            case 'grain':
+            case 'gr':
+            case 'gr.':
+                return $vb_return_short ? 'gr' : Zend_Measure_Weight::GRAIN;
+                break;
+            default:
+                return null;
+                break;
+        }
+		
+	}
+	# ----------------------------------------
+	/**
 	 * Parse weight dimension
 	 * @param string $ps_value value to parse
 	 * @param null|array $pa_options options array
@@ -3107,58 +3224,9 @@ function caFileIsIncludable($ps_file) {
 					$vs_value += caConvertLocaleSpecificFloat(trim($vs_v), $vs_locale);
 				}
 
-				switch(strtolower($va_matches[2])) {
- 					case "lbs":
- 					case 'lbs.':
- 					case 'lb':
- 					case 'lb.':
- 					case 'pound':
- 					case 'pounds':
- 						$vs_units = Zend_Measure_Weight::POUND;
- 						break;
- 					case 'kg':
- 					case 'kg.':
- 					case 'kilo':
- 					case 'kilos':
- 					case 'kilogram':
- 					case 'kilograms':
- 						$vs_units = Zend_Measure_Weight::KILOGRAM;
- 						break;
- 					case 'g':
- 					case 'g.':
- 					case 'gr':
- 					case 'gr.':
- 					case 'gram':
- 					case 'grams':
- 						$vs_units = Zend_Measure_Weight::GRAM;
- 						break;
- 					case 'mg':
- 					case 'mg.':
- 					case 'milligram':
- 					case 'milligrams':
- 						$vs_units = Zend_Measure_Weight::MILLIGRAM;
- 						break;
- 					case 'oz':
- 					case 'oz.':
- 					case 'ounce':
- 					case 'ounces':
- 						$vs_units = Zend_Measure_Weight::OUNCE;
- 						break;
- 					case 'ton':
- 					case 'tons':
- 					case 'tonne':
- 					case 'tonnes':
- 					case 't':
- 					case 't.':
- 						$vs_units = Zend_Measure_Weight::TON;
- 						break;
- 					case 'stone':
- 						$vs_units = Zend_Measure_Weight::STONE;
- 						break;
- 					default:
- 						throw new Exception(_t('Not a valid unit of weight [%2]', $ps_value));
- 						break;
- 				}
+                if (!($vs_units = caGetWeightUnitType($va_matches[2]))) {
+                    throw new Exception(_t('Not a valid unit of weight [%2]', $ps_value, $va_matches[2]));
+                }
 
 				try {
 					$o_tmp = new Zend_Measure_Weight($vs_value, $vs_units, $vs_locale);
@@ -3320,6 +3388,7 @@ function caFileIsIncludable($ps_file) {
 	 * @return bool True if $guid is a valid guid
 	 */
 	function caIsGUID($guid){
+	    if (!is_string($guid)) { return false; }
 		return preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $guid);
 	}
 	# ----------------------------------------
@@ -3346,7 +3415,7 @@ function caFileIsIncludable($ps_file) {
 	        	$va_tokens = array_filter($va_tokens, function($v) { return ($v > (time() - 28800)); });	// delete any token older than eight hours
 	    	}
 	    	if (sizeof($va_tokens) > 600) { 
-	    		$va_tokens = array_slice($va_tokens, 0, 300, true); // delete last half of token buffer if it gets too long
+	    		$va_tokens = array_slice($va_tokens, 0, 200, true); // delete last third of token buffer if it gets too long
 	    	}
 	    
 	        if (!isset($va_tokens[$vs_token])) { $va_tokens[$vs_token] = time(); }
@@ -3374,7 +3443,7 @@ function caFileIsIncludable($ps_file) {
 	    if (!is_array($va_tokens = PersistentCache::fetch("csrf_tokens_{$session_id}", "csrf_tokens"))) { $va_tokens = []; }
 	    
 	    if (isset($va_tokens[$ps_token])) { 
-	        if (caGetOption('remove', $pa_options, true)) {
+	        if (caGetOption('remove', $pa_options, false)) {
 	            unset($va_tokens[$ps_token]);
 	        	PersistentCache::save("csrf_tokens_{$session_id}", $va_tokens, "csrf_tokens");
 	        }
@@ -3431,9 +3500,9 @@ function caFileIsIncludable($ps_file) {
 				}
 			}
 		} elseif (preg_match("/Labels$/", $ps_id_prefix)) { // labels
-			return (sizeof($pa_initial_values) > 0);
+			return (is_array($pa_initial_values) && (sizeof($pa_initial_values) > 0));
 		} elseif (preg_match("/\_rel$/", $ps_id_prefix)) {
-			return (sizeof($pa_initial_values) > 0);
+			return (is_array($pa_initial_values) && (sizeof($pa_initial_values) > 0));
 		}
 
 		return false;
@@ -3618,10 +3687,6 @@ function caFileIsIncludable($ps_file) {
             $num *= -1;
         }
         
-       //  if (is_array($pa_allow_fractions_for) && !in_array("{$num}/{$pn_denom}", $pa_allow_fractions_for)) {
-//         
-//         }
-        
         if(caGetOption('forceFractions', $pa_options, true)) {
             $v = $num/$pn_denom;
             foreach($pa_allow_fractions_for as $i => $f) {
@@ -3799,7 +3864,7 @@ function caFileIsIncludable($ps_file) {
 							if (is_array($vm_list_val[1]) && $o_purifier) {
 								$va_vals_proc = [];
 								foreach($vm_list_val[1] as $vm_sublist_val) {
-									$va_vals_proc[] = !is_null($vm_sublist_val) ? $o_purifier->purify($vm_sublist_val) : $vm_sublist_val;
+									$va_vals_proc[] = !is_null($vm_sublist_val) ? str_replace("&amp;", "&", $o_purifier->purify($vm_sublist_val)) : $vm_sublist_val;
 								}
 
 								if (!is_numeric($vs_key2)) {
@@ -3809,9 +3874,9 @@ function caFileIsIncludable($ps_file) {
 								}
 							} else {
 								if (!is_numeric($vs_key2)) {
-									$va_values_proc[$vs_key][$vs_key2][] = [$vm_list_val[0], $o_purifier && !is_null($vm_list_val[1]) ? $o_purifier->purify($vm_list_val[1]) : $vm_list_val[1]];
+									$va_values_proc[$vs_key][$vs_key2][] = [$vm_list_val[0], $o_purifier && !is_null($vm_list_val[1]) ? str_replace("&amp;", "&", $o_purifier->purify($vm_list_val[1])) : $vm_list_val[1]];
 								} else {
-									$va_values_proc[$vs_key][] = [$vm_list_val[0], $o_purifier && !is_null($vm_list_val[1]) ? $o_purifier->purify($vm_list_val[1]) : $vm_list_val[1]];
+									$va_values_proc[$vs_key][] = [$vm_list_val[0], $o_purifier && !is_null($vm_list_val[1]) ? str_replace("&amp;", "&", $o_purifier->purify($vm_list_val[1])) : $vm_list_val[1]];
 								}
 							}
 						} else {
@@ -3820,7 +3885,7 @@ function caFileIsIncludable($ps_file) {
 					}
 				}
 			} else {
-				$va_values_proc[$vs_key][] = [is_null($vm_val) ? 'IS' : '=', $o_purifier && !is_null($vm_val) ? $o_purifier->purify($vm_val) : $vm_val];
+				$va_values_proc[$vs_key][] = [is_null($vm_val) ? 'IS' : '=', $o_purifier && !is_null($vm_val) ? str_replace("&amp;", "&", $o_purifier->purify($vm_val)) : $vm_val];
 			}
 		}
 		return $va_values_proc;
@@ -3856,6 +3921,9 @@ function caFileIsIncludable($ps_file) {
 			case 'in':
 				return ($pb_is_list) ? true : false;
 				break;
+			case 'not in':
+				return ($pb_is_list) ? true : false;
+				break;
 		}
 		return false;
 	}
@@ -3879,8 +3947,8 @@ function caFileIsIncludable($ps_file) {
 		for($i=0; $i < mb_strlen($ps_template); $i++) {
 			switch($vs_char = mb_substr($ps_template, $i, 1)) {
 				case '{':
-				    if (!$vb_in_tag && !$vb_in_single_quote && $vb_in_single_quote && (mb_substr($ps_template, $i+1, 1) === '^')) {
-				        continue;
+				    if (!$vb_in_tag && !$vb_in_single_quote && (mb_substr($ps_template, $i+1, 1) === '^')) {
+				        continue(2);
 				    }
 				    break;
 				case '^':
@@ -4117,5 +4185,29 @@ function caFileIsIncludable($ps_file) {
 		$pw = substr(md5(uniqid(microtime())), rand(0, (31 - $length)), $length);
 		if (caGetOption('uppercase', $options, false)) { $pw = strtoupper($pw); }
 		return $pw;
+	}
+	# ----------------------------------------
+	/**
+	 *
+	 */
+	function caFetchFileFromUrl($url, $dest=null) {
+		$tmp_file = $dest ? $dest : tempnam(__CA_APP_DIR__.'/tmp', 'caUrlCopy');
+		$r_incoming_fp = @fopen($url, 'r');
+		if(!$r_incoming_fp) {
+			throw new ApplicationException(_t("Cannot open remote URL [%1] to fetch media", $url));
+		}
+
+		$r_outgoing_fp = @fopen($tmp_file, 'w');
+		if(!$r_outgoing_fp) {
+			throw new ApplicationException(_t("Cannot open temporary file for media fetched from URL [%1]", $url));
+		}
+
+		while(($content = fgets($r_incoming_fp, 4096)) !== false) {
+			fwrite($r_outgoing_fp, $content);
+		}
+		fclose($r_incoming_fp);
+		fclose($r_outgoing_fp);
+		
+		return $tmp_file;
 	}
 	# ----------------------------------------
