@@ -1,10 +1,10 @@
 # *** use ONLY lowercase letters in lists: input will be forced to lowercase for comparison ***
 
 # List month names; used whenever name of month needs to be displayed
-monthList = [gener, febrer, març, abril, maig, juny, juliol, agost, septembre, octubre, novembre, desembre]
+monthList = [gener, febrer, març, abril, maig, juny, juliol, agost, setembre, octubre, novembre, desembre]
 
 # *** the following list of months is for display and *SHOULD* be capitalized where appropriate
-monthListDisplay = [gener, febrer, març, abril, maig, juny, juliol, agost, septembre, octubre, novembre, desembre]
+monthListDisplay = [gener, febrer, març, abril, maig, juny, juliol, agost, setembre, octubre, novembre, desembre]
 
 # Hash table mapping acceptable month names to the display names defined in 'monthList'
 monthTable = {
