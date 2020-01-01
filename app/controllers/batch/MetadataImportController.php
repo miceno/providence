@@ -181,7 +181,8 @@
  				'fileInput' => $this->request->getParameter("fileInput", pString),
  				'fileImportPath' => $this->request->getParameter("fileImportPath", pString),
  				
- 				'importAllDatasets' => (bool)$this->request->getParameter("importAllDatasets", pInteger), 
+ 				'importAllDatasets' => (bool)$this->request->getParameter("importAllDatasets", pInteger),
+ 				// TODO: Remove this: $vs_name is not defined
  				'originalFilename' => $vs_name
  			);
  			
