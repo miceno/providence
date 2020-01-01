@@ -545,7 +545,7 @@
 					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is invalid", $pa_options['importFromDirectory'])
 				));
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
-				$o_log->logError($vs_msg);
+				$o_log->logError($vs_msg . " at " . __LINE__);
  				return null;
  			}
 
@@ -556,7 +556,7 @@
 					"SOURCE" => "mediaImport",
 					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is invalid", $pa_options['importFromDirectory'])
 				));
-				$o_log->logError($vs_msg);
+				$o_log->logError($vs_msg . " with root " . $vs_batch_media_import_root_directory);
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
  				return null;
  			}
@@ -567,7 +567,7 @@
 					"SOURCE" => "mediaImport",
 					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is invalid", $pa_options['importFromDirectory'])
 				));
-				$o_log->logError($vs_msg);
+				$o_log->logError($vs_msg . " at " . __LINE__);
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
  				return null;
  			}
