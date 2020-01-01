@@ -551,7 +551,7 @@
         <metadataElement code="description" datatype="Text">
             <labels>
                 <label locale="ca_ES">
-                    <name>Description</name>
+                    <name>Descripció</name>
                     <description>An account of the resource.</description>
                 </label>
             </labels>
