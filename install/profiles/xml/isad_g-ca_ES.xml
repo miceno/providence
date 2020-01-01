@@ -2,9 +2,9 @@
 <profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="profile.xsd" useForConfiguration="1" base="base"
          infoUrl="http://wiki.collectiveaccess.org/index.php?title=DACS_profile">
-    <profileName>[Standard] ISAD(G) - General International Standard Archival Desciption</profileName>
+    <profileName>[Standard] ISAD(G) Català - General International Standard Archival Description</profileName>
     <profileDescription>Use this profile if you want a system that is compliant with ISADG and
-        EAD
+        EAD, for the ca_ES locale.
     </profileDescription>
     <locales>
         <locale lang="ca" country="ES">Català</locale>
