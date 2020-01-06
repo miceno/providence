@@ -109,7 +109,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[1], "1934.123123595900");	
 		$this->assertEquals($o_tep->getText(), "1923 - 1934");		// Don't output mid-decade dates and they're confusing to users
 		
-		$vb_res = $o_tep->parse('fins dels 1920s - principis dels 1930s');
+		$vb_res = $o_tep->parse('finals del 1920s - principis dels 1930s');
 		$this->assertEquals($vb_res, true);
 		$va_parse = $o_tep->getHistoricTimestamps();
 		$this->assertEquals($va_parse['start'], "1926.010100000000");
