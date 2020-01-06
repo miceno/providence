@@ -70,8 +70,8 @@ undatedDate = [desconegut]
 presentDate = [present, ?, ??, ???, ????]
 beforeQualifier = [abans]
 earlyQualifier = [principis del, principis, cap, principi, començament, primeria, l'entrada]
-midQualifier = [mig]
-lateQualifier = [fi, finals, fins]
+midQualifier = [mig del, mig de, mig dels, mig]
+lateQualifier = [finals del, finals de, finals, fi, fins, fins del]
 diedQualifier = [mort, morta, d, d.]
 afterQualifier = [després]
 bornQualifier = [nascut, nascuda, n, n.]
@@ -97,7 +97,7 @@ monthComesFirstInDelimitedDate = 0
 daySuffix = 
 
 # Definite articles
-definiteArticles = [el, l', la, les, les, de, del, dels]
+definiteArticles = [el, l', la, les, les, de, del, dels, d']
 
 # Indefinite articles
 indefiniteArticles = [un, una]
