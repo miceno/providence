@@ -687,11 +687,10 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($vb_res, true);
 
 		$va_parse = $o_tep->getHistoricTimestamps();
+		$today_date = date('Y.md');
 
-		$this->assertEquals($va_parse['start'], $t= time());
-		$this->assertEquals($va_parse['end'], $t);
-		$this->assertEquals($va_parse[0], $t);
-		$this->assertEquals($va_parse[1], $t);
+		$this->assertEquals($today_date, substr($va_parse['start'], 0,9));
+		$this->assertEquals($today_date, substr($va_parse['end'], 0,9));
 	}
 
 	public function testParseYesterdayDate() {
@@ -699,12 +698,13 @@ class TimeExpressionParser_caTest extends TestCase {
 		$o_tep->setLanguage( 'ca_ES' );
 		$vb_res = $o_tep->parse('ahir');
 		$this->assertEquals($vb_res, true);
-		$va_parse = $o_tep->getUnixTimestamps();
 
-		$this->assertEquals($va_parse['start'], $t= time());
-		$this->assertEquals($va_parse['end'], $t);
-		$this->assertEquals($va_parse[0], $t);
-		$this->assertEquals($va_parse[1], $t);
+		$va_parse = $o_tep->getHistoricTimestamps();
+		$yesterday_date = date("Y.md", strtotime('yesterday'));
+
+		$this->assertEquals($yesterday_date, substr($va_parse['start'], 0,9));
+		$this->assertEquals($yesterday_date, substr($va_parse['end'], 0,9));
+
 	}
 
 	public function testParseTomorrowDate() {
@@ -712,12 +712,12 @@ class TimeExpressionParser_caTest extends TestCase {
 		$o_tep->setLanguage( 'ca_ES' );
 		$vb_res = $o_tep->parse('demà');
 		$this->assertEquals($vb_res, true);
-		$va_parse = $o_tep->getUnixTimestamps();
 
-		$this->assertEquals($va_parse['start'], $t= time());
-		$this->assertEquals($va_parse['end'], $t);
-		$this->assertEquals($va_parse[0], $t);
-		$this->assertEquals($va_parse[1], $t);
+		$va_parse = $o_tep->getHistoricTimestamps();
+		$tomorrow_date = date("Y.md", strtotime('tomorrow'));
+
+		$this->assertEquals($tomorrow_date, substr($va_parse['start'], 0,9));
+		$this->assertEquals($tomorrow_date, substr($va_parse['end'], 0,9));
 	}
 
 	public function testHistoricDayDateForEnglishLocale() {
