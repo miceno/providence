@@ -2453,10 +2453,12 @@ class TimeExpressionParser {
 	 *	@return string
 	 */
 	public function getText($pa_options=null) {
-		global $g_ui_locale;
-
 		if (!$pa_options) { $pa_options = array(); }
-		$vs_iso_code = caGetOption('ps_iso_code', $pa_options, $g_ui_locale);
+
+		$vs_iso_code = $this->ops_language;
+		if(!isset($pa_options['language'])){
+			$pa_options['language'] = $vs_iso_code;
+		}
 
 		foreach(array(
 			'dateFormat', 'dateDelimiter', 'uncertaintyIndicator', 
@@ -3867,11 +3869,10 @@ class TimeExpressionParser {
 	 * @return 	
 	 */
 	public static function inferRangeQualifier($dates, $options=null) {
-
 		global $g_ui_locale;
 
 		if (!$options) { $options = array(); }
-		$vs_iso_code = caGetOption('ps_iso_code', $options, $g_ui_locale);
+		$vs_iso_code = caGetOption('language', $options, $g_ui_locale);
 
 		if(!isset($dates['start']) || !is_array($start_pieces = $dates['start'])) { return null; }
 		if(!isset($dates['end']) || !is_array($end_pieces = $dates['end'])) { return null; }
