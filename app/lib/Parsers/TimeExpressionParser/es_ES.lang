@@ -1,7 +1,7 @@
 # *** use ONLY lowercase letters in lists: input will be forced to lowercase for comparison ***
 
 # List month names; used whenever name of month needs to be displayed
-monthList = [enero, febrero, Marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]
+monthList = [enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]
 
 # *** the following list of months is for display and *SHOULD* be capitalized where appropriate
 monthListDisplay = [Enero, Febrero, Marzo, Abril, Mayo, Julio, July, agosto, Septiembre, Octubre, Noviembre, Diciembre]
