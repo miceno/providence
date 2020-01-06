@@ -1567,10 +1567,28 @@ class TimeExpressionParserTest extends TestCase {
 		$vs_expression = "hasta el día 27 marzo 2001";
 		invokeMethod( $o_tep, 'tokenize', array( $vs_expression ) );
 		$va_token  = $o_tep->peekToken();
-		$vs_result = invokeMethod( $o_tep, '_getMultiWordToken',
-			array( $va_token['value'], [ "desde", "hasta el día" ] ) );
+		$this->assertEquals( "hasta el día", $va_token['value'] );
 
-		$this->assertEquals( "hasta el día", $vs_result );
+		$vs_expression = "hasta el 27 marzo 2001";
+		invokeMethod( $o_tep, 'tokenize', array( $vs_expression ) );
+		$va_token  = $o_tep->peekToken();
+		$this->assertEquals( "hasta el", $va_token['value'] );
+	}
+
+	function testMultiWordTokenNonFirst() {
+		$o_tep = new TimeExpressionParser();
+		$o_tep->setLanguage("es_ES");
+		$this->assertEquals($o_tep->parse("23/3/2001 hasta el día 27/3/2001"), true);
+		$va_historic = $o_tep->getHistoricTimestamps();
+
+		$this->assertEquals($va_historic['start'], '2001.032300000000');
+		$this->assertEquals($va_historic['end'], '2001.032723595900');
+
+		$this->assertEquals($o_tep->parse("23 hasta el día 27 marzo 2001"), true);
+		$va_historic = $o_tep->getHistoricTimestamps();
+
+		$this->assertEquals($va_historic['start'], '2001.032300000000');
+		$this->assertEquals($va_historic['end'], '2001.032723595900');
 	}
 
 }
