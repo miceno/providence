@@ -74,6 +74,24 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[1], "1820.123123595900");
 		$this->assertEquals($o_tep->getText(), "principis del XIXè segle");
 
+		$vb_res = $o_tep->parse('començament del XIXè segle');
+		$this->assertEquals($vb_res, true);
+		$va_parse = $o_tep->getHistoricTimestamps();
+		$this->assertEquals($va_parse['start'], "1800.010100000000");
+		$this->assertEquals($va_parse['end'], "1820.123123595900");
+		$this->assertEquals($va_parse[0], "1800.010100000000");
+		$this->assertEquals($va_parse[1], "1820.123123595900");
+		$this->assertEquals($o_tep->getText(), "principis del XIXè segle");
+
+		$vb_res = $o_tep->parse('començaments del XIXè segle');
+		$this->assertEquals($vb_res, true);
+		$va_parse = $o_tep->getHistoricTimestamps();
+		$this->assertEquals($va_parse['start'], "1800.010100000000");
+		$this->assertEquals($va_parse['end'], "1820.123123595900");
+		$this->assertEquals($va_parse[0], "1800.010100000000");
+		$this->assertEquals($va_parse[1], "1820.123123595900");
+		$this->assertEquals($o_tep->getText(), "principis del XIXè segle");
+
 		$vb_res = $o_tep->parse('principis del XIXè segle');
 		$this->assertEquals($vb_res, true);
 		$va_parse = $o_tep->getHistoricTimestamps();
