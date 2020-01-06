@@ -33,6 +33,25 @@
 
 require_once(__CA_LIB_DIR__.'/Parsers/TimeExpressionParser.php');
 
+
+/**
+ * Call protected/private method of a class.
+ *
+ * @param object &$object     Instantiated object that we will run method on.
+ * @param string  $methodName Method name to call
+ * @param array   $parameters Array of parameters to pass into method.
+ *
+ * @return mixed Method return.
+ */
+function invokeMethod( &$object, $methodName, array $parameters = array() ) {
+	$reflection = new \ReflectionClass( get_class( $object ) );
+	$method     = $reflection->getMethod( $methodName );
+	$method->setAccessible( true );
+
+	return $method->invokeArgs( $object, $parameters );
+}
+
+
 class TimeExpressionParserTest extends TestCase {
 
 	protected function setUp() : void {
@@ -1536,4 +1555,22 @@ class TimeExpressionParserTest extends TestCase {
 		$this->assertEquals($va_historic['start'], '2001.032300000000');
 		$this->assertEquals($va_historic['end'], '2001.032723595900');
 	}
+	
+	/**
+	 * testMultiWordToken: test for multiple words in a token.
+	 */
+
+	function testMultiWordToken() {
+		$o_tep = new TimeExpressionParser();
+		$o_tep->setLanguage( "es_ES" );
+
+		$vs_expression = "hasta el día 27 marzo 2001";
+		invokeMethod( $o_tep, 'tokenize', array( $vs_expression ) );
+		$va_token  = $o_tep->peekToken();
+		$vs_result = invokeMethod( $o_tep, '_getMultiWordToken',
+			array( $va_token['value'], [ "desde", "hasta el día" ] ) );
+
+		$this->assertEquals( "hasta el día", $vs_result );
+	}
+
 }

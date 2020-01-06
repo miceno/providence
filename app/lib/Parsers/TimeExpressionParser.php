@@ -186,7 +186,7 @@ class TimeExpressionParser {
 		if (!$ps_iso_code) { $ps_iso_code = 'en_US'; }
 		
 		$this->opa_error_messages = array(
-			_t("No error"), _t("Start must be before date in range"), _t("Invalid date"), _t("Invalid time"), 
+			_t("No error"), _t("Start must be before date in range"), _t("Invalid date"), _t("Invalid time"),
 			_t("Invalid uncertainty"), _t("Uncertainty must not exceed 9 digits"), _t("Invalid expression"), 
 			_t("Trailing characters in otherwise valid expression"), _t("Parser error")
 		);
@@ -1760,33 +1760,15 @@ class TimeExpressionParser {
 		if (in_array($vs_token_lc, $this->getLanguageSettingsWordList("rangeConjunctions"))) {
 			return array('value' => $vs_token, 'type' => TEP_TOKEN_RANGE_CONJUNCTION);
 		}
-		
+
 		// multiword range conjunction?
-		foreach($this->getLanguageSettingsWordList("rangeConjunctions") as $vs_conjunction) {
-			if (preg_match("!^".preg_quote($vs_token_lc, '!')."!", $vs_conjunction)) {
-				$va_pieces = preg_split("![ ]+!", $vs_conjunction);
-				array_shift($va_pieces);
-				
-				$vn_i = 1;
-				$vb_is_match = true;
-				foreach($va_pieces as $vs_piece) {
-					$va_peek_token = $this->peekToken($vn_i);
-					$vs_peek_token = $va_peek_token['value'];
-					if (trim(strtolower($vs_piece)) != ($vs_peek_token)) {
-						$vb_is_match = false;
-						break;
-					}
-					$vn_i++;
-				}
-				
-				if ($vb_is_match) {
-					foreach($va_pieces as $vs_piece) { $this->skipToken(); }
-					return array('value' => join(' ', array_merge([$vs_token_lc], $va_pieces)), 'type' => TEP_TOKEN_RANGE_CONJUNCTION);
-				}
-			}
+		$va_range_conjunctions = $this->getLanguageSettingsWordList( "rangeConjunctions" );
+		$vs_multiword_token    = $this->_getMultiWordToken( $vs_token_lc, $va_range_conjunctions );
+
+		if ( $vs_multiword_token ) {
+			return array( 'value' => $vs_multiword_token, 'type' => TEP_TOKEN_RANGE_CONJUNCTION );
 		}
-		
-			
+
 		// time conjunction
 		if (in_array($vs_token_lc, $this->getLanguageSettingsWordList("dateTimeConjunctions"))) {
 			return array('value' => $vs_token, 'type' => TEP_TOKEN_TIME_CONJUNCTION);
@@ -4037,5 +4019,45 @@ class TimeExpressionParser {
 		}
 		return ($dates['start']['year'] - ($dates['start']['year'] % 10)).$decade_indicator;
  	}
- 	# ------------------------------------------------------------------- 	
+ 	# -------------------------------------------------------------------
+
+
+	/**
+	 * Get a multiword token, using the provided matching list.
+	 *
+	 * @param string|null $ps_token Current token.
+	 * @param array       $pa_multiword_list    List of multiwords to match the token to.
+	 *
+	 * @return bool|string
+	 */
+	private function _getMultiWordToken( ?string $ps_token, array $pa_multiword_list ) {
+		// multiword range conjunction?
+		foreach($pa_multiword_list as $vs_multiword) {
+			if (preg_match("!^".preg_quote($ps_token, '!') . "!", $vs_multiword)) {
+
+				$va_pieces = preg_split("![ ]+!", $vs_multiword);
+				if (($key = array_search($ps_token, $va_pieces)) !== false) {
+					unset($va_pieces[$key]);
+				}
+
+				$vn_i = 1;
+				$vb_is_match = true;
+				foreach($va_pieces as $vs_piece) {
+					$va_peek_token = $this->peekToken($vn_i);
+					$vs_peek_token = $va_peek_token['value'];
+					if (trim(mb_strtolower($vs_piece)) != ($vs_peek_token)) {
+						$vb_is_match = false;
+						break;
+					}
+					$vn_i++;
+				}
+
+				if ($vb_is_match) {
+					foreach($va_pieces as $vs_piece) { $this->skipToken(); }
+					return join(' ', array_merge([$ps_token], $va_pieces));
+				}
+			}
+		}
+		return false;
+ 	}
 }
