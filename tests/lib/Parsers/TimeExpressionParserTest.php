@@ -1575,6 +1575,9 @@ class TimeExpressionParserTest extends TestCase {
 		$this->assertEquals( "hasta el", $va_token['value'] );
 	}
 
+	/**
+	 * testMultiWordTokenNonFirst: test for multiple words when the match is not the first one in the rangeConjunctions.
+	 */
 	function testMultiWordTokenNonFirst() {
 		$o_tep = new TimeExpressionParser();
 		$o_tep->setLanguage("es_ES");
