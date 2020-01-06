@@ -25,10 +25,10 @@ monthTable = {
 # List of day names, starting with Sunday
 dayListDisplay = [diumenge, dilluns, dimarts, dimecres, dijous, divendres, dissabte]
 
-rangePreConjunctions = [de, d', dels, entre]
-rangeConjunctions = [-, i, ..]
+rangePreConjunctions = [des de, des, de, d', dels, entre]
+rangeConjunctions = [-, i, .., fins]
 
-dateTimeConjunctions = [a, @]
+dateTimeConjunctions = [a les, a l', a, @]
 
 dateDelimiters = [/,-,.]
 timeDelimiters = [:,.]
@@ -56,24 +56,50 @@ dateBP = [bp]
 
 dateADIndicator = dc
 dateBCIndicator = ac
+
 ADBCTable = {
-	a.d. = d.C.,
-	b.c. = a.C.
+	a.c = ac,
+	a.C = ac,
+	a.c. = ac,
+	a.C. = ac,
+	a.e.c. = ac,
+	ac = ac,
+	AC = ac,
+	aC = ac,
+	ac. = ac,
+	aC. = ac,
+	aec = ac,
+	aec. = ac,
+	d.c = dc,
+	d.C = dc,
+	d.c. = dc,
+	d.C. = dc,
+	d.c. = dc,
+	d.C. = dc,
+	dc = dc,
+	dC = dc,
+	DC = dc,
+	dc. = dc,
+	dC. = dc,
+	e.c = dc,
+	e.c. = dc,
+	ec = dc,
+	ec. = dc
 }
 
-nowDate = [ara, hoy, now]
+nowDate = [ara]
 todayDate = [avui]
 yesterdayDate = [ahir]
 tomorrowDate = [demà]
 undatedDate = [desconegut]
 
 presentDate = [present, ?, ??, ???, ????]
-beforeQualifier = [abans]
+beforeQualifier = [abans,pre]
 earlyQualifier = [principis del, principis, cap, principi, començament, primeria, l'entrada]
 midQualifier = [mig del, mig de, mig dels, mig]
 lateQualifier = [finals del, finals de, finals, fi]
 diedQualifier = [mort, morta, d, d.]
-afterQualifier = [després]
+afterQualifier = [després,post]
 bornQualifier = [nascut, nascuda, n, n.]
 
 # Text to indicate century (as in "20th century")
@@ -82,8 +108,11 @@ centuryIndicator = [segle]
 # Text to indicate decade (as in "1920s")
 decadeIndicator = [s]
 
+ordinalWords = [cero, primer, segon, tercer, quart, cinquè, sisè, setè, vuitè, novè, desè, onzè, dotzè, tretzè, catorzè, quinzè, setzè, dissetè, divuitè, dinou, vint]
+
 # list of numeric suffixes, starting with the one for zero
 # (eg. 0th, 1st, 2nd, 3rd would be a list like so: [th, st, nd, rd])
+
 ordinalSuffixes = [ è, r, n, r, t]
 ordinalSuffixDefault = è
 
