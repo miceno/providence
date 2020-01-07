@@ -29,6 +29,7 @@
  *
  * ----------------------------------------------------------------------
  */
+ use PHPUnit\Framework\TestCase;
 
 require_once(__CA_BASE_DIR__.'/tests/testsWithData/BaseTestWithData.php');
 
@@ -50,7 +51,7 @@ class FindTest extends BaseTestWithData {
 	 */
 	private $opn_object_id2 = null;
 	# -------------------------------------------------------
-	public function setUp() {
+	protected function setUp() : void {
 		// don't forget to call parent so that request is set up correctly
 		parent::setUp();
 
@@ -215,14 +216,25 @@ Said, hey honey, take a walk on the wild side.'
 	}
 	# -------------------------------------------------------
 	public function testBaseModelFindByIdnoNoPurify() {
-		$vm_ret = ca_objects::find(['idno' => 'TEST &amp; STUFF'], ['returnAs' => 'ids', 'purify' => false]);
+		$vm_ret = ca_objects::find(['idno' => 'TEST & STUFF'], ['returnAs' => 'ids', 'purify' => false]);
 	
 		$this->assertInternalType('array', $vm_ret);
 		$this->assertCount(1, $vm_ret);
 		$this->assertEquals($this->opn_object_id, $vm_ret[0]);
+		
+		$vm_ret = ca_objects::find(['idno' => 'TEST &amp; STUFF'], ['returnAs' => 'ids', 'purify' => false]);
+	
+		$this->assertInternalType('array', $vm_ret);
+		$this->assertCount(0, $vm_ret);
 	}
 	# -------------------------------------------------------
 	public function testFindByIdnoWithPurify() {
+		$vm_ret = ca_objects::find(['idno' => 'TEST &amp; STUFF'], ['returnAs' => 'ids', 'purify' => true]);
+		
+		$this->assertInternalType('array', $vm_ret);
+		$this->assertCount(1, $vm_ret);
+		$this->assertEquals($this->opn_object_id, $vm_ret[0]);
+		
 		$vm_ret = ca_objects::find(['idno' => 'TEST & STUFF'], ['returnAs' => 'ids', 'purify' => true]);
 		
 		$this->assertInternalType('array', $vm_ret);
@@ -231,14 +243,25 @@ Said, hey honey, take a walk on the wild side.'
 	}
 	# -------------------------------------------------------
 	public function testFindByPreferredLabelNoPurify() {	
-		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound &amp; Motion']], ['purify' => false, 'returnAs' => 'ids']);
+		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound & Motion']], ['purify' => false, 'returnAs' => 'ids']);
 
 		$this->assertInternalType('array', $vm_ret);
 		$this->assertCount(1, $vm_ret);
 		$this->assertEquals($this->opn_object_id, $vm_ret[0]);
+		
+		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound &amp; Motion']], ['purify' => false, 'returnAs' => 'ids']);
+
+		$this->assertInternalType('array', $vm_ret);
+		$this->assertCount(0, $vm_ret);
 	}
 	# -------------------------------------------------------
 	public function testFindByPreferredLabelWithPurify() {	
+		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound &amp; Motion']], ['purifyWithFallback' => false, 'purify' => true, 'returnAs' => 'ids']);
+	
+		$this->assertInternalType('array', $vm_ret);
+		$this->assertCount(1, $vm_ret);
+		$this->assertEquals($this->opn_object_id, $vm_ret[0]);
+		
 		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound & Motion']], ['purifyWithFallback' => false, 'purify' => true, 'returnAs' => 'ids']);
 	
 		$this->assertInternalType('array', $vm_ret);
@@ -247,6 +270,12 @@ Said, hey honey, take a walk on the wild side.'
 	}
 	# -------------------------------------------------------
 	public function testFindByPreferredLabelWithPurifyFallback() {	
+		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound &amp; Motion']], ['purifyWithFallback' => true, 'purify' => false, 'returnAs' => 'ids']);
+	
+		$this->assertInternalType('array', $vm_ret);
+		$this->assertCount(1, $vm_ret);
+		$this->assertEquals($this->opn_object_id, $vm_ret[0]);
+		
 		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => 'Sound & Motion']], ['purifyWithFallback' => true, 'purify' => false, 'returnAs' => 'ids']);
 	
 		$this->assertInternalType('array', $vm_ret);
@@ -255,7 +284,7 @@ Said, hey honey, take a walk on the wild side.'
 	}
 	# -------------------------------------------------------
 	public function testFindByPreferredLabelWithOperators() {	
-		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => ['=', 'Sound &amp; Motion']]], ['purify' => false, 'returnAs' => 'ids']);
+		$vm_ret = ca_objects::find(['preferred_labels' => ['name' => ['=', 'Sound & Motion']]], ['purify' => false, 'returnAs' => 'ids']);
 	
 		$this->assertInternalType('array', $vm_ret);
 		$this->assertCount(1, $vm_ret);
@@ -301,6 +330,13 @@ Said, hey honey, take a walk on the wild side.'
 	}
 	# -------------------------------------------------------
 	public function testBaseModelFindByIntrinsicWithInOperator() {	
+		$vm_ret = ca_objects::find(['idno' => ['IN', ['TEST &amp; STUFF', 'INVALID VALUE', 'Another TEST']]], ['purify' => true, 'returnAs' => 'ids']);
+
+		$this->assertInternalType('array', $vm_ret);
+		$this->assertCount(2, $vm_ret);
+		$this->assertContains($this->opn_object_id, $vm_ret);
+		$this->assertContains($this->opn_object_id2, $vm_ret);
+		
 		$vm_ret = ca_objects::find(['idno' => ['IN', ['TEST & STUFF', 'INVALID VALUE', 'Another TEST']]], ['purify' => true, 'returnAs' => 'ids']);
 
 		$this->assertInternalType('array', $vm_ret);
@@ -308,7 +344,7 @@ Said, hey honey, take a walk on the wild side.'
 		$this->assertContains($this->opn_object_id, $vm_ret);
 		$this->assertContains($this->opn_object_id2, $vm_ret);
 		
-		$vm_ret = ca_objects::find(['idno' => ['IN', ['TEST &amp; STUFF', 'INVALID VALUE', 'Another TEST']]], ['purify' => false, 'returnAs' => 'ids']);
+		$vm_ret = ca_objects::find(['idno' => ['IN', ['TEST & STUFF', 'INVALID VALUE', 'Another TEST']]], ['purify' => false, 'returnAs' => 'ids']);
 
 		$this->assertInternalType('array', $vm_ret);
 		$this->assertCount(2, $vm_ret);

@@ -29,9 +29,11 @@
  * 
  * ----------------------------------------------------------------------
  */
+use PHPUnit\Framework\TestCase;
+
 require_once(__CA_APP_DIR__."/helpers/utilityHelpers.php");
 
-class UtilityHelpersTest extends PHPUnit_Framework_TestCase {
+class UtilityHelpersTest extends TestCase {
 	# -------------------------------------------------------
 	public function testCaFormatJson(){
 		// actually valid JSON, perl-programmer style!
@@ -65,8 +67,8 @@ JSON;
 		$vm_ret = caParseLengthExpression("4/6", ['delimiter' => '/', 'units' => 'mm']);
 		$this->assertInternalType('array', $vm_ret);
 		$this->assertCount(2, $vm_ret);
-		$this->assertEquals("4.0 mm", $vm_ret[0]);
-		$this->assertEquals("6.0 mm", $vm_ret[1]);
+		$this->assertEquals("4 mm", $vm_ret[0]);
+		$this->assertEquals("6 mm", $vm_ret[1]);
 		
 		$vm_ret = caParseLengthExpression("4x6cm", ['precision' => 0]);
 		$this->assertInternalType('array', $vm_ret);
