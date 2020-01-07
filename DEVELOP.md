@@ -61,16 +61,8 @@ Se pueden extraer todas las formas de fecha aceptadas procesando con `sed` el fi
 
 Se trata de buscar las expresiones
 
-    $vb_res = $o_tep->parse('començaments del XIXè segle');
-    $this->assertEquals($o_tep->getText(), "principis del XIXè segle");
+    $vb_res = $o_tep->parse('començaments del XIXè segle'); // Comment
+    $this->assertEquals($o_tep->getText(), "principis del XIXè segle"); // Comment
     
-El siguiente script permite extraerlas del fichero de unittest:
-    
-    grep -E '(->parse\()' TimeExpressionParser_caTest.php \
-        | sed -E "s/([^\"']*)[\"']([^\"']*)[\"']([^\"']*)/\* \2/g" \
-        > ca_ES-expresiones-parse.txt
-        
-    grep -E '(\$o_tep\->getText\(\))' TimeExpressionParser_caTest.php \
-        | sed -E "s/([^\"']*)[\"']([^\"']*)[\"']([^\"']*)/\2/g" \
-        > ca_ES-expresiones-gettext.txt
-
+El script `support/scripts/extract_date_expression.sh.txt` permite extraerlas, y genera
+un informe ordenado, marcando las formas canónicas de visualización (con tres asteriscos `*`).
