@@ -34999,7 +34999,7 @@ msgstr ""
 
 #: app/conf/user_pref_defs.conf:1398
 msgid "Authentication"
-msgstr "Identificación"
+msgstr "Identificació"
 
 #: app/conf/user_pref_defs.conf:1403
 msgid "Your organization."
