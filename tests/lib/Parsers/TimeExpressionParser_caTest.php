@@ -1248,7 +1248,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse['end'], "199.123123595900");
 		$this->assertEquals($va_parse[0], "100.010100000000");
 		$this->assertEquals($va_parse[1], "199.123123595900");
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "iin segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("IIn segle"));
 
 		$vb_res = $o_tep->parse('IIè segle');
 		$this->assertEquals($vb_res, true);
@@ -1258,7 +1258,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse['end'], "199.123123595900");
 		$this->assertEquals($va_parse[0], "100.010100000000");
 		$this->assertEquals($va_parse[1], "199.123123595900");
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "iin segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("IIn segle"));
 
 		$vb_res = $o_tep->parse('IIn segle dc');
 		$this->assertEquals($vb_res, true);
@@ -1268,7 +1268,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse['end'], "199.123123595900");
 		$this->assertEquals($va_parse[0], "100.010100000000");
 		$this->assertEquals($va_parse[1], "199.123123595900");
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "iin segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("IIn segle"));
 
 		$vb_res = $o_tep->parse('XVè segle');
 		$this->assertEquals($vb_res, true);
@@ -1278,7 +1278,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse['end'], "1499.123123595900");
 		$this->assertEquals($va_parse[0], "1400.010100000000");
 		$this->assertEquals($va_parse[1], "1499.123123595900");
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "xvè segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("XVè segle"));
 
 		$vb_res = $o_tep->parse('XVè segle dc');
 		$this->assertEquals($vb_res, true);
@@ -1288,7 +1288,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse['end'], "1499.123123595900");
 		$this->assertEquals($va_parse[0], "1400.010100000000");
 		$this->assertEquals($va_parse[1], "1499.123123595900");
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "xvè segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("XVè segle"));
 	}
 
 	public function testBCECenturies() {
@@ -1333,7 +1333,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[0], "-199.010100000000");
 		$this->assertEquals($va_parse[1], "-100.123123595900");
 
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "iin segle ac");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("IIn segle ac"));
 
 		$vb_res = $o_tep->parse('XVè segle aec');
 		$this->assertEquals($vb_res, true);
@@ -1344,7 +1344,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[0], "-1499.010100000000");
 		$this->assertEquals($va_parse[1], "-1400.123123595900");
 
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "xvè segle ac");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("XVè segle ac"));
 
 		$vb_res = $o_tep->parse('Iè segle aec');
 		$this->assertEquals($vb_res, true);
@@ -1355,7 +1355,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[0], "-99.010100000000");
 		$this->assertEquals($va_parse[1], "0.123123595900");
 
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "ir segle ac");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("Ir segle ac"));
 
 
 		$vb_res = $o_tep->parse('Iè segle');
@@ -1367,7 +1367,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[0], "0.010100000000");
 		$this->assertEquals($va_parse[1], "99.123123595900");
 
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "ir segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("Ir segle"));
 
 
 		$vb_res = $o_tep->parse('Iè segle dc');
@@ -1379,7 +1379,7 @@ class TimeExpressionParser_caTest extends TestCase {
 		$this->assertEquals($va_parse[0], "0.010100000000");
 		$this->assertEquals($va_parse[1], "99.123123595900");
 
-		$this->assertEquals(mb_strtolower($o_tep->getText()), "ir segle");
+		$this->assertEquals(mb_strtolower($o_tep->getText()), mb_strtolower("Ir segle"));
 	}
 
 	public function testTimes() {
@@ -1509,14 +1509,14 @@ class TimeExpressionParser_caTest extends TestCase {
 		$o_tep = new TimeExpressionParser();
 		$o_tep->setLanguage('ca_ES');
 
-		$vb_res = $o_tep->parse('6/6/2009 @ 10:55:10pm');
+		$vb_res = $o_tep->parse('16/6/2009 @ 10:55:10pm');
 		$this->assertEquals($vb_res, true);
 
-		$this->assertEquals($o_tep->getText(), '6 juny 2009 a les 22:55:10');
+		$this->assertEquals($o_tep->getText(), '16 juny 2009 a les 22:55:10');
 
 		$o_tep->setLanguage('de_DE');
 
-		$this->assertEquals($o_tep->getText(), '6. Juni 2009 um 22:55:10');
+		$this->assertEquals($o_tep->getText(), '16. Juni 2009 um 22:55:10');
 	}
 
 	public function testMYADate() {
