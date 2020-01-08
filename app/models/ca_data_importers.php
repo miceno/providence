@@ -2628,7 +2628,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 												$vs_content = isset($va_element_content[$vs_element]) ? $va_element_content[$vs_element] : $va_element_content;
 												$t_subject->set($vs_element, $vs_content, $va_opts);
 												$t_subject->update(['queueIndexing' => true]);
-												if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not add intrinsic %2 to %3:", $vs_idno, $vs_elenent, $t_subject->tableName()), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
+												if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not add intrinsic %2 to %3:", $vs_idno, $vs_element, $t_subject->tableName()), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 													ca_data_importers::logImportError($vs_error, $va_log_import_error_opts);
 													if ($vs_item_error_policy == 'stop') {
 														$o_log->logAlert(_t('Import stopped due to mapping error policy'));
