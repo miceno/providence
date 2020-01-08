@@ -2454,6 +2454,12 @@ class TimeExpressionParser {
 	 */
 	public function getText($pa_options=null) {
 		if (!$pa_options) { $pa_options = array(); }
+
+		$vs_iso_code = $this->ops_language;
+		if(!isset($pa_options['language'])){
+			$pa_options['language'] = $vs_iso_code;
+		}
+
 		foreach(array(
 			'dateFormat', 'dateDelimiter', 'uncertaintyIndicator', 
 			'showADEra', 'timeFormat', 'timeDelimiter', 
@@ -2474,7 +2480,7 @@ class TimeExpressionParser {
 			$vs_end = array_pop($va_normalized);
 			if ($vs_start === $vs_end) { return $vs_start; }
 			if ($vs_start && !$vs_end) { return $vs_start; }
-			$o_tep = new TimeExpressionParser();
+			$o_tep = new TimeExpressionParser(null, $vs_iso_code);
 			$vs_default_conjunction = array_shift($this->opo_language_settings->getList("rangeConjunctions"));
 			if ($o_tep->parse("{$vs_start} {$vs_default_conjunction} {$vs_end}")) {
 				return $o_tep->getText(array_merge($pa_options, ['normalize' => null]));
@@ -3863,6 +3869,11 @@ class TimeExpressionParser {
 	 * @return 	
 	 */
 	public static function inferRangeQualifier($dates, $options=null) {
+		global $g_ui_locale;
+
+		if (!$options) { $options = array(); }
+		$vs_iso_code = caGetOption('language', $options, $g_ui_locale);
+
 		if(!isset($dates['start']) || !is_array($start_pieces = $dates['start'])) { return null; }
 		if(!isset($dates['end']) || !is_array($end_pieces = $dates['end'])) { return null; }
 		
@@ -3875,7 +3886,7 @@ class TimeExpressionParser {
 			($end_pieces['day'] != 31) || ($end_pieces['month'] != 12)) {
 			return false;	
 		}
-		$o_tep = new TimeExpressionParser();
+		$o_tep = new TimeExpressionParser(null, $vs_iso_code);
 		$early_qualifiers = $o_tep->opo_language_settings->getList("earlyQualifier");
 		$mid_qualifiers = $o_tep->opo_language_settings->getList("midQualifier");
 		$late_qualifiers = $o_tep->opo_language_settings->getList("lateQualifier");
