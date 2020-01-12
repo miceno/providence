@@ -14,7 +14,7 @@
     "phpoffice/phppresentation": "dev-master",
     "phpoffice/phpword": "v0.15.*",
     "phpoffice/phpexcel": "v1.8.1",
-    "tedivm/stash": "0.14.*",
+    "tedivm/stash": "0.15.*",
     "pear/file_marc": "~1.2",
     "dompdf/dompdf": "~0.8",
     "scholarslab/bagit": "~0.2",
