@@ -148,8 +148,8 @@ msgstr "lista"
 msgid ""
 "GD is a graphics processing library required for all barcode generation."
 msgstr ""
-"GD es una librería de procesamiento de gráficos que es necesaria para "
-"generar códigos de barras"
+"GD és una biblioteca de processament gràfic necessària per a tota la "
+"generació de codis de barres."
 
 #: app/controllers/administrate/setup/ConfigurationCheckController.php:88
 msgid "Is not installed; barcode printing will not be possible."
@@ -345,9 +345,9 @@ msgid ""
 "configuration and ensure there is at least one valid configuration for this "
 "type of editor."
 msgstr ""
-"No hay una configuración disponible para este editor. Revise su "
-"configuración del sistema y asegúrese de que haya al menos una configuración "
-"válida para este tipo de editor"
+"No hi ha cap configuració disponible per a aquest editor. Comproveu la "
+"configuració del sistema i assegureu-vos que hi ha almenys una configuració "
+"vàlida per a aquest tipus d’editor."
 
 #: app/controllers/editor/objects/ObjectComponentController.php:219
 #: app/lib/ca/BaseEditorController.php:254
@@ -383,11 +383,11 @@ msgstr ""
 
 #: app/controllers/editor/representation_annotations/RepresentationAnnotationQuickAddController.php:55
 msgid "Saved annotation."
-msgstr "Anotación guardada"
+msgstr "Desa l’anotació."
 
 #: app/controllers/editor/representation_annotations/RepresentationAnnotationQuickAddController.php:88
 msgid "Invalid annotation_id"
-msgstr "annotation_id inválido"
+msgstr "L'annotation_id no és vàlida"
 
 #: app/controllers/find/BrowseObjectsController.php:64
 #: app/controllers/find/SearchObjectsAdvancedController.php:63
@@ -670,7 +670,7 @@ msgstr "hoy"
 
 #: app/controllers/library/DashboardController.php:81
 msgid " and %1 more"
-msgstr "y %1 más"
+msgstr " i %1 més"
 
 #: app/controllers/lookup/AttributeValueController.php:54
 msgid "Invalid element code"
@@ -739,11 +739,11 @@ msgstr "No se han encontrado resultados para %1."
 
 #: app/controllers/lookup/TaxonomyController.php:183
 msgid "ERROR: uBio web service query failed."
-msgstr "ERROR: la consulta al servicio web uBio ha fracasado"
+msgstr "Error: la consulta del servei web d'UBio ha fallat."
 
 #: app/controllers/lookup/TaxonomyController.php:189
 msgid "ERROR: No uBio keycode in app.conf."
-msgstr "ERROR: No hay clave (keycode) uBio en app.conf"
+msgstr "ERROR: No hi ha codi de clau uBio a app.conf."
 
 #: app/controllers/manage/CommentsController.php:77
 msgid "There are no unmoderated comments"
@@ -1019,8 +1019,8 @@ msgstr ""
 msgid ""
 "Password was successfully changed. You can now log in with your new password."
 msgstr ""
-"La contraseña fue cambiada exitosamente. Puede ingresar con su nueva "
-"contraseña"
+"Es va canviar la contrasenya correctament. Ja podeu iniciar la sessió amb la "
+"vostra nova contrasenya."
 
 #: app/controllers/system/PreferencesController.php:127
 msgid "No duplication preferences for %1"
@@ -1268,7 +1268,7 @@ msgstr "Este registro de tipo %1 está referenciado %2 vez"
 #: app/helpers/displayHelpers.php:360 app/helpers/displayHelpers.php:362
 #: app/helpers/displayHelpers.php:409 app/helpers/displayHelpers.php:411
 msgid "When deleting this %1:"
-msgstr "Al eliminarlo,"
+msgstr "En suprimir aquest% 1:"
 
 #: app/helpers/displayHelpers.php:362
 msgid "This %1 is referenced %2 times"
@@ -1419,7 +1419,7 @@ msgstr ""
 
 #: app/helpers/displayHelpers.php:994
 msgid "Add/remove item to/from watch list."
-msgstr "Lista de vigilancia: añadir/eliminar"
+msgstr "Afegiu/traieu un element a la llista de seguiment."
 
 #: app/helpers/displayHelpers.php:1012
 msgid "Watch/Unwatch this record"
@@ -1497,7 +1497,7 @@ msgstr "<strong>Creado</strong><br/>%1"
 #: app/widgets/trackProcessing/views/main_html.php:110
 #: app/widgets/trackProcessing/views/main_html.php:138
 msgid "Created on"
-msgstr "Creado:"
+msgstr "Creat el"
 
 #: app/helpers/displayHelpers.php:1124
 msgid "Created on %1"
@@ -2016,7 +2016,7 @@ msgstr "Botswana"
 
 #: app/helpers/gisHelpers.php:75
 msgid "Bouvet Island"
-msgstr "Isla Bouvet "
+msgstr "Isla Bouvet"
 
 #: app/helpers/gisHelpers.php:76
 msgid "Brazil"
@@ -2080,7 +2080,7 @@ msgstr "China"
 
 #: app/helpers/gisHelpers.php:91
 msgid "Christmas Island"
-msgstr "Islas Christmas "
+msgstr "Islas Christmas"
 
 #: app/helpers/gisHelpers.php:92
 msgid "Cocos (Keeling) Islands"
@@ -3733,7 +3733,7 @@ msgstr "Ancho del campo en la interfaz de usuario"
 #: app/lib/ca/Attributes/Values/WeightAttributeValue.php:51
 msgid "Width, in characters, of the field when displayed in a user interface."
 msgstr ""
-"Ancho en caracteres del campo cuando es mostrado en la interfaz de usuario"
+"Amplada, en caràcters, del camp quan es mostra en una interfície d'usuari."
 
 #: app/lib/ca/Attributes/Values/CollectionsAttributeValue.php:65
 #: app/lib/ca/Attributes/Values/ContainerAttributeValue.php:50
