@@ -2,7 +2,7 @@
 
 PHP_BIN=${PHP_BIN:-$(which php)}
 
-php bin/caUtils rebuild-sort-values
-php bin/caUtils rebuild-search-index
-php bin/caUtils process-indexing-queue
-php bin/caUtils process-task-queue
+${PHP_BIN} bin/caUtils rebuild-sort-values
+${PHP_BIN} bin/caUtils rebuild-search-index
+${PHP_BIN} bin/caUtils process-indexing-queue
+${PHP_BIN} bin/caUtils process-task-queue
