@@ -295,7 +295,7 @@ msgstr "Saltados %1 archivos"
 #: app/controllers/batch/MetadataImportController.php:129
 #: app/controllers/manage/MetadataExportController.php:94
 msgid "Uploaded %1 worksheet"
-msgstr "Hola de trabajo %1 subida"
+msgstr "Hoja de trabajo %1 subida"
 
 #: app/controllers/batch/MetadataImportController.php:129
 #: app/controllers/manage/MetadataExportController.php:94
@@ -13700,7 +13700,7 @@ msgstr "Configuración de la visualización"
 #: app/models/ca_tours.php:104
 #: app/models/ca_user_representation_annotations.php:116
 msgid "Not accessible to public"
-msgstr "No accesible al público"
+msgstr "No és accessible al públic"
 
 #: app/models/ca_bundle_displays.php:126 app/models/ca_collections.php:138
 #: app/models/ca_entities.php:146 app/models/ca_item_comments.php:177
@@ -28193,7 +28193,7 @@ msgstr "Añadir lista nueva"
 #: themes/default/views/find/Search/ca_places_search_controls_html.php:53
 #: themes/default/views/find/Search/search_controls_html.php:75
 msgid "Add under %2 new %1"
-msgstr "Añadir bajo %2 un/a nuevo/a %1"
+msgstr "Afegir sota \"%2\" un(a) nou(va) %1"
 
 #: themes/default/views/administrate/setup/Search/search_controls_html.php:99
 msgid "item"
