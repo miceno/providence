@@ -24,3 +24,5 @@ setup.php
 /support/scripts/*.sh
 /composer*.phar
 *.log
+/tests/.phpunit.result.cache
+/composer.lock
