@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PHP_BIN=${PHP_BIN:-$(which php)}
+
+php bin/caUtils rebuild-sort-values
+php bin/caUtils rebuild-search-index
+php bin/caUtils process-indexing-queue
+php bin/caUtils process-task-queue
