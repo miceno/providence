@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2008-2019 Whirl-i-Gig
+ * Copyright 2008-2020 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -1079,6 +1079,23 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 								'width' => "275px", 'height' => 5,
 								'label' => _t('Sort options'),
 								'description' => _t('Limits sort options on this bundle.')
+							),
+							'showCount' => array(
+								'formatType' => FT_NUMBER,
+								'displayType' => DT_CHECKBOXES,
+								'width' => "10", 'height' => "1",
+								'takesLocale' => false,
+								'default' => 0,
+								'label' => _t('Show relationship count in header?'),
+								'description' => _t('If checked the number of relationships will be displayed in the header for the field.')
+							),
+							'effectiveDateDefault' => array(
+								'formatType' => FT_TEXT,
+								'displayType' => DT_FIELD,
+								'default' => '',
+								'width' => "275px", 'height' => 1,
+								'label' => _t('Default effective date'),
+								'description' => _t('Default effective date value for newly added relationships. Leave blank if you do not wish to set an effective date.')
 							)
 						);
 					}
