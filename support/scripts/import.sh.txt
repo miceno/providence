@@ -13,7 +13,10 @@ then
     exit 1
 fi
 
+LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+
 $PHP_BIN $BASEDIR/../bin/caUtils import-data \
+    -d "$LOG_LEVEL" \
     -f XLSX \
     --source "$1" \
     --mapping "$2" \
