@@ -14,9 +14,11 @@ then
 fi
 
 LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+DRY_RUN=${DRY_RUN:- --dryrun}
 
 $PHP_BIN $BASEDIR/../bin/caUtils import-data \
     -d "$LOG_LEVEL" \
+    $DRY_RUN \
     -f XLSX \
     --source "$1" \
     --mapping "$2" \
