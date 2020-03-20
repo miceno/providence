@@ -2047,6 +2047,40 @@
         </metadataElement>
     </elementSets>
     <userInterfaces>
+        <userInterface code="standard_entity_ui" type="ca_entities">
+            <labels>
+                <label locale="en_US">
+                    <name>Standard entity editor</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Editor estàndar d'entitats</name>
+                </label>
+            </labels>
+        <screens>
+            <screen idno="basic" default="1">
+                <labels>
+                    <label locale="en_US">
+                        <name>Basic Info</name>
+                    </label>
+                    <label locale="ca_US">
+                        <name>Informació bàsica</name>
+                    </label>
+                </labels>
+                <bundlePlacements>
+                <placement code="ca_attribute_email5">
+                <bundle>ca_attribute_email</bundle>
+                <settings>
+                    <setting name="readonly"/>
+                    <setting name="expand_collapse_value">bubbles</setting>
+                    <setting name="expand_collapse_no_value">bubbles</setting>
+                    <setting name="sort">1</setting>
+                    <setting name="sortDirection">ASC</setting>
+                </settings>
+            </placement>
+                </bundlePlacements>
+            </screen>
+        </screens>
+        </userInterface>
     </userInterfaces>
     <relationshipTypes>
         <relationshipTable name="ca_objects_x_entities">
@@ -2191,3 +2225,4 @@
     </displays>
 
 </profile>
+
