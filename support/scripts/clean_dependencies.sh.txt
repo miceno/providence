@@ -1,18 +1,29 @@
 #!/usr/bin/env bash
 
-export VENDOR_DIR=vendor-cache
+export VENDOR_DIR=${VENDOR_DIR:-vendor-folder}
+
+# Remove test folders
+
 find $VENDOR_DIR -maxdepth 3 -type d | grep -i test | xargs du -sh
 find $VENDOR_DIR -maxdepth 3 -type d | grep -i test | xargs rm -rf
 
+# Remove example folders
+
 find $VENDOR_DIR -maxdepth 3 -type d | grep -i example | xargs du -sh
 find $VENDOR_DIR -maxdepth 3 -type d | grep -i example | xargs rm -rf
+
+# Batch remove other folders
 
 REMOVE_FOLDERS="\
 phpoffice/phppresentation/samples \
 phpoffice/phppresentation/.git \
 "
-
 for i in $REMOVE_FOLDERS; do
     echo "Removing folder: $i"
     rm -rf "$VENDOR_DIR/$i"
 done
+
+# Customized remove folders
+
+find $VENDOR_DIR/aws/aws-sdk-php/src/data -maxdepth 1 -type d | xargs du -sh
+find $VENDOR_DIR/aws/aws-sdk-php/src/data -maxdepth 1 -type d | xargs rm -rf
