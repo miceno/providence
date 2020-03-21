@@ -2056,30 +2056,61 @@
                     <name>Editor estàndar d'entitats</name>
                 </label>
             </labels>
-        <screens>
-            <screen idno="basic" default="1">
-                <labels>
-                    <label locale="en_US">
-                        <name>Basic Info</name>
-                    </label>
-                    <label locale="ca_US">
-                        <name>Informació bàsica</name>
-                    </label>
-                </labels>
-                <bundlePlacements>
-                <placement code="ca_attribute_email5">
-                <bundle>ca_attribute_email</bundle>
-                <settings>
-                    <setting name="readonly"/>
-                    <setting name="expand_collapse_value">bubbles</setting>
-                    <setting name="expand_collapse_no_value">bubbles</setting>
-                    <setting name="sort">1</setting>
-                    <setting name="sortDirection">ASC</setting>
-                </settings>
-            </placement>
-                </bundlePlacements>
-            </screen>
-        </screens>
+            <screens>
+                <screen idno="identity" default="1">
+                    <labels>
+                        <label locale="en_US">
+                            <name>Identity</name>
+                        </label>
+                        <label locale="ca_US">
+                            <name>Identitat</name>
+                        </label>
+                    </labels>
+                    <bundlePlacements>
+                        <placement code="ca_attribute_subject5">
+                            <bundle>ca_objects.subject</bundle>
+                        </placement>
+                        <placement code="ca_attribute_medium5">
+                            <bundle>ca_objects.medium</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">collapse</setting>
+                                <setting name="expand_collapse_no_value">expand</setting>
+                                <setting name="sort">1</setting>
+                                <setting name="sortDirection">ASC</setting>
+                            </settings>
+                        </placement>
+                        <placement code="ca_attribute_dimension_height7">
+                            <bundle>ca_objects.dimension_height</bundle>
+                        </placement>
+                        <placement code="ca_attribute_dimension_width8">
+                            <bundle>ca_objects.dimension_width</bundle>
+                        </placement>
+                    </bundlePlacements>
+                </screen>
+                <screen idno="basic" default="1">
+                    <labels>
+                        <label locale="en_US">
+                            <name>Basic Info</name>
+                        </label>
+                        <label locale="ca_US">
+                            <name>Informació bàsica</name>
+                        </label>
+                    </labels>
+                    <bundlePlacements>
+                        <placement code="ca_attribute_email5">
+                            <bundle>ca_attribute_email</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">collapse</setting>
+                                <setting name="expand_collapse_no_value">expand</setting>
+                                <setting name="sort">1</setting>
+                                <setting name="sortDirection">ASC</setting>
+                            </settings>
+                        </placement>
+                    </bundlePlacements>
+                </screen>
+            </screens>
         </userInterface>
     </userInterfaces>
     <relationshipTypes>
