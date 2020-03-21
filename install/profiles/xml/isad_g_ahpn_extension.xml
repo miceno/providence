@@ -1976,7 +1976,7 @@
                 </restriction>
             </typeRestrictions>
         </metadataElement>
-        <metadataElement code="subject" datatype="List" list="subject">
+        <metadataElement code="subject" datatype="List" list="subjects">
             <labels>
                 <label locale="ca_ES">
                     <name>Tema</name>
