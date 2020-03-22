@@ -2045,15 +2045,41 @@
                 </restriction>
             </typeRestrictions>
         </metadataElement>
-    </elementSets>
-    <userInterfaces>
-        <userInterface code="standard_entity_ui" type="ca_entities">
+        <metadataElement code="internal_identifier" datatype="Text">
             <labels>
                 <label locale="en_US">
-                    <name>Standard entity editor</name>
+                    <name>Internal Id</name>
+                    <description>Internal identifier</description>
                 </label>
                 <label locale="ca_ES">
-                    <name>Editor estàndar d'entitats</name>
+                    <name>Identificador intern</name>
+                    <description>Identificador utilitzat per a control intern.</description>
+                </label>
+            </labels>
+            <settings>
+                <setting name="doesNotTakeLocale">1</setting>
+                <setting name="canMakePDF">1</setting>
+            </settings>
+            <typeRestrictions>
+                <restriction>
+                    <table>ca_objects</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">1</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+            </typeRestrictions>
+        </metadataElement>
+    </elementSets>
+    <userInterfaces>
+        <userInterface code="standard_object_ui" type="ca_objects">
+            <labels>
+                <label locale="en_US">
+                    <name>Standard object editor</name>
+                </label>
+                <label locale="es_ES">
+                    <name>Editor estàndar d'objetes</name>
                 </label>
             </labels>
             <screens>
@@ -2062,11 +2088,14 @@
                         <label locale="en_US">
                             <name>Identity</name>
                         </label>
-                        <label locale="ca_US">
+                        <label locale="ca_ES">
                             <name>Identitat</name>
                         </label>
                     </labels>
                     <bundlePlacements>
+                        <placement code="ca_attribute_internal_identifi">
+                            <bundle>ca_objects.internal_identifier</bundle>
+                        </placement>
                         <placement code="ca_attribute_subject5">
                             <bundle>ca_objects.subject</bundle>
                         </placement>
@@ -2088,12 +2117,25 @@
                         </placement>
                     </bundlePlacements>
                 </screen>
+            </screens>
+        </userInterface>
+
+        <userInterface code="standard_entity_ui" type="ca_entities">
+            <labels>
+                <label locale="en_US">
+                    <name>Standard entity editor</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Editor estàndar d'entitats</name>
+                </label>
+            </labels>
+            <screens>
                 <screen idno="basic" default="1">
                     <labels>
                         <label locale="en_US">
                             <name>Basic Info</name>
                         </label>
-                        <label locale="ca_US">
+                        <label locale="ca_ES">
                             <name>Informació bàsica</name>
                         </label>
                     </labels>
