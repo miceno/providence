@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+BASEDIR=$(dirname $0)
+PHP_BIN=${PHB_BIN:-php7.3-cli}
+
+#
+# Import using a mapping
+#
+
+if [ $# -lt 1 ];
+then
+    echo "$(basename $0): PROFILE"
+    exit 1
+fi
+
+ADMIN_EMAIL="${ADMIN_EMAIL:-info@arxiuhistoricpoblenou.cat}"
+EXTENSION_PROFILE="${EXTENSION_PROFILE:-isad_g_ahpn_extension}"
+
+$PHP_BIN $BASEDIR/../bin/caUtils \
+    install \
+    --profile-name "$PROFILE_NAME" \
+    --admin-email "$ADMIN_EMAIL" \
+    --debug  \
+    --overwrite
+
+$PHP_BIN $BASEDIR/../bin/caUtils \
+    update-installation-profile \
+    --profile-name "$PROFILE_NAME" \
+    --debug
