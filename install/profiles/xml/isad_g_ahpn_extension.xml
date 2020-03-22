@@ -2083,13 +2083,13 @@
                 </label>
             </labels>
             <screens>
-                <screen idno="identity" default="1">
+                <screen idno="ahpn_extension_object" default="0">
                     <labels>
                         <label locale="en_US">
-                            <name>Identity</name>
+                            <name>AHPN Extension</name>
                         </label>
                         <label locale="ca_ES">
-                            <name>Identitat</name>
+                            <name>Extensió per l'AHPN</name>
                         </label>
                     </labels>
                     <bundlePlacements>
@@ -2130,13 +2130,13 @@
                 </label>
             </labels>
             <screens>
-                <screen idno="basic" default="1">
+                <screen idno="ahpn_extension_entity" default="0">
                     <labels>
                         <label locale="en_US">
-                            <name>Basic Info</name>
+                            <name>AHPN Extension</name>
                         </label>
                         <label locale="ca_ES">
-                            <name>Informació bàsica</name>
+                            <name>Extensió per l'AHPN</name>
                         </label>
                     </labels>
                     <bundlePlacements>
