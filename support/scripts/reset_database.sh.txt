@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BASEDIR=$(dirname $0)
-PHP_BIN=${PHB_BIN:-php7.3-cli}
+PHP_BIN=${PHP_BIN:-php7.3-cli}
 
 #
 # Import using a mapping
