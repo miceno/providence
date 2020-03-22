@@ -26,5 +26,5 @@ $PHP_BIN $BASEDIR/../bin/caUtils \
 
 $PHP_BIN $BASEDIR/../bin/caUtils \
     update-installation-profile \
-    --profile-name "$PROFILE_NAME" \
+    --profile-name "$EXTENSION_PROFILE" \
     --debug
