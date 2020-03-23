@@ -14,7 +14,9 @@ Allow from all
 
 RedirectMatch 404 /\.git
 
-
+# Forbidden access to install, make sure you comment this line
+# in case you would like to install the app from the web
+RedirectMatch 404 /install
 
 <FilesMatch ".*\.[A-Za-z0-9]+">
 	Deny from all
