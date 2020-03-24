@@ -31,5 +31,8 @@
     "onelogin/php-saml": ">=2.0",
     "caseyamcl/phpoaipmh": "^3.0",
     "guzzlehttp/guzzle":   "^6.3"
+  },
+  "require": {
+    "ext-json": "*"
   }
 }
