@@ -62,26 +62,26 @@
 
 			if ($o_log) { $o_log->logDebug(_t("[reprocess-media] Start preparing to reprocess media")); }
 
-			if (in_array('all', $pa_kinds) || in_array('ca_object_representations', $pa_kinds)) {
-				if (!($vn_start = (int)$po_opts->getOption('start_id'))) { $vn_start = null; }
-				if (!($vn_end = (int)$po_opts->getOption('end_id'))) { $vn_end = null; }
+			if (!($vn_start = (int)$po_opts->getOption('start_id'))) { $vn_start = null; }
+			if (!($vn_end = (int)$po_opts->getOption('end_id'))) { $vn_end = null; }
 
 
-				if ($vn_id = (int)$po_opts->getOption('id')) {
-					$vn_start = $vn_id;
-					$vn_end = $vn_id;
-				}
+			if ($vn_id = (int)$po_opts->getOption('id')) {
+				$vn_start = $vn_id;
+				$vn_end = $vn_id;
+			}
 
-				$va_ids = array();
-				if ($vs_ids = (string)$po_opts->getOption('ids')) {
-					if (sizeof($va_tmp = explode(",", $vs_ids))) {
-						foreach($va_tmp as $vn_id) {
-							if ((int)$vn_id > 0) {
-								$va_ids[] = (int)$vn_id;
-							}
+			$va_ids = array();
+			if ($vs_ids = (string)$po_opts->getOption('ids')) {
+				if (sizeof($va_tmp = explode(",", $vs_ids))) {
+					foreach($va_tmp as $vn_id) {
+						if ((int)$vn_id > 0) {
+							$va_ids[] = (int)$vn_id;
 						}
 					}
 				}
+			}
+			if (in_array('all', $pa_kinds) || in_array('ca_object_representations', $pa_kinds)) {
 
 				$vs_sql_where = null;
 				$va_params = array();
