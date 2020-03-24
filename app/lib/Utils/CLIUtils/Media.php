@@ -195,14 +195,23 @@
 									$va_media_info = $t_attr_val->getMediaInfo('value_blob');
 									$vs_original_filename = is_array($va_media_info) ? $va_media_info['ORIGINAL_FILENAME'] : '';
 
-									if (!$quiet) { print CLIProgressBar::next(1, _t("Re-processing %1", ($vs_original_filename ? $vs_original_filename." ({$vn_value_id})" : $vn_value_id))); }
+									if (!$quiet) {
+										$vs_message = _t( "Re-processing %1",
+											( $vs_original_filename ? $vs_original_filename . " ({$vn_value_id})"
+												: $vn_value_id ) );
+										print CLIProgressBar::next(1, $vs_message );
+										if ($o_log) { $o_log->logDebug($vs_message); }
+									}
 
 
 									$t_attr_val->set('value_blob', $t_attr_val->getMediaPath('value_blob', 'original'), array('original_filename' => $vs_original_filename));
 
 									$t_attr_val->update();
 									if ($t_attr_val->numErrors()) {
-										CLIUtils::addError(_t("Error processing attribute media: %1", join('; ', $t_attr_val->getErrors())));
+										$vs_message = _t( "Error processing attribute media: %1",
+											join( '; ', $t_attr_val->getErrors() ) );
+										CLIUtils::addError( $vs_message );
+										if ($o_log) { $o_log->logDebug($vs_message); }
 									}
 								}
 							}
@@ -226,14 +235,20 @@
 
 							$media_info = $t_instance->getMediaInfo($pk);
 
-							if (!$quiet) { print CLIProgressBar::next(1, _t("Re-processing %1 from %2", $id, $icon_table)); }
+							if (!$quiet) {
+								$vs_message = _t( "Re-processing %1 from %2", $id, $icon_table );
+								print CLIProgressBar::next(1, $vs_message );
+								if ($o_log) { $o_log->logDebug($vs_message); }
+							}
 
 
 							$t_instance->set('icon', ($p = $t_instance->getMediaPath('icon', 'original')) ? $p : $t_instance->getMediaPath('icon', 'iconlarge'));
 
 							$t_instance->update();
 							if ($t_instance->numErrors()) {
-								CLIUtils::addError(_t("Error processing icon media: %1", join('; ', $t_instance->getErrors())));
+								$vs_message = _t( "Error processing icon media: %1", join( '; ', $t_instance->getErrors() ) );
+								CLIUtils::addError( $vs_message );
+								if ($o_log) { $o_log->logDebug($vs_message); }
 							}
 						}	
 					}
