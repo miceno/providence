@@ -36,6 +36,7 @@
 
 require_once(__CA_LIB_DIR__.'/Import/DataReaders/BaseXMLDataReader.php');
 require_once(__CA_APP_DIR__.'/helpers/displayHelpers.php');
+require_once(__CA_APP_DIR__.'/helpers/systemHelpers.php');
 
 class MediaInfoDataReader extends BaseXMLDataReader {
 # -------------------------------------------------------
@@ -120,8 +121,14 @@ class MediaInfoDataReader extends BaseXMLDataReader {
 			$this->ops_xpath = $this->_convertXPathExpression($ps_base_path);
 		}
 		
-		if ($ps_source) { 			
-			exec($ps_mediainfo_path." --Output=PBCore2 ".caEscapeShellArg($ps_source), $va_output, $vn_return);
+		if ($ps_source) {
+			if ( ! caExecExpected( $ps_mediainfo_path
+			                       . " --Output=PBCore2 "
+			                       . caEscapeShellArg( $ps_source ),
+							$va_output )
+			) {
+				return null;
+			}
 			if (!is_array($va_output) || !sizeof($va_output)) { return null; }
 			$xml = join("\n", $va_output);
 			
