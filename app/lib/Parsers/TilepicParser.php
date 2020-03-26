@@ -37,6 +37,7 @@
 require_once(__CA_LIB_DIR__."/Utils/Timer.php");
 include_once(__CA_LIB_DIR__."/Configuration.php");
 include_once(__CA_APP_DIR__."/helpers/mediaPluginHelpers.php");
+require_once(__CA_APP_DIR__.'/helpers/systemHelpers.php');
 
 define("LIBRARY_GD", 0);
 define("LIBRARY_IMAGEMAGICK",2);
@@ -341,50 +342,52 @@ class TilepicParser {
 		}
 	}
 	# ------------------------------------------------
-	private function _imageMagickRead($ps_filepath) {
-		if (caMediaPluginImageMagickInstalled($this->ops_imagemagick_path)) {
-			$identify_args = $this->opo_external_app_config->get('imagemagick_identify_args');
-			caExec( join( ' ', array(
-				$this->ops_imagemagick_path . '/identify',
-				$identify_args,
-				'-format "%m;%w;%h\n"',
-				caEscapeShellArg( $ps_filepath ),
-				( caIsPOSIX() ? " 2> /dev/null" : "" )
-			) ), $va_output, $vn_return );
-			
-			$va_tmp = explode(';', $va_output[0]);
-			if (sizeof($va_tmp) != 3) {
-				return null;
+	private function _imageMagickRead( $ps_filepath ) {
+		if ( caMediaPluginImageMagickInstalled( $this->ops_imagemagick_path ) ) {
+			if ( caExecExpected( $this->ops_imagemagick_path . '/identify -format "%m;%w;%h\n" '
+			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
+				$va_output )
+			) {
+				$va_tmp = explode( ';', $va_output[0] );
+				if ( sizeof( $va_tmp ) != 3 ) {
+					return null;
+				}
+
+				return array(
+					'mimetype' => $this->magickToMimeType( $va_tmp[0] ),
+					'magick'   => $va_tmp[0],
+					'width'    => $va_tmp[1],
+					'height'   => $va_tmp[2],
+					'ops'      => array(),
+					'filepath' => $ps_filepath
+				);
 			}
-			
-			return array(
-				'mimetype' => $this->magickToMimeType($va_tmp[0]),
-				'magick' => $va_tmp[0],
-				'width' => $va_tmp[1],
-				'height' => $va_tmp[2],
-				'ops' => array(),
-				'filepath' => $ps_filepath
-			);
+
 		}
+
 		return null;
 	}
 	# ------------------------------------------------
 	private function _graphicsMagickRead($ps_filepath) {
 		if (caMediaPluginGraphicsMagickInstalled($this->ops_graphicsmagick_path)) {
-			caExec($this->ops_graphicsmagick_path.' identify -format "%m;%w;%h\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
-			$va_tmp = explode(';', $va_output[0]);
-			if (sizeof($va_tmp) != 3) {
-				return null;
+			if ( caExecExpected( $this->ops_graphicsmagick_path . ' identify -format "%m;%w;%h\n" '
+			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
+				$va_output, 1 )
+			) {
+				$va_tmp = explode(';', $va_output[0]);
+				if (sizeof($va_tmp) != 3) {
+					return null;
+				}
+
+				return array(
+					'mimetype' => $this->magickToMimeType($va_tmp[0]),
+					'magick' => $va_tmp[0],
+					'width' => $va_tmp[1],
+					'height' => $va_tmp[2],
+					'ops' => array(),
+					'filepath' => $ps_filepath
+				);
 			}
-			
-			return array(
-				'mimetype' => $this->magickToMimeType($va_tmp[0]),
-				'magick' => $va_tmp[0],
-				'width' => $va_tmp[1],
-				'height' => $va_tmp[2],
-				'ops' => array(),
-				'filepath' => $ps_filepath
-			);
 		}
 		return null;
 	}
@@ -440,14 +443,13 @@ class TilepicParser {
 			}
 		}
 		$convert_args = $this->opo_external_app_config->get('imagemagick_convert_args');
-		caExec( join( ' ', array(
+		return caExecExpected( join( ' ', array(
 			$this->ops_imagemagick_path . '/convert',
 			$convert_args,
 			caEscapeShellArg( $ps_source_filepath . '[0]' ),
 			join( ' ', $va_ops ),
 			'"' . $ps_dest_filepath . '"'
 		) ) );
-		return true;
 	}
 	# ------------------------------------------------
 	private function _graphicsMagickProcess($ps_source_filepath, $ps_dest_filepath, $pa_ops, $pn_quality=null) {
@@ -502,8 +504,7 @@ class TilepicParser {
 					break;
 			}
 		}
-		caExec($this->ops_graphicsmagick_path.' convert '.caEscapeShellArg($ps_source_filepath.'[0]').' '.join(' ', $va_ops).' "'.$ps_dest_filepath.'"');
-		return true;
+		return caExecExpected($this->ops_graphicsmagick_path.' convert '.caEscapeShellArg($ps_source_filepath.'[0]').' '.join(' ', $va_ops).' "'.$ps_dest_filepath.'"');
 	}
 	# ------------------------------------------------
 	private function _imageMagickImageFromTiles($ps_dest_filepath, $pa_tiles, $pn_tile_width, $pn_tile_height) {
@@ -520,8 +521,7 @@ class TilepicParser {
 	}
 	# ------------------------------------------------
 	private function _graphicsMagickImageFromTiles($ps_dest_filepath, $pa_tiles, $pn_tile_width, $pn_tile_height) {
-		caExec($this->ops_graphicsmagick_path.' montage '.join(' ', $pa_tiles).' -mode Concatenate -tile '.$pn_tile_width.'x'.$pn_tile_height.' "'.$ps_dest_filepath.'"');
-		return true;
+		return caExecExpected($this->ops_graphicsmagick_path.' montage '.join(' ', $pa_tiles).' -mode Concatenate -tile '.$pn_tile_width.'x'.$pn_tile_height.' "'.$ps_dest_filepath.'"');
 	}
 	# ------------------------------------------------
 	public function magickToMimeType($ps_magick) {

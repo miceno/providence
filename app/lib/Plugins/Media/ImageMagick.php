@@ -44,6 +44,7 @@ include_once(__CA_LIB_DIR__."/Parsers/TilepicParser.php");
 include_once(__CA_LIB_DIR__."/Configuration.php");
 include_once(__CA_APP_DIR__."/helpers/mediaPluginHelpers.php");
 include_once(__CA_LIB_DIR__."/Parsers/MediaMetadata/XMPParser.php");
+require_once(__CA_APP_DIR__.'/helpers/systemHelpers.php');
 
 /**
  * Trait CommandConfiguration
@@ -940,6 +941,7 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 	 */
 	# This method must be implemented for plug-ins that can output preview frames for videos or pages for documents
 	public function &writePreviews($ps_filepath, $pa_options) {
+		# TODO: Add testing
 		if(!caMediaPluginImageMagickInstalled($this->ops_imagemagick_path)) { return false; }
 
 		if (!isset($pa_options['outputDirectory']) || !$pa_options['outputDirectory'] || !file_exists($pa_options['outputDirectory'])) {
@@ -952,23 +954,27 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 		}
 
 		$va_output = array();
-		caExec( join( ' ', array(
+		if(!caExecExpected( join( ' ', array(
 			$this->commandWithDefaultArgs( 'identify' ),
 			'-format "%m\n"',
 			caEscapeShellArg( $this->filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-		) ), $va_output, $vn_return );
-		
+		) ), $va_output )) {
+			return false;
+		}
+
 		// don't extract previews from "normal" images (the output line count is always # of files + 1)
 		if(sizeof($va_output)<=2) { return false; } 
 
 		$vs_output_file_prefix = tempnam($vs_tmp_dir, 'caMultipagePreview');
 		$vs_output_file = $vs_output_file_prefix.'_%05d.jpg';
 
-		caExec( join( ' ', array(
+		if(!caExecExpected(join( ' ', array(
 			$this->commandWithDefaultArgs( 'convert' ),
 			caEscapeShellArg( $this->filepath ),
 			$vs_output_file . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-		) ), $va_output, $vn_return );
+		) ), $va_output)){
+			return false;
+		}
 
 		$vn_i = 0;
 		$va_files = array();
@@ -1001,12 +1007,12 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 		}
 
 		if ( sizeof( $va_acceptable_files ) ) {
-			caExec( join( ' ', array(
+			$vn_return = caExecExpected( join( ' ', array(
 				$this->commandWithDefaultArgs( 'convert' ),
 				join( ' ', $va_acceptable_files ),
 				$vs_archive_original . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-			) ), $va_output, $vn_return );
-			if ( $vn_return === 0 ) {
+			) ), $va_output );
+			if ( $vn_return ) {
 				return $vs_archive_original;
 			}
 		}
@@ -1095,13 +1101,14 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 	# ------------------------------------------------
 	private function _imageMagickIdentify( $ps_filepath ) {
 		if ( caMediaPluginImageMagickInstalled( $this->ops_imagemagick_path ) ) {
-			caExec( join( ' ', array(
+			if ( caExecExpected( join( ' ', array(
 				$this->commandWithDefaultArgs( 'identify' ),
 				'-format "%m"',
 				caEscapeShellArg( $ps_filepath . '[0]' ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-			) ), $va_output, $vn_return );
-
-			return $this->magickToMimeType( $va_output[0] );
+			) ), $va_output )
+			) {
+				return $this->magickToMimeType( $va_output[0] );
+			}
 		}
 
 		return null;
@@ -1129,22 +1136,28 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 				}
 			}
 
-			caExec( join( ' ', array(
+			if ( ! caExecExpected( join( ' ', array(
 				$this->commandWithDefaultArgs( 'identify' ),
 				"-format '%[DPX:*]'",
 				caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-			) ), $va_output, $vn_return );
+			) ), $va_output )
+			) {
+				return null;
+			}
 			if ($va_output[0]) { $va_metadata['DPX'] = $va_output; }
 			
 			/* IPTC metadata */
 			$vs_iptc_file = tempnam(caGetTempDirPath(), 'imiptc');
 			@rename($vs_iptc_file, $vs_iptc_file.'.iptc'); // IM uses the file extension to figure out what we want
 			$vs_iptc_file .= '.iptc';
-			caExec( join( ' ', array(
+			if ( ! caExecExpected( join( ' ', array(
 				$this->commandWithDefaultArgs( 'convert' ),
 				caEscapeShellArg( $ps_filepath ),
 				caEscapeShellArg( $vs_iptc_file ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-			) ), $va_output, $vn_return );
+			) ), $va_output )
+			) {
+				return null;
+			}
 
 			$vs_iptc_data = file_get_contents($vs_iptc_file);
 			@unlink($vs_iptc_file);
@@ -1200,12 +1213,15 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 	private function _imageMagickRead($ps_filepath, $options=null) {
 		if (caMediaPluginImageMagickInstalled($this->ops_imagemagick_path)) {
 
-			caExec( join( ' ', array(
+			if ( ! caExecExpected( join( ' ', array(
 				$this->commandWithDefaultArgs( 'identify' ),
 				'-format "%m;%w;%h;%[colorspace];%[depth];%[xresolution];%[yresolution]\n" ',
 				caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-			) ), $va_output, $vn_return );
-			
+			) ), $va_output )
+			) {
+				return null;
+			}
+
 			$va_tmp = explode(';', $va_output[0]);
 			
 			if (sizeof($va_tmp) != 7) {
@@ -1259,7 +1275,7 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 	# ------------------------------------------------
 	private function _imageMagickWrite($pa_handle, $ps_filepath, $ps_mimetype, $pn_quality=null) {
 		if (caMediaPluginImageMagickInstalled($this->ops_imagemagick_path)) {
-			if (($this->properties["colorspace"]) && ($this->properties["colorspace"] != "default")){ 
+			if (($this->properties["colorspace"]) && ($this->properties["colorspace"] != "default")){
 				$vn_colorspace = null;
 				switch($this->properties["colorspace"]) {
 					case 'greyscale':
@@ -1364,22 +1380,26 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 					array_unshift($va_ops['convert'], '-quality '.intval($pn_quality));
 				}
 				array_unshift($va_ops['convert'], '-colorspace RGB');
-				caExec( join( ' ', array(
+				if (!caExecExpected( join( ' ', array(
 					$this->commandWithDefaultArgs( 'convert' ),
 					caEscapeShellArg( $vs_input_file . '[0]' ),
 					join( ' ', $va_ops['convert'] ),
 					caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-				) ) );
+				) ) )){
+					return null;
+				};
 				$vs_input_file = $ps_filepath;
 			}
 			if (is_array($va_ops['composite']) && sizeof($va_ops['composite'])) {
-				caExec( join( ' ', array(
+				if(!caExecExpected( join( ' ', array(
 					$this->commandWithDefaultArgs( 'composite' ),
 					join( ' ', $va_ops['composite'] ),
 					caEscapeShellArg( $vs_input_file . '[0]' ),
 					caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-				) ) );
-			}	
+				) ) )){
+					return null;
+				};
+			}
 			
 			return true;
 		}
