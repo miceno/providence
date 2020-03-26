@@ -1,6 +1,6 @@
 <?php
 /** ---------------------------------------------------------------------
- * app/lib/Utils/CLIUtils/Cron.php : 
+ * app/lib/Utils/CLIUtils/Cron.php :
  * ----------------------------------------------------------------------
  * CollectiveAccess
  * Open-source collections management software
@@ -15,22 +15,22 @@
  * the terms of the provided license as published by Whirl-i-Gig
  *
  * CollectiveAccess is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTIES whatsoever, including any implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * WITHOUT ANY WARRANTIES whatsoever, including any implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * This source code is free and modifiable under the terms of 
+ * This source code is free and modifiable under the terms of
  * GNU General Public License. (http://www.gnu.org/copyleft/gpl.html). See
  * the "license.txt" file for details, or visit the CollectiveAccess web site at
  * http://www.CollectiveAccess.org
- * 
+ *
  * @package CollectiveAccess
  * @subpackage BaseModel
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License version 3
- * 
+ *
  * ----------------------------------------------------------------------
  */
- 
-	trait CLIUtilsCron { 
+
+	trait CLIUtilsCron {
 		# -------------------------------------------------------
 		/**
 		 * Process queued tasks
@@ -125,26 +125,29 @@
 				$va_all_tasks[$va_row["task_id"]]["status"] = $vo_tq->getParametersForDisplay($va_row);
 			}
 
-			foreach ($va_all_tasks as $vs_task_id => $va_task){
-				CLIUtils::addMessage("-----------------------------------------------" );
-				CLIUtils::addMessage("Task id: $vs_task_id" );
+			foreach ( $va_all_tasks as $vs_task_id => $va_task ) {
+				CLIUtils::addMessage( "-----------------------------------------------" );
+				CLIUtils::addMessage( "Task id: $vs_task_id" );
 
 				// Print arrays on JSON format
-				foreach (array("notes", "parameters") as $vs_field){
-					CLIUtils::addMessage( "$vs_field: " . caPrettyJson( $va_task[ $vs_field]));
+				foreach ( array( "notes", "parameters" ) as $vs_field ) {
+					CLIUtils::addMessage( "$vs_field: " . caPrettyJson( $va_task[ $vs_field ] ) );
 				}
 
 				// Print values of other fields
-				foreach (array("handler_name", "created", "by", "completed_on", "error_code") as $vs_field){
-					CLIUtils::addMessage("$vs_field: $va_task[$vs_field]");
+				foreach ( array( "handler_name", "by", "error_code" ) as $vs_field ) {
+					CLIUtils::addMessage( "$vs_field: $va_task[$vs_field]" );
+				}
+				foreach ( array( "created", "completed_on" ) as $vs_field ) {
+					CLIUtils::addMessage( "$vs_field: "
+					                      . caGetLocalizedDate( $va_task[ $vs_field ] )
+					                      . " ({$va_task[ $vs_field ]})"  );
 				}
 
-				foreach ($va_task['status'] as $va_field ){
-					CLIUtils::addMessage(
-						$va_field['label'] .  ": ". $va_field['value']
-					);
+				foreach ( $va_task['status'] as $va_field ) {
+					CLIUtils::addMessage( $va_field['label'] . ": " . $va_field['value'] );
 				}
-				CLIUtils::addMessage("-----------------------------------------------\n\n" );
+				CLIUtils::addMessage( "-----------------------------------------------\n\n" );
 			}
 
 			return true;
