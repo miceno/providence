@@ -37,7 +37,7 @@
 
 	require_once(__CA_APP_DIR__.'/helpers/logHelpers.php');
 
-	$system_helpers_debug_logger = caGetLogger( array( 'logDirectory' => __CA_APP_DIR__ . "/log", 'logLevel' => 'DEBUG' ) );
+	$system_helpers_debug_logger = null;
 
 	function getLogger(){
 		global $system_helpers_debug_logger;
