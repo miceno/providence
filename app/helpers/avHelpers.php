@@ -179,7 +179,9 @@ function caExtractMetadataWithMediaInfo($ps_filepath, $ps_mediainfo_path=null){
 	//
 	// TODO: why don't we parse this from the XML output like civilized people?
 	//
-	caExec($ps_mediainfo_path." ".caEscapeShellArg($ps_filepath), $va_output, $vn_return);
+	if(!caExecExpected($ps_mediainfo_path." ".caEscapeShellArg($ps_filepath), $va_output)){
+		return null;
+	}
 	$vs_cat = "GENERIC";
 	$va_return = array();
 	foreach($va_output as $vs_line){

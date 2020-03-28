@@ -154,9 +154,7 @@
 			return true;
 		}	// don't try exec test on Windows
 
-		caExec($ps_path_to_ffmpeg.'> /dev/null 2>&1', $va_output, $vn_return);
-		
-		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		$vb_ret = caExecExpected($ps_path_to_ffmpeg.' -version > /dev/null 2>&1', $va_output);
 
 		CompositeCache::save("mediahelper_ffmpeg_installed", $vb_ret);
 
@@ -183,9 +181,7 @@
 			return true;
 		} // don't try exec test on Windows
 
-		caExec($ps_path_to_ghostscript." -v 2> /dev/null", $va_output, $vn_return);
-		
-		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		$vb_ret = caExecExpected($ps_path_to_ghostscript." -v 2> /dev/null", $va_output);
 
 		CompositeCache::save("mediahelper_ghostscript_installed", $vb_ret);
 
@@ -207,9 +203,7 @@
 			return false;
 		}
 
-		caExec($ps_path_to_pdf_to_text." -v 2> /dev/null", $va_output, $vn_return);
-		
-		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		$vb_ret = caExecExpected($ps_path_to_pdf_to_text." -v 2> /dev/null", $va_output);
 
 		CompositeCache::save("mediahelper_pdftotext_installed", $vb_ret);
 
@@ -235,9 +229,7 @@
 			return true;
 		} // don't try exec test on Windows
 
-		caExec($ps_path_to_libreoffice." --version 2> /dev/null", $va_output, $vn_return);
-		
-		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		$vb_ret = caExecExpected($ps_path_to_libreoffice." --version 2> /dev/null", $va_output);
 
 		CompositeCache::save("mediahelper_libreoffice_installed", $vb_ret);
 
@@ -294,8 +286,7 @@
 			CompositeCache::save("mediahelper_mediainfo_installed", true);
 			return true;
 		} // don't try exec test on Windows
-		caExec($ps_mediainfo_path." --Help > /dev/null",$va_output,$vn_return);
-		$vb_ret = ($vn_return == 255) || ($vn_return == 0);
+		$vb_ret = caExecExpected($ps_mediainfo_path." --Help > /dev/null",$va_output, 255);
 
 		CompositeCache::save("mediahelper_mediainfo_installed", $vb_ret);
 
