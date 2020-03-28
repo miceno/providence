@@ -84,6 +84,7 @@
 
 		$logger->logDebug( "Executing command: '$command'" );
 		exec( $command, $output, $return_status );
+		$logger->logDebug( "Command '$command' exit status: $return_status" );
 
 		return array($return_status, $output);
 	}
