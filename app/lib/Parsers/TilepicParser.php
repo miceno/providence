@@ -372,7 +372,7 @@ class TilepicParser {
 		if (caMediaPluginGraphicsMagickInstalled($this->ops_graphicsmagick_path)) {
 			if ( caExecExpected( $this->ops_graphicsmagick_path . ' identify -format "%m;%w;%h\n" '
 			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
-				$va_output, 1 )
+				$va_output)
 			) {
 				$va_tmp = explode(';', $va_output[0]);
 				if (sizeof($va_tmp) != 3) {
