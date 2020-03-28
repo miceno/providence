@@ -372,7 +372,7 @@ class TilepicParser {
 		if (caMediaPluginGraphicsMagickInstalled($this->ops_graphicsmagick_path)) {
 			if ( caExecExpected( $this->ops_graphicsmagick_path . ' identify -format "%m;%w;%h\n" '
 			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
-				$va_output, 1 )
+				$va_output)
 			) {
 				$va_tmp = explode(';', $va_output[0]);
 				if (sizeof($va_tmp) != 3) {
@@ -497,7 +497,7 @@ class TilepicParser {
 					break;
 			}
 		}
-		return caExecExpected($this->ops_graphicsmagick_path.' convert '.caEscapeShellArg($ps_source_filepath.'[0]').' '.join(' ', $va_ops).' "'.$ps_dest_filepath.'"',$_ ,1);
+		return caExecExpected($this->ops_graphicsmagick_path.' convert '.caEscapeShellArg($ps_source_filepath.'[0]').' '.join(' ', $va_ops).' "'.$ps_dest_filepath.'"',$_ );
 	}
 	# ------------------------------------------------
 	private function _imageMagickImageFromTiles($ps_dest_filepath, $pa_tiles, $pn_tile_width, $pn_tile_height) {
