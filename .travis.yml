@@ -56,9 +56,16 @@ install:
 before_script:
   # execute all of the commands which need to be executed
   # before running actual tests
+  - tests/database_setup.sh "$PROFILE"
+  # Set travisci configuration
+  - ln -s .travis.setup.php setup.php
 
+script:
+  # execute all of the commands which
+  # should make the build pass or fail
   # Go into the tests directory to run the tests
   - cd tests/
+  - vendor/bin/phpunit
 
 branches:
   only:
