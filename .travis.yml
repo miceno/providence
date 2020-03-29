@@ -9,7 +9,12 @@ addons:
     - mysql-server-5.7
     - mysql-client-core-5.7
     - mysql-client-5.7
-    
+
+jobs:
+  exclude:
+  - php: 7.2
+  - php: 7.4
+
 php:
   - 7.2
   - 7.3
