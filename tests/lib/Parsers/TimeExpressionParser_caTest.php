@@ -35,9 +35,18 @@ require_once(__CA_LIB_DIR__.'/Parsers/TimeExpressionParser.php');
 
 class TimeExpressionParser_caTest extends TestCase {
 
+	/**
+	 * @var TimeExpressionParser
+	 */
+	private $_timeParser = null;
+	private $_va_roman_centuries = array('useRomanNumeralsForCenturies'=>1);
+
 	protected function setUp() : void {
 		// most of the comparisons below rely on Eastern time zone
 		date_default_timezone_set('America/New_York');
+		$ps_iso_code = 'ca_ES';
+		$this->_timeParser = new TimeExpressionParser();
+		$this->_timeParser->setLanguage( $ps_iso_code );
 	}
 
 	public function testHyphensInSortOfOddPlaces() {
