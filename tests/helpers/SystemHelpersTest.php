@@ -42,7 +42,7 @@ class SystemHelpersExecTest extends TestCase {
 	}
 
 	public function testExecFailsWrongCommand() {
-		list($result, $output) = caExec('bad_command', $_);
+		list($result, $output) = caExec('bad_command 2>&1', $_);
 
 		$this->assertEquals(127, $result);
 	}
@@ -66,7 +66,7 @@ class SystemHelpersExecExpectedTest extends TestCase {
 	}
 
 	public function testExecReturnsFalseForBadCommand() {
-		$result = caExecExpected('bad_command', $_);
+		$result = caExecExpected('bad_command 2>&1', $_);
 
 		$this->assertFalse($result);
 	}
