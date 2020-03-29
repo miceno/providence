@@ -27,14 +27,26 @@ env:
   # Here we list the profiles that we want to test, each one will be tested, per version of PHP, in parallel
   - PROFILE=testing
 
+before_install:
+  # execute all of the commands which need to be executed
+  # before installing dependencies
+  - composer self-update -q
+
 install:
+  # install all of the dependencies you need here
   # Create setup.php
   - ln -s .travis.setup.php setup.php
-  - composer update
+  - composer install --prefer-dist
   # Install the testing profile
   - tests/database_setup.sh "$PROFILE"
 
+after_install:
+  - composer show -i
+
 before_script:
+  # execute all of the commands which need to be executed
+  # before running actual tests
+
   # Go into the tests directory to run the tests
   - cd tests/
 
@@ -42,5 +54,4 @@ branches:
   only:
     - develop
     - master
-    - master-fix
     - wip/playground
