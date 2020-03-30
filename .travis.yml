@@ -30,6 +30,7 @@ env:
 before_install:
   # execute all of the commands which need to be executed
   # before installing dependencies
+  - php -i
   - composer self-update -q
 
 install:
@@ -39,8 +40,6 @@ install:
   - composer install --prefer-dist
   # Install the testing profile
   - tests/database_setup.sh "$PROFILE"
-
-after_install:
   - composer show -i
 
 before_script:
