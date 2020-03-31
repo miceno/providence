@@ -58,8 +58,6 @@ install:
 before_script:
   # execute all of the commands which need to be executed
   # before running actual tests
-  # Set travisci configuration
-  - ln -s .travis.setup.php setup.php
   # Create database
   - tests/database_setup.sh "$PROFILE"
 
