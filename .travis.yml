@@ -41,25 +41,23 @@ before_install:
   - composer self-update -q
   # Remove xdebug to increase speed
   - phpenv config-rm xdebug.ini
-  # Set up database
-  - tests/database_setup.sh
 
 install:
   # install all of the dependencies you need here
   # Create setup.php
+  # Set up database
+  - tests/database_setup.sh
   - ln -s .travis.setup.php setup.php
   - if test -e vendor/composer.lock ; then echo "Restoring previous lock file"; cp vendor/composer.lock composer.lock; fi
   - composer install --prefer-dist
   - cp composer.lock vendor
-  # Install the testing profile
-  - tests/profile_setup.sh "$PROFILE"
-  - composer show -i
 
 before_script:
   # execute all of the commands which need to be executed
   # before running actual tests
-  # Create database
-  - tests/database_setup.sh "$PROFILE"
+  # Install the testing profile
+  - tests/profile_setup.sh "$PROFILE"
+  - composer show -i
 
 script:
   # execute all of the commands which
