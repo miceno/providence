@@ -1,5 +1,4 @@
 language: php
-sudo: required
 os: linux
 dist: bionic
 
@@ -15,10 +14,18 @@ jobs:
   - php: 7.2
   - php: 7.4
 
+git:
+  depth: 5
+
 php:
   - 7.2
   - 7.3
   - 7.4
+
+cache:
+  - directories:
+      # Cache vendor folder will speed up environment setup
+      - vendor
 
 services:
   - mysql
@@ -32,14 +39,18 @@ before_install:
   # before installing dependencies
   - php -i
   - composer self-update -q
+  # Remove xdebug to increase speed
+  - phpenv config-rm xdebug.ini
+  # Set up database
+  - tests/database_setup.sh
 
 install:
   # install all of the dependencies you need here
-  # Create setup.php
   - ln -s .travis.setup.php setup.php
-  - composer install --prefer-dist
+  # Create setup.php
+  - composer update --prefer-dist
   # Install the testing profile
-  - tests/database_setup.sh "$PROFILE"
+  - tests/profile_setup.sh "$PROFILE"
   - composer show -i
 
 before_script:
