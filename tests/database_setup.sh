@@ -7,11 +7,15 @@ export DB_USER=${DB_USER:-ca_test}
 export DB_PASSWORD=${DB_PASSWORD:-password}
 
 # Initialise the database instance for the test.
+echo "Drop existing database"
 sudo mysql -uroot -e "DROP DATABASE ${DB_NAME};"
+echo "Create database"
 sudo mysql -uroot -e "create database ${DB_NAME};"
+echo "Grant permissions to database"
 sudo mysql -uroot -e "grant all on ${DB_NAME}.* to '${DB_USER}'@'localhost' identified by '${DB_PASSWORD}';"
 
 # Add custom configuration from file.
+echo "Configuring MySQL server"
 MYCNF_CONFIG="${MYCNF_CONFIG:-$TRAVIS_BUILD_DIR/tests/my.cnf}"
 if test -e "$MYCNF_CONFIG";
 then
@@ -19,13 +23,15 @@ then
 fi
 
 # Restart service.
+echo "Restarting MySQL server"
 sudo service mysql restart
 
 # Show variables.
+echo "Show updated MySQL server variables"
 sudo mysql -uroot -e 'show variables;'
 
 if test -e "$CACHE_DIR/$PROFILE.sql";
 then
-  echo "Found cached database. Importing...";
+  echo "Found cached database file $CACHE_DIR/$PROFILE.sql. Importing...";
   sudo mysql -uroot "$DB_NAME" < "$CACHE_DIR/$PROFILE.sql";
 fi
