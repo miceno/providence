@@ -30,7 +30,7 @@ sudo service mysql restart
 echo "Show updated MySQL server variables"
 sudo mysql -uroot -e 'show variables;'
 
-if test -e "$CACHE_DIR/$PROFILE.sql";
+if test -e "$CACHE_DIR/$PROFILE.sql" -a "$USE_CACHED_PROFILE" = "y";
 then
   echo "Found cached database file $CACHE_DIR/$PROFILE.sql. Importing...";
   sudo mysql -uroot "$DB_NAME" < "$CACHE_DIR/$PROFILE.sql";
