@@ -46,8 +46,8 @@ before_install:
 
 install:
   # install all of the dependencies you need here
-  - ln -s .travis.setup.php setup.php
   # Create setup.php
+  - ln -s .travis.setup.php setup.php
   - composer update --prefer-dist
   # Install the testing profile
   - tests/profile_setup.sh "$PROFILE"
