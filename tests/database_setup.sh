@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Set environment variables.
+export CACHE_DIR=${CACHE_DIR:-mysql_profile}
 export DB_NAME=${DB_NAME:-ca_test}
 export DB_USER=${DB_USER:-ca_test}
 export DB_PASSWORD=${DB_PASSWORD:-password}
@@ -22,3 +23,9 @@ sudo service mysql restart
 
 # Show variables.
 sudo mysql -uroot -e 'show variables;'
+
+if test -e "$CACHE_DIR/$PROFILE.sql";
+then
+  echo "Found cached database. Importing...";
+  sudo mysql -uroot "$DB_NAME" < "$CACHE_DIR/$PROFILE.sql";
+fi

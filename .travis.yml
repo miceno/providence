@@ -12,7 +12,7 @@ addons:
 jobs:
   exclude:
   - php: 7.3
-  - php: 7.4
+  # - php: 7.4
 
 git:
   depth: 5
@@ -26,6 +26,7 @@ cache:
   - directories:
       # Cache vendor folder will speed up environment setup
       - vendor
+      - mysql_profile
 
 services:
   - mysql
@@ -37,7 +38,6 @@ env:
 before_install:
   # execute all of the commands which need to be executed
   # before installing dependencies
-  - php -i
   - composer self-update -q
   # Remove xdebug to increase speed
   - phpenv config-rm xdebug.ini
