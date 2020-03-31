@@ -37,6 +37,6 @@ sudo mysql -uroot -e 'show variables;'
 
 if test -e "$CACHE_DIR/$PROFILE.sql";
 then
-  echo "Found cached database. Importing...";
+  echo "Found cached database file $CACHE_DIR/$PROFILE.sql. Importing...";
   sudo mysql -uroot "$DB_NAME" < "$CACHE_DIR/$PROFILE.sql";
 fi
