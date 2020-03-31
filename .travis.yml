@@ -48,7 +48,9 @@ install:
   # install all of the dependencies you need here
   # Create setup.php
   - ln -s .travis.setup.php setup.php
-  - composer update --prefer-dist
+  - if test -e vendor/composer.lock ; then echo "Restoring previous lock file"; cp vendor/composer.lock composer.lock; fi
+  - composer install --prefer-dist
+  - cp composer.lock vendor
   # Install the testing profile
   - tests/profile_setup.sh "$PROFILE"
   - composer show -i
@@ -56,8 +58,6 @@ install:
 before_script:
   # execute all of the commands which need to be executed
   # before running actual tests
-  # Set travisci configuration
-  - ln -s .travis.setup.php setup.php
   # Create database
   - tests/database_setup.sh "$PROFILE"
 
