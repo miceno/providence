@@ -71,9 +71,7 @@
 			CompositeCache::save("mediahelper_imagemagick_installed", true);
 			return true;
 		}	// don't try exec test on Windows
-
 		list($vn_return,$va_output) = caExec( $ps_imagemagick_path . '/identify 2> /dev/null', $va_output );
-
 		$vb_ret =  (($vn_return >= 0) && ($vn_return < 127));
 
 		CompositeCache::save("mediahelper_imagemagick_installed", $vb_ret);
@@ -100,9 +98,7 @@
 			CompositeCache::save("mediahelper_graphicsmagick_installed", true);
 			return  true;
 		} // don't try exec test on Windows
-
 		list($vn_return,$va_output) = caExec($ps_graphicsmagick_path.' 2> /dev/null', $va_output);
-
 		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
 
 		CompositeCache::save("mediahelper_graphicsmagick_installed", $vb_ret);
@@ -126,7 +122,6 @@
 		}
 
 		list($vn_return,$va_output) = caExec( $ps_path_to_dcraw . ' -i 2> /dev/null', $va_output );
-
 		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
 
 		CompositeCache::save("mediahelper_dcraw_installed", $vb_ret);
@@ -153,9 +148,7 @@
 			CompositeCache::save("mediahelper_ffmpeg_installed", true);
 			return true;
 		}	// don't try exec test on Windows
-
 		$vb_ret = caExecExpected($ps_path_to_ffmpeg.' -version > /dev/null 2>&1', $va_output);
-
 		CompositeCache::save("mediahelper_ffmpeg_installed", $vb_ret);
 
 		return $vb_ret;
@@ -180,9 +173,7 @@
 			CompositeCache::save("mediahelper_ghostscript_installed", true);
 			return true;
 		} // don't try exec test on Windows
-
 		$vb_ret = caExecExpected($ps_path_to_ghostscript." -v 2> /dev/null", $va_output);
-
 		CompositeCache::save("mediahelper_ghostscript_installed", $vb_ret);
 
 		return $vb_ret;
@@ -202,9 +193,7 @@
 			CompositeCache::save("mediahelper_pdftotext_installed", false);
 			return false;
 		}
-
 		$vb_ret = caExecExpected($ps_path_to_pdf_to_text." -v 2> /dev/null", $va_output);
-
 		CompositeCache::save("mediahelper_pdftotext_installed", $vb_ret);
 
 		return $vb_ret;
@@ -228,9 +217,7 @@
 			CompositeCache::save("mediahelper_libreoffice_installed", true);
 			return true;
 		} // don't try exec test on Windows
-
 		$vb_ret = caExecExpected($ps_path_to_libreoffice." --version 2> /dev/null", $va_output);
-
 		CompositeCache::save("mediahelper_libreoffice_installed", $vb_ret);
 
 		return $vb_ret;
@@ -287,7 +274,6 @@
 			return true;
 		} // don't try exec test on Windows
 		$vb_ret = caExecExpected($ps_mediainfo_path." --Help > /dev/null",$va_output, 255);
-
 		CompositeCache::save("mediahelper_mediainfo_installed", $vb_ret);
 
 		return $vb_ret;
@@ -310,9 +296,7 @@
 			CompositeCache::save("mediahelper_openctm_installed", true);
 			return true;
 		}	// don't try exec test on Windows
-
 		$vb_ret = caExecExpected($ps_openctm_ctmconv_path." --help > /dev/null",$va_output);;
-
 		CompositeCache::save("mediahelper_openctm_installed", $vb_ret);
 
 		return $vb_ret;
@@ -339,7 +323,6 @@
 		putenv("DISPLAY=:0");
 		chdir('/usr/local/bin');
 		list( $vn_return, $va_output ) = caExec( $ps_meshlabserver_path . " --help > /dev/null", $va_output );
-
 		$vb_ret = ($vn_return == 1);
 
 		CompositeCache::save("mediahelper_meshlabserver_installed", $vb_ret);
@@ -369,9 +352,7 @@
 			CompositeCache::save("mediahelper_pdfminer_installed", true);
 			return true;
 		} // don't try exec test on Windows
-
 		list($vn_return, $va_output) = caExec($ps_pdfminer_path." > /dev/null",$va_output);
-
 		$vb_ret = ($vn_return == 100);
 
 		CompositeCache::save("mediahelper_pdfminer_installed", $vb_ret);
@@ -401,9 +382,7 @@
 			CompositeCache::save("mediahelper_wkhtmltopdf_installed", true);
 			return true;
 		} // don't try exec test on Windows
-
 		list($vn_return, $va_output) = caExec($ps_wkhtmltopdf_path." > /dev/null",$va_output);
-
 		$vb_ret = (($vn_return == 0) || ($vn_return == 1));
 
 		CompositeCache::save("mediahelper_wkhtmltopdf_installed", $vb_ret);
@@ -434,9 +413,7 @@
 			CompositeCache::save("mediahelper_exiftool_installed", true);
 			return true;
 		} // don't try exec test on Windows
-
 		$vb_ret = caExecExpected($ps_exiftool_path." > /dev/null",$va_output);
-
 		CompositeCache::save("mediahelper_exiftool_installed", $vb_ret);
 
 		return $vb_ret;
