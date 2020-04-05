@@ -13,6 +13,8 @@ Order allow,deny
 Allow from all
 
 RedirectMatch 404 /\.git
+RedirectMatch 404 /vendor/bin
+RedirectMatch 404 /vendor/phpunit
 
 # Forbidden access to install, make sure you comment this line
 # in case you would like to install the app from the web
