@@ -142,7 +142,11 @@
 							print "<strong>"._t('Completed on')."</strong>: ".date("n/d/Y @ g:i:sa T", $va_job["completed_on"])."<br/>\n"; 
 							
 							if ((int)$va_job["error_code"] > 0) {
-								print "<span style='color: #cc0000;'><strong>"._t('Error')."</strong>: ".$va_job["error_message"]." [".$va_job["error_code"]."] <em>"._t('TASK DID NOT COMPLETE')."</em></span><br/>\n"; 
+								print "<span style='color: #cc0000;'><strong>" . _t( 'Error' ) . "</strong>: "
+								      . $va_job["error_message"] . " [" . $va_job["error_code"] . "] <em>"
+								      . _t( 'TASK DID NOT COMPLETE' ) . "</em>"
+								      ."Review " . caNavLink( $this->request,
+										'Event Log', '', '', 'logs/Events', 'Index' ) . "</span><br/>\n";
 							}
 						}
 						
