@@ -145,8 +145,8 @@
 								print "<span style='color: #cc0000;'><strong>" . _t( 'Error' ) . "</strong>: "
 								      . $va_job["error_message"] . " [" . $va_job["error_code"] . "] <em>"
 								      . _t( 'TASK DID NOT COMPLETE' ) . "</em>"
-								      ."Review " . caNavLink( $this->request,
-										'Event Log', '', '', 'logs/Events', 'Index' ) . "</span><br/>\n";
+								      ." Review " . caNavLink( $this->request,
+										'Event Log', 'hierNav', '', 'logs/Events', 'Index' ) . "</span><br/>\n";
 							}
 						}
 						
