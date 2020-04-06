@@ -346,7 +346,7 @@ class TilepicParser {
 			$identify_args = $this->opo_external_app_config->get('imagemagick_identify_args');
 			caExec( join( ' ', array(
 				$this->ops_imagemagick_path . '/identify',
-				caEscapeShellArg( $identify_args ),
+				$identify_args,
 				'-format "%m;%w;%h\n"',
 				caEscapeShellArg( $ps_filepath ),
 				( caIsPOSIX() ? " 2> /dev/null" : "" )
@@ -442,7 +442,7 @@ class TilepicParser {
 		$convert_args = $this->opo_external_app_config->get('imagemagick_convert_args');
 		caExec( join( ' ', array(
 			$this->ops_imagemagick_path . '/convert',
-			caEscapeShellArg($convert_args),
+			$convert_args,
 			caEscapeShellArg( $ps_source_filepath . '[0]' ),
 			join( ' ', $va_ops ),
 			'"' . $ps_dest_filepath . '"'
@@ -510,7 +510,7 @@ class TilepicParser {
 		$montage_args = $this->opo_external_app_config->get('imagemagick_montage_args');
 		caExec( join( ' ', array(
 			$this->ops_imagemagick_path . '/montage',
-			caEscapeShellArg($montage_args),
+			$montage_args,
 			join( ' ', $pa_tiles ),
 			'-mode Concatenate -tile ' . $pn_tile_width . 'x' . $pn_tile_height,
 			'"' . $ps_dest_filepath . '"'
