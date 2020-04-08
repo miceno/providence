@@ -954,11 +954,13 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 		}
 
 		$va_output = array();
-		if(!caExecExpected( join( ' ', array(
-			$this->commandWithDefaultArgs( 'identify' ),
-			'-format "%m\n"',
-			caEscapeShellArg( $this->filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
-		) ), $va_output )) {
+		if ( ! caExecExpected( join( ' ', array(
+				$this->commandWithDefaultArgs( 'identify' ),
+				'-format "%m\n"',
+				caEscapeShellArg( $this->filepath ),
+				( caIsPOSIX() ? ' 2> /dev/null' : '' ) ) ),
+			$va_output )
+		) {
 			return false;
 		}
 
