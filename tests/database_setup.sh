@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
+export BASE_DIR=$(dirname $0)
+
 # Set environment variables.
 export CACHE_DIR=${CACHE_DIR:-mysql_profile}
 export DB_NAME=${DB_NAME:-ca_test}
 export DB_USER=${DB_USER:-ca_test}
 export DB_PASSWORD=${DB_PASSWORD:-password}
+
+# Create cache dir
+echo "Creating cache dir at ${CACHE_DIR}"
+mkdir -p "${CACHE_DIR}"
 
 # Initialise the database instance for the test.
 echo "Drop existing database"
@@ -16,10 +22,9 @@ sudo mysql -uroot -e "grant all on ${DB_NAME}.* to '${DB_USER}'@'localhost' iden
 
 # Add custom configuration from file.
 echo "Configuring MySQL server"
-MYCNF_CONFIG="${MYCNF_CONFIG:-$TRAVIS_BUILD_DIR/tests/my.cnf}"
-if test -e "$MYCNF_CONFIG";
-then
-  cat "$MYCNF_CONFIG" | sudo tee -a /etc/mysql/my.cnf;
+MYCNF_CONFIG="${MYCNF_CONFIG:-../$BASE_DIR/tests/my.cnf}"
+if test -e "$MYCNF_CONFIG"; then
+  cat "$MYCNF_CONFIG" | sudo tee -a /etc/mysql/my.cnf
 fi
 
 # Restart service.
