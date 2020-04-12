@@ -11,8 +11,8 @@ addons:
 
 jobs:
   exclude:
-  - php: 7.3
-  # - php: 7.4
+    - php: 7.2
+    - php: 7.4
 
 git:
   depth: 5
@@ -58,7 +58,6 @@ before_script:
   # before running actual tests
   # Install the testing profile
   - tests/profile_setup.sh "$PROFILE"
-  - composer show -i
 
 script:
   # execute all of the commands which
