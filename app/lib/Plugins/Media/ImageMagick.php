@@ -970,7 +970,8 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 		$vs_output_file_prefix = tempnam($vs_tmp_dir, 'caMultipagePreview');
 		$vs_output_file = $vs_output_file_prefix.'_%05d.jpg';
 
-		if(!caExecExpected(join( ' ', array(
+
+		if(!caExecExpected( join( ' ', array(
 			$this->commandWithDefaultArgs( 'convert' ),
 			caEscapeShellArg( $this->filepath ),
 			$vs_output_file . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
@@ -1146,6 +1147,7 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 			) {
 				return null;
 			}
+
 			if ($va_output[0]) { $va_metadata['DPX'] = $va_output; }
 			
 			/* IPTC metadata */
@@ -1400,9 +1402,8 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 					caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
 				) ) )){
 					return null;
-				};
+				}
 			}
-			
 			return true;
 		}
 		return null;

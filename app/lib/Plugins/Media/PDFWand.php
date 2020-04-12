@@ -354,9 +354,11 @@ class WLPlugMediaPDFWand Extends BaseMediaPlugin implements IWLPlugMedia {
 			
 			// Try to extract text
 			$vs_tmp_filename = tempnam('/tmp', 'CA_PDF_TEXT');
-			if (!caExecExpected($this->ops_pdfminer_path.' -t text '.caEscapeShellArg($ps_filepath).' > '.caEscapeShellArg($vs_tmp_filename).(caIsPOSIX() ? " 2> /dev/null" : ""))){
+			if ( ! caExecExpected( $this->ops_pdfminer_path . ' -t text ' . caEscapeShellArg( $ps_filepath ) . ' > '
+			                       . caEscapeShellArg( $vs_tmp_filename ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ) )
+			) {
 				return null;
-				}
+			}
 			$vs_extracted_text = file_get_contents($vs_tmp_filename);
 			$this->handle['content'] = $this->ohandle['content'] = $vs_extracted_text;
 			@unlink($vs_tmp_filename);

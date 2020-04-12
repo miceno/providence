@@ -101,6 +101,7 @@
 			return  true;
 		} // don't try exec test on Windows
 
+		$vn_return = 0;
 		caExec($ps_graphicsmagick_path.' 2> /dev/null', $va_output, $vn_return);
 		
 		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
@@ -125,8 +126,8 @@
 			return false;
 		}
 
-		caExec($ps_path_to_dcraw.' -i 2> /dev/null', $va_output, $vn_return);
-		
+		$vn_return = 0;
+		caExec( $ps_path_to_dcraw . ' -i 2> /dev/null', $va_output, $vn_return );
 		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
 
 		CompositeCache::save("mediahelper_dcraw_installed", $vb_ret);
@@ -310,9 +311,7 @@
 			CompositeCache::save("mediahelper_openctm_installed", true);
 			return true;
 		}	// don't try exec test on Windows
-		caExec($ps_openctm_ctmconv_path." --help > /dev/null",$va_output,$vn_return);
-		$vb_ret = ($vn_return == 0);
-		
+		$vb_ret = caExecExpected($ps_openctm_ctmconv_path." --help > /dev/null",$va_output);;
 		CompositeCache::save("mediahelper_openctm_installed", $vb_ret);
 
 		return $vb_ret;
@@ -338,9 +337,7 @@
 
 		putenv("DISPLAY=:0");
 		chdir('/usr/local/bin');
-		caExec($ps_meshlabserver_path." --help > /dev/null",$va_output,$vn_return);
-		
-		$vb_ret = ($vn_return == 1);
+		$vb_ret = caExecExpected( $ps_meshlabserver_path . " --help > /dev/null", $va_output, 1 );
 
 		CompositeCache::save("mediahelper_meshlabserver_installed", $vb_ret);
 
@@ -370,9 +367,7 @@
 			return true;
 		} // don't try exec test on Windows
 
-		caExec($ps_pdfminer_path." > /dev/null",$va_output,$vn_return);
-		
-		$vb_ret = ($vn_return == 100);
+		$vb_ret = caExecExpected( $ps_pdfminer_path . " > /dev/null", $va_output, 100 );
 
 		CompositeCache::save("mediahelper_pdfminer_installed", $vb_ret);
 
@@ -402,6 +397,7 @@
 			return true;
 		} // don't try exec test on Windows
 
+		$vn_return = 0;
 		caExec($ps_wkhtmltopdf_path." > /dev/null",$va_output,$vn_return);
 		
 		$vb_ret = (($vn_return == 0) || ($vn_return == 1));
@@ -435,10 +431,8 @@
 			return true;
 		} // don't try exec test on Windows
 
-		caExec($ps_exiftool_path." > /dev/null",$va_output,$vn_return);
+		$vb_ret = caExecExpected($ps_exiftool_path." > /dev/null",$va_output);
 	
-		$vb_ret = ($vn_return == 0);
-		
 		CompositeCache::save("mediahelper_exiftool_installed", $vb_ret);
 
 		return $vb_ret;
@@ -1018,47 +1012,50 @@
 		}
 
 		// try graphicsmagick
-		if ((!$o_config->get('dont_use_graphicsmagick_to_identify_pdfs')) && caMediaPluginGraphicsMagickInstalled()) {
-			$vs_graphicsmagick_path = caGetExternalApplicationPath('graphicsmagick');
+		if ( ( ! $o_config->get( 'dont_use_graphicsmagick_to_identify_pdfs' ) )
+		     && caMediaPluginGraphicsMagickInstalled() ) {
+			$vs_graphicsmagick_path = caGetExternalApplicationPath( 'graphicsmagick' );
 			if ( caExecExpected( $vs_graphicsmagick_path . ' identify -format "%m;%w;%h;%p\n" '
 			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
 				$va_output, 1 )
 			) {
-				array_pop($va_output); // last line is blank
-				if (is_array($va_output) && (sizeof($va_output) > 0)) {
+				// last line is blank
+				array_pop( $va_output );
+				if ( is_array( $va_output ) && ( sizeof( $va_output ) > 0 ) ) {
 					do {
-						$va_tmp = explode(';', array_shift($va_output));
-						if ($va_tmp[0] === 'PDF') {
+						$va_tmp = explode( ';', array_shift( $va_output ) );
+						if ( $va_tmp[0] === 'PDF' ) {
 							return array(
-								'width' => intval($va_tmp[1]),
-								'height' => intval($va_tmp[2]),
-								'pages' => sizeof($va_output) + 1
+								'width'  => intval( $va_tmp[1] ),
+								'height' => intval( $va_tmp[2] ),
+								'pages'  => sizeof( $va_output ) + 1
 							);
 						}
-					} while((sizeof($va_output) > 0) && ($va_tmp[0] !== 'PDF'));
+					} while ( ( sizeof( $va_output ) > 0 ) && ( $va_tmp[0] !== 'PDF' ) );
 				}
 			}
 		}
 
 		// try imagemagick
-		if ((!$o_config->get('dont_use_imagemagick_to_identify_pdfs')) && caMediaPluginImageMagickInstalled()) {
-			$vs_imagemagick_path = caGetExternalApplicationPath('imagemagick');
+		if ( ( ! $o_config->get( 'dont_use_imagemagick_to_identify_pdfs' ) ) && caMediaPluginImageMagickInstalled() ) {
+			$vs_imagemagick_path = caGetExternalApplicationPath( 'imagemagick' );
 
 			if ( caExecExpected( $vs_imagemagick_path . '/identify -format "%m;%w;%h;%p\n" '
 			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
 				$va_output ) ) {
-				array_pop($va_output); // last line is blank
-				if (is_array($va_output) && (sizeof($va_output) > 0)) {
+				// last line is blank
+				array_pop( $va_output );
+				if ( is_array( $va_output ) && ( sizeof( $va_output ) > 0 ) ) {
 					do {
-						$va_tmp = explode(';', array_shift($va_output));
-						if ($va_tmp[0] === 'PDF') {
+						$va_tmp = explode( ';', array_shift( $va_output ) );
+						if ( $va_tmp[0] === 'PDF' ) {
 							return array(
-								'width' => intval($va_tmp[1]),
-								'height' => intval($va_tmp[2]),
-								'pages' => sizeof($va_output) + 1
+								'width'  => intval( $va_tmp[1] ),
+								'height' => intval( $va_tmp[2] ),
+								'pages'  => sizeof( $va_output ) + 1
 							);
 						}
-					} while((sizeof($va_output) > 0) && ($va_tmp[0] !== 'PDF'));
+					} while ( ( sizeof( $va_output ) > 0 ) && ( $va_tmp[0] !== 'PDF' ) );
 				}
 			}
 		}

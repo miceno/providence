@@ -44,6 +44,7 @@ before_install:
 install:
   # install all of the dependencies you need here
   # Create setup.php
+  # Set up database
   - export PROFILE=${PROFILE:-testing}
   # Set up database
   - tests/database_setup.sh

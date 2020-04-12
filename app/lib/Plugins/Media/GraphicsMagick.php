@@ -1136,7 +1136,6 @@ class WLPlugMediaGraphicsMagick Extends BaseMediaPlugin Implements IWLPlugMedia 
 			if(!caExecExpected($this->ops_graphicsmagick_path.' identify -format "%m;%w;%h;%q;%x;%y\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output)){
 				return null;
 			}
-
 			$va_tmp = explode(';', $va_output[0]);
 			
 			if (sizeof($va_tmp) != 6) {
@@ -1303,7 +1302,7 @@ class WLPlugMediaGraphicsMagick Extends BaseMediaPlugin Implements IWLPlugMedia 
 					return null;
 				}
 			}
-			
+
 			return true;
 		}
 		return null;

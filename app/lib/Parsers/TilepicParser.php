@@ -344,8 +344,15 @@ class TilepicParser {
 	# ------------------------------------------------
 	private function _imageMagickRead( $ps_filepath ) {
 		if ( caMediaPluginImageMagickInstalled( $this->ops_imagemagick_path ) ) {
-			if ( caExecExpected( $this->ops_imagemagick_path . '/identify -format "%m;%w;%h\n" '
-			                     . caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? " 2> /dev/null" : "" ),
+			$identify_args = $this->opo_external_app_config->get('imagemagick_identify_args');
+
+			if ( caExecExpected( join( ' ', array(
+				$this->ops_imagemagick_path . '/identify',
+				$identify_args,
+				'-format "%m;%w;%h\n"',
+				caEscapeShellArg( $ps_filepath ),
+				( caIsPOSIX() ? " 2> /dev/null" : "" )
+			) ),
 				$va_output )
 			) {
 				$va_tmp = explode( ';', $va_output[0] );
@@ -442,7 +449,8 @@ class TilepicParser {
 					break;
 			}
 		}
-		$convert_args = $this->opo_external_app_config->get('imagemagick_convert_args');
+		$convert_args = $this->opo_external_app_config->get( 'imagemagick_convert_args' );
+
 		return caExecExpected( join( ' ', array(
 			$this->ops_imagemagick_path . '/convert',
 			$convert_args,
@@ -509,15 +517,16 @@ class TilepicParser {
 	# ------------------------------------------------
 	private function _imageMagickImageFromTiles($ps_dest_filepath, $pa_tiles, $pn_tile_width, $pn_tile_height) {
 		$montage_args = $this->opo_external_app_config->get('imagemagick_montage_args');
-		caExec( join( ' ', array(
-			$this->ops_imagemagick_path . '/montage',
-			$montage_args,
-			join( ' ', $pa_tiles ),
-			'-mode Concatenate -tile ' . $pn_tile_width . 'x' . $pn_tile_height,
-			'"' . $ps_dest_filepath . '"'
-		) ) );
-	
-		return true;
+
+		return caExecExpected(
+			join( ' ', array(
+				$this->ops_imagemagick_path . '/montage',
+				$montage_args,
+				join( ' ', $pa_tiles ),
+				'-mode Concatenate -tile ' . $pn_tile_width . 'x' . $pn_tile_height,
+				'"' . $ps_dest_filepath . '"'
+			) )
+		);
 	}
 	# ------------------------------------------------
 	private function _graphicsMagickImageFromTiles($ps_dest_filepath, $pa_tiles, $pn_tile_width, $pn_tile_height) {
