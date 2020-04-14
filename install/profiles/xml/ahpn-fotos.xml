@@ -2219,6 +2219,32 @@
                 </restriction>
             </typeRestrictions>
         </metadataElement>
+        <metadataElement code="postal_address" datatype="Text">
+            <labels>
+                <label locale="en_US">
+                    <name>Postal Address</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Adreça postal</name>
+                </label>
+            </labels>
+            <settings>
+                <setting name="maxChars">200</setting>
+                <setting name="doesNotTakeLocale">1</setting>
+            </settings>
+            <typeRestrictions>
+                <restriction>
+                    <table>ca_objects</table>
+                    <type>ahpn_fotos</type>
+                    <includeSubtypes>1</includeSubtypes>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow"/>
+                        <setting name="minimumAttributeBundlesToDisplay"/>
+                    </settings>
+                </restriction>
+            </typeRestrictions>
+        </metadataElement>
     </elementSets>
     <userInterfaces>
         <userInterface code="foto_ui" type="ca_objects" typeRestrictions="ahpn_fotos" includeSubtypes="0">
@@ -2270,6 +2296,9 @@
                         </placement>
                         <placement code="ca_attribute_date5">
                             <bundle>ca_objects.date</bundle>
+                        </placement>
+                        <placement code="ca_attribute_postal_address6">
+                            <bundle>ca_objects.postal_address</bundle>
                         </placement>
                         <placement code="ca_object_representations5">
                             <bundle>ca_object_representations</bundle>
@@ -2337,4 +2366,59 @@
     </userInterfaces>
     <relationshipTypes>
     </relationshipTypes>
+    <displays>
+        <display code="ahpn_photo_display" type="ca_objects" system="1" typeRestrictions="" includeSubtypes="0">
+            <labels>
+                <label locale="es_ES">
+                    <name>Lista de fotografías</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Llista de fotos</name>
+                </label>
+                <label locale="en_US">
+                    <name>Photo list</name>
+                </label>
+            </labels>
+            <settings>
+                <setting name="show_empty_values"><![CDATA[1]]></setting>
+                <setting name="bottom_line"><![CDATA[]]></setting>
+                <setting name="show_only_in"><![CDATA[]]></setting>
+            </settings>
+            <userAccess>
+                <permission user="administrator" access="edit"/>
+            </userAccess>
+            <bundlePlacements>
+                <placement code="ca_objects_number">
+                    <bundle>ca_objects.number</bundle>
+                </placement>
+                <placement code="ca_objects_preferred_labels">
+                    <bundle>ca_objects.preferred_labels</bundle>
+                </placement>
+                <placement code="ca_objects_date">
+                    <bundle>ca_objects.date</bundle>
+                </placement>
+                <placement code="ca_objects_postal_address">
+                    <bundle>ca_objects.postal_address</bundle>
+                </placement>
+                <placement code="ca_entities">
+                    <bundle>ca_entities</bundle>
+                </placement>
+                <placement code="ca_places">
+                    <bundle>ca_places</bundle>
+                </placement>
+                <placement code="ca_objects_description">
+                    <bundle>ca_objects.description</bundle>
+                </placement>
+                <placement code="ca_objects_folder">
+                    <bundle>ca_objects.folder</bundle>
+                </placement>
+                <placement code="ca_objects_subjects">
+                    <bundle>ca_objects.subjects</bundle>
+                </placement>
+                <placement code="ca_objects_material">
+                    <bundle>ca_objects.material</bundle>
+                </placement>
+            </bundlePlacements>
+        </display>
+    </displays>
 </profile>
