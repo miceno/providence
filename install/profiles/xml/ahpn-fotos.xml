@@ -1,0 +1,2170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="profile.xsd" useForConfiguration="1" base="base" infoUrl="http://providence.collectiveaccess.org/wiki/DefaultProfile">
+  <profileName>AHPN fotos</profileName>
+  <profileDescription>Arxiu Històric del Poblenou addendum to Visual Resources Collection profile, available
+  locales are: ca_ES, es_ES.</profileDescription>
+  <locales>
+    <locale lang="en" country="US">English (United States)</locale>
+    <locale lang="es" country="ES">Español</locale>
+    <locale lang="ca" country="ES">Català</locale>
+  </locales>
+  <lists>
+    <list code="object_types" hierarchical="1" system="0" vocabulary="0">
+      <labels>
+        <label locale="ca_ES">
+          <name>Tipus d'objectes</name>
+        </label>
+      </labels>
+      <items>
+        <item idno="document" enabled="1" default="0" value="document" rank="23">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Document</name_singular>
+              <name_plural>Documents</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="drawing" enabled="1" default="0" value="drawing" rank="24">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Dibuix</name_singular>
+              <name_plural>Dibuixos</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="film_media" enabled="1" default="0" value="film_media" rank="25">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+                <name_singular>Medio visual y electrónico</name_singular>
+                <name_plural>Medios visuales y electrónicos</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="painting" enabled="1" default="0" value="painting" rank="26">
+          <labels>
+            <label locale="en_US" preferred="1">
+              <name_singular>Painting</name_singular>
+              <name_plural>Paintings</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="photography" enabled="1" default="0" value="photography" rank="27">
+          <labels>
+            <label locale="en_US" preferred="1">
+              <name_singular>Photography</name_singular>
+              <name_plural>Photography</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="print" enabled="1" default="0" value="print" rank="28">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Print</name_singular>
+              <name_plural>Prints</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="sculpture" enabled="1" default="1" value="sculpture" rank="29">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Escultura</name_singular>
+              <name_plural>Escultures</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="ahpn_fotos" enabled="1" default="0" rank="184" type="facet">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Fotografia AHPN</name_singular>
+              <name_plural>Fotografies AHPN</name_plural>
+              <description>Fotos de l'Arxiu</description>
+            </label>
+          </labels>
+        </item>
+      </items>
+    </list>
+    <list code="medium_types" hierarchical="0" system="1" vocabulary="1">
+      <labels>
+        <label locale="en_US">
+          <name>Medium types</name>
+        </label>
+      </labels>
+      <items>
+        <item idno="digital_medium" enabled="1" default="0" rank="188" type="concept">
+          <labels>
+            <label locale="en_US" preferred="1">
+              <name_singular>Digital</name_singular>
+              <name_plural>Digital</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+        <item idno="paper_medium" enabled="1" default="0" rank="189" type="concept">
+          <labels>
+            <label locale="en_US" preferred="1">
+              <name_singular>Paper</name_singular>
+              <name_plural>Paper</name_plural>
+              <description/>
+            </label>
+          </labels>
+        </item>
+      </items>
+    </list>
+    <list code="subjects" hierarchical="0" system="1" vocabulary="1">
+      <labels>
+        <label locale="en_US">
+          <name>Subject</name>
+        </label>
+        <label locale="ca_ES">
+          <name>Assumpte</name>
+        </label>
+      </labels>
+      <items>
+        <item idno="0000000002" enabled="1" default="0" rank="655" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>22@</name_singular>
+              <name_plural>22@</name_plural>
+              <description>Conflictes, manifestacions, noves construccions, noves indústries</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000003" enabled="1" default="0" rank="656" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Accidents</name_singular>
+              <name_plural>Accidents</name_plural>
+              <description>Inundacions, nevades, incendis, temporals</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000004" enabled="1" default="0" rank="657" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Arts i artistes</name_singular>
+              <name_plural>Arts i artistes</name_plural>
+              <description>Pintures, dibuixos, escultures, monuments i els seus autors</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000005" enabled="1" default="0" rank="658" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Barraques</name_singular>
+              <name_plural>Barraques</name_plural>
+              <description>Barri de Pekín, Somorrostro, Camp de la Bota, Darrera el Cementiri, Mar Bella</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000006" enabled="1" default="0" rank="659" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Cementiri</name_singular>
+              <name_plural>Cementiri</name_plural>
+              <description>Cementiri de l'est, serveis funeraris</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000007" enabled="1" default="0" rank="660" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Cinema i TV</name_singular>
+              <name_plural>Cinema i TV</name_plural>
+              <description>Cinemes, TV, platós, rodatge de pel·lícules</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000008" enabled="1" default="0" rank="661" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Comerç</name_singular>
+              <name_plural>Comerç</name_plural>
+              <description>Bars, restaurants, bancs i caixes, botigues, hotels, empreses de comerç, artesania</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000009" enabled="1" default="0" rank="662" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Cooperatives</name_singular>
+              <name_plural>Cooperatives</name_plural>
+              <description>Cooperatives</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000010" enabled="1" default="0" rank="663" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Diagonal Mar</name_singular>
+              <name_plural>Diagonal Mar</name_plural>
+              <description>Centre comercial i residencial</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000011" enabled="1" default="0" rank="664" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Diversos</name_singular>
+              <name_plural>Diversos</name_plural>
+              <description>Persones no destacades,</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000012" enabled="1" default="0" rank="665" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Entitats</name_singular>
+              <name_plural>Entitats</name_plural>
+              <description>Públiques, privades i religioses</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000013" enabled="1" default="0" rank="666" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Escoles</name_singular>
+              <name_plural>Escoles</name_plural>
+              <description>Públiques, privades i religioses, mestres, alumnes, llars d'infants, universitats</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000014" enabled="1" default="0" rank="667" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Fòrum 2004</name_singular>
+              <name_plural>Fòrum 2004</name_plural>
+              <description>Celebració del Fòrum 2004, zona del Fòrum 2004</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000015" enabled="1" default="0" rank="668" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Habitatges</name_singular>
+              <name_plural>Habitatges</name_plural>
+              <description>Cases urbanes, terrats, balcons</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000016" enabled="1" default="0" rank="669" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Indústria</name_singular>
+              <name_plural>Indústria</name_plural>
+              <description>Empreses dedicades a fabricar/manufacturar, obrers, maquinària, arquitectura de la indústria, xemeneies, torre de les aigües</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000017" enabled="1" default="0" rank="670" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Lleure</name_singular>
+              <name_plural>Lleure</name_plural>
+              <description>Festes, festes de maig, gegants, dracs, curses, esports, homenatge a la vellesa, actes culturals, jocs florals, concerts</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000018" enabled="1" default="0" rank="671" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Masies</name_singular>
+              <name_plural>Masies</name_plural>
+              <description>Camps de conreu, habitatges rurals</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000019" enabled="1" default="0" rank="672" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Mercat de la Unió</name_singular>
+              <name_plural>Mercat de la Unió</name_plural>
+              <description>Edifici i tot el seu contingut</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000020" enabled="1" default="0" rank="673" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Personatges</name_singular>
+              <name_plural>Personatges</name_plural>
+              <description>Persones destacades que no són artistes</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000021" enabled="1" default="0" rank="674" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Pla de la Ribera</name_singular>
+              <name_plural>Pla de la Ribera</name_plural>
+              <description>Específic del Pla de la Ribera</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000022" enabled="1" default="0" rank="675" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Platges</name_singular>
+              <name_plural>Platges</name_plural>
+              <description>Del Bogatell, de la Mar Bella, Nudista</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000023" enabled="1" default="0" rank="676" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Política i sindicalisme</name_singular>
+              <name_plural>Política i sindicalisme</name_plural>
+              <description>Partits i sindicats, pintades, conflictes</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000024" enabled="1" default="0" rank="677" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Publicacions</name_singular>
+              <name_plural>Publicacions</name_plural>
+              <description>Revistes, diaris, programes, planos, Quatre Cantons</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000025" enabled="1" default="0" rank="678" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Religió i grups relacionats</name_singular>
+              <name_plural>Religió i grups relacionats</name_plural>
+              <description>Esglésies, Movi, Protestants</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000026" enabled="1" default="0" rank="679" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Serveis públics</name_singular>
+              <name_plural>Serveis públics</name_plural>
+              <description>Sanitat, seu del districte, bombers, biblioteques, parcs, jardins, centres esportius, museus, llars d'avis, piscines, policia, exèrcit, fonts, presons, protecció de menors</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000027" enabled="1" default="0" rank="680" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Transports</name_singular>
+              <name_plural>Transports</name_plural>
+              <description>De persones: Metro, autobusos, tramvies, ferrocarril, estacions, parades. De materials: Carros, camions, ferrocarril</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000028" enabled="1" default="0" rank="681" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Vila Olímpica</name_singular>
+              <name_plural>Vila Olímpica</name_plural>
+              <description>Olimpíades de 1992, enderrocament i construcció, zona residencial i comercial de la Vila Olímpica, parcs, jardins i vies de la Vila Olímpica, port olímpic</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="0000000029" enabled="1" default="0" rank="682" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>Xarxa viària</name_singular>
+              <name_plural>Xarxa viària</name_plural>
+              <description>Carrers, places, la Rambla, la Ronda i totes les construccions que hi formen part. Plaques dels carrers.</description>
+            </label>
+          </labels>
+        </item>
+      </items>
+    </list>
+    <list code="folders" hierarchical="0" system="1" vocabulary="1">
+      <labels>
+        <label locale="en_US">
+          <name>Folder</name>
+        </label>
+        <label locale="ca_ES">
+          <name>Carpeta</name>
+        </label>
+      </labels>
+      <items>
+        <item idno="1" enabled="1" default="0" rank="452" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1 - POBLACIÓ I ESTRUCTURA SOCIAL</name_singular>
+              <name_plural>1 - POBLACIÓ I ESTRUCTURA SOCIAL</name_plural>
+              <description>1 - POBLACIÓ I ESTRUCTURA SOCIAL</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_1" enabled="1" default="0" rank="453" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.1 - Demografia</name_singular>
+              <name_plural>1.1 - Demografia</name_plural>
+              <description>1.1 - Demografia</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_1_1" enabled="1" default="0" rank="454" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.1.1 - Censos i padrons</name_singular>
+              <name_plural>1.1.1 - Censos i padrons</name_plural>
+              <description>1.1.1 - Censos i padrons</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_1_2" enabled="1" default="0" rank="455" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.1.2 - Sèries de naixements i defuncions</name_singular>
+              <name_plural>1.1.2 - Sèries de naixements i defuncions</name_plural>
+              <description>1.1.2 - Sèries de naixements i defuncions</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_2" enabled="1" default="0" rank="456" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.2 - Estructura social</name_singular>
+              <name_plural>1.2 - Estructura social</name_plural>
+              <description>1.2 - Estructura social</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_2_1" enabled="1" default="0" rank="457" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.2.1 - Procedència geogràfica de la població</name_singular>
+              <name_plural>1.2.1 - Procedència geogràfica de la població</name_plural>
+              <description>1.2.1 - Procedència geogràfica de la població</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_2_2" enabled="1" default="0" rank="458" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.2.2 - La immigració</name_singular>
+              <name_plural>1.2.2 - La immigració</name_plural>
+              <description>1.2.2 - La immigració</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_2_3" enabled="1" default="0" rank="459" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.2.3 - Estructura familiar. Estat civil.</name_singular>
+              <name_plural>1.2.3 - Estructura familiar. Estat civil.</name_plural>
+              <description>1.2.3 - Estructura familiar. Estat civil.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_2_4" enabled="1" default="0" rank="460" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.2.4 - Estructura de la població activa</name_singular>
+              <name_plural>1.2.4 - Estructura de la població activa</name_plural>
+              <description>1.2.4 - Estructura de la població activa</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="1_2_5" enabled="1" default="0" rank="461" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>1.2.5 - Estructura de la població  no activa</name_singular>
+              <name_plural>1.2.5 - Estructura de la població  no activa</name_plural>
+              <description>1.2.5 - Estructura de la població  no activa</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2" enabled="1" default="0" rank="462" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2 - EVOLUCIÓ ECONÒMICA</name_singular>
+              <name_plural>2 - EVOLUCIÓ ECONÒMICA</name_plural>
+              <description>2 - EVOLUCIÓ ECONÒMICA</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_0" enabled="1" default="0" rank="463" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.0 - General</name_singular>
+              <name_plural>2.0 - General</name_plural>
+              <description>2.0 - General</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_1" enabled="1" default="0" rank="464" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.1 - Recursos generals</name_singular>
+              <name_plural>2.1 - Recursos generals</name_plural>
+              <description>2.1 - Recursos generals</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_2" enabled="1" default="0" rank="465" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.2 - Agricultura i ramaderia</name_singular>
+              <name_plural>2.2 - Agricultura i ramaderia</name_plural>
+              <description>2.2 - Agricultura i ramaderia</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_3" enabled="1" default="0" rank="466" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.3 - Pesca</name_singular>
+              <name_plural>2.3 - Pesca</name_plural>
+              <description>2.3 - Pesca</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4" enabled="1" default="0" rank="467" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4 - Indústria, manufactura i artesania</name_singular>
+              <name_plural>2.4 - Indústria, manufactura i artesania</name_plural>
+              <description>2.4 - Indústria, manufactura i artesania</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4_1" enabled="1" default="0" rank="468" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4.1 - La indústria tèxtil</name_singular>
+              <name_plural>2.4.1 - La indústria tèxtil</name_plural>
+              <description>2.4.1 - La indústria tèxtil</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4_2" enabled="1" default="0" rank="469" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4.2 - Metal·lúrgia i construcció mecànica</name_singular>
+              <name_plural>2.4.2 - Metal·lúrgia i construcció mecànica</name_plural>
+              <description>2.4.2 - Metal·lúrgia i construcció mecànica</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4_3" enabled="1" default="0" rank="470" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4.3 - Indústria química, plàstica, gas</name_singular>
+              <name_plural>2.4.3 - Indústria química, plàstica, gas</name_plural>
+              <description>2.4.3 - Indústria química, plàstica, gas</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4_4" enabled="1" default="0" rank="471" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4.4 - Indústria del vidre, ceràmica i materials de construcció</name_singular>
+              <name_plural>2.4.4 - Indústria del vidre, ceràmica i materials de construcció</name_plural>
+              <description>2.4.4 - Indústria del vidre, ceràmica i materials de construcció</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4_5" enabled="1" default="0" rank="472" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4.5 - Indústria alimentaria i transport</name_singular>
+              <name_plural>2.4.5 - Indústria alimentaria i transport</name_plural>
+              <description>2.4.5 - Indústria alimentaria i transport</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_4_6" enabled="1" default="0" rank="473" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.4.6 - Construcció de botes. Els boters.</name_singular>
+              <name_plural>2.4.6 - Construcció de botes. Els boters.</name_plural>
+              <description>2.4.6 - Construcció de botes. Els boters.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_5" enabled="1" default="0" rank="474" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.5 - Comerç, bars i restaurants</name_singular>
+              <name_plural>2.5 - Comerç, bars i restaurants</name_plural>
+              <description>2.5 - Comerç, bars i restaurants</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="2_6" enabled="1" default="0" rank="475" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>2.6 - Caixes d'estalvi i bancs</name_singular>
+              <name_plural>2.6 - Caixes d'estalvi i bancs</name_plural>
+              <description>2.6 - Caixes d'estalvi i bancs</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3" enabled="1" default="0" rank="476" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3 - VIDA CULTURAL I ASSOCIATIVA</name_singular>
+              <name_plural>3 - VIDA CULTURAL I ASSOCIATIVA</name_plural>
+              <description>3 - VIDA CULTURAL I ASSOCIATIVA</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_0" enabled="1" default="0" rank="477" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.0 - General</name_singular>
+              <name_plural>3.0 - General</name_plural>
+              <description>3.0 - General</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1" enabled="1" default="0" rank="478" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1 - Entitats culturals i recreatives. Coordinadora d'entitats.</name_singular>
+              <name_plural>3.1 - Entitats culturals i recreatives. Coordinadora d'entitats.</name_plural>
+              <description>3.1 - Entitats culturals i recreatives. Coordinadora d'entitats.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_1" enabled="1" default="0" rank="479" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.1 - Casino L'Aliança. Aliança vella.</name_singular>
+              <name_plural>3.1.1 - Casino L'Aliança. Aliança vella.</name_plural>
+              <description>3.1.1 - Casino L'Aliança. Aliança vella.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_2" enabled="1" default="0" rank="480" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.2 - Centre Moral i Cultural</name_singular>
+              <name_plural>3.1.2 - Centre Moral i Cultural</name_plural>
+              <description>3.1.2 - Centre Moral i Cultural</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_3" enabled="1" default="0" rank="481" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.3 - Ateneu Colon</name_singular>
+              <name_plural>3.1.3 - Ateneu Colon</name_plural>
+              <description>3.1.3 - Ateneu Colon</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_4" enabled="1" default="0" rank="482" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.4 - Ateneu Popular La Flor de Maig</name_singular>
+              <name_plural>3.1.4 - Ateneu Popular La Flor de Maig</name_plural>
+              <description>3.1.4 - Ateneu Popular La Flor de Maig</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_4_1" enabled="1" default="0" rank="483" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.4.1 - Arxiu Històric del Poblenou</name_singular>
+              <name_plural>3.1.4.1 - Arxiu Històric del Poblenou</name_plural>
+              <description>3.1.4.1 - Arxiu Històric del Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_4_1_1" enabled="1" default="0" rank="484" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.4.1.1 - Arxiu Històric de St. Martí</name_singular>
+              <name_plural>3.1.4.1.1 - Arxiu Històric de St. Martí</name_plural>
+              <description>3.1.4.1.1 - Arxiu Històric de St. Martí</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_4_2" enabled="1" default="0" rank="485" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.4.2 - Casal de Joves de La Flor de Maig</name_singular>
+              <name_plural>3.1.4.2 - Casal de Joves de La Flor de Maig</name_plural>
+              <description>3.1.4.2 - Casal de Joves de La Flor de Maig</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_5" enabled="1" default="0" rank="486" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.5 - Corals. Ópera</name_singular>
+              <name_plural>3.1.5 - Corals. Ópera</name_plural>
+              <description>3.1.5 - Corals. Ópera</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_6" enabled="1" default="0" rank="487" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.6 - Cinemes, teatres i TV</name_singular>
+              <name_plural>3.1.6 - Cinemes, teatres i TV</name_plural>
+              <description>3.1.6 - Cinemes, teatres i TV</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_1_7" enabled="1" default="0" rank="488" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.1.7 - Centre Cívic Can Felipa</name_singular>
+              <name_plural>3.1.7 - Centre Cívic Can Felipa</name_plural>
+              <description>3.1.7 - Centre Cívic Can Felipa</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2" enabled="1" default="0" rank="489" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2 - Entitats esportives i camps esportius</name_singular>
+              <name_plural>3.2 - Entitats esportives i camps esportius</name_plural>
+              <description>3.2 - Entitats esportives i camps esportius</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_1" enabled="1" default="0" rank="490" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.1 - CD Júpiter</name_singular>
+              <name_plural>3.2.1 - CD Júpiter</name_plural>
+              <description>3.2.1 - CD Júpiter</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_2" enabled="1" default="0" rank="491" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.2 - Club Rayo Poblenou</name_singular>
+              <name_plural>3.2.2 - Club Rayo Poblenou</name_plural>
+              <description>3.2.2 - Club Rayo Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_3" enabled="1" default="0" rank="492" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.3 - Club d'Atletisme Canaletas</name_singular>
+              <name_plural>3.2.3 - Club d'Atletisme Canaletas</name_plural>
+              <description>3.2.3 - Club d'Atletisme Canaletas</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_4" enabled="1" default="0" rank="493" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.4 - Club Natació Poblenou</name_singular>
+              <name_plural>3.2.4 - Club Natació Poblenou</name_plural>
+              <description>3.2.4 - Club Natació Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_5" enabled="1" default="0" rank="494" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.5 - Penya Ciclista Poblenou</name_singular>
+              <name_plural>3.2.5 - Penya Ciclista Poblenou</name_plural>
+              <description>3.2.5 - Penya Ciclista Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_6" enabled="1" default="0" rank="495" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.6 - Poblenou Atlètic</name_singular>
+              <name_plural>3.2.6 - Poblenou Atlètic</name_plural>
+              <description>3.2.6 - Poblenou Atlètic</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_7" enabled="1" default="0" rank="496" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.7 - Agrupació Excursionista Icària</name_singular>
+              <name_plural>3.2.7 - Agrupació Excursionista Icària</name_plural>
+              <description>3.2.7 - Agrupació Excursionista Icària</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_2_8" enabled="1" default="0" rank="497" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.2.8 - Football americà Búfals del Poblenou</name_singular>
+              <name_plural>3.2.8 - Football americà Búfals del Poblenou</name_plural>
+              <description>3.2.8 - Football americà Búfals del Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_3" enabled="1" default="0" rank="498" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.3 - Entitats cooperatives. General.</name_singular>
+              <name_plural>3.3 - Entitats cooperatives. General.</name_plural>
+              <description>3.3 - Entitats cooperatives. General.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_3_1" enabled="1" default="0" rank="499" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.3.1 - La Flor de Maig</name_singular>
+              <name_plural>3.3.1 - La Flor de Maig</name_plural>
+              <description>3.3.1 - La Flor de Maig</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_3_2" enabled="1" default="0" rank="500" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.3.2 - L'Artesana</name_singular>
+              <name_plural>3.3.2 - L'Artesana</name_plural>
+              <description>3.3.2 - L'Artesana</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_3_3" enabled="1" default="0" rank="501" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.3.3 - L'Econòmica</name_singular>
+              <name_plural>3.3.3 - L'Econòmica</name_plural>
+              <description>3.3.3 - L'Econòmica</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_3_4" enabled="1" default="0" rank="502" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.3.4 - Pau i Justícia</name_singular>
+              <name_plural>3.3.4 - Pau i Justícia</name_plural>
+              <description>3.3.4 - Pau i Justícia</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_3_5" enabled="1" default="0" rank="503" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.3.5 - La Independiente</name_singular>
+              <name_plural>3.3.5 - La Independiente</name_plural>
+              <description>3.3.5 - La Independiente</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4" enabled="1" default="0" rank="504" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4 - Entitats eclesials i grups relacionats. El Movi.</name_singular>
+              <name_plural>3.4 - Entitats eclesials i grups relacionats. El Movi.</name_plural>
+              <description>3.4 - Entitats eclesials i grups relacionats. El Movi.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_1" enabled="1" default="0" rank="505" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.1 - Parròquia de Sta. Maria del Taulat</name_singular>
+              <name_plural>3.4.1 - Parròquia de Sta. Maria del Taulat</name_plural>
+              <description>3.4.1 - Parròquia de Sta. Maria del Taulat</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_2" enabled="1" default="0" rank="506" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.2 - Parròquia de St. Bernat Calvó</name_singular>
+              <name_plural>3.4.2 - Parròquia de St. Bernat Calvó</name_plural>
+              <description>3.4.2 - Parròquia de St. Bernat Calvó</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_3" enabled="1" default="0" rank="507" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.3 - Parròquia de Sant Francesc d'Assís</name_singular>
+              <name_plural>3.4.3 - Parròquia de Sant Francesc d'Assís</name_plural>
+              <description>3.4.3 - Parròquia de Sant Francesc d'Assís</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_4" enabled="1" default="0" rank="508" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.4 - Parròquia del Sagrat Cor</name_singular>
+              <name_plural>3.4.4 - Parròquia del Sagrat Cor</name_plural>
+              <description>3.4.4 - Parròquia del Sagrat Cor</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_5" enabled="1" default="0" rank="509" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.5 - Església Evangèlica. Altres confessions no catòliques.</name_singular>
+              <name_plural>3.4.5 - Església Evangèlica. Altres confessions no catòliques.</name_plural>
+              <description>3.4.5 - Església Evangèlica. Altres confessions no catòliques.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_6" enabled="1" default="0" rank="510" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.6 - Monges franciscanes</name_singular>
+              <name_plural>3.4.6 - Monges franciscanes</name_plural>
+              <description>3.4.6 - Monges franciscanes</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_4_7" enabled="1" default="0" rank="511" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.4.7 - Processons</name_singular>
+              <name_plural>3.4.7 - Processons</name_plural>
+              <description>3.4.7 - Processons</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_5" enabled="1" default="0" rank="512" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.5 - Festes populars. Balls.</name_singular>
+              <name_plural>3.5 - Festes populars. Balls.</name_plural>
+              <description>3.5 - Festes populars. Balls.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_5_1" enabled="1" default="0" rank="513" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.5.1 - Tres tombs, els</name_singular>
+              <name_plural>3.5.1 - Tres tombs, els</name_plural>
+              <description>3.5.1 - Tres tombs, els</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_5_2" enabled="1" default="0" rank="514" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.5.2 - Globus</name_singular>
+              <name_plural>3.5.2 - Globus</name_plural>
+              <description>3.5.2 - Globus</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_5_3" enabled="1" default="0" rank="515" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.5.3 - Gegants</name_singular>
+              <name_plural>3.5.3 - Gegants</name_plural>
+              <description>3.5.3 - Gegants</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_5_4" enabled="1" default="0" rank="516" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.5.4 - Dracs i dimonis</name_singular>
+              <name_plural>3.5.4 - Dracs i dimonis</name_plural>
+              <description>3.5.4 - Dracs i dimonis</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_6" enabled="1" default="0" rank="517" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.6 - Festa Major</name_singular>
+              <name_plural>3.6 - Festa Major</name_plural>
+              <description>3.6 - Festa Major</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_6_1" enabled="1" default="0" rank="518" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.6.1 - Carrers guarnits</name_singular>
+              <name_plural>3.6.1 - Carrers guarnits</name_plural>
+              <description>3.6.1 - Carrers guarnits</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_6_3" enabled="1" default="0" rank="519" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.6.3 - Festa major</name_singular>
+              <name_plural>3.6.3 - Festa major</name_plural>
+              <description>3.6.3 - Festa major</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_6_4" enabled="1" default="0" rank="520" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.6.4 - Programes de Festa major</name_singular>
+              <name_plural>3.6.4 - Programes de Festa major</name_plural>
+              <description>3.6.4 - Programes de Festa major</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_6_5" enabled="1" default="0" rank="521" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.6.5 - Cavallets (Cavallitos)</name_singular>
+              <name_plural>3.6.5 - Cavallets (Cavallitos)</name_plural>
+              <description>3.6.5 - Cavallets (Cavallitos)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_7" enabled="1" default="0" rank="522" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.7 - Associacions de veïns</name_singular>
+              <name_plural>3.7 - Associacions de veïns</name_plural>
+              <description>3.7 - Associacions de veïns</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_7_1" enabled="1" default="0" rank="523" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.7.1 - Associacions de veïns del Poblenou</name_singular>
+              <name_plural>3.7.1 - Associacions de veïns del Poblenou</name_plural>
+              <description>3.7.1 - Associacions de veïns del Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_7_2" enabled="1" default="0" rank="524" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.7.2 - Associacions de veïns del Taulat</name_singular>
+              <name_plural>3.7.2 - Associacions de veïns del Taulat</name_plural>
+              <description>3.7.2 - Associacions de veïns del Taulat</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_7_3" enabled="1" default="0" rank="525" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.7.3 - Associacions de veïns Diagonal-Mar</name_singular>
+              <name_plural>3.7.3 - Associacions de veïns Diagonal-Mar</name_plural>
+              <description>3.7.3 - Associacions de veïns Diagonal-Mar</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_8" enabled="1" default="0" rank="526" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.8 - Publicacions</name_singular>
+              <name_plural>3.8 - Publicacions</name_plural>
+              <description>3.8 - Publicacions</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_8_1" enabled="1" default="0" rank="527" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.8.1 - Quatre Cantons</name_singular>
+              <name_plural>3.8.1 - Quatre Cantons</name_plural>
+              <description>3.8.1 - Quatre Cantons</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_8_2" enabled="1" default="0" rank="528" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.8.2 - Poble Nou</name_singular>
+              <name_plural>3.8.2 - Poble Nou</name_plural>
+              <description>3.8.2 - Poble Nou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_8_3" enabled="1" default="0" rank="529" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.8.3 - L'Arc de Sant Martí</name_singular>
+              <name_plural>3.8.3 - L'Arc de Sant Martí</name_plural>
+              <description>3.8.3 - L'Arc de Sant Martí</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_9" enabled="1" default="0" rank="530" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.9 - Cultura vària. Biblioteques.</name_singular>
+              <name_plural>3.9 - Cultura vària. Biblioteques.</name_plural>
+              <description>3.9 - Cultura vària. Biblioteques.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_10" enabled="1" default="0" rank="531" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.10 - Personatges en general</name_singular>
+              <name_plural>3.10 - Personatges en general</name_plural>
+              <description>3.10 - Personatges en general</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_10_1" enabled="1" default="0" rank="532" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.10.1 - Xavier Benguerel. Ramon Calsina.</name_singular>
+              <name_plural>3.10.1 - Xavier Benguerel. Ramon Calsina.</name_plural>
+              <description>3.10.1 - Xavier Benguerel. Ramon Calsina.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_10_2" enabled="1" default="0" rank="533" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.10.2 - Josep Trueta</name_singular>
+              <name_plural>3.10.2 - Josep Trueta</name_plural>
+              <description>3.10.2 - Josep Trueta</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_11" enabled="1" default="0" rank="534" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.11 - Art</name_singular>
+              <name_plural>3.11 - Art</name_plural>
+              <description>3.11 - Art</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_12" enabled="1" default="0" rank="535" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.12 - Fòrum de les cultures, Barcelona 2004</name_singular>
+              <name_plural>3.12 - Fòrum de les cultures, Barcelona 2004</name_plural>
+              <description>3.12 - Fòrum de les cultures, Barcelona 2004</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="3_13" enabled="1" default="0" rank="536" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>3.13 - Can Saladrigues</name_singular>
+              <name_plural>3.13 - Can Saladrigues</name_plural>
+              <description>3.13 - Can Saladrigues</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4" enabled="1" default="0" rank="537" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4 - VIDA POLÍTICA I SINDICAL</name_singular>
+              <name_plural>4 - VIDA POLÍTICA I SINDICAL</name_plural>
+              <description>4 - VIDA POLÍTICA I SINDICAL</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_1" enabled="1" default="0" rank="538" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.1 - Partits polítics</name_singular>
+              <name_plural>4.1 - Partits polítics</name_plural>
+              <description>4.1 - Partits polítics</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_1_1" enabled="1" default="0" rank="539" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.1.1 - Partits polítics de finals del segle XIX</name_singular>
+              <name_plural>4.1.1 - Partits polítics de finals del segle XIX</name_plural>
+              <description>4.1.1 - Partits polítics de finals del segle XIX</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_1_2" enabled="1" default="0" rank="540" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.1.2 - Partits polítics de 1901-1939</name_singular>
+              <name_plural>4.1.2 - Partits polítics de 1901-1939</name_plural>
+              <description>4.1.2 - Partits polítics de 1901-1939</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_1_2_bis" enabled="1" default="0" rank="541" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.1.2 bis - Partits polítics des del 1939</name_singular>
+              <name_plural>4.1.2 bis - Partits polítics des del 1939</name_plural>
+              <description>4.1.2 bis - Partits polítics des del 1939</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_1_3" enabled="1" default="0" rank="542" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.1.3 - Política sota el franquisme 1939-1975</name_singular>
+              <name_plural>4.1.3 - Política sota el franquisme 1939-1975</name_plural>
+              <description>4.1.3 - Política sota el franquisme 1939-1975</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_1_4" enabled="1" default="0" rank="543" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.1.4 - Política des del 1976</name_singular>
+              <name_plural>4.1.4 - Política des del 1976</name_plural>
+              <description>4.1.4 - Política des del 1976</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_2" enabled="1" default="0" rank="544" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.2 - Moviment obrer i sindicats en general</name_singular>
+              <name_plural>4.2 - Moviment obrer i sindicats en general</name_plural>
+              <description>4.2 - Moviment obrer i sindicats en general</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_2_1" enabled="1" default="0" rank="545" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.2.1 - Sindicats en el període 1901-1939</name_singular>
+              <name_plural>4.2.1 - Sindicats en el període 1901-1939</name_plural>
+              <description>4.2.1 - Sindicats en el període 1901-1939</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_2_2" enabled="1" default="0" rank="546" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.2.2 - Sindicats sota el franquisme</name_singular>
+              <name_plural>4.2.2 - Sindicats sota el franquisme</name_plural>
+              <description>4.2.2 - Sindicats sota el franquisme</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_2_3" enabled="1" default="0" rank="547" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.2.3 - Sindicats des del 1976</name_singular>
+              <name_plural>4.2.3 - Sindicats des del 1976</name_plural>
+              <description>4.2.3 - Sindicats des del 1976</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_3" enabled="1" default="0" rank="548" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.3 - Murals i pintades</name_singular>
+              <name_plural>4.3 - Murals i pintades</name_plural>
+              <description>4.3 - Murals i pintades</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_4" enabled="1" default="0" rank="549" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.4 - Conflictes socials</name_singular>
+              <name_plural>4.4 - Conflictes socials</name_plural>
+              <description>4.4 - Conflictes socials</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_4_1" enabled="1" default="0" rank="550" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.4.1 - Setmana Tràgica 1909</name_singular>
+              <name_plural>4.4.1 - Setmana Tràgica 1909</name_plural>
+              <description>4.4.1 - Setmana Tràgica 1909</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_4_2" enabled="1" default="0" rank="551" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.4.2 - Guerra Civil 1936-1939</name_singular>
+              <name_plural>4.4.2 - Guerra Civil 1936-1939</name_plural>
+              <description>4.4.2 - Guerra Civil 1936-1939</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="4_5" enabled="1" default="0" rank="552" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>4.5 - Consell Municipal Districte X. Premis Sant Martí.</name_singular>
+              <name_plural>4.5 - Consell Municipal Districte X. Premis Sant Martí.</name_plural>
+              <description>4.5 - Consell Municipal Districte X. Premis Sant Martí.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5" enabled="1" default="0" rank="553" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5 - EVOLUCIÓ URBANÍSTICA</name_singular>
+              <name_plural>5 - EVOLUCIÓ URBANÍSTICA</name_plural>
+              <description>5 - EVOLUCIÓ URBANÍSTICA</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_0" enabled="1" default="0" rank="554" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.0 - Història i visions generals del barri</name_singular>
+              <name_plural>5.0 - Història i visions generals del barri</name_plural>
+              <description>5.0 - Història i visions generals del barri</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1" enabled="1" default="0" rank="555" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1 - Urbanisme</name_singular>
+              <name_plural>5.1 - Urbanisme</name_plural>
+              <description>5.1 - Urbanisme</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_1" enabled="1" default="0" rank="556" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.1 - Cartografia</name_singular>
+              <name_plural>5.1.1 - Cartografia</name_plural>
+              <description>5.1.1 - Cartografia</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2" enabled="1" default="0" rank="557" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2 - Models de creixement urbà</name_singular>
+              <name_plural>5.1.2 - Models de creixement urbà</name_plural>
+              <description>5.1.2 - Models de creixement urbà</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_1" enabled="1" default="0" rank="558" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.1 - Masies i creixement rural</name_singular>
+              <name_plural>5.1.2.1 - Masies i creixement rural</name_plural>
+              <description>5.1.2.1 - Masies i creixement rural</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_2" enabled="1" default="0" rank="559" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.2 - Ciutat jardí-Parcs</name_singular>
+              <name_plural>5.1.2.2 - Ciutat jardí-Parcs</name_plural>
+              <description>5.1.2.2 - Ciutat jardí-Parcs</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_3" enabled="1" default="0" rank="560" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.3 - Eixample Cerdà</name_singular>
+              <name_plural>5.1.2.3 - Eixample Cerdà</name_plural>
+              <description>5.1.2.3 - Eixample Cerdà</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_4" enabled="1" default="0" rank="561" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.4 - Polígons residencials i habitatges</name_singular>
+              <name_plural>5.1.2.4 - Polígons residencials i habitatges</name_plural>
+              <description>5.1.2.4 - Polígons residencials i habitatges</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_5" enabled="1" default="0" rank="562" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.5 - Urbanització marginal-Barraquisme</name_singular>
+              <name_plural>5.1.2.5 - Urbanització marginal-Barraquisme</name_plural>
+              <description>5.1.2.5 - Urbanització marginal-Barraquisme</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_6" enabled="1" default="0" rank="563" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.6 - Vila Olímpica</name_singular>
+              <name_plural>5.1.2.6 - Vila Olímpica</name_plural>
+              <description>5.1.2.6 - Vila Olímpica</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_7" enabled="1" default="0" rank="564" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.7 - Port Olímpic</name_singular>
+              <name_plural>5.1.2.7 - Port Olímpic</name_plural>
+              <description>5.1.2.7 - Port Olímpic</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_8" enabled="1" default="0" rank="565" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.8 - Diagonal Mar</name_singular>
+              <name_plural>5.1.2.8 - Diagonal Mar</name_plural>
+              <description>5.1.2.8 - Diagonal Mar</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_2_9" enabled="1" default="0" rank="566" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.2.9 - Diagonal Poblenou</name_singular>
+              <name_plural>5.1.2.9 - Diagonal Poblenou</name_plural>
+              <description>5.1.2.9 - Diagonal Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_1" enabled="1" default="0" rank="567" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.1 - Carrer Pere IV (carretera de Mataró, camí de França)</name_singular>
+              <name_plural>5.1.3.1 - Carrer Pere IV (carretera de Mataró, camí de França)</name_plural>
+              <description>5.1.3.1 - Carrer Pere IV (carretera de Mataró, camí de França)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_2" enabled="1" default="0" rank="568" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.2 - Carrer Marià Aguiló (de Sant Pere, de Sant Joan de Malta)</name_singular>
+              <name_plural>5.1.3.2 - Carrer Marià Aguiló (de Sant Pere, de Sant Joan de Malta)</name_plural>
+              <description>5.1.3.2 - Carrer Marià Aguiló (de Sant Pere, de Sant Joan de Malta)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_3" enabled="1" default="0" rank="569" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.3 - Avinguda Icària (López Varela, passeig o camí del cementiri)</name_singular>
+              <name_plural>5.1.3.3 - Avinguda Icària (López Varela, passeig o camí del cementiri)</name_plural>
+              <description>5.1.3.3 - Avinguda Icària (López Varela, passeig o camí del cementiri)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_4" enabled="1" default="0" rank="570" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.4 - Rambla del Poblenou (passeig del Triomf)</name_singular>
+              <name_plural>5.1.3.4 - Rambla del Poblenou (passeig del Triomf)</name_plural>
+              <description>5.1.3.4 - Rambla del Poblenou (passeig del Triomf)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_5" enabled="1" default="0" rank="571" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.5 - Carrer Joncar (Juncar, carrer dels gitanos)</name_singular>
+              <name_plural>5.1.3.5 - Carrer Joncar (Juncar, carrer dels gitanos)</name_plural>
+              <description>5.1.3.5 - Carrer Joncar (Juncar, carrer dels gitanos)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_6" enabled="1" default="0" rank="572" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.6 - Diagonal</name_singular>
+              <name_plural>5.1.3.6 - Diagonal</name_plural>
+              <description>5.1.3.6 - Diagonal</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_3_7" enabled="1" default="0" rank="573" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.3.7 - Altres carrers</name_singular>
+              <name_plural>5.1.3.7 - Altres carrers</name_plural>
+              <description>5.1.3.7 - Altres carrers</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_4" enabled="1" default="0" rank="574" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.4 - Elements urbans característics</name_singular>
+              <name_plural>5.1.4 - Elements urbans característics</name_plural>
+              <description>5.1.4 - Elements urbans característics</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_4_1" enabled="1" default="0" rank="575" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.4.1 - Cementiri</name_singular>
+              <name_plural>5.1.4.1 - Cementiri</name_plural>
+              <description>5.1.4.1 - Cementiri</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_4_3" enabled="1" default="0" rank="576" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.4.3 - Platges. Platja de la Mar Bella.</name_singular>
+              <name_plural>5.1.4.3 - Platges. Platja de la Mar Bella.</name_plural>
+              <description>5.1.4.3 - Platges. Platja de la Mar Bella.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_4_4" enabled="1" default="0" rank="577" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.4.4 - Places del Poblenou</name_singular>
+              <name_plural>5.1.4.4 - Places del Poblenou</name_plural>
+              <description>5.1.4.4 - Places del Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_4_5" enabled="1" default="0" rank="578" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.4.5 - Mercat de la Unió</name_singular>
+              <name_plural>5.1.4.5 - Mercat de la Unió</name_plural>
+              <description>5.1.4.5 - Mercat de la Unió</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_5" enabled="1" default="0" rank="579" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.5 - Barris del Poblenou</name_singular>
+              <name_plural>5.1.5 - Barris del Poblenou</name_plural>
+              <description>5.1.5 - Barris del Poblenou</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_5_1" enabled="1" default="0" rank="580" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.5.1 - Barri del Taulat</name_singular>
+              <name_plural>5.1.5.1 - Barri del Taulat</name_plural>
+              <description>5.1.5.1 - Barri del Taulat</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_5_2" enabled="1" default="0" rank="581" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.5.2 - Barri d'Icària</name_singular>
+              <name_plural>5.1.5.2 - Barri d'Icària</name_plural>
+              <description>5.1.5.2 - Barri d'Icària</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_1_5_3" enabled="1" default="0" rank="582" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.1.5.3 - Barri de la plata</name_singular>
+              <name_plural>5.1.5.3 - Barri de la plata</name_plural>
+              <description>5.1.5.3 - Barri de la plata</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2" enabled="1" default="0" rank="583" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2 - Arquitectura</name_singular>
+              <name_plural>5.2 - Arquitectura</name_plural>
+              <description>5.2 - Arquitectura</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_1" enabled="1" default="0" rank="584" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.1 - Arquitectura residencial</name_singular>
+              <name_plural>5.2.1 - Arquitectura residencial</name_plural>
+              <description>5.2.1 - Arquitectura residencial</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_2" enabled="1" default="0" rank="585" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.2 - Arquitectura industrial</name_singular>
+              <name_plural>5.2.2 - Arquitectura industrial</name_plural>
+              <description>5.2.2 - Arquitectura industrial</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_3" enabled="1" default="0" rank="586" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.3 - Arquitectura de serveis</name_singular>
+              <name_plural>5.2.3 - Arquitectura de serveis</name_plural>
+              <description>5.2.3 - Arquitectura de serveis</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_4" enabled="1" default="0" rank="587" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.4 - Mobiliari urbà</name_singular>
+              <name_plural>5.2.4 - Mobiliari urbà</name_plural>
+              <description>5.2.4 - Mobiliari urbà</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_5" enabled="1" default="0" rank="588" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.5 - Detalls arquitectònics</name_singular>
+              <name_plural>5.2.5 - Detalls arquitectònics</name_plural>
+              <description>5.2.5 - Detalls arquitectònics</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_6" enabled="1" default="0" rank="589" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.6 - Monuments</name_singular>
+              <name_plural>5.2.6 - Monuments</name_plural>
+              <description>5.2.6 - Monuments</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_7" enabled="1" default="0" rank="590" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.7 - Vies de comunicació. Cinturó-ronda del litoral</name_singular>
+              <name_plural>5.2.7 - Vies de comunicació. Cinturó-ronda del litoral</name_plural>
+              <description>5.2.7 - Vies de comunicació. Cinturó-ronda del litoral</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="5_2_8" enabled="1" default="0" rank="591" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>5.2.8 - Pla de la Ribera (arxiu independent)</name_singular>
+              <name_plural>5.2.8 - Pla de la Ribera (arxiu independent)</name_plural>
+              <description>5.2.8 - Pla de la Ribera (arxiu independent)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6" enabled="1" default="0" rank="592" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6 - SERVEIS PÚBLICS</name_singular>
+              <name_plural>6 - SERVEIS PÚBLICS</name_plural>
+              <description>6 - SERVEIS PÚBLICS</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_1" enabled="1" default="0" rank="593" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.1 - Serveis públics en general. Residències de vells.</name_singular>
+              <name_plural>6.1 - Serveis públics en general. Residències de vells.</name_plural>
+              <description>6.1 - Serveis públics en general. Residències de vells.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_1_1" enabled="1" default="0" rank="594" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.1.1 - Sanitat i higiene. Minusvàlids.</name_singular>
+              <name_plural>6.1.1 - Sanitat i higiene. Minusvàlids.</name_plural>
+              <description>6.1.1 - Sanitat i higiene. Minusvàlids.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_1_2" enabled="1" default="0" rank="595" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.1.2 - Medi ambient</name_singular>
+              <name_plural>6.1.2 - Medi ambient</name_plural>
+              <description>6.1.2 - Medi ambient</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_1_3" enabled="1" default="0" rank="596" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.1.3 - Bogatell. Col·lectors.</name_singular>
+              <name_plural>6.1.3 - Bogatell. Col·lectors.</name_plural>
+              <description>6.1.3 - Bogatell. Col·lectors.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_2" enabled="1" default="0" rank="597" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.2 - Educació</name_singular>
+              <name_plural>6.2 - Educació</name_plural>
+              <description>6.2 - Educació</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_2_1" enabled="1" default="0" rank="598" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.2.1 - Escoles públiques</name_singular>
+              <name_plural>6.2.1 - Escoles públiques</name_plural>
+              <description>6.2.1 - Escoles públiques</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_2_2" enabled="1" default="0" rank="599" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.2.2 - Escoles i acadèmies privades</name_singular>
+              <name_plural>6.2.2 - Escoles i acadèmies privades</name_plural>
+              <description>6.2.2 - Escoles i acadèmies privades</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_2_5" enabled="1" default="0" rank="600" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.2.5 - Centre tutelar de Protecció de Menors</name_singular>
+              <name_plural>6.2.5 - Centre tutelar de Protecció de Menors</name_plural>
+              <description>6.2.5 - Centre tutelar de Protecció de Menors</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_2_6" enabled="1" default="0" rank="601" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.2.6 - Centre de Reclusió Femenina de Wad Ras (Presó de dones)</name_singular>
+              <name_plural>6.2.6 - Centre de Reclusió Femenina de Wad Ras (Presó de dones)</name_plural>
+              <description>6.2.6 - Centre de Reclusió Femenina de Wad Ras (Presó de dones)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3" enabled="1" default="0" rank="602" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3 - Transport i circulació en general</name_singular>
+              <name_plural>6.3 - Transport i circulació en general</name_plural>
+              <description>6.3 - Transport i circulació en general</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_1" enabled="1" default="0" rank="603" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.1 - Ferrocarril</name_singular>
+              <name_plural>6.3.1 - Ferrocarril</name_plural>
+              <description>6.3.1 - Ferrocarril</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_2" enabled="1" default="0" rank="604" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.2 - Tramvies</name_singular>
+              <name_plural>6.3.2 - Tramvies</name_plural>
+              <description>6.3.2 - Tramvies</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_2_1" enabled="1" default="0" rank="605" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.2.1 - Tramvies de cavalls</name_singular>
+              <name_plural>6.3.2.1 - Tramvies de cavalls</name_plural>
+              <description>6.3.2.1 - Tramvies de cavalls</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_2_2" enabled="1" default="0" rank="606" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.2.2 - Tramvies de foc</name_singular>
+              <name_plural>6.3.2.2 - Tramvies de foc</name_plural>
+              <description>6.3.2.2 - Tramvies de foc</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_2_3" enabled="1" default="0" rank="607" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.2.3 - Tramvies de via ampla</name_singular>
+              <name_plural>6.3.2.3 - Tramvies de via ampla</name_plural>
+              <description>6.3.2.3 - Tramvies de via ampla</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_2_4" enabled="1" default="0" rank="608" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.2.4 - Tramvies de via estreta</name_singular>
+              <name_plural>6.3.2.4 - Tramvies de via estreta</name_plural>
+              <description>6.3.2.4 - Tramvies de via estreta</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_3" enabled="1" default="0" rank="609" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.3 - Autobusos</name_singular>
+              <name_plural>6.3.3 - Autobusos</name_plural>
+              <description>6.3.3 - Autobusos</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_3_1" enabled="1" default="0" rank="610" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.3.1 - Troleibusos</name_singular>
+              <name_plural>6.3.3.1 - Troleibusos</name_plural>
+              <description>6.3.3.1 - Troleibusos</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_3_2" enabled="1" default="0" rank="611" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.3.2 - Autobusos</name_singular>
+              <name_plural>6.3.3.2 - Autobusos</name_plural>
+              <description>6.3.3.2 - Autobusos</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_3_3" enabled="1" default="0" rank="612" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.3.3 - La Catalana</name_singular>
+              <name_plural>6.3.3.3 - La Catalana</name_plural>
+              <description>6.3.3.3 - La Catalana</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_4" enabled="1" default="0" rank="613" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.4 - Ferrocarril Metropolità de Barcelona. Metro.</name_singular>
+              <name_plural>6.3.4 - Ferrocarril Metropolità de Barcelona. Metro.</name_plural>
+              <description>6.3.4 - Ferrocarril Metropolità de Barcelona. Metro.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_5" enabled="1" default="0" rank="614" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.5 - Cotxeres i garatges</name_singular>
+              <name_plural>6.3.5 - Cotxeres i garatges</name_plural>
+              <description>6.3.5 - Cotxeres i garatges</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_6" enabled="1" default="0" rank="615" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.6 - Instal·lacions i recorreguts</name_singular>
+              <name_plural>6.3.6 - Instal·lacions i recorreguts</name_plural>
+              <description>6.3.6 - Instal·lacions i recorreguts</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="6_3_7" enabled="1" default="0" rank="616" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>6.3.7 - Varis. Clubs de jubilats, ets.</name_singular>
+              <name_plural>6.3.7 - Varis. Clubs de jubilats, ets.</name_plural>
+              <description>6.3.7 - Varis. Clubs de jubilats, ets.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="7" enabled="1" default="0" rank="617" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>7 - Varis</name_singular>
+              <name_plural>7 - Varis</name_plural>
+              <description>7 - Varis</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="7_0" enabled="1" default="0" rank="618" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>7.0 - Sant Martí de Provençals</name_singular>
+              <name_plural>7.0 - Sant Martí de Provençals</name_plural>
+              <description>7.0 - Sant Martí de Provençals</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="7_1" enabled="1" default="0" rank="619" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>7.1 - Cataclismes. Inundacions, nevades, incendis.</name_singular>
+              <name_plural>7.1 - Cataclismes. Inundacions, nevades, incendis.</name_plural>
+              <description>7.1 - Cataclismes. Inundacions, nevades, incendis.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="7_2" enabled="1" default="0" rank="620" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>7.2 - Fets diversos. Successos.</name_singular>
+              <name_plural>7.2 - Fets diversos. Successos.</name_plural>
+              <description>7.2 - Fets diversos. Successos.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="8" enabled="1" default="0" rank="621" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>8 - Serveis</name_singular>
+              <name_plural>8 - Serveis</name_plural>
+              <description>8 - Serveis</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="8_0" enabled="1" default="0" rank="622" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>8.0 - Serveis públics en general. Piscines, etc.</name_singular>
+              <name_plural>8.0 - Serveis públics en general. Piscines, etc.</name_plural>
+              <description>8.0 - Serveis públics en general. Piscines, etc.</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="8_1" enabled="1" default="0" rank="623" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>8.1 - Telèfons</name_singular>
+              <name_plural>8.1 - Telèfons</name_plural>
+              <description>8.1 - Telèfons</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="8_2" enabled="1" default="0" rank="624" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>8.2 - Forces d'ordre públic (policia, mossos, guàrdia civil) i forces armades (exercit)</name_singular>
+              <name_plural>8.2 - Forces d'ordre públic (policia, mossos, guàrdia civil) i forces armades (exercit)</name_plural>
+              <description>8.2 - Forces d'ordre públic (policia, mossos, guàrdia civil) i forces armades (exercit)</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="8_3" enabled="1" default="0" rank="625" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>8.3 - Hisenda Pública</name_singular>
+              <name_plural>8.3 - Hisenda Pública</name_plural>
+              <description>8.3 - Hisenda Pública</description>
+            </label>
+          </labels>
+        </item>
+        <item idno="9" enabled="1" default="0" rank="626" type="concept">
+          <labels>
+            <label locale="ca_ES" preferred="1">
+              <name_singular>9 - Rifes</name_singular>
+              <name_plural>9 - Rifes</name_plural>
+              <description>9 - Rifes</description>
+            </label>
+          </labels>
+        </item>
+      </items>
+    </list>
+  </lists>
+  <elementSets>
+    <metadataElement code="number" datatype="Integer">
+      <labels>
+        <label locale="es_ES">
+          <name>Numero de registro</name>
+        </label>
+        <label locale="ca_ES">
+          <name>Numero de registre</name>
+        </label>
+        <label locale="en_US">
+          <name>Register number</name>
+        </label>
+      </labels>
+      <settings>
+        <setting name="maxChars">6</setting>
+        <setting name="maxValue">999999</setting>
+        <setting name="doesNotTakeLocale">1</setting>
+        <setting name="mustBeUnique">1</setting>
+      </settings>
+      <typeRestrictions>
+        <restriction>
+          <table>ca_objects</table>
+          <type>ahpn_fotos</type>
+          <settings>
+            <setting name="minAttributesPerRow">1</setting>
+            <setting name="maxAttributesPerRow">1</setting>
+            <setting name="minimumAttributeBundlesToDisplay">1</setting>
+          </settings>
+        </restriction>
+      </typeRestrictions>
+    </metadataElement>
+    <metadataElement code="folder" datatype="List" list="folders">
+      <labels>
+        <label locale="es_ES">
+          <name>Carpeta</name>
+          <description>Carpeta en la que se ha guardado físicamente el documento original</description>
+        </label>
+        <label locale="ca_ES">
+          <name>Carpeta</name>
+          <description>Carpeta en la que se ha guardado físicamente el documento original</description>
+        </label>
+      </labels>
+      <settings>
+        <setting name="implicitNullOption">1</setting>
+        <setting name="render">select</setting>
+        <setting name="restrictToTypes">2</setting>
+      </settings>
+      <typeRestrictions>
+        <restriction>
+          <table>ca_objects</table>
+          <type>ahpn_fotos</type>
+          <settings>
+            <setting name="minAttributesPerRow"/>
+            <setting name="maxAttributesPerRow">1</setting>
+            <setting name="minimumAttributeBundlesToDisplay">1</setting>
+          </settings>
+        </restriction>
+      </typeRestrictions>
+    </metadataElement>
+    <metadataElement code="subjects" datatype="List" list="subjects">
+      <labels>
+        <label locale="es_ES">
+          <name>Temas</name>
+          <description>Temas de clasificación interna.</description>
+        </label>
+        <label locale="ca_ES">
+          <name>Assumpte</name>
+          <description>Assumptes de classificació interna.</description>
+        </label>
+      </labels>
+      <settings>
+        <setting name="implicitNullOption">1</setting>
+        <setting name="render">select</setting>
+        <setting name="restrictToTypes">2</setting>
+      </settings>
+      <typeRestrictions>
+        <restriction>
+          <table>ca_objects</table>
+          <settings>
+            <setting name="minAttributesPerRow"/>
+            <setting name="maxAttributesPerRow"/>
+            <setting name="minimumAttributeBundlesToDisplay">1</setting>
+          </settings>
+        </restriction>
+      </typeRestrictions>
+    </metadataElement>
+  </elementSets>
+  <userInterfaces>
+    <userInterface code="foto_ui" type="ca_objects" typeRestrictions="ahpn_fotos" includeSubtypes="0">
+      <labels>
+        <label locale="en_US">
+          <name>AHPN Foto Editor</name>
+        </label>
+        <label locale="ca_ES">
+          <name>Edició de fotos de l'AHPN</name>
+        </label>
+        <label locale="es_ES">
+          <name>Edición de fotos del AHPN</name>
+        </label>
+      </labels>
+      <userAccess>
+        <permission user="administrator" access="edit"/>
+      </userAccess>
+      <screens>
+        <screen idno="ahpn_foto_basic" default="1" color="000000" typeRestrictions="ahpn_fotos" includeSubtypes="0">
+          <labels>
+            <label locale="en_US">
+              <name>Basic</name>
+            </label>
+            <label locale="es_ES">
+              <name>Básico</name>
+            </label>
+            <label locale="ca_ES">
+              <name>Bàsic</name>
+            </label>
+          </labels>
+          <bundlePlacements>
+            <placement code="idno1">
+              <bundle>idno</bundle>
+            </placement>
+            <placement code="ca_attribute_number2">
+              <bundle>ca_objects.number</bundle>
+              <settings>
+                <setting name="readonly"/>
+                <setting name="expand_collapse_value">dont_force</setting>
+                <setting name="expand_collapse_no_value">dont_force</setting>
+              </settings>
+            </placement>
+            <placement code="preferred_labels2">
+              <bundle>preferred_labels</bundle>
+            </placement>
+            <placement code="ca_attribute_description2">
+              <bundle>ca_objects.description</bundle>
+            </placement>
+            <placement code="ca_attribute_date5">
+              <bundle>ca_objects.date</bundle>
+            </placement>
+            <placement code="ca_object_representations5">
+              <bundle>ca_object_representations</bundle>
+            </placement>
+            <placement code="ca_entities6">
+              <bundle>ca_entities</bundle>
+            </placement>
+            <placement code="ca_places7">
+              <bundle>ca_places</bundle>
+            </placement>
+          </bundlePlacements>
+        </screen>
+        <screen idno="classification_screen" default="0" color="000000" typeRestrictions="ahpn_fotos" includeSubtypes="0">
+          <labels>
+            <label locale="en_US">
+              <name>Classification</name>
+            </label>
+            <label locale="es_ES">
+              <name>Clasificación</name>
+            </label>
+              <label locale="ca_ES">
+                  <name>Classificació</name>
+              </label>
+          </labels>
+          <bundlePlacements>
+            <placement code="ca_attribute_folder1">
+              <bundle>ca_objects.folder</bundle>
+            </placement>
+            <placement code="ca_attribute_subjects2">
+              <bundle>ca_objects.subjects</bundle>
+            </placement>
+          </bundlePlacements>
+        </screen>
+        <screen idno="media_screen" default="0" color="000000" typeRestrictions="ahpn_fotos" includeSubtypes="0">
+          <labels>
+            <label locale="en_US">
+              <name>Media</name>
+            </label>
+            <label locale="es_ES">
+              <name>Representaciones digitales</name>
+            </label>
+            <label locale="ca_ES">
+              <name>Representacions digitals</name>
+            </label>
+          </labels>
+          <bundlePlacements>
+            <placement code="ca_storage_locations1">
+              <bundle>ca_storage_locations</bundle>
+            </placement>
+            <placement code="ca_object_circulation_status2">
+              <bundle>ca_object_circulation_status</bundle>
+            </placement>
+            <placement code="ca_movements3">
+              <bundle>ca_movements</bundle>
+            </placement>
+          </bundlePlacements>
+        </screen>
+      </screens>
+    </userInterface>
+  </userInterfaces>
+  <relationshipTypes>
+  </relationshipTypes>
+</profile>
