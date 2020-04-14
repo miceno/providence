@@ -152,8 +152,8 @@
                 <item idno="ahpn_fotos" enabled="1" default="0" rank="184" type="facet">
                     <labels>
                         <label locale="en_US" preferred="1">
-                            <name_singular>Photography</name_singular>
-                            <name_plural>Photography</name_plural>
+                            <name_singular>AHPN Photography</name_singular>
+                            <name_plural>AHPN Photographies</name_plural>
                         </label>
                         <label locale="ca_ES" preferred="1">
                             <name_singular>Fotografia AHPN</name_singular>
@@ -164,20 +164,20 @@
                 </item>
             </items>
         </list>
-        <list code="medium_types" hierarchical="0" system="1" vocabulary="1">
+        <list code="material_types" hierarchical="0" system="1" vocabulary="1">
             <labels>
                 <label locale="en_US">
-                    <name>Medium types</name>
+                    <name>Material types</name>
                 </label>
                 <label locale="ca_ES">
-                    <name>Tipus de suport</name>
+                    <name>Tipus de material</name>
                 </label>
                 <label locale="es_ES">
                     <name>Soporte</name>
                 </label>
             </labels>
             <items>
-                <item idno="digital_medium" enabled="1" default="0" rank="188" type="concept">
+                <item idno="digital" enabled="1" default="0" rank="188" type="concept">
                     <labels>
                         <label locale="en_US" preferred="1">
                             <name_singular>Digital</name_singular>
@@ -186,7 +186,7 @@
                         </label>
                     </labels>
                 </item>
-                <item idno="paper_medium" enabled="1" default="0" rank="189" type="concept">
+                <item idno="paper" enabled="1" default="0" rank="189" type="concept">
                     <labels>
                         <label locale="en_US" preferred="1">
                             <name_singular>Paper</name_singular>
@@ -2184,6 +2184,41 @@
                 </restriction>
             </typeRestrictions>
         </metadataElement>
+        <metadataElement code="material" datatype="List" list="material_types">
+            <labels>
+                <label locale="en_US">
+                    <name>Material type</name>
+                    <description>Type of the material of the object.</description>
+                </label>
+                <label locale="es_ES">
+                    <name>Tipo de material</name>
+                    <description>Tipo de material del objeto.</description>
+                </label>
+                <label locale="es_ES">
+                    <name>Tipus de material</name>
+                    <description>Tipus de material de l'objecte.</description>
+                </label>
+            </labels>
+            <settings>
+                <setting name="doesNotTakeLocale">1</setting>
+                <setting name="implicitNullOption">1</setting>
+                <setting name="render">radio_buttons</setting>
+                <setting name="maxColumns">4</setting>
+                <setting name="restrictToTypes">2</setting>
+            </settings>
+            <typeRestrictions>
+                <restriction>
+                    <table>ca_objects</table>
+                    <type/>
+                    <includeSubtypes>1</includeSubtypes>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">1</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+            </typeRestrictions>
+        </metadataElement>
     </elementSets>
     <userInterfaces>
         <userInterface code="foto_ui" type="ca_objects" typeRestrictions="ahpn_fotos" includeSubtypes="0">
@@ -2244,6 +2279,9 @@
                         </placement>
                         <placement code="ca_places7">
                             <bundle>ca_places</bundle>
+                        </placement>
+                        <placement code="ca_attribute_material9">
+                            <bundle>ca_objects.material</bundle>
                         </placement>
                     </bundlePlacements>
                 </screen>
