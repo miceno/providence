@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: CollectiveAccess Providence\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-16 21:50+0200\n"
-"PO-Revision-Date: 2020-04-16 22:51+0200\n"
+"PO-Revision-Date: 2020-04-17 23:32+0200\n"
 "Last-Translator: Orestes Sanchez <orestes@estotienearreglo.es>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/collectiveaccess/"
 "collectiveaccess-providence/language/ca_ES/)\n"
@@ -1672,12 +1672,12 @@ msgstr "%1 dado de baja"
 
 #: app/helpers/displayHelpers.php:965
 msgid "[HOME]"
-msgstr ""
+msgstr "[INICI]"
 
 #: app/helpers/displayHelpers.php:970 app/models/ca_objects.php:131
 #: app/models/ca_objects.php:600
 msgid "Home location"
-msgstr "Ubicació habitual"
+msgstr "Ubicació d'inici"
 
 #: app/helpers/displayHelpers.php:1032
 msgid "new screen"
@@ -1742,7 +1742,7 @@ msgstr "Duplicar este/a %1"
 #: themes/default/views/bundles/set_home_location_html.php:151
 #| msgid "Storage location"
 msgid "Set home location"
-msgstr ""
+msgstr "Indicar l'ubicació d'inici"
 
 #: app/helpers/displayHelpers.php:1267
 msgid "Download all media associated with objects in this lot"
@@ -2133,11 +2133,11 @@ msgstr "per defecte"
 
 #: app/helpers/displayHelpers.php:3388
 msgid "↑"
-msgstr ""
+msgstr "↑"
 
 #: app/helpers/displayHelpers.php:3388
 msgid "↓"
-msgstr ""
+msgstr "↓"
 
 #: app/helpers/displayHelpers.php:3388
 #| msgid "Sort using"
@@ -2147,11 +2147,11 @@ msgstr ""
 #: app/helpers/displayHelpers.php:3405
 #| msgid "Related storage locations"
 msgid "Return to home locations"
-msgstr ""
+msgstr "Tornar a l'ubicació d'inici"
 
 #: app/helpers/displayHelpers.php:3410
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: app/helpers/displayHelpers.php:3830
 msgid "No media"
@@ -2160,16 +2160,16 @@ msgstr "Sense media"
 #: app/helpers/displayHelpers.php:3915
 #| msgid "Add imported media to set %1"
 msgid "Add item to %1"
-msgstr ""
+msgstr "Afegir l'element a %1"
 
 #: app/helpers/displayHelpers.php:3917
 #| msgid "List to add items to"
 msgid "Login to add item to %1"
-msgstr ""
+msgstr "Inici la sessió per afegir l'element a %1"
 
 #: app/helpers/displayHelpers.php:3963
 msgid "Zoom"
-msgstr ""
+msgstr "Aumentar"
 
 #: app/helpers/displayHelpers.php:3981
 #: themes/default/views/administrate/access/user_tools_html.php:39
@@ -2192,7 +2192,7 @@ msgstr "Descargar"
 #: app/lib/Media/MediaViewers/Spin360.php:102
 #| msgid "Invalid id: %1"
 msgid "Invalid identifier %1"
-msgstr ""
+msgstr "L'identificador no es vàlid: %1"
 
 #: app/helpers/displayHelpers.php:4081 app/helpers/displayHelpers.php:4153
 #: app/lib/BaseEditorController.php:1940 app/lib/BaseEditorController.php:1954
@@ -2229,7 +2229,7 @@ msgstr ""
 #: app/lib/Service/IIIFService.php:150
 #| msgid "Invalid interval"
 msgid "Invalid identifier"
-msgstr ""
+msgstr "L'identificador no es vàlid"
 
 #: app/helpers/displayHelpers.php:4368
 #| msgid "Invalid provider '%1'."
@@ -2255,7 +2255,7 @@ msgstr "VACÍO"
 #: app/helpers/exportHelpers.php:168 app/helpers/exportHelpers.php:186
 #| msgid "Invalid transformation %1"
 msgid "Invalid format %1"
-msgstr ""
+msgstr "El formato no es vàlid"
 
 #: app/helpers/exportHelpers.php:190
 #| msgid "Invalid search type"
@@ -5811,14 +5811,12 @@ msgid "Horizontal hierarchy browser with search"
 msgstr "Explorador de jerarquía en horizontal con búsqueda"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:124
-#, fuzzy
 msgid "Vertical hierarchy browser (upward)"
-msgstr "Navegador de jerarquia en vertical (cara arriba)"
+msgstr "Navegador de jerarquia en vertical (ascendent)"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:125
-#, fuzzy
 msgid "Vertical hierarchy browser (downward)"
-msgstr "Navegador de jerarquia en vertical (cara abajo)"
+msgstr "Navegador de jerarquia en vertical (descendent)"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:134
 msgid "Automatically shrink horizontal hierarchy browser"
@@ -6263,33 +6261,29 @@ msgstr ""
 
 #: app/lib/Auth/Adapters/Okta.php:134
 msgid "User is not active."
-msgstr "L'usuari està inactiu"
+msgstr "L'usuari està inactiu."
 
 #: app/lib/Auth/Adapters/Okta.php:150
-#, fuzzy
 #| msgid "Tag relation id is invalid"
 msgid "User information is invalid."
-msgstr "Etiqueta de relación de identificación no válida"
+msgstr ""
 
 #: app/lib/Auth/Adapters/Okta.php:232
 msgid "Could not exchange Okta code for an access token"
 msgstr ""
 
 #: app/lib/Auth/Adapters/Okta.php:235
-#, fuzzy
 #| msgid "Media replication for %1 failed"
 msgid "Verification of Okta JWT failed"
-msgstr "La replicación de archivo de contenido para %1 a fallado"
+msgstr ""
 
 #: app/lib/Auth/Adapters/Okta.php:241
 msgid "An Okta error during login has occurred"
 msgstr ""
 
 #: app/lib/Auth/Adapters/Okta.php:357
-#, fuzzy
-#| msgid "Could not connect to GeoNames"
 msgid "Could not connect to Okta."
-msgstr "No se ha podido conectar con GeoNames"
+msgstr "No s'ha pogut connectar amb Okta."
 
 #: app/lib/Auth/Adapters/OpenLDAP.php:53 app/lib/Auth/Adapters/OpenLDAP.php:83
 #: app/lib/Auth/Adapters/OpenLDAP.php:116
@@ -6375,10 +6369,8 @@ msgid "Could not duplicate %1: %2"
 msgstr "No se ha podido duplicar %1: %2"
 
 #: app/lib/BaseEditorController.php:256
-#, fuzzy
-#| msgid "Add relationship"
 msgid "Added relationship"
-msgstr "Añadir relación"
+msgstr "Afegir relació"
 
 #: app/lib/BaseEditorController.php:291 app/lib/BaseEditorController.php:490
 #: app/lib/BaseModel.php:5693
@@ -6426,22 +6418,16 @@ msgid "Transferred %1 relationships to <em>%2</em> (%3)"
 msgstr "Transferidas %1 relaciones a <em>%2</em> (%3)"
 
 #: app/lib/BaseEditorController.php:573
-#, fuzzy
-#| msgid "Transferred %1 relationship to <em>%2</em> (%3)"
 msgid "Transferred %1 children to <em>%2</em> (%3)"
-msgstr "Transferida %1 relación a <em>%2</em> (%3)"
+msgstr "S'han transferit %1 fills a <em>%2</em> (%3)"
 
 #: app/lib/BaseEditorController.php:593
-#, fuzzy
-#| msgid "Deleted %1"
 msgid "Deleted %1 child"
-msgstr "%1 esborrat"
+msgstr "S'ha esborrat %1 fill"
 
 #: app/lib/BaseEditorController.php:593
-#, fuzzy
-#| msgid "Deleted %1"
 msgid "Deleted %1 children"
-msgstr "%1 esborrat"
+msgstr "S'han esborrat %1 fills"
 
 #: app/lib/BaseEditorController.php:602
 msgid "Could not move references to other items in metadata before delete: %1"
@@ -6458,10 +6444,8 @@ msgid "Could not find view for PDF"
 msgstr "No se ha encontrado visualización para el PDF"
 
 #: app/lib/BaseEditorController.php:900
-#, fuzzy
-#| msgid "Unknown format %1"
 msgid "Unsupported format: %1"
-msgstr "Formato desconocido %1"
+msgstr "Format desconegut: %1"
 
 #: app/lib/BaseEditorController.php:943
 msgid "No access to element"
@@ -6500,16 +6484,12 @@ msgid "Invalid object/representation"
 msgstr "Objeto/representación inválido"
 
 #: app/lib/BaseEditorController.php:2025
-#, fuzzy
-#| msgid "Invalid subject"
 msgid "Invalid object/media"
-msgstr "Tema inválido"
+msgstr "L'Objecte o la seva representació no son correctes"
 
 #: app/lib/BaseEditorController.php:2116
-#, fuzzy
-#| msgid "Invalid type_id"
 msgid "Invalid type"
-msgstr "type_id inválido"
+msgstr "El tipus no es correcte"
 
 #: app/lib/BaseEditorController.php:2321
 msgid "Invalid representation_id"
@@ -6532,22 +6512,16 @@ msgid "downloaded_file.%1"
 msgstr "archivo_descargado.%1"
 
 #: app/lib/BaseEditorController.php:2590
-#, fuzzy
-#| msgid "Invalid time"
 msgid "Invalid file"
-msgstr "Tiempo no válido"
+msgstr "El fitxer no es correcte"
 
 #: app/lib/BaseEditorController.php:2665
-#, fuzzy
-#| msgid "Access denied"
 msgid "Access denied to object"
-msgstr "Acceso denegado"
+msgstr "Acces denegat"
 
 #: app/lib/BaseEditorController.php:2689
-#, fuzzy
-#| msgid "No roles have been configured"
 msgid "No policies configured"
-msgstr "No s'ha configurat cap càrrec"
+msgstr "No s'ha configurat cap política"
 
 #: app/lib/BaseEditorController.php:2747
 msgid "%1 %2 returned to home location; %3 already home"
@@ -6558,16 +6532,12 @@ msgid "%1 %2 returned to home locations; %3 already home"
 msgstr ""
 
 #: app/lib/BaseEditorController.php:2749
-#, fuzzy
-#| msgid "Create storage locations"
 msgid "%1 %2 returned to home location"
-msgstr "Crear localizaciones"
+msgstr "S'ha tornat %1 %2 a l'ubicació d'inici"
 
 #: app/lib/BaseEditorController.php:2749
-#, fuzzy
-#| msgid "Create storage locations"
 msgid "%1 %2 returned to home locations"
-msgstr "Crear localizaciones"
+msgstr "S'han tornat %1 %2 a l'ubicació d'inici"
 
 #: app/lib/BaseEditorController.php:2752
 #, fuzzy
@@ -7349,7 +7319,7 @@ msgstr ""
 
 #: app/lib/BatchProcessor.php:347
 msgid "Invalid type_id"
-msgstr "type_id inválido"
+msgstr "El type_id no es correcto"
 
 #: app/lib/BatchProcessor.php:545 app/lib/BatchProcessor.php:557
 #: app/lib/BatchProcessor.php:568
@@ -7626,7 +7596,7 @@ msgstr "Criterios de tipo no válidos"
 #: app/lib/Browse/BrowseEngine.php:2901
 #: themes/default/views/administrate/setup/Search/ajax_refine_facet_html.php:140
 msgid "Type "
-msgstr "Tipus"
+msgstr "Tipus "
 
 #: app/lib/BundlableLabelableBaseModelWithAttributes.php:171
 msgid "Type must be specified"
@@ -12845,7 +12815,7 @@ msgid ""
 "enabled then install may take some time"
 msgstr ""
 "Saltar càrrecs. Per defecte és fals, però si té molts càrrecs i el control "
-"d'accés activat, la instal·lació podria allargar-se en el temps."
+"d'accés activat, la instal·lació podria allargar-se en el temps"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:191
 #: app/lib/Utils/CLIUtils/Configuration.php:216
@@ -15616,7 +15586,7 @@ msgstr ""
 #: app/lib/Utils/CLIUtils/Performance.php:86
 #: app/lib/Utils/CLIUtils/Performance.php:96
 msgid "["
-msgstr ""
+msgstr "["
 
 #: app/lib/Utils/CLIUtils/Performance.php:110
 #, fuzzy
@@ -15764,7 +15734,7 @@ msgstr ""
 #: app/lib/Utils/DataMigrationUtils.php:177
 #: app/lib/Utils/DataMigrationUtils.php:924
 msgid "[%1] "
-msgstr ""
+msgstr "[%1] "
 
 #: app/lib/Utils/DataMigrationUtils.php:201
 #, fuzzy
@@ -28122,7 +28092,7 @@ msgstr ""
 
 #: app/plugins/helpMenu/helpMenuPlugin.php:79
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: app/plugins/historyMenu/historyMenuPlugin.php:34
 msgid "Adds a \"history\" menu listing all recently edited items"
@@ -28232,11 +28202,11 @@ msgstr "No se ha podido crear la raíz para la relación %1: %2"
 
 #: app/plugins/prepopulate/lib/applyPrepopulateRulesTool.php:145
 msgid "xxx."
-msgstr ""
+msgstr "xxx."
 
 #: app/plugins/prepopulate/lib/applyPrepopulateRulesTool.php:159
 msgid "yyy."
-msgstr ""
+msgstr "yyy."
 
 #: app/plugins/prepopulate/prepopulatePlugin.php:41
 msgid ""
