@@ -36,23 +36,25 @@ require_once(__CA_APP_DIR__."/helpers/systemHelpers.php");
 class SystemHelpersExecTest extends TestCase {
 	# -------------------------------------------------------
 	public function testExecReturnsValidExitCode() {
-		$status_code = 1;
-		caExec('/bin/ls', $long_output, $status_code);
+		$result = 0;
+		caExec('/bin/ls', $_, $result);
 
-		$this->assertEquals(0, $status_code);
+		$this->assertEquals(0, $result);
 	}
 
 	public function testExecFailsWrongCommand() {
-		caExec('bad_command 2>&1', $_, $status_code);
+		$result = 0;
+		caExec('bad_command 2>&1', $_, $result);
 
-		$this->assertEquals(127, $status_code);
+		$this->assertEquals(127, $result);
 	}
 
-	public function testExecShortResultIsLastLineOfResult() {
-		$short_output = caExec('echo "Hi\nWorld!\nThis is a 3-line message."', $long_output);
+	public function testExecOutputAndResultAreEqual() {
+		$result = 0;
+		$output = caExec('/bin/ls -la', $_, $result);
 
-		$this->assertGreaterThan(1, count($long_output));
-		$this->assertEquals($long_output[count($long_output)-1], $short_output);
+		$this->assertEquals(0, $result);
+		$this->assertEquals($_, $output);
 	}
 	# -------------------------------------------------------
 }

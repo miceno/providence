@@ -61,8 +61,9 @@
 	function caExecExpected( $command, &$output = null, $expectedStatus = 0 ) {
 		$logger = getLogger();
 
+		$return_status = 0;
 		caExec( $command, $output, $return_status );
-		$vb_result = $return_status === $expectedStatus;
+		$vb_result = ($return_status === $expectedStatus);
 		if (!$vb_result){
 			$logger->log( "Status: $return_status (expected " . $expectedStatus . ')', LOG_ERR);
 		}
@@ -77,13 +78,16 @@
 	 * @param      $command
 	 * @param      $output
 	 *
-	 * @param null $return_status
+	 * @param int  $return_status
 	 *
 	 * @return mixed Status and command output
 	 */
-	function caExec( $command, &$output = null, &$return_status = null ) {
+	function caExec( $command, &$output = null, &$return_status = 0 ) {
 		$logger = getLogger();
 
-		$logger->logDebug( "Executing command: '$command'" );
-		return exec( $command, $output, $return_status );
+		$logger->logDebug( "About to execute command: '$command'" );
+		exec( $command, $output, $return_status );
+		$logger->logDebug( "Command '$command' exit status: $return_status" );
+
+		return $output;
 	}
