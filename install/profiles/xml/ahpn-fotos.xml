@@ -9,6 +9,19 @@
         <locale lang="en" country="US">English (United States)</locale>
         <locale lang="es" country="ES">Español</locale>
         <locale lang="ca" country="ES">Català</locale>
+
+        <locale lang="cs" country="CZ" dontUseForCataloguing="1">Czech</locale>
+        <locale lang="de" country="AT" dontUseForCataloguing="1">Deutsch (Österreich)</locale>
+        <locale lang="de" country="DE" dontUseForCataloguing="1">Deutsch</locale>
+        <locale lang="el" country="GR" dontUseForCataloguing="1">Greek</locale>
+        <locale lang="en" country="AU" dontUseForCataloguing="1">English (Australian)</locale>
+        <locale lang="en" country="CA" dontUseForCataloguing="1">English (Canadian)</locale>
+        <locale lang="fr" country="CA" dontUseForCataloguing="1">Français (Canadien)</locale>
+        <locale lang="fr" country="FR" dontUseForCataloguing="1">Français</locale>
+        <locale lang="it" country="IT" dontUseForCataloguing="1">Italiano</locale>
+        <locale lang="nl" country="NL" dontUseForCataloguing="1">Nederlands</locale>
+        <locale lang="sr" country="RS" dontUseForCataloguing="1">Serbian</locale>
+        <locale lang="sv" country="SE" dontUseForCataloguing="1">Svenska</locale>
     </locales>
     <lists>
         <list code="object_types" hierarchical="1" system="0" vocabulary="0">
@@ -2089,6 +2102,284 @@
                 </item>
             </items>
         </list>
+
+        <list code="place_types" hierarchical="1" system="0" vocabulary="0">
+            <labels>
+                <label locale="en_US">
+                    <name>Place types</name>
+                </label>
+                <label locale="es_ES">
+                    <name>Tipos de lugares</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Tipus de llocs</name>
+                </label>
+            </labels>
+            <items>
+                <item idno="continent" enabled="1" default="0" value="continent" rank="96">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>continent</name_singular>
+                            <name_plural>continents</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>continente</name_singular>
+                            <name_plural>continentes</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>continent</name_singular>
+                            <name_plural>continents</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="country" enabled="1" default="1" value="country" rank="97">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>country</name_singular>
+                            <name_plural>countries</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>país</name_singular>
+                            <name_plural>países</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>país</name_singular>
+                            <name_plural>països</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="region" enabled="1" default="0" value="region" rank="98">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>region</name_singular>
+                            <name_plural>regions</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>región/</name_singular>
+                            <name_plural>regiones</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>regió/</name_singular>
+                            <name_plural>regions</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="province" enabled="1" default="0" value="province" rank="100">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>province</name_singular>
+                            <name_plural>provinces</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>provincia</name_singular>
+                            <name_plural>provincies</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>provincia</name_singular>
+                            <name_plural>provincias</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="county" enabled="1" default="0" value="county" rank="110">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>county</name_singular>
+                            <name_plural>counties</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="en_CA" preferred="1">
+                            <name_singular>county</name_singular>
+                            <name_plural>counties</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="city" enabled="1" default="0" value="city" rank="120">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>city</name_singular>
+                            <name_plural>cities</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>ciudad</name_singular>
+                            <name_plural>ciudades</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>ciutat</name_singular>
+                            <name_plural>ciutats</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="district" enabled="1" default="0" value="district" rank="130">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>district</name_singular>
+                            <name_plural>districts</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>distrito</name_singular>
+                            <name_plural>distritos</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>districte</name_singular>
+                            <name_plural>districtes</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="neighborhood" enabled="1" default="0" value="neighborhood" rank="140">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>neighborhood</name_singular>
+                            <name_plural>neighborhoods</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>barrio</name_singular>
+                            <name_plural>barrios</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>barri</name_singular>
+                            <name_plural>barris</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="development" enabled="1" default="0" value="development" rank="141">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>development</name_singular>
+                            <name_plural>developments</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>urbanización</name_singular>
+                            <name_plural>urbanizaciones</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>urbanització</name_singular>
+                            <name_plural>urbanitzacions</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="street" enabled="1" default="0" value="street" rank="150">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>street</name_singular>
+                            <name_plural>streets</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>vía</name_singular>
+                            <name_plural>vías</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>via</name_singular>
+                            <name_plural>vies</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="park" enabled="1" default="0" value="park" rank="152">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>park</name_singular>
+                            <name_plural>parks</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>parque</name_singular>
+                            <name_plural>parques</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>parc</name_singular>
+                            <name_plural>parcs</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="location" enabled="1" default="0" value="location" rank="160">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>location</name_singular>
+                            <name_plural>locations</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>ubicación</name_singular>
+                            <name_plural>ubicaciones</name_plural>
+                            <description>Una ubicación o lugar.</description>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>ubicació</name_singular>
+                            <name_plural>ubicacions</name_plural>
+                            <description>Una ubicació o lloc.</description>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="crossing" enabled="1" default="0" value="crossing" rank="151">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>crossing</name_singular>
+                            <name_plural>crossing</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>cruce</name_singular>
+                            <name_plural>cruces</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>encreuament</name_singular>
+                            <name_plural>encreuaments</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+                <item idno="other" enabled="1" default="0" value="other" rank="105">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>other feature</name_singular>
+                            <name_plural>other features</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>otra referencia</name_singular>
+                            <name_plural>otras referencias</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>una altra referència</name_singular>
+                            <name_plural>altres referències</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
+            </items>
+        </list>
+
     </lists>
     <elementSets>
         <metadataElement code="number" datatype="Integer">
@@ -2241,6 +2532,84 @@
                         <setting name="minAttributesPerRow"/>
                         <setting name="maxAttributesPerRow"/>
                         <setting name="minimumAttributeBundlesToDisplay"/>
+                    </settings>
+                </restriction>
+            </typeRestrictions>
+        </metadataElement>
+        <metadataElement code="geonames" datatype="GeoNames">
+            <labels>
+                <label locale="en_US">
+                    <name>GeoNames</name>
+                    <description>A Geographic lookup that takes search text, passes it to the GeoNames search service
+                        and provides a dropdown with search results (ordered by score). Selected geoname is stored as
+                        both text (name, country, continent and ID) and the service URL identifier.</description>
+                </label>
+                <label locale="es_ES">
+                    <name>GeoName</name>
+                    <description>Una búsqueda geográfica que busca la ubicación proporcionada utilizando el servicio GoeNames y
+                        proporciona una lista de posibles resultados (ordenados por puntuación). El nombre seleccionado
+                        se guarda como un texto (nombre, pais, continente e identificador), junto con el identificador
+                        de la URL del servicio.</description>
+                </label>
+                <label locale="es_ES">
+                    <name>GeoName</name>
+                    <description>Una cerca geogràfica que busca la ubicació proporcionada mitjançant el servei GeoNames
+                        i proporciona una llista de possibles resultats (ordenats per puntuació). El nom seleccionat
+                        es guarda com un text (nom, país, continent i identificador), juntament amb l'identificador
+                        de la URL del servei.
+                    </description>
+                </label>
+            </labels>
+            <settings>
+                <setting name="canBeEmpty">1</setting>
+            </settings>
+            <typeRestrictions>
+                <restriction>
+                    <table>ca_places</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">100</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+                <restriction>
+                    <table>ca_objects</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">100</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+                <restriction>
+                    <table>ca_entities</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">100</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+                <restriction>
+                    <table>ca_occurrences</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">100</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+                <restriction>
+                    <table>ca_collections</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">100</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
+                    </settings>
+                </restriction>
+                <restriction>
+                    <table>ca_storage_locations</table>
+                    <settings>
+                        <setting name="minAttributesPerRow"/>
+                        <setting name="maxAttributesPerRow">100</setting>
+                        <setting name="minimumAttributeBundlesToDisplay">1</setting>
                     </settings>
                 </restriction>
             </typeRestrictions>
@@ -2417,6 +2786,53 @@
                 </placement>
                 <placement code="ca_objects_material">
                     <bundle>ca_objects.material</bundle>
+                </placement>
+            </bundlePlacements>
+        </display>
+        <display code="poblenou_nomenclator" type="ca_places" system="1">
+            <labels>
+                <label locale="en_US">
+                    <name>Poblenou nomenclator</name>
+                </label>
+                <label locale="es_ES">
+                    <name>Nomenclator de Poblenou</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Nomenclator de Poblenou</name>
+                </label>
+            </labels>
+            <settings>
+                <setting name="show_empty_values"><![CDATA[1]]></setting>
+                <setting name="bottom_line"><![CDATA[]]></setting>
+                <setting name="show_only_in"><![CDATA[]]></setting>
+            </settings>
+            <userAccess>
+                <permission user="administrator" access="edit"/>
+            </userAccess>
+            <bundlePlacements>
+                <placement code="ca_places_place_id">
+                    <bundle>ca_places.place_id</bundle>
+                </placement>
+                <placement code="ca_places_description">
+                    <bundle>ca_places.description</bundle>
+                </placement>
+                <placement code="ca_places_idno">
+                    <bundle>ca_places.idno</bundle>
+                </placement>
+                <placement code="ca_places_preferred_labels">
+                    <bundle>ca_places.preferred_labels</bundle>
+                </placement>
+                <placement code="ca_places_nonpreferred_labels">
+                    <bundle>ca_places.nonpreferred_labels</bundle>
+                </placement>
+                <placement code="ca_places_type_id">
+                    <bundle>ca_places.type_id</bundle>
+                </placement>
+                <placement code="ca_places_lifespan">
+                    <bundle>ca_places.lifespan</bundle>
+                </placement>
+                <placement code="ca_places_georeference">
+                    <bundle>ca_places.georeference</bundle>
                 </placement>
             </bundlePlacements>
         </display>
