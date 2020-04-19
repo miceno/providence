@@ -7,8 +7,8 @@
     </profileDescription>
     <locales>
         <locale lang="en" country="US">English (United States)</locale>
-        <locale lang="es" country="ES">Español</locale>
-        <locale lang="ca" country="ES">Català</locale>
+        <locale lang="es" country="ES" dontUseForCataloguing="0">Español</locale>
+        <locale lang="ca" country="ES" dontUseForCataloguing="0">Català</locale>
 
         <locale lang="cs" country="CZ" dontUseForCataloguing="1">Czech</locale>
         <locale lang="de" country="AT" dontUseForCataloguing="1">Deutsch (Österreich)</locale>
@@ -2173,6 +2173,25 @@
                         </label>
                     </labels>
                 </item>
+                <item idno="state" enabled="1" default="0" value="state" rank="98">
+                    <labels>
+                        <label locale="en_US" preferred="1">
+                            <name_singular>state</name_singular>
+                            <name_plural>states</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="es_ES" preferred="1">
+                            <name_singular>estado</name_singular>
+                            <name_plural>estados</name_plural>
+                            <description/>
+                        </label>
+                        <label locale="ca_ES" preferred="1">
+                            <name_singular>estat</name_singular>
+                            <name_plural>estats</name_plural>
+                            <description/>
+                        </label>
+                    </labels>
+                </item>
                 <item idno="province" enabled="1" default="0" value="province" rank="100">
                     <labels>
                         <label locale="en_US" preferred="1">
@@ -2732,6 +2751,216 @@
                 </screen>
             </screens>
         </userInterface>
+        <userInterface code="places_ahpn_ui" type="ca_places" includeSubtypes="0">
+            <labels>
+                <label locale="en_US">
+                    <name>Place editor for AHPN</name>
+                </label>
+                <label locale="es_ES">
+                    <name>Editor de lugares para el AHPN</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Editor de llocs per l'AHPN</name>
+                </label>
+            </labels>
+            <screens>
+                <screen idno="basic" default="1">
+                    <labels>
+                        <label locale="en_US">
+                            <name>Basic info</name>
+                        </label>
+                    </labels>
+                    <bundlePlacements>
+                        <placement code="hierarchy_navigation">
+                            <bundle>hierarchy_navigation</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse">dont_force</setting>
+                                <setting name="open_hierarchy">1</setting>
+                                <setting name="auto_shrink"/>
+                            </settings>
+                        </placement>
+                        <placement code="preferred_labels">
+                            <bundle>preferred_labels</bundle>
+                            <settings>
+                                <setting name="label" locale="en_US">Name</setting>
+                                <setting name="label" locale="fr_FR">Nom</setting>
+                                <setting name="add_label" locale="en_US">Add name</setting>
+                                <setting name="add_label" locale="fr_FR">Ajouter un nom</setting>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="usewysiwygeditor"/>
+                            </settings>
+                        </placement>
+                        <placement code="idno">
+                            <bundle>idno</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="usewysiwygeditor"/>
+                            </settings>
+                        </placement>
+                        <placement code="access">
+                            <bundle>access</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                            </settings>
+                        </placement>
+                        <placement code="status">
+                            <bundle>status</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                            </settings>
+                        </placement>
+                        <placement code="ca_attribute_description">
+                            <bundle>ca_attribute_description</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="sort">1</setting>
+                                <setting name="sortDirection">ASC</setting>
+                            </settings>
+                        </placement>
+                    </bundlePlacements>
+                </screen>
+                <screen idno="relationships" default="0">
+                    <labels>
+                        <label locale="en_US">
+                            <name>Relationships</name>
+                        </label>
+                    </labels>
+                    <bundlePlacements>
+                        <placement code="hierarchy_navigation">
+                            <bundle>hierarchy_navigation</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse">dont_force</setting>
+                                <setting name="open_hierarchy">1</setting>
+                                <setting name="auto_shrink"/>
+                            </settings>
+                        </placement>
+                        <placement code="ca_objects">
+                            <bundle>ca_objects</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="dont_include_subtypes_in_type_restriction">0</setting>
+                                <setting name="list_format">bubbles</setting>
+                                <setting name="sortDirection">ASC</setting>
+                                <setting name="dontShowDeleteButton">0</setting>
+                                <setting name="minRelationshipsPerRow"/>
+                                <setting name="maxRelationshipsPerRow"/>
+                                <setting name="showCurrentOnly">0</setting>
+                                <setting name="disableQuickadd">0</setting>
+                                <setting name="prepopulateQuickaddFields">0</setting>
+                                <setting name="disableSorts">0</setting>
+                                <setting name="showCount"/>
+                                <setting name="showReturnToHomeLocations">0</setting>
+                            </settings>
+                        </placement>
+                        <placement code="ca_entities">
+                            <bundle>ca_entities</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="dont_include_subtypes_in_type_restriction">0</setting>
+                                <setting name="list_format">bubbles</setting>
+                                <setting name="sortDirection">ASC</setting>
+                                <setting name="dontShowDeleteButton">0</setting>
+                                <setting name="minRelationshipsPerRow"/>
+                                <setting name="maxRelationshipsPerRow"/>
+                                <setting name="showCurrentOnly">0</setting>
+                                <setting name="disableQuickadd">0</setting>
+                                <setting name="prepopulateQuickaddFields">0</setting>
+                                <setting name="disableSorts">0</setting>
+                                <setting name="showCount"/>
+                            </settings>
+                        </placement>
+                        <placement code="ca_attribute_georeference">
+                            <bundle>ca_places.georeference</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="sort">1</setting>
+                                <setting name="sortDirection">ASC</setting>
+                            </settings>
+                        </placement>
+                        <placement code="ca_attribute_geonames">
+                            <bundle>ca_places.geonames</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="sort">1</setting>
+                                <setting name="sortDirection">ASC</setting>
+                            </settings>
+                        </placement>
+                    </bundlePlacements>
+                </screen>
+                <screen idno="hierarchy" default="0">
+                    <labels>
+                        <label locale="en_US">
+                            <name>Hierarchy</name>
+                        </label>
+                    </labels>
+                    <bundlePlacements>
+                        <placement code="hierarchy_location">
+                            <bundle>hierarchy_location</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse">dont_force</setting>
+                                <setting name="open_hierarchy">1</setting>
+                                <setting name="auto_shrink"/>
+                            </settings>
+                        </placement>
+                    </bundlePlacements>
+                </screen>
+                <screen idno="altnames" default="0">
+                    <labels>
+                        <label locale="en_US">
+                            <name>Alternate names</name>
+                        </label>
+                        <label locale="fr_FR">
+                            <name>Autres noms</name>
+                        </label>
+                    </labels>
+                    <bundlePlacements>
+                        <placement code="hierarchy_navigation">
+                            <bundle>hierarchy_navigation</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse">dont_force</setting>
+                                <setting name="open_hierarchy">1</setting>
+                                <setting name="auto_shrink"/>
+                            </settings>
+                        </placement>
+                        <placement code="nonpreferred_labels">
+                            <bundle>nonpreferred_labels</bundle>
+                            <settings>
+                                <setting name="label" locale="en_US">Alternate names</setting>
+                                <setting name="label" locale="fr_FR">Autres noms</setting>
+                                <setting name="add_label" locale="en_US">Add alternate name</setting>
+                                <setting name="add_label" locale="fr_FR">Ajouter un autre nom</setting>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="usewysiwygeditor"/>
+                            </settings>
+                        </placement>
+                    </bundlePlacements>
+                </screen>
+            </screens>
+        </userInterface>
     </userInterfaces>
     <relationshipTypes>
     </relationshipTypes>
@@ -2789,16 +3018,16 @@
                 </placement>
             </bundlePlacements>
         </display>
-        <display code="poblenou_nomenclator" type="ca_places" system="1">
+        <display code="poblenou_nomenclator" type="ca_places" system="1" typeRestrictions="" includeSubtypes="0">
             <labels>
-                <label locale="en_US">
-                    <name>Poblenou nomenclator</name>
-                </label>
                 <label locale="es_ES">
                     <name>Nomenclator de Poblenou</name>
                 </label>
                 <label locale="ca_ES">
                     <name>Nomenclator de Poblenou</name>
+                </label>
+                <label locale="en_US">
+                    <name>Poblenou nomenclator</name>
                 </label>
             </labels>
             <settings>
@@ -2810,8 +3039,8 @@
                 <permission user="administrator" access="edit"/>
             </userAccess>
             <bundlePlacements>
-                <placement code="ca_places_place_id">
-                    <bundle>ca_places.place_id</bundle>
+                <placement code="ca_places_preferred_labels">
+                    <bundle>ca_places.preferred_labels</bundle>
                 </placement>
                 <placement code="ca_places_description">
                     <bundle>ca_places.description</bundle>
@@ -2819,11 +3048,16 @@
                 <placement code="ca_places_idno">
                     <bundle>ca_places.idno</bundle>
                 </placement>
-                <placement code="ca_places_preferred_labels">
-                    <bundle>ca_places.preferred_labels</bundle>
-                </placement>
                 <placement code="ca_places_nonpreferred_labels">
                     <bundle>ca_places.nonpreferred_labels</bundle>
+                    <settings>
+                        <setting name="label" locale="ca_ES"/>
+                        <setting name="label" locale="en_US"/>
+                        <setting name="label" locale="es_ES"/>
+                        <setting name="format"><![CDATA[]]></setting>
+                        <setting name="delimiter"><![CDATA[;]]></setting>
+                        <setting name="maximum_length"><![CDATA[100]]></setting>
+                    </settings>
                 </placement>
                 <placement code="ca_places_type_id">
                     <bundle>ca_places.type_id</bundle>
