@@ -1840,7 +1840,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					}
 				}
 				
-				$o_progress->next(_t("Importing %1", $vs_idno));
+				$o_progress->next(_t("Importing %1", $vs_idno). " mem=" . caFormatFileSize(memory_get_usage(true)/1024)) ;
 			
 				if ($po_request && isset($pa_options['progressCallback']) && ($ps_callback = $pa_options['progressCallback'])) {
 					$ps_callback($po_request, $pn_file_number, $pn_number_of_files, $ps_source, ca_data_importers::$s_num_records_processed, $vn_num_items, _t("[%3/%4] Processing %1 (%2)", caTruncateStringWithEllipsis($vs_display_label, 50), $vs_idno, ca_data_importers::$s_num_records_processed, $vn_num_items), (time() - $vn_start_time), memory_get_usage(true), ca_data_importers::$s_num_records_processed, ca_data_importers::$s_num_import_errors); 
