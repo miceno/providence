@@ -14,3 +14,6 @@ create a MYSQL database with following connection settings:
 
 To install a profile, run `tests/profile.setup.sh <PROFILE>`. It will use the `testing`
 profile as a default if no profile is provided.
+
+Local configuration is not read from `app/conf/local` but from `tests/conf`, so should you need any
+any local configuration for the test, use the latter.

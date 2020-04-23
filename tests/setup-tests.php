@@ -36,4 +36,4 @@ if (!defined("__CA_LOCAL_CONFIG_DIRECTORY__")) {
 define('__CA_CACHE_BACKEND__', 'file');
 
 // Use remaining settings from main config.
-require_once(__CA_BASE_DIR__ . '/setup.php');
+require_once(__CA_BASE_DIR__ . '/setup.php-dist');
