@@ -20,6 +20,19 @@ To update dependencies:
 Then you will get a lot of updates on your `vendor` folder, and on the `composer.lock` file.
 
 
+Vagrant
+=======
+
+Setup
+ 
+    vagrant up
+
+For Virtualbox, add add-ons plugin
+
+    vagrant plugin install ssh 
+    vagrant plugin install vagrant-vbguest 
+    vagrant plugin install vagrant-scp 
+
 Testing
 =======
 
