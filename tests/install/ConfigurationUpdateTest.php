@@ -164,14 +164,30 @@ class ConfigurationUpdateTest extends TestCase {
 	}
 
 	public function testRemoveLabelsFromElement() {
+		$t_instance = ca_metadata_elements::getInstance('loan_out_date');
+		// Verify element is created and has some attributes.
+		$t_labels      = $t_instance->getLabels();
+		$this->assertEquals(4, sizeof(array_shift( $t_labels )));
+
+		$t_restrictions = $t_instance->getTypeRestrictions();
+		$this->assertEquals(1, sizeof($t_restrictions));
+		$this->assertEquals(133, $t_restrictions[0]['table_num']);
+
 		$o_installer = Installer::getFromString(file_get_contents(dirname(__FILE__).'/profile_fragments/elements/remove_labels_from_element.xml'));
 		$this->assertTrue($o_installer instanceof Installer);
 		$o_installer->processLocales();
 		$o_installer->processMetadataElements();
 
+		// Load instance again
 		$t_instance = ca_metadata_elements::getInstance('loan_out_date');
 		// we expect all labels to be removed, except the en_US one
-		$this->assertEquals(1, sizeof(array_shift($t_instance->getLabels())));
+		$t_labels = $t_instance->getLabels();
+		$this->assertEquals(1, sizeof(array_shift( $t_labels )));
+
+		// Check restrictions are not changed.
+		$t_restrictions = $t_instance->getTypeRestrictions();
+		$this->assertEquals(1, sizeof($t_restrictions));
+		$this->assertEquals(133, $t_restrictions[0]['table_num']);
 	}
 
 	public function testAddElementExistingContainer() {
