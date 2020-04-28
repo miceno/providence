@@ -29,8 +29,10 @@
  *
  * ----------------------------------------------------------------------
  */
- 
- /**
+
+use function helpers\caMediaPluginImageMagickInstalled;
+
+/**
   *
   */
 
