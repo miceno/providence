@@ -35,48 +35,70 @@ require_once(__CA_APP_DIR__."/helpers/importHelpers.php");
 
 class ImportHelpersTest extends TestCase {
 	# -------------------------------------------------------
-	public function testAATMatch() {
-		// some real-world examples
-		$vm_ret = caMatchAAT(
-			explode(':', 'People and Culture:Associated Concepts:concepts in the arts:artistic concepts:forms of expression:forms of expression: visual arts:abstraction')
-		);
+	public function testAATMatchPeople() {
+        // some real-world examples
+        $vm_ret = caMatchAAT(
+                explode(':', 'People and Culture:Associated Concepts:concepts in the arts:artistic concepts:forms of expression:forms of expression: visual arts:abstraction')
+        );
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300056508', $vm_ret);
+        $this->assertEquals('http://vocab.getty.edu/aat/300056508', $vm_ret);
+    }
 
-		$vm_ret = caMatchAAT(
-			explode(':', 'Objects We Use:Visual Works:visual works:visual works by medium or technique:prints:prints by process or technique:prints by process: transfer method:intaglio prints:etchings')
-		);
+    public function testAATMatchPrints() {
+        // some real-world examples
+        $vm_ret = caMatchAAT(
+                explode(':', 'Objects We Use:Visual Works:visual works:visual works by medium or technique:prints:prints by process or technique:prints by process: transfer method:intaglio prints:etchings')
+        );
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300041365', $vm_ret);
+        $this->assertEquals('http://vocab.getty.edu/aat/300041365', $vm_ret);
+    }
 
-		$vm_ret = caMatchAAT(
-			explode(':', 'Objects We Use:Visual Works:visual works:visual works by medium or technique:works on paper')
-		);
+    public function testAATMatchPaper() {
+        // some real-world examples
+        $vm_ret = caMatchAAT(
+                explode(':', 'Objects We Use:Visual Works:visual works:visual works by medium or technique:works on paper')
+        );
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300189621', $vm_ret);
+        $this->assertEquals('http://vocab.getty.edu/aat/300189621', $vm_ret);
+    }
 
-		$vm_ret = caMatchAAT(
-			explode(':', 'People and Culture:Styles and Periods:styles and periods by region:European:European styles and periods:modern European styles and movements:modern European fine arts styles and movements:Abstract'),
-			180, array('removeParensFromLabels' => true)
-		);
+    public function testAATMatchAbstractArt() {
+        // some real-world examples
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300108127', $vm_ret);
+        $vm_ret = caMatchAAT(
+                explode(':', 'People and Culture:Styles and Periods:styles and periods by region:European:European styles and periods:modern European styles and movements:modern European fine arts styles and movements:Abstract'),
+                180, array('removeParensFromLabels' => true)
+        );
 
-		$vm_ret = caMatchAAT(
-			explode(':', 'People and Culture:Associated Concepts:concepts in the arts:artistic concepts:art genres:computer art'),
-			180, array('removeParensFromLabels' => true)
-		);
+        $this->assertEquals('http://vocab.getty.edu/aat/300108127', $vm_ret);
+    }
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300069478', $vm_ret);
+    public function testAATMatchComputerArt() {
+        // some real-world examples
 
-		$vm_ret = caMatchAAT(
-			explode(':', 'Descriptors:Processes and Techniques:processes and techniques:processes and techniques by specific type:image-making processes and techniques:painting and painting techniques:painting techniques:painting techniques by medium:acrylic painting (technique)'),
-			180, array('removeParensFromLabels' => true)
-		);
+        $vm_ret = caMatchAAT(
+                explode(':', 'People and Culture:Associated Concepts:concepts in the arts:artistic concepts:art genres:computer art'),
+                180, array('removeParensFromLabels' => true)
+        );
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300182574', $vm_ret);
+        $this->assertEquals('http://vocab.getty.edu/aat/300069478', $vm_ret);
+    }
 
-		$vm_ret = caMatchAAT(
+    public function testAATMatchAcrylicPainting() {
+        // some real-world examples
+
+        $vm_ret = caMatchAAT(
+                explode(':', 'Descriptors:Processes and Techniques:processes and techniques:processes and techniques by specific type:image-making processes and techniques:painting and painting techniques:painting techniques:painting techniques by medium:acrylic painting (technique)'),
+                180, array('removeParensFromLabels' => true)
+        );
+
+        $this->assertEquals('http://vocab.getty.edu/aat/300182574', $vm_ret);
+    }
+
+    public function testAATMatchPainting() {
+        // some real-world examples
+
+        $vm_ret = caMatchAAT(
 			explode(':', 'Descriptors:Processes and Techniques:processes and techniques:processes and techniques by specific type:image-making processes and techniques:painting and painting techniques:painting (image-making)'),
 			180, array('removeParensFromLabels' => true)
 		);
@@ -84,4 +106,6 @@ class ImportHelpersTest extends TestCase {
 		$this->assertEquals('http://vocab.getty.edu/aat/300054216', $vm_ret);
 	}
 	# -------------------------------------------------------
+
+
 }
