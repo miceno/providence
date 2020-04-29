@@ -70,7 +70,6 @@ class ImportHelpersTest extends TestCase {
         $this->parents = array(
                 array('idno' => '^1',
                         'name' => '^3',
-                        'type' => 'internal',
                         'attributes' => array(
                                 'description' => '^5'
                         )
@@ -232,16 +231,24 @@ class ImportHelpersTest extends TestCase {
         $this->assertEquals($this->data[5], $result["nonpreferred_label"]["name"]);
     }
 
+    protected function _createRefineryMock($ps_name){
+        $stubRefinery = $this->createMock($ps_name);
+        $stubRefinery->method('getName')->willReturn($ps_name);
+        return $stubRefinery;
+    }
 
-    public function testCaProcessRefineryParentsPlacesHierarchy(){
+    protected function _runProcessRefineryParents($refinery_name, $ps_table_name, $ps_type){
+        global $g_ui_locale_id;
+        $g_ui_locale_id = 1;
+        $refinery_class = $refinery_name . 'Refinery';
 
-        require_once (__CA_APP_DIR__. '/refineries/placeHierarchyBuilder/placeHierarchyBuilderRefinery.php');
+        require_once(join(DIRECTORY_SEPARATOR, [__CA_APP_DIR__, 'refineries', $refinery_name, $refinery_class .'.php']));
 
-        $stubRefinery = $this->createMock(placeHierarchyBuilderRefinery::class);
-        $stubRefinery->method('getName')->willReturn('placeHierarchyBuilderRefinery');
-        $ps_refinery_name = 'placeHierarchyBuilderRefinery';
-        $ps_table = 'ca_places';
+        $stubRefinery = $this->_createRefineryMock($refinery_class);
+        $ps_refinery_name = $refinery_name;
+        $ps_table = $ps_table_name;
         $pa_parents = $this->parents;
+        $pa_parents[0]['type'] = $ps_type;
         $pa_source_data = $this->data;
         $pa_item = $this->item;
         $pn_c = 0;
@@ -249,25 +256,39 @@ class ImportHelpersTest extends TestCase {
                 'refinery' => $stubRefinery,
         );
         $result = caProcessRefineryParents($ps_refinery_name, $ps_table, $pa_parents, $pa_source_data, $pa_item, $pn_c, $pa_options);
+        return $result;
+    }
+    public function testCaProcessRefineryParentsPlacesHierarchy(){
+
+        $result = $this->_runProcessRefineryParents('placeHierarchyBuilder', 'ca_places', 'country');
         $this->assertNotNull($result);
     }
 
     public function testCaProcessRefineryParentsCollectionHierarchy(){
 
-        require_once (__CA_APP_DIR__. '/refineries/collectionHierarchyBuilder/collectionHierarchyBuilderRefinery.php');
-
-        $stubRefinery = $this->createMock(collectionHierarchyBuilderRefinery::class);
-        $stubRefinery->method('getName')->willReturn('collectionHierarchyBuilderRefinery');
-        $ps_refinery_name = 'collectionHierarchyBuilderRefinery';
-        $ps_table = 'ca_collections';
-        $pa_parents = $this->parents;
-        $pa_source_data = $this->data;
-        $pa_item = $this->item;
-        $pn_c = 0;
-        $pa_options = array(
-                'refinery' => $stubRefinery
-        );
-        $result = caProcessRefineryParents($ps_refinery_name, $ps_table, $pa_parents, $pa_source_data, $pa_item, $pn_c, $pa_options);
+        $result = $this->_runProcessRefineryParents('collectionHierarchyBuilder', 'ca_collections', 'internal');
         $this->assertNotNull($result);
     }
+
+    public function testCaProcessRefineryParentsEntityHierarchy(){
+
+        $result = $this->_runProcessRefineryParents('entityHierarchyBuilder', 'ca_entities', 'org');
+        $this->assertNotNull($result);
+    }
+    public function testCaProcessRefineryParentsOccurrenceHierarchy(){
+
+        $result = $this->_runProcessRefineryParents('occurrenceHierarchyBuilder', 'ca_occurrences', 'event');
+        $this->assertNotNull($result);
+    }
+    public function testCaProcessRefineryParentsObjectHierarchy(){
+
+        $result = $this->_runProcessRefineryParents('objectHierarchyBuilder', 'ca_objects', 'software');
+        $this->assertNotNull($result);
+    }
+    public function testCaProcessRefineryParentsStorageLocationHierarchy(){
+
+        $result = $this->_runProcessRefineryParents('storageLocationHierarchyBuilder', 'ca_storage_locations', 'drawer');
+        $this->assertNotNull($result);
+    }
+
 }
