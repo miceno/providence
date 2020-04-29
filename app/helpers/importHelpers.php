@@ -36,7 +36,7 @@
 	require_once(__CA_LIB_DIR__.'/Plugins/InformationService/TGN.php');
 	require_once(__CA_LIB_DIR__.'/Plugins/InformationService/AAT.php');
 	require_once(__CA_LIB_DIR__.'/Plugins/InformationService/ULAN.php');
-
+	require_once(__CA_LIB_DIR__.'/Import/BaseRefinery.php');
 	# ---------------------------------------
 	/**
 	 * 
@@ -292,11 +292,12 @@
 			foreach($pa_attributes as $vs_element_code => $va_attrs) {
 				$vs_prefix = '';
 				$va_prefix_file_list = [];
+
+				// Add details for file and media types.
 				if (in_array(ca_metadata_elements::getElementDatatype($vs_element_code), [__CA_ATTRIBUTE_VALUE_FILE__, __CA_ATTRIBUTE_VALUE_MEDIA__]) && $vs_batch_media_directory && isset($pa_item['settings']["{$ps_refinery_name}_mediaPrefix"]) && $pa_item['settings']["{$ps_refinery_name}_mediaPrefix"]) {
 					 $vs_prefix = preg_replace("![/]+!", "/", "{$vs_batch_media_directory}/".$pa_item['settings']["{$ps_refinery_name}_mediaPrefix"]."/");
 					 $va_prefix_file_list = caGetDirectoryContentsAsList($vs_prefix, true); 
 				}
-			
 			
 				$vb_is_repeating = false;
 				$vn_num_repeats = null;
