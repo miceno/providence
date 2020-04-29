@@ -15,23 +15,24 @@
  * the terms of the provided license as published by Whirl-i-Gig
  *
  * CollectiveAccess is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTIES whatsoever, including any implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * WITHOUT ANY WARRANTIES whatsoever, including any implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * This source code is free and modifiable under the terms of 
+ * This source code is free and modifiable under the terms of
  * GNU General Public License. (http://www.gnu.org/copyleft/gpl.html). See
  * the "license.txt" file for details, or visit the CollectiveAccess web site at
  * http://www.CollectiveAccess.org
- * 
- * @package CollectiveAccess
+ *
+ * @package    CollectiveAccess
  * @subpackage tests
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License version 3
- * 
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License version 3
+ *
  * ----------------------------------------------------------------------
  */
+
 use PHPUnit\Framework\TestCase;
 
-require_once(__CA_APP_DIR__."/helpers/importHelpers.php");
+require_once(__CA_APP_DIR__ . "/helpers/importHelpers.php");
 
 class ImportHelpersTest extends TestCase {
 
@@ -39,6 +40,7 @@ class ImportHelpersTest extends TestCase {
     protected $item;
     protected $attributes;
     protected $parents;
+    protected $groups;
 
     protected function setUp(): void {
         $this->data = [
@@ -53,7 +55,7 @@ class ImportHelpersTest extends TestCase {
         $this->item = [
                 'settings' => [
                         'original_values' => [
-                                'sector_ypres','sector_somme', 'sector_cambrai'
+                                'sector_ypres', 'sector_somme', 'sector_cambrai'
                         ],
                         'replacement_values' => [
                                 'Value_Ypres', 'Value_Somme', 'Value_Cambrai'
@@ -76,10 +78,69 @@ class ImportHelpersTest extends TestCase {
                 )
         );
 
+        $this->groups = array();
+
     }
 
+    protected function _runGenericImportSplitter($ps_refinery_name, $ps_table, $ps_type) {
+
+        global $g_ui_locale_id;
+        $g_ui_locale_id = 1;
+        $ps_item_prefix = "";
+        $ps_refinery_class = $this->_loadRefinery($ps_refinery_name);
+        $po_refinery_instance = $this->_createRefineryMock($ps_refinery_class);
+        $pa_destination_data = array();
+        $pa_group = $this->groups;
+        $pa_item = $this->item;
+        $pa_source_data = $this->data;
+        $pa_options = array();
+        $result = caGenericImportSplitter($ps_refinery_name, $ps_item_prefix, $ps_table,
+                $po_refinery_instance, $pa_destination_data, $pa_group, $pa_item, $pa_source_data, $pa_options);
+
+        return $result;
+    }
+
+    /**
+     * @param $refinery_name
+     *
+     * @return string
+     */
+    protected function _loadRefinery($refinery_name): string {
+        $refinery_class = $refinery_name . 'Refinery';
+        require_once(join(DIRECTORY_SEPARATOR, [__CA_APP_DIR__, 'refineries', $refinery_name, $refinery_class . '.php']));
+        return $refinery_class;
+    }
+
+    protected function _createRefineryMock($ps_name) {
+        $stubRefinery = $this->createMock($ps_name);
+        $stubRefinery->method('getName')->willReturn($ps_name);
+        $stubRefinery->method('setReturnsMultipleValues');
+        return $stubRefinery;
+    }
+
+    protected function _runProcessRefineryParents($refinery_name, $ps_table_name, $ps_type) {
+        global $g_ui_locale_id;
+        $g_ui_locale_id = 1;
+        $refinery_class = $this->_loadRefinery($refinery_name);
+
+        $stubRefinery = $this->_createRefineryMock($refinery_class);
+        $ps_refinery_name = $refinery_name;
+        $ps_table = $ps_table_name;
+        $pa_parents = $this->parents;
+        $pa_parents[0]['type'] = $ps_type;
+        $pa_source_data = $this->data;
+        $pa_item = $this->item;
+        $pn_c = 0;
+        $pa_options = array(
+                'refinery' => $stubRefinery,
+        );
+        $result = caProcessRefineryParents($ps_refinery_name, $ps_table, $pa_parents, $pa_source_data, $pa_item, $pn_c, $pa_options);
+        return $result;
+    }
+
+
     # -------------------------------------------------------
-	public function testAATMatchPeople() {
+    public function testAATMatchPeople() {
         // some real-world examples
         $vm_ret = caMatchAAT(
                 explode(':', 'People and Culture:Associated Concepts:concepts in the arts:artistic concepts:forms of expression:forms of expression: visual arts:abstraction')
@@ -143,13 +204,13 @@ class ImportHelpersTest extends TestCase {
         // some real-world examples
 
         $vm_ret = caMatchAAT(
-			explode(':', 'Descriptors:Processes and Techniques:processes and techniques:processes and techniques by specific type:image-making processes and techniques:painting and painting techniques:painting (image-making)'),
-			180, array('removeParensFromLabels' => true)
-		);
+                explode(':', 'Descriptors:Processes and Techniques:processes and techniques:processes and techniques by specific type:image-making processes and techniques:painting and painting techniques:painting (image-making)'),
+                180, array('removeParensFromLabels' => true)
+        );
 
-		$this->assertEquals('http://vocab.getty.edu/aat/300054216', $vm_ret);
-	}
-	# -------------------------------------------------------
+        $this->assertEquals('http://vocab.getty.edu/aat/300054216', $vm_ret);
+    }
+    # -------------------------------------------------------
 
 
     /**
@@ -172,23 +233,24 @@ class ImportHelpersTest extends TestCase {
         $result = caProcessImportItemSettingsForValue($ps_value, $pa_item_settings);
         try {
             $this->assertSame('7:30', $result);
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             $this->markTestIncomplete();
         }
     }
 
-    public function testCaValidateGoogleSheetsUrlReturnsNullForBadUrl(){
+    public function testCaValidateGoogleSheetsUrlReturnsNullForBadUrl() {
         $url = "http://collectiveaccess.org";
         $result = caValidateGoogleSheetsUrl($url);
         $this->assertNull($result);
     }
-    public function testCaValidateGoogleSheetsUrlReturnsValidatedUrl(){
+
+    public function testCaValidateGoogleSheetsUrlReturnsValidatedUrl() {
         $url = "https://docs.google.com/file/d/";
         $result = caValidateGoogleSheetsUrl($url);
         $this->assertSame('https://docs.google.com/file/d/export?format=xlsx', $result);
     }
 
-    public function testCaProcessRefineryAttributesEmptyIsNotNull(){
+    public function testCaProcessRefineryAttributesEmptyIsNotNull() {
         $pa_attributes = $this->attributes;
         $pa_source_data = $this->data;
         $pa_item = $this->item;
@@ -197,7 +259,8 @@ class ImportHelpersTest extends TestCase {
         $result = caProcessRefineryAttributes($pa_attributes, $pa_source_data, $pa_item, $pn_c, $pa_options);
         $this->assertNotNull($result);
     }
-    public function testCaProcessRefineryAttributesEmptyProducesEmptyResults(){
+
+    public function testCaProcessRefineryAttributesEmptyProducesEmptyResults() {
         $pa_attributes = array();
         $pa_source_data = array();
         $pa_item = array();
@@ -207,10 +270,12 @@ class ImportHelpersTest extends TestCase {
         $this->assertNotNull($result);
         $this->assertEquals(0, sizeof($result));
     }
-    public function testCaProcessRefineryAttributesWithFileType(){
+
+    public function testCaProcessRefineryAttributesWithFileType() {
         $this->markTestIncomplete('testCaProcessRefineryAttributesWithFileType pending test');
     }
-    public function testCaProcessRefineryAttributesWithIndexedArray(){
+
+    public function testCaProcessRefineryAttributesWithIndexedArray() {
         $pa_attributes = $this->attributes;
         $pa_source_data = $this->data;
         $pa_item = $this->item;
@@ -220,7 +285,8 @@ class ImportHelpersTest extends TestCase {
         $this->assertNotNull($result);
         $this->assertEquals($this->data[3], $result["preferred_label"][0]);
     }
-    public function testCaProcessRefineryAttributesWithAssociativeArray(){
+
+    public function testCaProcessRefineryAttributesWithAssociativeArray() {
         $pa_attributes = $this->attributes;
         $pa_source_data = $this->data;
         $pa_item = $this->item;
@@ -231,63 +297,63 @@ class ImportHelpersTest extends TestCase {
         $this->assertEquals($this->data[5], $result["nonpreferred_label"]["name"]);
     }
 
-    protected function _createRefineryMock($ps_name){
-        $stubRefinery = $this->createMock($ps_name);
-        $stubRefinery->method('getName')->willReturn($ps_name);
-        return $stubRefinery;
-    }
+    /****************************
+     *
+     * Refinery Parents tests
+     *
+     ****************************
+     */
 
-    protected function _runProcessRefineryParents($refinery_name, $ps_table_name, $ps_type){
-        global $g_ui_locale_id;
-        $g_ui_locale_id = 1;
-        $refinery_class = $refinery_name . 'Refinery';
-
-        require_once(join(DIRECTORY_SEPARATOR, [__CA_APP_DIR__, 'refineries', $refinery_name, $refinery_class .'.php']));
-
-        $stubRefinery = $this->_createRefineryMock($refinery_class);
-        $ps_refinery_name = $refinery_name;
-        $ps_table = $ps_table_name;
-        $pa_parents = $this->parents;
-        $pa_parents[0]['type'] = $ps_type;
-        $pa_source_data = $this->data;
-        $pa_item = $this->item;
-        $pn_c = 0;
-        $pa_options = array(
-                'refinery' => $stubRefinery,
-        );
-        $result = caProcessRefineryParents($ps_refinery_name, $ps_table, $pa_parents, $pa_source_data, $pa_item, $pn_c, $pa_options);
-        return $result;
-    }
-    public function testCaProcessRefineryParentsPlacesHierarchy(){
+    public function testCaProcessRefineryParentsPlacesHierarchy() {
 
         $result = $this->_runProcessRefineryParents('placeHierarchyBuilder', 'ca_places', 'country');
         $this->assertNotNull($result);
     }
 
-    public function testCaProcessRefineryParentsCollectionHierarchy(){
+    public function testCaProcessRefineryParentsCollectionHierarchy() {
 
         $result = $this->_runProcessRefineryParents('collectionHierarchyBuilder', 'ca_collections', 'internal');
         $this->assertNotNull($result);
     }
 
-    public function testCaProcessRefineryParentsEntityHierarchy(){
+    public function testCaProcessRefineryParentsEntityHierarchy() {
 
         $result = $this->_runProcessRefineryParents('entityHierarchyBuilder', 'ca_entities', 'org');
         $this->assertNotNull($result);
     }
-    public function testCaProcessRefineryParentsOccurrenceHierarchy(){
+
+    public function testCaProcessRefineryParentsOccurrenceHierarchy() {
 
         $result = $this->_runProcessRefineryParents('occurrenceHierarchyBuilder', 'ca_occurrences', 'event');
         $this->assertNotNull($result);
     }
-    public function testCaProcessRefineryParentsObjectHierarchy(){
+
+    public function testCaProcessRefineryParentsObjectHierarchy() {
 
         $result = $this->_runProcessRefineryParents('objectHierarchyBuilder', 'ca_objects', 'software');
         $this->assertNotNull($result);
     }
-    public function testCaProcessRefineryParentsStorageLocationHierarchy(){
+
+    public function testCaProcessRefineryParentsStorageLocationHierarchy() {
 
         $result = $this->_runProcessRefineryParents('storageLocationHierarchyBuilder', 'ca_storage_locations', 'drawer');
+        $this->assertNotNull($result);
+    }
+
+    /****************************
+     *
+     * Generic Splitter tests
+     *
+     ****************************
+     */
+
+    /**
+     *
+     */
+    public function testCaGenericImportSplitterEntity() {
+        $this->groups['destination'] = 'ca_objects.unitdate.date_value';
+        $result = $this->_runGenericImportSplitter('entitySplitter', 'ca_entities', 'org');
+
         $this->assertNotNull($result);
     }
 
