@@ -231,11 +231,62 @@ class ImportHelpersTest extends TestCase {
         );
 
         $result = caProcessImportItemSettingsForValue($ps_value, $pa_item_settings);
-        try {
-            $this->assertSame('7:30', $result);
-        } catch (Exception $exception) {
-            $this->markTestIncomplete();
-        }
+        $this->assertSame('7:30', $result);
+    }
+
+    public function testCaProcessImportItemSettingsForArrayValue() {
+        $va_value = ['7.30.pepe', '8.30.smith'];
+        $va_item_settings = array(
+                'applyRegularExpressions' => array(
+                        array("match" => '([0-9]+)\\.([0-9]+)',
+                                "replaceWith" => "\\1:\\2"),
+                        array(
+                                "match" => "[^0-9:]+",
+                                "replaceWith" => ""
+                        )
+                )
+        );
+
+        $result = caProcessImportItemSettingsForValue($va_value, $va_item_settings);
+        $this->assertIsArray($result);
+        $this->assertEquals(2, sizeof($result));
+        $this->assertSame(['7:30', '8:30'], $result);
+    }
+
+    public function testCaProcessImportItemSettingsForArrayValueWithEmptyMatch() {
+        $va_value = ['7.30.pepe', '8.30.smith'];
+        $va_item_settings = array(
+                'applyRegularExpressions' => array(
+                        array("match" => '',
+                                "replaceWith" => "\\1:\\2"),
+                        array(
+                                "match" => "",
+                                "replaceWith" => ""
+                        )
+                )
+        );
+
+        $result = caProcessImportItemSettingsForValue($va_value, $va_item_settings);
+        $this->assertIsArray($result);
+        $this->assertEquals(2, sizeof($result));
+        $this->assertSame($va_value, $result);
+    }
+
+    public function testCaProcessImportItemSettingsForValueWithExclamation() {
+        $ps_value = '7!30!pepe';
+        $pa_item_settings = array(
+                'applyRegularExpressions' => array(
+                        array("match" => '([0-9]+)!([0-9]+)',
+                                "replaceWith" => "\\1:\\2"),
+                        array(
+                                "match" => "[^0-9:]+",
+                                "replaceWith" => ""
+                        )
+                )
+        );
+
+        $result = caProcessImportItemSettingsForValue($ps_value, $pa_item_settings);
+        $this->assertSame('7:30', $result);
     }
 
     public function testCaValidateGoogleSheetsUrlReturnsNullForBadUrl() {
