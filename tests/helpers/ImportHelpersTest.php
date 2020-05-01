@@ -42,6 +42,8 @@ class ImportHelpersTest extends TestCase {
     protected $parents;
     protected $groups;
 
+    static $opa_valid_tables = array('ca_objects', 'ca_entities', 'ca_occurrences', 'ca_movements', 'ca_loans', 'ca_object_lots', 'ca_storage_locations', 'ca_places', 'ca_item_comments');
+
     protected function setUp(): void {
         $this->data = [
                 1 => "Verdun",
@@ -80,6 +82,47 @@ class ImportHelpersTest extends TestCase {
 
         $this->groups = array();
 
+    }
+
+    /**
+     * Delete all records we created for this test to avoid side effects with other tests
+     */
+    protected function tearDown() : void {
+        if($this->opb_care_about_side_effects) {
+            foreach($this->opa_record_map as $vs_table => &$va_records) {
+                $t_instance = Datamodel::getInstance($vs_table);
+                // delete in reverse order so that we can properly
+                // catch potential hierarchical relationships
+                rsort($va_records);
+                foreach($va_records as $vn_id) {
+                    if($t_instance->load($vn_id)) {
+                        $t_instance->setMode(ACCESS_WRITE);
+                        $t_instance->delete(true, array('hard' => true));
+                    }
+                }
+            }
+
+            // check record counts again (make sure there are no lingering records)
+            $this->checkRecordCounts();
+        }
+    }
+    # -------------------------------------------------------
+    private function checkRecordCounts() {
+        // ensure there are no lingering records
+        $o_db = new Db();
+        foreach(self::$opa_valid_tables as $vs_table) {
+            $qr_rows = $o_db->query("SELECT count(*) AS c FROM {$vs_table}");
+            $qr_rows->nextRow();
+
+            // these two are allowed to have hierarchy roots
+            if(in_array($vs_table, array('ca_storage_locations', 'ca_places'))) {
+                $vn_allowed_records = 1;
+            } else {
+                $vn_allowed_records = 0;
+            }
+
+            $this->assertEquals($vn_allowed_records, $qr_rows->get('c'), "Table {$vs_table} should be empty to avoid side effects between tests");
+        }
     }
 
     protected function _runGenericImportSplitter($ps_refinery_name, $ps_table, $ps_type) {
@@ -356,38 +399,44 @@ class ImportHelpersTest extends TestCase {
      */
 
     public function testCaProcessRefineryParentsPlacesHierarchy() {
-
-        $result = $this->_runProcessRefineryParents('placeHierarchyBuilder', 'ca_places', 'country');
+        $vs_table = 'ca_places';
+        $result = $this->_runProcessRefineryParents('placeHierarchyBuilder', $vs_table, 'country');
+        $this->_deleteInstance($vs_table, $result);
         $this->assertNotNull($result);
     }
 
     public function testCaProcessRefineryParentsCollectionHierarchy() {
-
-        $result = $this->_runProcessRefineryParents('collectionHierarchyBuilder', 'ca_collections', 'internal');
+        $vs_table = 'ca_collections';
+        $result = $this->_runProcessRefineryParents('collectionHierarchyBuilder', $vs_table, 'internal');
+        $this->_deleteInstance($vs_table, $result);
         $this->assertNotNull($result);
     }
 
     public function testCaProcessRefineryParentsEntityHierarchy() {
-
-        $result = $this->_runProcessRefineryParents('entityHierarchyBuilder', 'ca_entities', 'org');
+        $vs_table = 'ca_entities';
+        $result = $this->_runProcessRefineryParents('entityHierarchyBuilder', $vs_table, 'org');
+        $this->_deleteInstance($vs_table, $result);
         $this->assertNotNull($result);
     }
 
     public function testCaProcessRefineryParentsOccurrenceHierarchy() {
-
-        $result = $this->_runProcessRefineryParents('occurrenceHierarchyBuilder', 'ca_occurrences', 'event');
+        $vs_table = 'ca_occurrences';
+        $result = $this->_runProcessRefineryParents('occurrenceHierarchyBuilder', $vs_table, 'event');
+        $this->_deleteInstance($vs_table, $result);
         $this->assertNotNull($result);
     }
 
     public function testCaProcessRefineryParentsObjectHierarchy() {
-
-        $result = $this->_runProcessRefineryParents('objectHierarchyBuilder', 'ca_objects', 'software');
+        $vs_table = 'ca_objects';
+        $result = $this->_runProcessRefineryParents('objectHierarchyBuilder', $vs_table, 'software');
+        $this->_deleteInstance($vs_table, $result);
         $this->assertNotNull($result);
     }
 
     public function testCaProcessRefineryParentsStorageLocationHierarchy() {
-
-        $result = $this->_runProcessRefineryParents('storageLocationHierarchyBuilder', 'ca_storage_locations', 'drawer');
+        $vs_table = 'ca_storage_locations';
+        $result = $this->_runProcessRefineryParents('storageLocationHierarchyBuilder', $vs_table, 'drawer');
+        $this->_deleteInstance($vs_table, $result);
         $this->assertNotNull($result);
     }
 
@@ -411,7 +460,11 @@ class ImportHelpersTest extends TestCase {
                                 'name' => '^1',
                                 'type' => $vs_type
                         ));
-        $result = $this->_runGenericImportSplitter($vs_refinery_name, 'ca_entities', $vs_type);
+        $vs_table = 'ca_entities';
+        $result = $this->_runGenericImportSplitter($vs_refinery_name, $vs_table, $vs_type);
+
+        // Delete entity
+        $this->_deleteInstance($vs_table, $result[0]['date_value']);
 
         $this->assertNotNull($result);
     }
@@ -430,6 +483,7 @@ class ImportHelpersTest extends TestCase {
         $result = $this->_runGenericImportSplitter($vs_refinery_name, 'ca_entities', $vs_type);
 
         $this->assertNotNull($result);
+        $this->assertSame(0, sizeof($result));
     }
 
     public function testCaGenericImportSplitterEntityUseHierarchy() {
@@ -443,10 +497,25 @@ class ImportHelpersTest extends TestCase {
                                 'type' => $vs_type
                         ));
         $this->item['settings'][$vs_refinery_name . '_hierarchy'] = $this->parents;
-        $this->expectException(Exception::class);
-        $result = $this->_runGenericImportSplitter($vs_refinery_name, 'ca_entities', $vs_type);
+        $vs_table = 'ca_entities';
+        $result = $this->_runGenericImportSplitter($vs_refinery_name, $vs_table, $vs_type);
+
+        // Delete entity
+        $this->_deleteInstance($vs_table, $result[0]['date_value']);
 
         $this->assertNotNull($result);
+    }
+
+    /**
+     * @param string $ps_table
+     * @param        $pn_id
+     */
+    protected function _deleteInstance(string $ps_table, $pn_id): void {
+        $t_instance = Datamodel::getInstance($ps_table);
+        if ($t_instance->load($pn_id)) {
+            $t_instance->setMode(ACCESS_WRITE);
+            $t_instance->delete(true, array('hard' => true));
+        }
     }
 
 }
