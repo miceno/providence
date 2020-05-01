@@ -402,8 +402,49 @@ class ImportHelpersTest extends TestCase {
      *
      */
     public function testCaGenericImportSplitterEntity() {
+        $vs_refinery_name = 'entitySplitter';
+        $vs_type = 'org';
         $this->groups['destination'] = 'ca_objects.unitdate.date_value';
-        $result = $this->_runGenericImportSplitter('entitySplitter', 'ca_entities', 'org');
+        $this->item['settings'][$vs_refinery_name . '_parents'] =
+                array(
+                        array(
+                                'name' => '^1',
+                                'type' => $vs_type
+                        ));
+        $result = $this->_runGenericImportSplitter($vs_refinery_name, 'ca_entities', $vs_type);
+
+        $this->assertNotNull($result);
+    }
+
+    public function testCaGenericImportSplitterEntitySkifIfValueMatches() {
+        $vs_refinery_name = 'entitySplitter';
+        $vs_type = 'org';
+        $this->groups['destination'] = 'ca_objects.unitdate.date_value';
+        $this->item['settings'][$vs_refinery_name . '_parents'] =
+                array(
+                        array(
+                                'name' => '^1',
+                                'type' => $vs_type
+                        ));
+        $this->item['settings'][$vs_refinery_name . '_skipIfValue'] = ['Verdun'];
+        $result = $this->_runGenericImportSplitter($vs_refinery_name, 'ca_entities', $vs_type);
+
+        $this->assertNotNull($result);
+    }
+
+    public function testCaGenericImportSplitterEntityUseHierarchy() {
+        $vs_refinery_name = 'entitySplitter';
+        $vs_type = 'org';
+        $this->groups['destination'] = 'ca_objects.unitdate.date_value';
+        $this->item['settings'][$vs_refinery_name . '_parents'] =
+                array(
+                        array(
+                                'name' => '^1',
+                                'type' => $vs_type
+                        ));
+        $this->item['settings'][$vs_refinery_name . '_hierarchy'] = $this->parents;
+        $this->expectException(Exception::class);
+        $result = $this->_runGenericImportSplitter($vs_refinery_name, 'ca_entities', $vs_type);
 
         $this->assertNotNull($result);
     }
