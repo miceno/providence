@@ -299,7 +299,6 @@
 					 $va_prefix_file_list = caGetDirectoryContentsAsList($vs_prefix, true); 
 				}
 			
-			
 				$vb_is_repeating = false;
 				$vn_num_repeats = null;
 				if(caIsIndexedArray($va_attrs)) {
@@ -475,9 +474,9 @@
 		$o_trans = caGetOption('transaction', $pa_options, null);
 		
 		$t_rel_instance = Datamodel::getInstanceByTableName($ps_related_table, true);
-
-		$vs_refinery_name = $po_refinery_instance->getName();
 		
+		$vs_refinery_name = $po_refinery_instance->getName();
+
 		global $g_ui_locale_id;
 		$va_attr_vals = array();
 		
@@ -604,7 +603,7 @@
                 $pa_options = array_merge(array('transaction' => $o_trans, 'matchOn' => array('idno', 'label')), $pa_options);
 
                 switch($ps_related_table) {
-	                case 'ca_objects':
+                    case 'ca_objects':
                         $vn_id = DataMigrationUtils::getObjectID($vs_name, $vs_parent_id, $vs_type, $g_ui_locale_id, $va_attributes, $pa_options);
                         break;
                     case 'ca_object_lots':
