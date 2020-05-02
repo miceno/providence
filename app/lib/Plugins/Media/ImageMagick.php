@@ -957,7 +957,7 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 			'-format "%m\n"',
 			caEscapeShellArg( $this->filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
 		) ), $va_output, $vn_return );
-		
+
 		// don't extract previews from "normal" images (the output line count is always # of files + 1)
 		if(sizeof($va_output)<=2) { return false; } 
 
@@ -1205,7 +1205,7 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 				'-format "%m;%w;%h;%[colorspace];%[depth];%[xresolution];%[yresolution]\n" ',
 				caEscapeShellArg( $ps_filepath ) . ( caIsPOSIX() ? ' 2> /dev/null' : '' )
 			) ), $va_output, $vn_return );
-			
+
 			$va_tmp = explode(';', $va_output[0]);
 			
 			if (sizeof($va_tmp) != 7) {
@@ -1386,5 +1386,4 @@ class WLPlugMediaImageMagick Extends BaseMediaPlugin Implements IWLPlugMedia {
 		return null;
 	}
 	# ------------------------------------------------
-
 }
