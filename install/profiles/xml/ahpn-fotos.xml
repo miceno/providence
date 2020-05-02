@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="profile.xsd"
-         useForConfiguration="1" base="base" infoUrl="http://providence.collectiveaccess.org/wiki/DefaultProfile">
+         useForConfiguration="1" infoUrl="http://providence.collectiveaccess.org/wiki/DefaultProfile">
     <profileName>AHPN fotos</profileName>
     <profileDescription>Arxiu Històric del Poblenou addendum to Visual Resources Collection profile, available
         locales are: ca_ES, es_ES.
