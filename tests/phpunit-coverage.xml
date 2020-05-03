@@ -16,6 +16,10 @@
          bootstrap="./setup-tests.php"
          verbose="true">
 
+    <!--
+    IMPORTANT: All paths are relative to this file.
+    -->
+
     <testsuites>
         <testsuite name="Helpers Test Suite">
             <directory>helpers/</directory>
@@ -47,13 +51,13 @@
             <directory suffix=".php">../viewers</directory>
             <directory suffix=".php">../hc</directory>
             <exclude>
-                <directory>../vendor</directory>
-            </exclude>
-            <exclude>
-                <directory>../vendor</directory>
+                <directory>../install/profiles</directory>
+                <directory>../install/css</directory>
+                <directory>../install/graphics</directory>
                 <directory>../app/conf</directory>
                 <directory>../app/fonts</directory>
                 <directory>../app/lib/Zend</directory>
+                <directory>../app/lib/Print/phpqrcode/cache</directory>
                 <directory>../app/locale</directory>
                 <directory>../app/log</directory>
                 <directory>../app/queue</directory>
@@ -62,11 +66,7 @@
         </whitelist>
     </filter>
     <logging>
-        <!--
-        <log type="coverage-html" target="build/report" lowUpperBound="35" highLowerBound="70"/>
-        <log type="coverage-clover" target="build/coverage.xml"/>
-        -->
-        <!--<log type="coverage-php" target="../build/coverage.serialized"/>-->
-        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="coverage-clover" target="../build/coverage.xml"/>
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true" showUncoveredFiles="false"/>
     </logging>
 </phpunit>

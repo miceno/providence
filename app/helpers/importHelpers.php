@@ -298,7 +298,6 @@
 					 $vs_prefix = preg_replace("![/]+!", "/", "{$vs_batch_media_directory}/".$pa_item['settings']["{$ps_refinery_name}_mediaPrefix"]."/");
 					 $va_prefix_file_list = caGetDirectoryContentsAsList($vs_prefix, true);
 				}
-
 				$vb_is_repeating = false;
 				$vn_num_repeats = null;
 				if(caIsIndexedArray($va_attrs)) {
@@ -475,8 +474,10 @@
 
 		$t_rel_instance = Datamodel::getInstanceByTableName($ps_related_table, true);
 
-		$refinery_name = $po_refinery_instance->getName();
-		
+		$vs_refinery_name = $po_refinery_instance->getName();
+
+		$vs_refinery_name = $po_refinery_instance->getName();
+
 		global $g_ui_locale_id;
 		$va_attr_vals = array();
 
@@ -541,8 +542,8 @@
                             $va_name[$vs_label_fld] = BaseRefinery::parsePlaceholder($pa_related_options[$vs_label_fld], $pa_source_data, $pa_item, $pn_c, array('returnAsString' => true, 'reader' => $o_reader));
                         }
                     } else {
-                        $va_name = DataMigrationUtils::splitEntityName($vs_name, array_merge($pa_options, ['doNotParse' => $pa_item['settings']["{$refinery_name}_doNotParse"]]));
-                    } 
+                        $va_name = DataMigrationUtils::splitEntityName($vs_name, array_merge($pa_options, ['doNotParse' => $pa_item['settings']["{$vs_refinery_name}_doNotParse"]]));
+                    }
             
                     if (!is_array($va_name) || !$va_name) { 
                         if ($o_log) { $o_log->logDebug(_t('[importHelpers:caProcessRefineryRelated] No name specified for table %1', $ps_related_table)); }
@@ -589,7 +590,7 @@
                         if ($vb_is_set) { $pa_options['nonPreferredLabels'][] = $va_label; }
                     }
                 } elseif($vs_non_preferred_label = trim($pa_related_options["nonPreferredLabels"])) {
-                    if ($refinery_name == 'entitySplitter') {
+                    if ($vs_refinery_name == 'entitySplitter') {
                         if ($vs_npl = trim(DataMigrationUtils::splitEntityName(BaseRefinery::parsePlaceholder($vs_non_preferred_label, $pa_source_data, $pa_item, $pn_c, array('reader' => $o_reader, 'returnAsString' => true, 'delimiter' => null)), $pa_options))) { $pa_options['nonPreferredLabels'][] = $vs_npl; };
                     } else {
                         if ($vs_npl = trim(BaseRefinery::parsePlaceholder($vs_non_preferred_label, $pa_source_data, $pa_item, $pn_c, array('reader' => $o_reader, 'returnAsString' => true, 'delimiter' => null)))) {
@@ -603,7 +604,7 @@
                 $pa_options = array_merge(array('transaction' => $o_trans, 'matchOn' => array('idno', 'label')), $pa_options);
 
                 switch($ps_related_table) {
-	                case 'ca_objects':
+                    case 'ca_objects':
                         $vn_id = DataMigrationUtils::getObjectID($vs_name, $vs_parent_id, $vs_type, $g_ui_locale_id, $va_attributes, $pa_options);
                         break;
                     case 'ca_object_lots':

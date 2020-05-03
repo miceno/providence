@@ -98,7 +98,6 @@
 	$va_available_cli_opts = array_merge(array(
 			"hostname|h-s" => 'Hostname of installation. If omitted default installation is used.',
 			"setup|s" => 'Specify the path to an alternate setup.php.',
-			"help" => "Displays available commands with descriptions."
 		), $va_command_opts);
 
 	try {
@@ -153,7 +152,7 @@
                     }
 				}
 			} else {
-				print CLIUtils::textWithColor("No help is available for \"{$vs_cmd_proc}\"\n", "bold_red");
+				print CLIUtils::textWithColor("No help is available for \"{$vs_cmd_proc}\"\n\n", "bold_red");
                 foreach($va_available_cli_opts as $vs_opt_format => $vs_opt_desc) {
                     $output = _formatCmdOptions($vs_opt_format, $vs_opt_desc);
                     print $output;

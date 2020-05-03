@@ -30,485 +30,477 @@
  * ----------------------------------------------------------------------
  */
 
-/**
- *
- */
+  /**
+   *
+   */
 
-    require_once(__CA_LIB_DIR__ . '/Configuration.php');
-    require_once(__CA_LIB_DIR__ . "/Parsers/MediaMetadata/XMPParser.php");
+ 	require_once(__CA_LIB_DIR__.'/Configuration.php');
+	require_once(__CA_LIB_DIR__."/Parsers/MediaMetadata/XMPParser.php");
 
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Get path in external_applications.conf for specified application
-     *
-     * @param string $ps_application_name The name of the application. This is the same as the relevant entry in external_applications.conf without the trailing "_app" (Ex. pdfminer, dcraw, ffmpeg)
-     *
-     * @return string Path to application as defined in external_applications.conf
-     */
-    function caGetExternalApplicationPath($ps_application_name) {
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Get path in external_applications.conf for specified application
+	 *
+	 * @param string $ps_application_name The name of the application. This is the same as the relevant entry in external_applications.conf without the trailing "_app" (Ex. pdfminer, dcraw, ffmpeg)
+	 * @return string Path to application as defined in external_applications.conf
+	 */
+	function caGetExternalApplicationPath($ps_application_name) {
         if (!($o_ext_app_config = Configuration::load(__CA_CONF_DIR__ . '/external_applications.conf'))) {
             return null;
         }
-
-        return $o_ext_app_config->get($ps_application_name . '_app');
-    }
-
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if ImageMagick executables is available within specified directory path
-     *
-     * @param $ps_imagemagick_path - path to directory containing ImageMagick executables
-     *
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginImageMagickInstalled($ps_imagemagick_path = null) {
-        //if (CompositeCache::contains("mediahelper_imagemagick_installed")) { return CompositeCache::fetch("mediahelper_imagemagick_installed"); }
-        if (!$ps_imagemagick_path) {
-            $ps_imagemagick_path = caGetExternalApplicationPath('imagemagick');
-        }
-
-        if (!caIsValidFilePath($ps_imagemagick_path)) {
-            CompositeCache::save("mediahelper_imagemagick_installed", false);
-            return false;
-        }
-
-        if (caGetOSFamily()==OS_WIN32) {
-            CompositeCache::save("mediahelper_imagemagick_installed", true);
-            return true;
-        }    // don't try exec test on Windows
-
-        caExec($ps_imagemagick_path . '/identify 2> /dev/null', $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_imagemagick_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if GraphicsMagick is available in specified directory path
-     *
-     * @param $ps_graphicsmagick_path - path to directory containing GraphicsMagick executables
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginGraphicsMagickInstalled($ps_graphicsmagick_path=null) {
-        //if (CompositeCache::contains("mediahelper_graphicsmagick_installed")) { return CompositeCache::fetch("mediahelper_graphicsmagick_installed"); }
-        if(!$ps_graphicsmagick_path) { $ps_graphicsmagick_path = caGetExternalApplicationPath('graphicsmagick'); }
-
-        if (!caIsValidFilePath($ps_graphicsmagick_path)) {
-            CompositeCache::save("mediahelper_graphicsmagick_installed", false);
-            return false;
-        }
-
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_graphicsmagick_installed", true);
-            return  true;
-        } // don't try exec test on Windows
-
-        caExec($ps_graphicsmagick_path.' 2> /dev/null', $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_graphicsmagick_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if dcraw executable is available at specified path
-     *
-     * @param $ps_path_to_dcraw - full path to dcraw including executable name
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginDcrawInstalled($ps_path_to_dcraw=null) {
-        //if (CompositeCache::contains("mediahelper_dcraw_installed")) { return CompositeCache::fetch("mediahelper_dcraw_installed"); }
-        if(!$ps_path_to_dcraw) { $ps_path_to_dcraw = caGetExternalApplicationPath('dcraw'); }
-
-        if (!caIsValidFilePath($ps_path_to_dcraw)) {
-            CompositeCache::save("mediahelper_dcraw_installed", false);
-            return false;
-        }
-
-        caExec($ps_path_to_dcraw.' -i 2> /dev/null', $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_dcraw_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if ffmpeg executable is available at specified path
-     *
-     * @param $ps_path_to_ffmpeg - full path to ffmpeg including executable name
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginFFmpegInstalled($ps_path_to_ffmpeg=null) {
-        //if (CompositeCache::contains("mediahelper_ffmpeg_installed")) { return CompositeCache::fetch("mediahelper_ffmpeg_installed"); }
-        if(!$ps_path_to_ffmpeg) { $ps_path_to_ffmpeg = caGetExternalApplicationPath('ffmpeg'); }
-
-        if (!caIsValidFilePath($ps_path_to_ffmpeg)) {
-            CompositeCache::save("mediahelper_ffmpeg_installed", false);
-            return false;
-        }
-
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_ffmpeg_installed", true);
-            return true;
-        }	// don't try exec test on Windows
-
-        caExec($ps_path_to_ffmpeg.'> /dev/null 2>&1', $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_ffmpeg_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if Ghostscript (gs) executable is available at specified path
-     *
-     * @param $ps_path_to_ghostscript - full path to Ghostscript including executable name
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginGhostscriptInstalled($ps_path_to_ghostscript=null) {
-        //if (CompositeCache::contains("mediahelper_ghostscript_installed")) { return CompositeCache::fetch("mediahelper_ghostscript_installed"); }
-        if(!$ps_path_to_ghostscript) { $ps_path_to_ghostscript = caGetExternalApplicationPath('ghostscript'); }
-
-        if (!caIsValidFilePath($ps_path_to_ghostscript)) {
-            CompositeCache::save("mediahelper_ghostscript_installed", false);
-            return false;
-        }
-
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_ghostscript_installed", true);
-            return true;
-        } // don't try exec test on Windows
-
-        caExec($ps_path_to_ghostscript." -v 2> /dev/null", $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_ghostscript_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if PdfToText executable is available at specified path
-     *
-     * @param $ps_path_to_pdf_to_text - full path to PdfToText including executable name
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginPdftotextInstalled($ps_path_to_pdf_to_text=null) {
-        //if (CompositeCache::contains("mediahelper_pdftotext_installed")) { return CompositeCache::fetch("mediahelper_pdftotext_installed"); }
-        if(!$ps_path_to_pdf_to_text) { $ps_path_to_pdf_to_text = caGetExternalApplicationPath('pdftotext'); }
-
-        if (!caIsValidFilePath($ps_path_to_pdf_to_text)) {
-            CompositeCache::save("mediahelper_pdftotext_installed", false);
-            return false;
-        }
-
-        caExec($ps_path_to_pdf_to_text." -v 2> /dev/null", $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_pdftotext_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if LibreOffice executable is available at specified path
-     *
-     * @param $ps_path_to_libreoffice - full path to LibreOffice including executable name
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginLibreOfficeInstalled($ps_path_to_libreoffice=null) {
-        //if (CompositeCache::contains("mediahelper_libreoffice_installed")) { return CompositeCache::fetch("mediahelper_libreoffice_installed"); }
-        if(!$ps_path_to_libreoffice) { $ps_path_to_libreoffice = caGetExternalApplicationPath('libreoffice'); }
-        if (!caIsValidFilePath($ps_path_to_libreoffice)) {
-            CompositeCache::save("mediahelper_libreoffice_installed", false);
-            return false;
-        }
-
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_libreoffice_installed", true);
-            return true;
-        } // don't try exec test on Windows
-
-        caExec($ps_path_to_libreoffice." --version 2> /dev/null", $va_output, $vn_return);
-
-        $vb_ret = (($vn_return >= 0) && ($vn_return < 127));
-
-        CompositeCache::save("mediahelper_libreoffice_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if Imagick PHP extension is available
-     *
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginImagickInstalled() {
-        $o_config = Configuration::load();
-        if ($o_config->get('dont_use_imagick')) { return false; }
-        return class_exists('Imagick') ? true : false;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if Gmagick PHP extension is available
-     *
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginGmagickInstalled() {
-        return class_exists('Gmagick') ? true : false;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if GD PHP extension is available. Return false if GD is installed but lacks JPEG support unless "don't worry about JPEGs" parameter is set to true.
-     *
-     * @param boolean $pb_dont_worry_about_jpegs If set will return true if GD is installed without JPEG support; default is to consider JPEG-less GD worthless.
-     *
-     * @return boolean - true if available, false if not
-     */
-    function caMediaPluginGDInstalled($pb_dont_worry_about_jpegs=false) {
-        if ($pb_dont_worry_about_jpegs) {
-            return function_exists('imagecreatefromgif') ? true : false;
-        } else {
-            return function_exists('imagecreatefromjpeg') ? true : false;
-        }
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if mediainfo is installed in the given path.
-     * @param string $ps_mediainfo_path path to mediainfo
-     */
-    function caMediaInfoInstalled($ps_mediainfo_path=null) {
-        //if (CompositeCache::contains("mediahelper_mediainfo_installed")) { return CompositeCache::fetch("mediahelper_mediainfo_installed"); }
-        if(!$ps_mediainfo_path) { $ps_mediainfo_path = caGetExternalApplicationPath('mediainfo'); }
-        if (!caIsValidFilePath($ps_mediainfo_path)) {
-            CompositeCache::save("mediahelper_mediainfo_installed", false);
-            return false;
-        }
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_mediainfo_installed", true);
-            return true;
-        } // don't try exec test on Windows
-        caExec($ps_mediainfo_path." --Help > /dev/null",$va_output,$vn_return);
-        $vb_ret = ($vn_return == 255) || ($vn_return == 0);
-
-        CompositeCache::save("mediahelper_mediainfo_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if OpenCTM (http://openctm.sourceforge.net) is installed in the given path.
-     * @param string $ps_openctm_path path to OpenCTM ctmconv binary
-     * @return bool
-     */
-    function caOpenCTMInstalled($ps_openctm_ctmconv_path=null) {
-        //if (CompositeCache::contains("mediahelper_openctm_installed")) { return CompositeCache::fetch("mediahelper_openctm_installed"); }
-        if(!$ps_openctm_ctmconv_path) { $ps_openctm_ctmconv_path = caGetExternalApplicationPath('openctm'); }
-
-        if (!caIsValidFilePath($ps_openctm_ctmconv_path)) {
-            CompositeCache::save("mediahelper_openctm_installed", false);
-            return false;
-        }
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_openctm_installed", true);
-            return true;
-        }	// don't try exec test on Windows
-        caExec($ps_openctm_ctmconv_path." --help > /dev/null",$va_output,$vn_return);
-        $vb_ret = ($vn_return == 0);
-
-        CompositeCache::save("mediahelper_openctm_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if Meshlab (http://meshlab.sourceforge.net), and specifically the meshlabserver command line tool, is installed in the given path.
-     * @param string $ps_meshlabserver_path path to the meshlabserver binary
-     * @return bool
-     */
-    function caMeshlabServerInstalled($ps_meshlabserver_path=null) {
-        //if (CompositeCache::contains("mediahelper_meshlabserver_installed")) { return CompositeCache::fetch("mediahelper_meshlabserver_installed"); }
-        if(!$ps_meshlabserver_path) { $ps_meshlabserver_path = caGetExternalApplicationPath('meshlabserver'); }
-
-        if (!caIsValidFilePath($ps_meshlabserver_path)) {
-            CompositeCache::save("mediahelper_meshlabserver_installed", false);
-            return false;
-        }
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_meshlabserver_installed", true);
-            return true;
-        }	// don't try exec test on Windows
-
-        putenv("DISPLAY=:0");
-        chdir('/usr/local/bin');
-        caExec($ps_meshlabserver_path." --help > /dev/null",$va_output,$vn_return);
-
-        $vb_ret = ($vn_return == 1);
-
-        CompositeCache::save("mediahelper_meshlabserver_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if PDFMiner (http://www.unixuser.org/~euske/python/pdfminer/index.html) is installed in the given path.
-     * @param string $ps_pdfminer_path path to PDFMiner
-     * @return boolean
-     */
-    function caPDFMinerInstalled($ps_pdfminer_path=null) {
-        //if (CompositeCache::contains("mediahelper_pdfminer_installed")) { return CompositeCache::fetch("mediahelper_pdfminer_installed"); }
-        if(!$ps_pdfminer_path) { $ps_pdfminer_path = caGetExternalApplicationPath('pdfminer'); }
-
-        if (!caIsValidFilePath($ps_pdfminer_path)) {
-            CompositeCache::save("mediahelper_pdfminer_installed", false);
-            return false;
-        }
-
-        if (!@is_readable($ps_pdfminer_path)) {
-            CompositeCache::save("mediahelper_pdfminer_installed", false);
-            return false;
-        }
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_pdfminer_installed", true);
-            return true;
-        } // don't try exec test on Windows
-
-        caExec($ps_pdfminer_path." > /dev/null",$va_output,$vn_return);
-
-        $vb_ret = ($vn_return == 100);
-
-        CompositeCache::save("mediahelper_pdfminer_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if wkhtmltopdf (http://www.wkhtmltopdf.org) is installed in the given path.
-     * @param string $ps_wkhtmltopdf_path path to wkhtmltopdf executable
-     * @return boolean
-     */
-    function caWkhtmltopdfInstalled($ps_wkhtmltopdf_path=null) {
-        //if (CompositeCache::contains("mediahelper_wkhtmltopdf_installed")) { return CompositeCache::fetch("mediahelper_wkhtmltopdf_installed"); }
-        if(!$ps_wkhtmltopdf_path) { $ps_wkhtmltopdf_path = caGetExternalApplicationPath('wkhtmltopdf'); }
-
-        if (!trim($ps_wkhtmltopdf_path) || (preg_match("/[^\/A-Za-z0-9\.:]+/", $ps_wkhtmltopdf_path)) || !@is_readable($ps_wkhtmltopdf_path)) {
-            CompositeCache::save("mediahelper_wkhtmltopdf_installed", false);
-            return false;
-        }
-
-        if (!@is_readable($ps_wkhtmltopdf_path)) {
-            CompositeCache::save("mediahelper_wkhtmltopdf_installed", false);
-            return false;
-        }
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_wkhtmltopdf_installed", true);
-            return true;
-        } // don't try exec test on Windows
-
-        caExec($ps_wkhtmltopdf_path." > /dev/null",$va_output,$vn_return);
-
-        $vb_ret = (($vn_return == 0) || ($vn_return == 1));
-
-        CompositeCache::save("mediahelper_wkhtmltopdf_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Detects if ExifTool (http://www.sno.phy.queensu.ca/~phil/exiftool/) is installed in the given path.
-     *
-     * @param string $ps_exiftool_path path to ExifTool
-     * @return boolean
-     */
-    function caExifToolInstalled($ps_exiftool_path=null) {
-        //if (CompositeCache::contains("mediahelper_exiftool_installed")) { return CompositeCache::fetch("mediahelper_exiftool_installed"); }
-        if(!$ps_exiftool_path) { $ps_exiftool_path = caGetExternalApplicationPath('exiftool'); }
-
-        if (!trim($ps_exiftool_path) || (preg_match("/[^\/A-Za-z0-9\.:]+/", $ps_exiftool_path)) || !@is_readable($ps_exiftool_path)) {
-            CompositeCache::save("mediahelper_exiftool_installed", false);
-            return false;
-        }
-
-        if (!@is_readable($ps_exiftool_path)) {
-            CompositeCache::save("mediahelper_exiftool_installed", false);
-            return false;
-        }
-        if (caGetOSFamily() == OS_WIN32) {
-            CompositeCache::save("mediahelper_exiftool_installed", true);
-            return true;
-        } // don't try exec test on Windows
-
-        caExec($ps_exiftool_path." > /dev/null",$va_output,$vn_return);
-
-        $vb_ret = ($vn_return == 0);
-
-        CompositeCache::save("mediahelper_exiftool_installed", $vb_ret);
-
-        return $vb_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Extracts media metadata using ExifTool
-     *
-     * @param string $ps_filepath file path
-     * @param bool $pb_skip_unknown If set to true, exiftool won't try to extract unknown tags from the source file
-     * 			Use this if metadata extraction fails for unknown reasons. Sometimes tools like Photoshop write weird
-     *			binary data into the files that causes json_decode to barf.
-     *
-     * @return array|null Extracted metadata, null if exiftool is not installed or something went wrong
-     */
-    function caExtractMetadataWithExifTool($ps_filepath, $pb_skip_unknown=false){
-        if (caExifToolInstalled()) {
-            $vs_unknown_param = ($pb_skip_unknown ? '' : '-u');
-            $vs_path_to_exif_tool = caGetExternalApplicationPath('exiftool');
-            caExec("{$vs_path_to_exif_tool} -json -a {$vs_unknown_param} -g1 ".caEscapeShellArg($ps_filepath)." 2> /dev/null", $va_output, $vn_return);
-
-            if($vn_return == 0) {
-                $va_data = json_decode(join("\n", $va_output), true);
-                if(!is_array($va_data)) { return null; }
-                $va_data = array_shift($va_data);
-
-                // rewrite GPS entries to include ref
-                if (isset($va_data['GPS']['GPSLatitude'])) { $va_data['GPS']['GPSLatitude'] .= " ".substr($va_data['GPS']['GPSLatitudeRef'], 0, 1); }
-                if (isset($va_data['GPS']['GPSLongitude'])) { $va_data['GPS']['GPSLongitude'] .= " ".substr($va_data['GPS']['GPSLongitudeRef'], 0, 1); }
-
-                if(sizeof($va_data)>0) {
-                    return $va_data;
-                }
-            }
-        }
-        return null;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Perform mapping of extracted media metadata to CollectiveAccess bundles.
-     *
-     * @param BundlableLabelableBaseModelWithAttributes $po_instance Model instance to insert extracted metadata into
-     * @param array $pa_metadata Extracted metadata
-     * @param int $pn_locale_id The current locale as a numeric locale_id
-     * @return bool True extracted metadata was mapped and the model changed, false if no change was made to the model
-     */
-    function caExtractEmbeddedMetadata($po_instance, $pa_metadata, $pn_locale_id) {
-        if (!is_array($pa_metadata)) { return false; }
-        $vb_did_mapping = false;
-        if (!($vs_media_metadata_config = __CA_CONF_DIR__.'/media_metadata.conf')) { return false; }
-        $o_metadata_config = Configuration::load($vs_media_metadata_config);
-
-        $va_mappings = $o_metadata_config->getAssoc('import_mappings');
-        $vs_tablename = $po_instance->tableName();
+		return $o_ext_app_config->get($ps_application_name.'_app');
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if ImageMagick executables is available within specified directory path
+	 *
+	 * @param $ps_imagemagick_path - path to directory containing ImageMagick executables
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginImageMagickInstalled($ps_imagemagick_path=null) {
+		//if (CompositeCache::contains("mediahelper_imagemagick_installed")) { return CompositeCache::fetch("mediahelper_imagemagick_installed"); }
+		if(!$ps_imagemagick_path) { $ps_imagemagick_path = caGetExternalApplicationPath('imagemagick'); }
+
+		if (!caIsValidFilePath($ps_imagemagick_path)) { 
+			CompositeCache::save("mediahelper_imagemagick_installed", false);
+			return false; 
+		}
+
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_imagemagick_installed", true);
+			return true; 
+		}	// don't try exec test on Windows
+		
+		caExec($ps_imagemagick_path.'/identify 2> /dev/null', $va_output, $vn_return);
+		
+		$vb_ret =  (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_imagemagick_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if GraphicsMagick is available in specified directory path
+	 *
+	 * @param $ps_graphicsmagick_path - path to directory containing GraphicsMagick executables
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginGraphicsMagickInstalled($ps_graphicsmagick_path=null) {
+		//if (CompositeCache::contains("mediahelper_graphicsmagick_installed")) { return CompositeCache::fetch("mediahelper_graphicsmagick_installed"); }
+		if(!$ps_graphicsmagick_path) { $ps_graphicsmagick_path = caGetExternalApplicationPath('graphicsmagick'); }
+
+		if (!caIsValidFilePath($ps_graphicsmagick_path)) { 
+			CompositeCache::save("mediahelper_graphicsmagick_installed", false);
+			return false; 
+		}
+
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_graphicsmagick_installed", true);
+			return  true; 
+		} // don't try exec test on Windows
+		
+		caExec($ps_graphicsmagick_path.' 2> /dev/null', $va_output, $vn_return);
+		
+		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_graphicsmagick_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if dcraw executable is available at specified path
+	 *
+	 * @param $ps_path_to_dcraw - full path to dcraw including executable name
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginDcrawInstalled($ps_path_to_dcraw=null) {
+		//if (CompositeCache::contains("mediahelper_dcraw_installed")) { return CompositeCache::fetch("mediahelper_dcraw_installed"); }
+		if(!$ps_path_to_dcraw) { $ps_path_to_dcraw = caGetExternalApplicationPath('dcraw'); }
+
+		if (!caIsValidFilePath($ps_path_to_dcraw)) { 
+			CompositeCache::save("mediahelper_dcraw_installed", false);
+			return false; 
+		}
+
+		caExec($ps_path_to_dcraw.' -i 2> /dev/null', $va_output, $vn_return);
+		
+		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_dcraw_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if ffmpeg executable is available at specified path
+	 *
+	 * @param $ps_path_to_ffmpeg - full path to ffmpeg including executable name
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginFFmpegInstalled($ps_path_to_ffmpeg=null) {
+		//if (CompositeCache::contains("mediahelper_ffmpeg_installed")) { return CompositeCache::fetch("mediahelper_ffmpeg_installed"); }
+		if(!$ps_path_to_ffmpeg) { $ps_path_to_ffmpeg = caGetExternalApplicationPath('ffmpeg'); }
+
+		if (!caIsValidFilePath($ps_path_to_ffmpeg)) { 
+			CompositeCache::save("mediahelper_ffmpeg_installed", false);
+			return false; 
+		}
+
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_ffmpeg_installed", true);
+			return true; 
+		}	// don't try exec test on Windows
+		
+		caExec($ps_path_to_ffmpeg.'> /dev/null 2>&1', $va_output, $vn_return);
+		
+		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_ffmpeg_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if Ghostscript (gs) executable is available at specified path
+	 *
+	 * @param $ps_path_to_ghostscript - full path to Ghostscript including executable name
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginGhostscriptInstalled($ps_path_to_ghostscript=null) {
+		//if (CompositeCache::contains("mediahelper_ghostscript_installed")) { return CompositeCache::fetch("mediahelper_ghostscript_installed"); }
+		if(!$ps_path_to_ghostscript) { $ps_path_to_ghostscript = caGetExternalApplicationPath('ghostscript'); }
+
+		if (!caIsValidFilePath($ps_path_to_ghostscript)) { 
+			CompositeCache::save("mediahelper_ghostscript_installed", false);
+			return false; 
+		}
+		
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_ghostscript_installed", true);
+			return true; 
+		} // don't try exec test on Windows
+		
+		caExec($ps_path_to_ghostscript." -v 2> /dev/null", $va_output, $vn_return);
+		
+		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_ghostscript_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if PdfToText executable is available at specified path
+	 *
+	 * @param $ps_path_to_pdf_to_text - full path to PdfToText including executable name
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginPdftotextInstalled($ps_path_to_pdf_to_text=null) {
+		//if (CompositeCache::contains("mediahelper_pdftotext_installed")) { return CompositeCache::fetch("mediahelper_pdftotext_installed"); }
+		if(!$ps_path_to_pdf_to_text) { $ps_path_to_pdf_to_text = caGetExternalApplicationPath('pdftotext'); }
+		
+		if (!caIsValidFilePath($ps_path_to_pdf_to_text)) { 
+			CompositeCache::save("mediahelper_pdftotext_installed", false);
+			return false; 
+		}
+		
+		caExec($ps_path_to_pdf_to_text." -v 2> /dev/null", $va_output, $vn_return);
+		
+		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_pdftotext_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if LibreOffice executable is available at specified path
+	 *
+	 * @param $ps_path_to_libreoffice - full path to LibreOffice including executable name
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginLibreOfficeInstalled($ps_path_to_libreoffice=null) {
+		//if (CompositeCache::contains("mediahelper_libreoffice_installed")) { return CompositeCache::fetch("mediahelper_libreoffice_installed"); }
+		if(!$ps_path_to_libreoffice) { $ps_path_to_libreoffice = caGetExternalApplicationPath('libreoffice'); }
+		if (!caIsValidFilePath($ps_path_to_libreoffice)) { 
+			CompositeCache::save("mediahelper_libreoffice_installed", false);
+			return false;
+		}
+		
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_libreoffice_installed", true);
+			return true; 
+		} // don't try exec test on Windows
+		
+		caExec($ps_path_to_libreoffice." --version 2> /dev/null", $va_output, $vn_return);
+		
+		$vb_ret = (($vn_return >= 0) && ($vn_return < 127));
+		
+		CompositeCache::save("mediahelper_libreoffice_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if Imagick PHP extension is available
+	 *
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginImagickInstalled() {
+		$o_config = Configuration::load();
+		if ($o_config->get('dont_use_imagick')) { return false; }
+		return class_exists('Imagick') ? true : false;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if Gmagick PHP extension is available
+	 *
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginGmagickInstalled() {
+		return class_exists('Gmagick') ? true : false;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if GD PHP extension is available. Return false if GD is installed but lacks JPEG support unless "don't worry about JPEGs" parameter is set to true.
+	 *
+	 * @param boolean $pb_dont_worry_about_jpegs If set will return true if GD is installed without JPEG support; default is to consider JPEG-less GD worthless.
+	 *
+	 * @return boolean - true if available, false if not
+	 */
+	function caMediaPluginGDInstalled($pb_dont_worry_about_jpegs=false) {
+		if ($pb_dont_worry_about_jpegs) {
+			return function_exists('imagecreatefromgif') ? true : false;
+		} else {
+			return function_exists('imagecreatefromjpeg') ? true : false;
+		}
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if mediainfo is installed in the given path.
+	 * @param string $ps_mediainfo_path path to mediainfo
+	 */
+	function caMediaInfoInstalled($ps_mediainfo_path=null) {
+		//if (CompositeCache::contains("mediahelper_mediainfo_installed")) { return CompositeCache::fetch("mediahelper_mediainfo_installed"); }
+		if(!$ps_mediainfo_path) { $ps_mediainfo_path = caGetExternalApplicationPath('mediainfo'); }
+		if (!caIsValidFilePath($ps_mediainfo_path)) { 
+			CompositeCache::save("mediahelper_mediainfo_installed", false);
+			return false; 
+		}
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_mediainfo_installed", true);
+			return true; 
+		} // don't try exec test on Windows
+		caExec($ps_mediainfo_path." --Help > /dev/null",$va_output,$vn_return);
+		$vb_ret = ($vn_return == 255) || ($vn_return == 0);
+		
+		CompositeCache::save("mediahelper_mediainfo_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if OpenCTM (http://openctm.sourceforge.net) is installed in the given path.
+	 * @param string $ps_openctm_path path to OpenCTM ctmconv binary
+	 * @return bool
+	 */
+	function caOpenCTMInstalled($ps_openctm_ctmconv_path=null) {
+		//if (CompositeCache::contains("mediahelper_openctm_installed")) { return CompositeCache::fetch("mediahelper_openctm_installed"); }
+		if(!$ps_openctm_ctmconv_path) { $ps_openctm_ctmconv_path = caGetExternalApplicationPath('openctm'); }
+
+		if (!caIsValidFilePath($ps_openctm_ctmconv_path)) { 
+			CompositeCache::save("mediahelper_openctm_installed", false);
+			return false; 
+		}
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_openctm_installed", true);
+			return true; 
+		}	// don't try exec test on Windows
+		caExec($ps_openctm_ctmconv_path." --help > /dev/null",$va_output,$vn_return);
+		$vb_ret = ($vn_return == 0);
+		
+		CompositeCache::save("mediahelper_openctm_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if Meshlab (http://meshlab.sourceforge.net), and specifically the meshlabserver command line tool, is installed in the given path.
+	 * @param string $ps_meshlabserver_path path to the meshlabserver binary
+	 * @return bool
+	 */
+	function caMeshlabServerInstalled($ps_meshlabserver_path=null) {
+		//if (CompositeCache::contains("mediahelper_meshlabserver_installed")) { return CompositeCache::fetch("mediahelper_meshlabserver_installed"); }
+		if(!$ps_meshlabserver_path) { $ps_meshlabserver_path = caGetExternalApplicationPath('meshlabserver'); }
+
+		if (!caIsValidFilePath($ps_meshlabserver_path)) { 
+			CompositeCache::save("mediahelper_meshlabserver_installed", false);
+			return false; 
+		}
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_meshlabserver_installed", true);
+			return true; 
+		}	// don't try exec test on Windows
+		
+		putenv("DISPLAY=:0");
+		chdir('/usr/local/bin');
+		caExec($ps_meshlabserver_path." --help > /dev/null",$va_output,$vn_return);
+		
+		$vb_ret = ($vn_return == 1);
+		
+		CompositeCache::save("mediahelper_meshlabserver_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if PDFMiner (http://www.unixuser.org/~euske/python/pdfminer/index.html) is installed in the given path.
+	 * @param string $ps_pdfminer_path path to PDFMiner
+	 * @return boolean
+	 */
+	function caPDFMinerInstalled($ps_pdfminer_path=null) {
+		//if (CompositeCache::contains("mediahelper_pdfminer_installed")) { return CompositeCache::fetch("mediahelper_pdfminer_installed"); }
+		if(!$ps_pdfminer_path) { $ps_pdfminer_path = caGetExternalApplicationPath('pdfminer'); }
+
+		if (!caIsValidFilePath($ps_pdfminer_path)) { 
+			CompositeCache::save("mediahelper_pdfminer_installed", false);
+			return false; 
+		}
+
+		if (!@is_readable($ps_pdfminer_path)) { 
+			CompositeCache::save("mediahelper_pdfminer_installed", false);
+			return false; 
+		}
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_pdfminer_installed", true);
+			return true; 
+		} // don't try exec test on Windows
+		
+		caExec($ps_pdfminer_path." > /dev/null",$va_output,$vn_return);
+		
+		$vb_ret = ($vn_return == 100);
+		
+		CompositeCache::save("mediahelper_pdfminer_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if wkhtmltopdf (http://www.wkhtmltopdf.org) is installed in the given path.
+	 * @param string $ps_wkhtmltopdf_path path to wkhtmltopdf executable
+	 * @return boolean 
+	 */
+	function caWkhtmltopdfInstalled($ps_wkhtmltopdf_path=null) {
+		//if (CompositeCache::contains("mediahelper_wkhtmltopdf_installed")) { return CompositeCache::fetch("mediahelper_wkhtmltopdf_installed"); }
+		if(!$ps_wkhtmltopdf_path) { $ps_wkhtmltopdf_path = caGetExternalApplicationPath('wkhtmltopdf'); }
+		
+		if (!trim($ps_wkhtmltopdf_path) || (preg_match("/[^\/A-Za-z0-9\.:]+/", $ps_wkhtmltopdf_path)) || !@is_readable($ps_wkhtmltopdf_path)) { 
+			CompositeCache::save("mediahelper_wkhtmltopdf_installed", false);
+			return false; 
+		}
+		
+		if (!@is_readable($ps_wkhtmltopdf_path)) { 
+			CompositeCache::save("mediahelper_wkhtmltopdf_installed", false);
+			return false; 
+		}
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_wkhtmltopdf_installed", true);
+			return true; 
+		} // don't try exec test on Windows
+		
+		caExec($ps_wkhtmltopdf_path." > /dev/null",$va_output,$vn_return);
+		
+		$vb_ret = (($vn_return == 0) || ($vn_return == 1));
+		
+		CompositeCache::save("mediahelper_wkhtmltopdf_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Detects if ExifTool (http://www.sno.phy.queensu.ca/~phil/exiftool/) is installed in the given path.
+	 *
+	 * @param string $ps_exiftool_path path to ExifTool
+	 * @return boolean 
+	 */
+	function caExifToolInstalled($ps_exiftool_path=null) {
+		//if (CompositeCache::contains("mediahelper_exiftool_installed")) { return CompositeCache::fetch("mediahelper_exiftool_installed"); }
+		if(!$ps_exiftool_path) { $ps_exiftool_path = caGetExternalApplicationPath('exiftool'); }
+		
+		if (!trim($ps_exiftool_path) || (preg_match("/[^\/A-Za-z0-9\.:]+/", $ps_exiftool_path)) || !@is_readable($ps_exiftool_path)) { 
+			CompositeCache::save("mediahelper_exiftool_installed", false);
+			return false; 
+		}
+		
+		if (!@is_readable($ps_exiftool_path)) { 
+			CompositeCache::save("mediahelper_exiftool_installed", false);
+			return false; 
+		}
+		if (caGetOSFamily() == OS_WIN32) { 
+			CompositeCache::save("mediahelper_exiftool_installed", true);
+			return true; 
+		} // don't try exec test on Windows
+		
+		caExec($ps_exiftool_path." > /dev/null",$va_output,$vn_return);
+	
+		$vb_ret = ($vn_return == 0);
+		
+		CompositeCache::save("mediahelper_exiftool_installed", $vb_ret);
+		
+		return $vb_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Extracts media metadata using ExifTool
+	 *
+	 * @param string $ps_filepath file path
+	 * @param bool $pb_skip_unknown If set to true, exiftool won't try to extract unknown tags from the source file
+	 * 			Use this if metadata extraction fails for unknown reasons. Sometimes tools like Photoshop write weird
+	 *			binary data into the files that causes json_decode to barf.
+	 *
+	 * @return array|null Extracted metadata, null if exiftool is not installed or something went wrong
+	 */
+	function caExtractMetadataWithExifTool($ps_filepath, $pb_skip_unknown=false){
+		if (caExifToolInstalled()) {
+			$vs_unknown_param = ($pb_skip_unknown ? '' : '-u');
+			$vs_path_to_exif_tool = caGetExternalApplicationPath('exiftool');
+			caExec("{$vs_path_to_exif_tool} -json -a {$vs_unknown_param} -g1 ".caEscapeShellArg($ps_filepath)." 2> /dev/null", $va_output, $vn_return);
+
+			if($vn_return == 0) {
+				$va_data = json_decode(join("\n", $va_output), true);
+				if(!is_array($va_data)) { return null; }
+				$va_data = array_shift($va_data);
+				
+				// rewrite GPS entries to include ref
+				if (isset($va_data['GPS']['GPSLatitude'])) { $va_data['GPS']['GPSLatitude'] .= " ".substr($va_data['GPS']['GPSLatitudeRef'], 0, 1); }
+				if (isset($va_data['GPS']['GPSLongitude'])) { $va_data['GPS']['GPSLongitude'] .= " ".substr($va_data['GPS']['GPSLongitudeRef'], 0, 1); }
+
+				if(sizeof($va_data)>0) {
+					return $va_data;
+				}
+			}
+		}
+		return null;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Perform mapping of extracted media metadata to CollectiveAccess bundles.
+	 *
+	 * @param BundlableLabelableBaseModelWithAttributes $po_instance Model instance to insert extracted metadata into
+	 * @param array $pa_metadata Extracted metadata
+	 * @param int $pn_locale_id The current locale as a numeric locale_id
+	 * @return bool True extracted metadata was mapped and the model changed, false if no change was made to the model
+	 */
+	function caExtractEmbeddedMetadata($po_instance, $pa_metadata, $pn_locale_id) {
+		if (!is_array($pa_metadata)) { return false; }
+		$vb_did_mapping = false;
+		if (!($vs_media_metadata_config = __CA_CONF_DIR__.'/media_metadata.conf')) { return false; }
+		$o_metadata_config = Configuration::load($vs_media_metadata_config);
+
+		$va_mappings = $o_metadata_config->getAssoc('import_mappings');
+		$vs_tablename = $po_instance->tableName();
 
         if (!isset($pa_metadata['system']['filename']) && ($vs_original_filename = $po_instance->get('original_filename'))) {
             $pa_metadata['system']['filename'] = $vs_original_filename;
