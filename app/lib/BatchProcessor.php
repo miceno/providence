@@ -908,15 +908,15 @@
 				}
 
 				switch($vs_representation_idno_mode) {
-					case 'filename':
+					case 'FILENAME':
 						// use the filename as identifier
 						$vs_rep_idno = $f;
 						break;
-					case 'filename_no_ext';
+                    case 'FILENAME_NO_EXT';
 						// use filename without extension as identifier
-						$vs_rep_idno = preg_replace('/\\.[^.\\s]{3,4}$/', '', $f);
+						$vs_rep_idno = preg_replace('/\\.[^.\\s]{3,4}$/', '', $f); // TODO: Extension may be longer than 4 chars and shorter than 3.
 						break;
-					case 'directory_and_filename':
+					case 'DIRECTORY_AND_FILENAME':
 						// use the directory + filename as identifier
 						$vs_rep_idno = $d.'/'.$f;
 						break;
