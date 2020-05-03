@@ -96,8 +96,8 @@
 	}
 
 	$va_available_cli_opts = array_merge(array(
-			"hostname|h-s" => 'Hostname of installation. If omitted default installation is used.',
-			"setup|s" => 'Specify the path to an alternate setup.php.',
+			"hostname-s" => 'Hostname of installation. If omitted default installation is used.',
+			"setup-s" => 'Specify the path to an alternate setup.php.',
 		), $va_command_opts);
 
 	try {
