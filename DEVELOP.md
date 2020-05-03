@@ -6,7 +6,7 @@ Install composer.
 
 Install dependencies:
 
-    /usr/local/Cellar/php@7.2/7.2.26/bin/php composer.phar install 
+    php composer.phar install 
 
 Update dependencies 
 =============
@@ -15,7 +15,7 @@ Dependencies are locked, but not up to date.
 
 To update dependencies:
 
-    /usr/local/Cellar/php@7.2/7.2.26/bin/php composer.phar update 
+    php composer.phar update 
 
 Then you will get a lot of updates on your `vendor` folder, and on the `composer.lock` file.
 
@@ -38,11 +38,10 @@ Testing
 
 From the command line:
 
-    $ php /home/user/devel/ca-providence/vendor/phpunit/phpunit/phpunit \
-    --configuration /home/user/devel/ca-providence/tests/phpunit.xml \
-    --teamcity \
+    $ php $COLLECTIVEACCESS_HOME/vendor/phpunit/phpunit/phpunit \
+    --configuration $COLLECTIVEACCESS_HOME/tests/phpunit.xml \
     TimeExpressionParserTest \
-    /home/user/devel/ca-providence/tests/lib/Parsers/TimeExpressionParserTest.php \
+    $COLLECTIVEACCESS_HOME/tests/lib/Parsers/TimeExpressionParserTest.php
     
 
 PHPUnit < 7

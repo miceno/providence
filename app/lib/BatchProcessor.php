@@ -728,6 +728,7 @@
  			$vn_start_time = time();
  			$va_report = array();
  			foreach($va_files_to_process as $vs_file) {
+ 			    // TODO: use path functions to split paths, not string functions
  				$va_tmp = explode("/", $vs_file);
  				$f = array_pop($va_tmp);
  				$d = array_pop($va_tmp);
