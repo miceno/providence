@@ -3130,4 +3130,42 @@
             </bundlePlacements>
         </display>
     </displays>
+    <searchForms>
+        <searchForm code="date_search" type="ca_objects" system="1" typeRestrictions="ahpn_fotos" includeSubtypes="0">
+            <labels>
+                <label locale="en_US">
+                    <name>Date search</name>
+                </label>
+                <label locale="es_ES">
+                    <name>Búsqueda por fechas</name>
+                </label>
+                <label locale="ca_ES">
+                    <name>Cerca per dates</name>
+                </label>
+            </labels>
+            <settings>
+                <setting name="form_width">1</setting>
+            </settings>
+            <userAccess>
+                <permission user="administrator" access="edit"/>
+            </userAccess>
+            <bundlePlacements>
+                <placement code="p36">
+                    <bundle>ca_objects.date</bundle>
+                </placement>
+                <placement code="p37">
+                    <bundle>ca_objects.work_date</bundle>
+                </placement>
+                <placement code="p38">
+                    <bundle>modified</bundle>
+                </placement>
+                <placement code="p39">
+                    <bundle>created</bundle>
+                </placement>
+                <placement code="p40">
+                    <bundle>ca_objects.accession_date</bundle>
+                </placement>
+            </bundlePlacements>
+        </searchForm>
+    </searchForms>
 </profile>
