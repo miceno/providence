@@ -742,7 +742,19 @@
  				$vs_relative_directory = preg_replace("!{$vs_batch_media_import_root_directory}[/]*!", "", $vs_directory);
 
  				if (isset($pa_options['progressCallback']) && ($ps_callback = $pa_options['progressCallback'])) {
-					$ps_callback($po_request, $vn_c, $vn_num_items, _t("[%3/%4] Processing %1 (%3)", caTruncateStringWithEllipsis($vs_relative_directory, 20).'/'.caTruncateStringWithEllipsis($f, 30), $t_instance->get($t_instance->getProperty('ID_NUMBERING_ID_FIELD')), $vn_c, $vn_num_items), time() - $vn_start_time, memory_get_usage(true), $vn_c, sizeof($va_errors));
+					$ps_callback($po_request,
+                            $vn_c,
+                            $vn_num_items,
+                            _t("[%3/%4] Processing %1 (%3)",
+                                    caTruncateStringWithEllipsis($vs_relative_directory, 20).'/'.caTruncateStringWithEllipsis($f, 30),
+                                    $t_instance->get($t_instance->getProperty('ID_NUMBERING_ID_FIELD')),
+                                    $vn_c,
+                                    $vn_num_items),
+                            null,
+                            time() - $vn_start_time,
+                            memory_get_usage(true),
+                            $vn_c,
+                            sizeof($va_errors));
 				}
 				
 				
