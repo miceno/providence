@@ -57,6 +57,7 @@
 				CLIUtils::addError(_t('Set %1 does not exist', $vs_add_to_set));
 				return false;
 			}
+
 			$vn_user_id = null;
 			if ($vs_user_name = $po_opts->getOption('username')) {
 				if ($t_user = ca_users::find(['user_name' => $vs_user_name], ['returnAs' => 'firstModelInstance'])) {
