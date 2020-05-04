@@ -512,6 +512,7 @@
 			$vn_log_level = BatchProcessor::_logLevelStringToNumber($vs_log_level);
 			$o_log = new KLogger($vs_log_dir, $vn_log_level);
 
+			$o_log->logDebug("[importMediaFromDirectory]: Args\n".json_encode($pa_options));
 			$vs_import_target = caGetOption('importTarget', $pa_options, 'ca_objects');
 			
 			$t_instance = Datamodel::getInstance($vs_import_target);
@@ -926,11 +927,11 @@
 						// use the filename as identifier
 						$vs_rep_idno = $f;
 						break;
-                    case 'FILENAME_NO_EXT';
+                    case 'filename_no_ext';
 						// use filename without extension as identifier
 						$vs_rep_idno = preg_replace(self::REGEXP_FILENAME_NO_EXT, '', $f);
 						break;
-					case 'DIRECTORY_AND_FILENAME':
+					case 'directory_and_filename':
 						// use the directory + filename as identifier
 						$vs_rep_idno = $d.'/'.$f;
 						break;
