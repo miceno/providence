@@ -2724,28 +2724,67 @@
                         </placement>
                     </bundlePlacements>
                 </screen>
-                <screen idno="media_screen" default="0" color="000000" typeRestrictions="ahpn_fotos"
+                <screen idno="storage_screen" default="0" color="000000" typeRestrictions="ahpn_fotos"
                         includeSubtypes="0">
-                    <labels>
+                <labels>
                         <label locale="en_US">
-                            <name>Media</name>
+                            <name>Storage</name>
                         </label>
                         <label locale="es_ES">
-                            <name>Representaciones digitales</name>
+                            <name>Almacenamiento</name>
                         </label>
                         <label locale="ca_ES">
-                            <name>Representacions digitals</name>
+                            <name>Emmagatzematge</name>
                         </label>
                     </labels>
                     <bundlePlacements>
                         <placement code="ca_storage_locations1">
                             <bundle>ca_storage_locations</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="dont_include_subtypes_in_type_restriction">0</setting>
+                                <setting name="list_format">bubbles</setting>
+                                <setting name="sortDirection">ASC</setting>
+                                <setting name="dontShowDeleteButton">0</setting>
+                                <setting name="minRelationshipsPerRow"/>
+                                <setting name="maxRelationshipsPerRow"/>
+                                <setting name="showCurrentOnly">0</setting>
+                                <setting name="disableQuickadd">0</setting>
+                                <setting name="prepopulateQuickaddFields">0</setting>
+                                <setting name="disableSorts">0</setting>
+                                <setting name="showCount"/>
+                                <setting name="useHierarchicalBrowser">1</setting>
+                                <setting name="hierarchicalBrowserHeight">200px</setting>
+                            </settings>
                         </placement>
                         <placement code="ca_object_circulation_status2">
                             <bundle>ca_object_circulation_status</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                            </settings>
                         </placement>
                         <placement code="ca_movements3">
                             <bundle>ca_movements</bundle>
+                            <settings>
+                                <setting name="readonly"/>
+                                <setting name="expand_collapse_value">bubbles</setting>
+                                <setting name="expand_collapse_no_value">bubbles</setting>
+                                <setting name="dont_include_subtypes_in_type_restriction">0</setting>
+                                <setting name="list_format">bubbles</setting>
+                                <setting name="sortDirection">ASC</setting>
+                                <setting name="dontShowDeleteButton">0</setting>
+                                <setting name="minRelationshipsPerRow"/>
+                                <setting name="maxRelationshipsPerRow"/>
+                                <setting name="showCurrentOnly">0</setting>
+                                <setting name="disableQuickadd">0</setting>
+                                <setting name="prepopulateQuickaddFields">0</setting>
+                                <setting name="disableSorts">0</setting>
+                                <setting name="showCount"/>
+                            </settings>
                         </placement>
                     </bundlePlacements>
                 </screen>
@@ -2994,6 +3033,17 @@
                 </placement>
                 <placement code="ca_objects_date">
                     <bundle>ca_objects.date</bundle>
+                </placement>
+                <placement code="ca_object_representations_media_small">
+                    <bundle>ca_object_representations.media.small</bundle>
+                    <settings>
+                        <setting name="label" locale="ca_ES">Foto</setting>
+                        <setting name="label" locale="en_US">Image</setting>
+                        <setting name="label" locale="es_ES">Foto</setting>
+                        <setting name="display_mode"><![CDATA[media]]></setting>
+                        <setting name="show_nonprimary"><![CDATA[0]]></setting>
+                        <setting name="delimiter"><![CDATA[]]></setting>
+                    </settings>
                 </placement>
                 <placement code="ca_objects_postal_address">
                     <bundle>ca_objects.postal_address</bundle>
