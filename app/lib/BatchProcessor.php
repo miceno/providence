@@ -486,6 +486,7 @@
 		 *		progressCallback =
 		 *		reportCallback =
 		 *		sendMail =
+		 *		filenameEncoding = Encoding of the filename
 		 *		log = log directory path
 		 *		logLevel = KLogger constant for minimum log level to record. Default is KLogger::INFO. Constants are, in descending order of shrillness:
 		 *			KLogger::EMERG = Emergency messages (system is unusable)
@@ -607,6 +608,9 @@
 
  			$vs_skip_file_list					= $pa_options['skipFileList'];
  			$vb_allow_duplicate_media			= $pa_options['allowDuplicateMedia'];
+
+ 			// TODO: Use mb_list_encodings() to check if an encoding is supported before using it.
+ 			$vs_filename_encoding			    = caGetOption('filenameEncoding', $pa_options, 'UTF-8');
 
  			$va_relationship_type_id_for = array();
  			if (is_array($va_create_relationship_for = $pa_options['create_relationship_for'])) {
@@ -730,8 +734,8 @@
  			foreach($va_files_to_process as $vs_file) {
  			    // TODO: use path functions to split paths, not string functions
  				$va_tmp = explode("/", $vs_file);
- 				$f = array_pop($va_tmp);
- 				$d = array_pop($va_tmp);
+ 				$f = iconv($vs_filename_encoding, 'UTF-8', array_pop($va_tmp));
+ 				$d = iconv($vs_filename_encoding, 'UTF-8', array_pop($va_tmp));
  				array_push($va_tmp, $d);
  				$vs_directory = join("/", $va_tmp);
 
