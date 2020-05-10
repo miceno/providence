@@ -335,6 +335,15 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 			'label' => _t('Ignore record type when looking for existing records as specified by the existing records policy.'),
 			'description' => _t('.')
 		);
+		$va_settings['mergeOnly'] = array(
+			'formatType' => FT_NUMBER,
+			'displayType' => DT_FIELD,
+			'width' => 40, 'height' => 1,
+			'takesLocale' => false,
+			'default' => 0,
+			'label' => _t('If set data will only be merged with existing records using the existing records policy. No new records will be created.'),
+			'description' => _t('.')
+		);
 		$va_settings['dontDoImport'] = array(
 			'formatType' => FT_NUMBER,
 			'displayType' => DT_FIELD,
@@ -343,19 +352,6 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 			'default' => 0,
 			'label' => _t('Do not do import'),
 			'description' => _t('If set then the mapping will be evaluated but no rows actually imported. This can be useful when you want to run a refinery over the rows of a data set but not actually perform the primary import.')
-		);
-		$va_settings['archiveMapping'] = array(
-			'formatType' => FT_NUMBER,
-			'displayType' => DT_FIELD,
-			'width' => 40, 'height' => 1,
-			'takesLocale' => false,
-			'default' => '',
-			'options' => array(
-				_t('yes') => 1,
-				_t('no') => 0
-			),
-			'label' => _t('Archive mapping?'),
-			'description' => _t('Set to yes to save the mapping spreadsheet; no to delete it from the server after import.  Pending implementation.')
 		);
 		$va_settings['archiveDataSets'] = array(
 			'formatType' => FT_NUMBER,
@@ -1333,7 +1329,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 
 		$t = new Timer();
 		$vn_start_time = time();
-		$va_log_import_error_opts = array('startTime' => $vn_start_time, 'window' => $r_errors, 'log' => $o_log, 'logReference' => null, 'request' => $po_request, 'progressCallback' => (isset($pa_options['progressCallback']) && ($ps_callback = $pa_options['progressCallback'])) ? $ps_callback : null, 'reportCallback' => (isset($pa_options['reportCallback']) && ($ps_callback = $pa_options['reportCallback'])) ? $ps_callback : null);
+		$va_log_import_error_opts = array('startTime' => $vn_start_time, 'log' => $o_log, 'logReference' => null, 'request' => $po_request, 'progressCallback' => (isset($pa_options['progressCallback']) && ($ps_callback = $pa_options['progressCallback'])) ? $ps_callback : null, 'reportCallback' => (isset($pa_options['reportCallback']) && ($ps_callback = $pa_options['reportCallback'])) ? $ps_callback : null);
 	
 		global $g_ui_locale_id;	// constant locale set by index.php for web requests
 		if (!($vn_locale_id = caGetOption('locale_id', $pa_options, null))) {	// set as option?	
@@ -1341,6 +1337,8 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 				$vn_locale_id = $g_ui_locale_id;												// use global
 			}
 		}
+		
+		$merge_only = (bool)$t_mapping->getSetting('mergeOnly');	// If set we only merge; no new records will be created.
 		
 		$vb_import_all_datasets = caGetOption('importAllDatasets', $pa_options, false);
 		
@@ -1549,7 +1547,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 			//
 			// Get data for current row
 			//
-			$va_row = array_replace($o_reader->getRow(), $va_environment);
+			$va_row = $va_raw_row = array_replace($o_reader->getRow(), $va_environment);
 			
 			// replace values (EXPERIMENTAL)
 			$va_row_with_replacements = $va_row;
@@ -1661,10 +1659,10 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 				}
 				// Apply prefix/suffix *AFTER* setting default
 				if ($vs_idno && isset($va_mapping_items[$vn_idno_mapping_item_id]['settings']['prefix']) && strlen($va_mapping_items[$vn_idno_mapping_item_id]['settings']['prefix'])) {
-					$vs_idno = $va_mapping_items[$vn_idno_mapping_item_id]['settings']['prefix'].$vs_idno;
+					$vs_idno = DisplayTemplateParser::processTemplate($va_mapping_items[$vn_idno_mapping_item_id]['settings']['prefix'], $va_row_with_replacements, ['getFrom' => $o_reader]).$vs_idno;
 				}
 				if ($vs_idno && isset($va_mapping_items[$vn_idno_mapping_item_id]['settings']['suffix']) && strlen($va_mapping_items[$vn_idno_mapping_item_id]['settings']['suffix'])) {
-					$vs_idno .= $va_mapping_items[$vn_idno_mapping_item_id]['settings']['suffix'];
+					$vs_idno .= DisplayTemplateParser::processTemplate($va_mapping_items[$vn_idno_mapping_item_id]['settings']['suffix'], $va_row_with_replacements, ['getFrom' => $o_reader]);
 				}
 										
 				if (isset($va_mapping_items[$vn_idno_mapping_item_id]['settings']['applyRegularExpressions']) && is_array($va_mapping_items[$vn_idno_mapping_item_id]['settings']['applyRegularExpressions'])) {
@@ -1840,6 +1838,11 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					}
 				}
 				
+				if ($merge_only && !$t_subject->getPrimaryKey()) { 
+					if ($log_erp) { $o_log->logInfo(_t('[%1] Skipping because mergeOnly option is set and could not match existing record by policy %2.', $vs_idno, $vs_existing_record_policy)); }
+					continue;
+				}
+				
 				$o_progress->next(_t("Importing %1", $vs_idno));
 			
 				if ($po_request && isset($pa_options['progressCallback']) && ($ps_callback = $pa_options['progressCallback'])) {
@@ -1878,6 +1881,8 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 						if (!sizeof($va_vals)) { $va_vals = array(0 => null); }	// consider missing values equivalent to blanks
 				
 				
+						$use_raw = caGetOption('useRawValuesWhenTestingExpression', $va_item['settings'], true);
+				
 						// Get location in content tree for addition of new content
 						$va_item_dest = explode(".",  $va_item['destination']);
 						if ((sizeof($va_item_dest) == 2) && Datamodel::tableExists($va_item_dest[0]) && ($va_item_dest[1] == 'related')) {
@@ -1895,7 +1900,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 						
 						// Do value conversions
 						foreach($va_vals as $vn_i => $vm_val) {
-							// Evaluate skip-if-empty options before setting default value, addings prefix/suffix or formatting with templates
+							// Evaluate skip-if-empty options before setting default value, adding prefix/suffix or formatting with templates
 							// because "empty" refers to the source value before this sort of additive processing.
 							if (isset($va_item['settings']['skipRowIfEmpty']) && (bool)$va_item['settings']['skipRowIfEmpty'] && !strlen($vm_val)) {
 								if($log_skip) { $o_log->logInfo(_t('[%1] Skipped row %2 because value for %3 in group %4 is empty', $vs_idno, $vn_row, $va_item['destination'], $vn_group_id)); }
@@ -1947,10 +1952,10 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 						
 							// Apply prefix/suffix *AFTER* setting default
 							if ($vm_val && isset($va_item['settings']['prefix']) && strlen($va_item['settings']['prefix'])) {
-								$vm_val = $va_item['settings']['prefix'].$vm_val;
+								$vm_val = DisplayTemplateParser::processTemplate($va_item['settings']['prefix'], array_replace($va_row_with_replacements, [(string)$va_item['source'] => ca_data_importers::replaceValue($vm_val, $va_item, ['log' => $o_log, 'logReference' => $vs_idno])]), ['getFrom' => $o_reader]).$vm_val;
 							}
 							if ($vm_val && isset($va_item['settings']['suffix']) && strlen($va_item['settings']['suffix'])) {
-								$vm_val .= $va_item['settings']['suffix'];
+								$vm_val .= DisplayTemplateParser::processTemplate($va_item['settings']['suffix'], array_replace($va_row_with_replacements, [(string)$va_item['source'] => ca_data_importers::replaceValue($vm_val, $va_item, ['log' => $o_log, 'logReference' => $vs_idno])]), ['getFrom' => $o_reader]);
 							}
 						
 							if (!is_array($vm_val) && ($vm_val[0] == '^') && preg_match("!^\^[^ ]+$!", $vm_val)) {
@@ -1959,12 +1964,28 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 									$vm_val = $vm_parsed_val;
 								}
 							}
+							
+							if ($use_raw && isset($va_item['settings']['formatWithTemplate']) && strlen($va_item['settings']['formatWithTemplate'])) {
+								$vm_val = DisplayTemplateParser::processTemplate($va_item['settings']['formatWithTemplate'], array_replace($va_row_with_replacements, array((string)$va_item['source'] => ca_data_importers::replaceValue($vm_val, $va_item, ['log' => $o_log, 'logReference' => $vs_idno]))), array('getFrom' => $o_reader));
+							}
+							
+							if (isset($va_item['settings']['skipIfExpression']) && strlen(trim($va_item['settings']['skipIfExpression']))) {
+								try {
+								    if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipIfExpression'], $use_raw ? $va_raw_row : $va_row_with_replacements)) {
+										$o_log->logInfo(_t('[%1] Skipped mapping because skipIfExpression %2 is true', $vs_idno, $va_item['settings']['skipIfExpression']));
+										continue(2);
+									}
+								} catch (Exception $e) {
+									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage());
+								}
+							}
 						
 							if (isset($va_item['settings']['applyRegularExpressions']) && is_array($va_item['settings']['applyRegularExpressions'])) {
 								$vm_val = self::_processAppliedRegexes($o_reader, $va_item, $vn_i, $va_item['settings']['applyRegularExpressions'], $vm_val, $va_row, $va_row_with_replacements);
 							}
 							
-							if (isset($va_item['settings']['formatWithTemplate']) && strlen($va_item['settings']['formatWithTemplate'])) {
+							// Run format with template to reflect regex changes
+							if (!$use_raw && isset($va_item['settings']['formatWithTemplate']) && strlen($va_item['settings']['formatWithTemplate'])) {
 								$vm_val = DisplayTemplateParser::processTemplate($va_item['settings']['formatWithTemplate'], array_replace($va_row_with_replacements, array((string)$va_item['source'] => ca_data_importers::replaceValue($vm_val, $va_item, ['log' => $o_log, 'logReference' => $vs_idno]))), array('getFrom' => $o_reader));
 							}
 						
@@ -2008,8 +2029,8 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 							if (isset($va_item['settings']['skipRowIfExpression']) && strlen(trim($va_item['settings']['skipRowIfExpression']))) {
 									
 								try {
-									if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipRowIfExpression'], $va_row_with_replacements)) {
-										if($log_skip) { $o_log->logInfo(_t('[%1] Skipped row %2 because expression %3 is true', $vs_idno, $vn_row, $va_item['settings']['skipRowIfExpression'])); }
+									if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipRowIfExpression'], $use_raw ? $va_raw_row : $va_row_with_replacements)) {
+										if($log_skip) { $o_log->logInfo(_t('[%1] Skipped row %2 because skipRowIfExpression %3 is true', $vs_idno, $vn_row, $va_item['settings']['skipRowIfExpression'])); }
 										continue(4);
 									}
 								} catch (Exception $e) {
@@ -2031,8 +2052,8 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 						
 							if (isset($va_item['settings']['skipGroupIfExpression']) && strlen(trim($va_item['settings']['skipGroupIfExpression']))) {
 								try {
-								   if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipGroupIfExpression'], $va_row_with_replacements)) {
-										if($log_skip) { $o_log->logInfo(_t('[%1] Skipped group %2 because skipRowIfExpression %3 is true', $vs_idno, $vn_group_id, $va_item['settings']['skipGroupIfExpression'])); }
+								   if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipGroupIfExpression'], $use_raw ? $va_raw_row : $va_row_with_replacements)) {
+										if($log_skip) { $o_log->logInfo(_t('[%1] Skipped group %2 because skipGroupIfExpression %3 is true', $vs_idno, $vn_group_id, $va_item['settings']['skipGroupIfExpression'])); }
 										continue(3);
 									}
 								} catch (Exception $e) {
@@ -2051,10 +2072,10 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 								if($log_skip) { $o_log->logInfo(_t('[%1] Skipped group %2 because value for %3 matches is not in list of values', $vs_idno, $vn_group_id, $vs_item_terminal)); }
 								continue(3);
 							}
-						
+
 							if (isset($va_item['settings']['skipIfExpression']) && strlen(trim($va_item['settings']['skipIfExpression']))) {
 								try {
-								    if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipIfExpression'], $va_row_with_replacements)) {
+								    if($vm_ret = ExpressionParser::evaluate($va_item['settings']['skipIfExpression'], $use_raw ? $va_raw_row : $va_row_with_replacements)) {
 										if($log_skip) { $o_log->logInfo(_t('[%1] Skipped mapping because skipIfExpression %2 is true', $vs_idno, $va_item['settings']['skipIfExpression'])); }
 										continue(2);
 									}
@@ -3355,7 +3376,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					}
 				}
 				
-				if($regex_info['replaceWith']) {
+				if(!is_null($regex_info['replaceWith'])) {
 					$val = preg_replace($regex , $regex_info['replaceWith'], $val);
 				}
 			}
