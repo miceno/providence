@@ -113,14 +113,15 @@ class WLPlugInformationServiceAAT extends BaseGettyLODServicePlugin implements I
 	}
 
 	public function _buildQuery( $ps_search, $pa_options, $pa_params ) {
-		$vs_query = urlencode( 'SELECT ?ID ?TermPrefLabel ?Parents ?ParentsFull {
+		$vs_query = 'SELECT ?ID ?TermPrefLabel ?Parents ?ParentsFull {
 	?ID a skos:Concept; ' . $pa_params['search_field'] . ' "' . $ps_search . '"; skos:inScheme aat: ;
 	gvp:prefLabelGVP [xl:literalForm ?TermPrefLabel].
 	{?ID gvp:parentStringAbbrev ?Parents}
 	{?ID gvp:parentString ?ParentsFull}
 	{?ID gvp:displayOrder ?Order}
-} LIMIT ' . $pa_params['limit'] );
-		return $vs_query;
+} LIMIT ' . $pa_params['limit'];
+
+		return urlencode($vs_query);
 	}
 
 	/**
