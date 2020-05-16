@@ -168,7 +168,7 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 			SELECT word_id 
 			FROM ca_sql_search_words
 			WHERE
-				word = ?
+				(word = ?) AND (locale_id = ?)
 		";
 		
 		$this->opqr_lookup_word = $this->opo_db->prepare($this->ops_lookup_word_sql);
@@ -181,9 +181,9 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		
 		$this->ops_insert_word_sql = "
 			INSERT  INTO ca_sql_search_words
-			(word, stem)
+			(word, stem, locale_id)
 			VALUES
-			(?, ?)
+			(?, ?, ?)
 		";
 		
 		$this->ops_insert_ngram_sql = "
@@ -1954,7 +1954,8 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		if (!is_array($pm_content)) {
 			$pm_content = [$pm_content];
 		}
-		
+
+        $vn_locale_id = caGetOption('locale_id', $pa_options, null);
 		$vn_boost = 1;
 		if (isset($pa_options['BOOST'])) {
 			$vn_boost = intval($pa_options['BOOST']);
@@ -1998,8 +1999,10 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 				}
 			}
 		} 
-		
-		if ((!is_array($pm_content) && !strlen($pm_content)) || !sizeof($pm_content) || (((sizeof($pm_content) == 1) && strlen((string)$pm_content[0]) == 0))) { 
+
+		if ((!is_array($pm_content) && !strlen($pm_content))
+                || !sizeof($pm_content)
+                || (((sizeof($pm_content) == 1) && strlen((string)$pm_content[0]) == 0))) {
 			$va_words = null;
 		} else {
 			// Tokenize string
@@ -2022,8 +2025,8 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		} else {
 			foreach($va_words as $vs_word) {
 				if(!strlen($vs_word)) { continue; }
-				// TODO: Propagate locale
-				if (!($vn_word_id = (int)$this->getWordID($vs_word))) { continue; }
+				// TODO: Get locale and use it to get the word id
+				if (!($vn_word_id = (int)$this->getWordID($vs_word, $vn_locale_id))) { continue; }
 			
 				self::$s_doc_content_buffer[] = '('.$this->opn_indexing_subject_tablenum.','.$this->opn_indexing_subject_row_id.','.$pn_content_tablenum.',\''.$ps_content_fieldname.'\','.$vn_container_id.','.$pn_content_row_id.','.$vn_word_id.','.$vn_boost.','.$vn_private.','.$vn_rel_type_id.')';
 			}
@@ -2061,11 +2064,16 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		$this->_checkWordCacheSize();
 	}
 	# ------------------------------------------------
-    # TODO: Add a short documentation on this.
-	public function getWordID($ps_word) {
+    /*
+     * Get or get-and-create a word into the sql word index.
+     *
+     */
+	public function getWordID($ps_word, $pn_locale_id=null) {
+	    global $g_ui_locale_id;
+
 		$ps_word = (string)$ps_word;
-		//$ps_word =  preg_replace('/[[:^print:]]/', '', $ps_word);
-		
+		$vn_locale_id = intval(isset($pn_locale_id) ? $pn_locale_id : $g_ui_locale_id);
+
 		//reject overly long 2 byte sequences, as well as characters above U+10000 and replace with ?
 		$ps_word = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
 		 '|[\x00-\x7F][\x80-\xBF]+'.
@@ -2080,28 +2088,28 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		 
 		if (!strlen($ps_word = trim(mb_strtolower($ps_word, "UTF-8")))) { return null; }
 		if (mb_strlen($ps_word) > 255) { $ps_word = mb_substr($ps_word, 0, 255); }
-		if (isset(WLPlugSearchEngineSqlSearch::$s_word_cache[$ps_word])) { return (int)WLPlugSearchEngineSqlSearch::$s_word_cache[$ps_word]; } 
+		$vs_word_key = $ps_word . $vn_locale_id;
+		if (isset(WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key])) { return (int)WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key]; }
 		
-		if ($qr_res = $this->opqr_lookup_word->execute($ps_word)) {
+		if ($qr_res = $this->opqr_lookup_word->execute($ps_word, $vn_locale_id)) {
 			if ($qr_res->nextRow()) {
-				return WLPlugSearchEngineSqlSearch::$s_word_cache[$ps_word] = (int)$qr_res->get('word_id', array('binary' => true));
+				return WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key] = (int)$qr_res->get('word_id', array('binary' => true));
 			}
 		}
 		
 		try {
             // insert word
-            // TODO: Allow locale on stemming
-            if (!($vs_stem = trim($this->opo_stemmer->stem($ps_word)))) { $vs_stem = $ps_word; }
+            $vs_locale = ca_locales::IDToName($vn_locale_id);
+            if (!($vs_stem = trim($this->opo_stemmer->stem($ps_word, $vs_locale)))) { $vs_stem = $ps_word; }
             if (mb_strlen($vs_stem) > 255) { $vs_stem = mb_substr($vs_stem, 0, 255); }
 
-            // TODO: Insert locale too
-            $this->opqr_insert_word->execute($ps_word, $vs_stem);
+            $this->opqr_insert_word->execute($ps_word, $vs_stem, $vn_locale_id);
             if ($this->opqr_insert_word->numErrors()) { return null; }
             if (!($vn_word_id = (int)$this->opqr_insert_word->getLastInsertID())) { return null; }
         } catch (Exception $e) {
-            if ($qr_res = $this->opqr_lookup_word->execute($ps_word)) {
+            if ($qr_res = $this->opqr_lookup_word->execute($ps_word, $vn_locale_id)) {
                 if ($qr_res->nextRow()) {
-                    return WLPlugSearchEngineSqlSearch::$s_word_cache[$ps_word] = (int)$qr_res->get('word_id', array('binary' => true));
+                    return WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key] = (int)$qr_res->get('word_id', array('binary' => true));
                 }
             }
             return null;
@@ -2122,7 +2130,7 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		// 			$this->opo_db->query($vs_sql);
 		// 		}
 		
-		return WLPlugSearchEngineSqlSearch::$s_word_cache[$ps_word] = $vn_word_id;
+		return WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key] = $vn_word_id;
 	}
 	# ------------------------------------------------
 	private function _checkWordCacheSize() {
