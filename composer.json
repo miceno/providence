@@ -33,6 +33,7 @@
     "tedivm/stash": "0.14.*"
   },
   "require": {
-    "ext-iconv": "*"
+    "ext-iconv": "*",
+    "wamania/php-stemmer": "*"
   }
 }
