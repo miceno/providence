@@ -2088,7 +2088,7 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		 
 		if (!strlen($ps_word = trim(mb_strtolower($ps_word, "UTF-8")))) { return null; }
 		if (mb_strlen($ps_word) > 255) { $ps_word = mb_substr($ps_word, 0, 255); }
-		$vs_word_key = $ps_word . $vn_locale_id;
+		$vs_word_key = $ps_word . "." . $vn_locale_id;
 		if (isset(WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key])) { return (int)WLPlugSearchEngineSqlSearch::$s_word_cache[$vs_word_key]; }
 		
 		if ($qr_res = $this->opqr_lookup_word->execute($ps_word, $vn_locale_id)) {
@@ -2099,8 +2099,10 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		
 		try {
             // insert word
-            $vs_locale = ca_locales::IDToName($vn_locale_id);
-            if (!($vs_stem = trim($this->opo_stemmer->stem($ps_word, $vs_locale)))) { $vs_stem = $ps_word; }
+            $vs_locale_code = ca_locales::IDToCode($vn_locale_id);
+            $vs_country = caGetCountryFromLocale($vs_locale_code);
+
+            if (!($vs_stem = trim($this->opo_stemmer->stem($ps_word, $vs_country)))) { $vs_stem = $ps_word; }
             if (mb_strlen($vs_stem) > 255) { $vs_stem = mb_substr($vs_stem, 0, 255); }
 
             $this->opqr_insert_word->execute($ps_word, $vs_stem, $vn_locale_id);
