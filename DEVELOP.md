@@ -43,23 +43,32 @@ From the command line:
     TimeExpressionParserTest \
     $COLLECTIVEACCESS_HOME/tests/lib/Parsers/TimeExpressionParserTest.php
     
-You can create a dump of the testing environment for faster test initialization. Try it like this:
+You can create a dump of the testing environment for faster test initialization. 
 
-```shell script
-    php7.2 support/bin/caUtils install \
-        --setup=tests/setup-tests.php \
-        --admin-email=info@example.com \
-        --profile-name=testing \
-        --overwrite
-```
-
-Make sure you have allowed install overwrite temporarily on `tests/setup-tests.php` to run it:
-
-```php
+1. Make sure you have allowed install overwrite temporarily on `tests/setup-tests.php` to run it:
+    ```php
     if (!defined('__CA_ALLOW_INSTALLER_TO_OVERWRITE_EXISTING_INSTALLS__')) {
     	define('__CA_ALLOW_INSTALLER_TO_OVERWRITE_EXISTING_INSTALLS__', true);
     }
-```
+    ```
+1. Run:
+
+    ```shell script
+        php7.2 support/bin/caUtils install \
+            --setup=tests/setup-tests.php \
+            --admin-email=info@example.com \
+            --profile-name=testing \
+            --overwrite
+    ```
+1. Dump:
+    ```shell script
+    mysqldump -uca_test \
+       -ppassword \
+       --hex-blob \
+       --complete-insert \
+       --extended-insert \
+       ca_test > tests/mysql_profile/testing.sql
+    ``` 
 
 
 PHPUnit < 7
