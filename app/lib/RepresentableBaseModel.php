@@ -297,7 +297,8 @@
 		public function getRepresentationIDs($pa_options=null) {
 			if (!($vn_id = $this->getPrimaryKey())) { return null; }
 			if (!is_array($pa_options)) { $pa_options = array(); }
-		
+
+			// TODO: Undefined variable $pa_versions
 			if (!is_array($pa_versions)) { 
 				$pa_versions = array('preview170');
 			}
@@ -511,7 +512,9 @@
 		
 			$t_rep = new ca_object_representations();
 		
-			if ($this->inTransaction()) { $t_rep->setTransaction($this->getTransaction()); }
+			if ($this->inTransaction()) {
+                $transaction = $this->getTransaction();
+                $t_rep->setTransaction($transaction); }
 				
 			$vn_rep_id = null;
 			if(is_array($va_match_on = caGetOption('matchOn', $pa_options, null))) {
@@ -643,8 +646,9 @@
 			
 			if (!($t_oxor = $this->_getRepresentationRelationshipTableInstance())) { return null; }
 			$vs_pk = $this->primaryKey();
-			
-			$t_oxor->setTransaction($this->getTransaction()); 
+
+            $transaction = $this->getTransaction();
+            $t_oxor->setTransaction($transaction);
 			$t_oxor->setMode(ACCESS_WRITE);
 			$t_oxor->set($vs_pk, $vn_id);
 			$t_oxor->set('representation_id', $t_rep->getPrimaryKey());
@@ -699,7 +703,9 @@
 			if (!($vn_id = $this->getPrimaryKey())) { return null; }
 			
 			$t_rep = new ca_object_representations();
-			if ($this->inTransaction()) { $t_rep->setTransaction($this->getTransaction());}
+			if ($this->inTransaction()) {
+                $transaction = $this->getTransaction();
+                $t_rep->setTransaction($transaction);}
 			if (!$t_rep->load(array('representation_id' => $pn_representation_id))) {
 				$this->postError(750, _t("Representation id=%1 does not exist", $pn_representation_id), "RepresentableBaseModel->editRepresentation()");
 				return false;
@@ -768,7 +774,9 @@
 				if (!($t_oxor = $this->_getRepresentationRelationshipTableInstance())) { return null; }
 				$vs_pk = $this->primaryKey();
 				
-				if ($this->inTransaction()) { $t_oxor->setTransaction($this->getTransaction());}
+				if ($this->inTransaction()) {
+                    $transaction = $this->getTransaction();
+                    $t_oxor->setTransaction($transaction);}
 				
 				if (!$t_oxor->load(array($vs_pk => $vn_id, 'representation_id' => $pn_representation_id))) {
 					$this->postError(750, _t("Representation id=%1 is not related to %3 id=%2", $pn_representation_id, $vn_id, $this->getProperty('NAME_SINGULAR')), "RepresentableBaseModel->editRepresentation()");
@@ -811,7 +819,9 @@
 			if (is_array($va_path) && sizeof($va_path) == 3) {
 				$vs_rel_table = $va_path[1];
 				if ($t_rel = Datamodel::getInstanceByTableName($vs_rel_table)) {
-					if ($this->inTransaction()) { $t_rel->setTransaction($this->getTransaction()); }
+					if ($this->inTransaction()) {
+                        $transaction = $this->getTransaction();
+                        $t_rel->setTransaction($transaction); }
 					if ($t_rel->load(array($this->primaryKey() => $this->getPrimaryKey(), 'representation_id' => $pn_representation_id))) {
 						if ($t_rel->hasField('is_primary') && $t_rel->get('is_primary')) {
 							$vb_update_is_primary = true;
@@ -839,7 +849,9 @@
 				}
 			}
 			$t_rep = new ca_object_representations();
-			if ($this->inTransaction()) { $t_rep->setTransaction($this->getTransaction()); }
+			if ($this->inTransaction()) {
+                $transaction = $this->getTransaction();
+                $t_rep->setTransaction($transaction); }
 			if (!$t_rep->load($pn_representation_id)) {
 				$this->postError(750, _t("Representation id=%1 does not exist", $pn_representation_id), "RepresentableBaseModel->removeRepresentation()");
 				return false;
@@ -902,14 +914,16 @@
 		 */
 		public function linkRepresentation($pn_representation_id, $pb_is_primary, $pa_options=null) {
 			if (!($vn_id = $this->getPrimaryKey())) { return null; }
+			// TODO: Remove this dead code, but review if we should set locale_id (see editRepresentation or addRepresentation methods).
 			if (!$pn_locale_id) { $pn_locale_id = ca_locales::getDefaultCataloguingLocaleID(); }
-		
+
 			if (!ca_object_representations::find(array('representation_id' => $pn_representation_id), array('transaction' => $this->getTransaction()))) { return null; }
 			if (!($t_oxor = $this->_getRepresentationRelationshipTableInstance())) { return null; }
 			$vs_pk = $this->primaryKey();
 			
 			if ($this->inTransaction()) {
-				$t_oxor->setTransaction($this->getTransaction());
+                $transaction = $this->getTransaction();
+                $t_oxor->setTransaction($transaction);
 			}
 			$t_oxor->setMode(ACCESS_WRITE);
 			$t_oxor->set($vs_pk, $vn_id);
@@ -1018,10 +1032,9 @@
 		 * @return array An array with information about the matching representation, in the same format as that returned by self::getRepresentations(), or null if there is no match
 		 */
 		public function representationWithMD5($ps_md5, $pa_options=null) {
-			$va_rep_list = array();
 			if (is_array($va_reps = $this->getRepresentations($pa_options))) {
 				foreach($va_reps as $vn_rep_id => $va_rep) {
-					if ($ps_mimetype == $va_rep['md5']) {	
+					if ($ps_md5 == $va_rep['md5']) {
 						return $va_rep;
 					}
 				}
@@ -1297,6 +1310,7 @@
 			
 			if($access = caGetOption('checkAccess', $options, null)) {
 				if (!is_array($access)) { $access = [$access]; }
+				// TODO: Undefined variable $types
 				if(sizeof($types)) {
 					$sql_wheres[] = "(".($return_representations ? 'o_r' : 't').".access IN (?))";
 					$sql_where_params[] = $access;
