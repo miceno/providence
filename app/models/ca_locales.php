@@ -441,7 +441,7 @@ class ca_locales extends BaseModel {
 		if (!MemoryCache::contains($ps_code, 'LocaleCodeToId')){
 			ca_locales::getLocaleList(array('index_by_code' => true));
 		}
-		return MemoryCache::fetch($ps_code, 'LocaleCodeToId');
+        return intval(MemoryCache::fetch($ps_code, 'LocaleCodeToId'));
 	}
 	# ------------------------------------------------------
 	/**
