@@ -91,7 +91,8 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		
 		$this->opo_tep = new TimeExpressionParser();
 		$this->opo_tep->setLanguage($g_ui_locale);
-		
+
+		// TODO: Update to use an non-English stemmer
 		$this->opo_stemmer = new SnoballStemmer();
 		$this->opb_do_stemming = (int)trim($this->opo_search_config->get('search_sql_search_do_stemming')) ? true : false;
 		
