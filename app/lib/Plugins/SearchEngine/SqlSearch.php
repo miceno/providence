@@ -1010,8 +1010,15 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 										}
 										if ($vb_do_stemming) {
 											$vs_to_stem = preg_replace('!\*$!u', '', $vs_term);
-											if (!preg_match('!y$!u', $vs_to_stem) && (preg_match('!^[\d]+$!', $vs_to_stem) || preg_match('!^[\w\-]+$!', $vs_to_stem))) {	// don't stem things ending in 'y' as that can cause problems (eg "Bowery" becomes "Boweri")
+                                            // don't stem things ending in 'y' as that can cause problems (eg "Bowery" becomes "Boweri")
+											if (!preg_match('!y$!u', $vs_to_stem) && (preg_match('!^[\d]+$!', $vs_to_stem) || preg_match('!^[\w\-]+$!', $vs_to_stem))) {
                                                 // TODO: Allow locale on stemming
+
+                                                // TODO: Stem for every language allowed for cataloging:
+                                                //  in the selected field or globally.
+                                                //  In case the selected field allows different locales, use those as
+                                                //  locales for stemming.
+                                                //  If there is no selected field use all cataloging locales.
 												if (!($vs_stem = trim($this->opo_stemmer->stem($vs_to_stem)))) {
 													$vs_stem = (string)$vs_term;
 												}
@@ -2250,13 +2257,15 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 			}
 			$vn_seq = 0;
 			foreach($va_words as $vs_word) {
+			    // TODO: Use locale
 				if (!($vn_word_id = $this->getWordID($vs_word))) { continue; }
 				$va_row_insert_sql[] = "({$pn_subject_tablenum}, {$vn_row_id}, {$pn_content_tablenum}, '{$ps_content_fieldnum}', ".($pn_content_container_id ? $pn_content_container_id : 'NULL').", {$pn_content_row_id}, {$vn_word_id}, {$vn_boost}, {$vn_private}, {$vn_rel_type_id})";
 				$vn_seq++;
 			}
-			
+
 			if (is_array($va_literal_content)) {
 				foreach($va_literal_content as $vs_literal) {
+			        // TODO: Use locale
 					if (!($vn_word_id = $this->getWordID($vs_literal))) { continue; }
 					$va_row_insert_sql[] = "({$pn_subject_tablenum}, {$vn_row_id}, {$pn_content_tablenum}, '{$ps_content_fieldnum}', ".($pn_content_container_id ? $pn_content_container_id : 'NULL').", {$pn_content_row_id}, {$vn_word_id}, {$vn_boost}, {$vn_private}, {$vn_rel_type_id})";
 					$vn_seq++;
