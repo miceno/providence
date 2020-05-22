@@ -1,6 +1,6 @@
 <?php
 /** ---------------------------------------------------------------------
- * support/sql/migrations/VersionUpdate163.php :
+ * support/sql/migrations/VersionUpdate170.php :
  * ----------------------------------------------------------------------
  * CollectiveAccess
  * Open-source collections management software
@@ -40,9 +40,9 @@
  require_once(__CA_MODELS_DIR__."/ca_relationship_types.php");
  require_once(__CA_MODELS_DIR__.'/ca_locales.php');
  
-	class VersionUpdate163 extends BaseVersionUpdater {
+	class VersionUpdate170 extends BaseVersionUpdater {
 		# -------------------------------------------------------
-		protected $opn_schema_update_to_version_number = 163;
+		protected $opn_schema_update_to_version_number = 170;
 
 		public function updateNullLocales(){
 		    $vs_locale = Configuration::load()->get('locale_default') ? : 'en_US';
@@ -64,7 +64,7 @@
 		 * @return string HTML to display after update
 		 */
 		public function getPostupdateMessage() {
-			return _t("You must now rebuild search indices <strong>and</strong> sort values using the administrative maintenance options shown below. These options are available under <em>Administrate</em> in the <em>Manage</em> menu.<br/><div class='contentSuccess'>%1</div>", "<img src='".__CA_URL_ROOT__."/support/sql/migrations/163/rebuild.png' width='246' height='276' alt='Maintenance menu'/>");
+			return _t("You must now rebuild search indices <strong>and</strong> sort values using the administrative maintenance options shown below. These options are available under <em>Administrate</em> in the <em>Manage</em> menu.<br/><div class='contentSuccess'>%1</div>", "<img src='".__CA_URL_ROOT__."/support/sql/migrations/170/rebuild.png' width='246' height='276' alt='Maintenance menu'/>");
 		}
 		# -------------------------------------------------------
 	}
