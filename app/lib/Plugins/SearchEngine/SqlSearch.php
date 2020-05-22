@@ -1019,10 +1019,18 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
                                                 //  In case the selected field allows different locales, use those as
                                                 //  locales for stemming.
                                                 //  If there is no selected field use all cataloging locales.
-												if (!($vs_stem = trim($this->opo_stemmer->stem($vs_to_stem)))) {
-													$vs_stem = (string)$vs_term;
-												}
-												$va_ft_stem_terms[] = "'".$this->opo_db->escape($vs_stem)."'";
+                                                if( !$va_cataloguing_locales = ca_locales::getCataloguingLocaleList() ){
+                                                    // TODO: use default CATALOGUING locale
+                                                    global $g_ui_locale_id;
+                                                    $va_cataloguing_locales = array(ca_locales::getCataloguingLocaleList()[$g_ui_locale_id]);
+                                                }
+
+                                                foreach ($va_cataloguing_locales as $vs_locale_id => $vs_locale_info){
+                                                    if (!($vs_stem = trim($this->opo_stemmer->stem($vs_to_stem, $vs_locale_info['language'])))) {
+                                                        $vs_stem = (string)$vs_term;
+                                                        $va_ft_stem_terms[] = "'".$this->opo_db->escape($vs_stem)."'";
+                                                    }
+                                                }
 											} else {
 												$va_ft_terms[] = '"'.$this->opo_db->escape($vs_term).'"';
 											}
