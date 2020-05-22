@@ -34,6 +34,7 @@
   },
   "require": {
     "ext-iconv": "*",
-    "wamania/php-stemmer": "*"
+    "wamania/php-stemmer": "*",
+    "ext-simplexml": "*"
   }
 }
