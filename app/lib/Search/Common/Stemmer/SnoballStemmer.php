@@ -30,8 +30,6 @@
  *                                                                       *
  *************************************************************************/
 
-use app\lib\Search\Stemmer\IStemmer;
-
 
 /**
  *  Takes a word, or list of words, and reduces them to their English stems.
@@ -90,10 +88,8 @@ use app\lib\Search\Stemmer\IStemmer;
 
 require_once(__CA_LIB_DIR__ . '/Search/Common/IStemmer.php');
 
-class SnoballStemmer
+class SnoballStemmer implements IStemmer
 {
-    use IStemmer;
-
 	static private $opa_stem_cache= array();
 
 	static private $opo_stemmer = null;
@@ -707,51 +703,5 @@ class SnoballStemmer
     }
 
 
-	#
-	# Convert language code to PECL Stem language constant
-	#
-    private static function lang2code($lang) {
-    	if (!function_exists('stem')) { return null; }
-    	switch($lang) {
-    		case 'en':
-    			return STEM_ENGLISH;
-    			break;
-    		case 'da':
-    			return STEM_DANISH;
-    			break;
-    		case 'nl':
-    			return STEM_DUTCH;
-    			break;
-    		case 'fi':
-    			return STEM_FINNISH;
-    			break;
-    		case 'fr':
-    			return STEM_FRENCH;
-    			break;
-    		case 'de':
-    			return STEM_GERMAN;
-    			break;
-    		case 'it':
-    			return STEM_ITALIAN;
-    			break;
-    		case 'no':
-    			return STEM_NORWEGIAN;
-    			break;
-    		case 'pt':
-    			return STEM_PORTUGUESE;
-    			break;
-    		case 'ru':
-    			return STEM_RUSSIAN;
-    			break;
-    		case 'sp':
-    			return STEM_SPANISH;
-    			break;
-    		case 'sv':
-    			return STEM_SWEDISH;
-    			break;
-    		default:
-    			return STEM_PORTER;
-    	}
-    }
 }
 ?>

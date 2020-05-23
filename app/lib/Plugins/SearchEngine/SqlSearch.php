@@ -40,15 +40,16 @@
  require_once(__CA_LIB_DIR__.'/Plugins/WLPlug.php');
  require_once(__CA_LIB_DIR__.'/Plugins/IWLPlugSearchEngine.php');
  require_once(__CA_LIB_DIR__.'/Plugins/SearchEngine/SqlSearchResult.php'); 
- require_once(__CA_LIB_DIR__.'/Search/Common/Stemmer/SnoballStemmer.php');
  require_once(__CA_LIB_DIR__.'/Parsers/TimeExpressionParser.php');
  require_once(__CA_MODELS_DIR__.'/ca_metadata_elements.php');
  require_once(__CA_APP_DIR__.'/helpers/gisHelpers.php');
  require_once(__CA_LIB_DIR__.'/Plugins/SearchEngine/BaseSearchPlugin.php');
+ require_once(__CA_LIB_DIR__.'/Search/Common/StemmerFactory.php');
 
 class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSearchEngine {
 	# -------------------------------------------------------
-	private $opn_indexing_subject_tablenum=null;
+    const SNOBALL_STEMMER = 'SnoballStemmer';
+    private $opn_indexing_subject_tablenum=null;
 	private $opn_indexing_subject_row_id=null;
 	
 	private $ops_delete_sql;	// sql DELETE statement (for unindexing)
@@ -93,7 +94,12 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		$this->opo_tep->setLanguage($g_ui_locale);
 
 		// TODO: Update to use an non-English stemmer
-		$this->opo_stemmer = new SnoballStemmer();
+        $vs_stemmer = $this->opo_search_config->get('search_sql_search_stemmer');
+        if (!$vs_stemmer){
+            $vs_stemmer = self::SNOBALL_STEMMER;
+        }
+        $vo_stemmer_factory = StemmerFactory::get_instance();
+		$this->opo_stemmer = $vo_stemmer_factory->create($vs_stemmer);
 		$this->opb_do_stemming = (int)trim($this->opo_search_config->get('search_sql_search_do_stemming')) ? true : false;
 		
 		$this->initDbStatements();

@@ -32,13 +32,9 @@
  *
  */
 
-namespace app\lib\Search\Stemmer;
-
-
 require_once(__CA_LIB_DIR__ . '/Search/Common/IStemmer.php');
 
-class PeclStemmer {
-    use IStemmer;
+class PeclStemmer implements IStemmer {
 
     /**
      * Stem a word on a language
@@ -54,10 +50,57 @@ class PeclStemmer {
         }
         // Use PECL function if it is installed
         if (function_exists('stem')) {
-            static::$opa_stem_cache[$ps_word] = stem($ps_word, SnoballStemmer::lang2code($ps_language));
+            static::$opa_stem_cache[$ps_word] = stem($ps_word, self::lang2code($ps_language));
             return static::$opa_stem_cache[$ps_word];
         }
         return "";
+    }
+
+    #
+    # Convert language code to PECL Stem language constant
+    #
+    private static function lang2code($lang) {
+        if (!function_exists('stem')) { return null; }
+        switch($lang) {
+            case 'en':
+                return STEM_ENGLISH;
+                break;
+            case 'da':
+                return STEM_DANISH;
+                break;
+            case 'nl':
+                return STEM_DUTCH;
+                break;
+            case 'fi':
+                return STEM_FINNISH;
+                break;
+            case 'fr':
+                return STEM_FRENCH;
+                break;
+            case 'de':
+                return STEM_GERMAN;
+                break;
+            case 'it':
+                return STEM_ITALIAN;
+                break;
+            case 'no':
+                return STEM_NORWEGIAN;
+                break;
+            case 'pt':
+                return STEM_PORTUGUESE;
+                break;
+            case 'ru':
+                return STEM_RUSSIAN;
+                break;
+            case 'sp':
+                return STEM_SPANISH;
+                break;
+            case 'sv':
+                return STEM_SWEDISH;
+                break;
+            default:
+                return STEM_PORTER;
+        }
     }
 
 }
