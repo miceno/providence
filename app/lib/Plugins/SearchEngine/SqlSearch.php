@@ -1028,8 +1028,8 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
                                                 foreach ($va_cataloguing_locales as $vs_locale_id => $vs_locale_info){
                                                     if (!($vs_stem = trim($this->opo_stemmer->stem($vs_to_stem, $vs_locale_info['language'])))) {
                                                         $vs_stem = (string)$vs_term;
-                                                        $va_ft_stem_terms[] = "'".$this->opo_db->escape($vs_stem)."'";
                                                     }
+                                                    $va_ft_stem_terms[] = "'".$this->opo_db->escape($vs_stem)."'";
                                                 }
 											} else {
 												$va_ft_terms[] = '"'.$this->opo_db->escape($vs_term).'"';
