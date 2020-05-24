@@ -27,7 +27,6 @@
  * @package    CollectiveAccess
  * @subpackage Search
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License version 3
- * @autor      Orestes Sanchez Benavente <orestes@estotienearreglo.es>
  * ----------------------------------------------------------------------
  *
  */
