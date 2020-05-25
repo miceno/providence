@@ -43,7 +43,7 @@ class StemmerFactoryTests extends TestCase {
         $instance = StemmerFactory::get_instance();
         $va_plugins = StemmerFactory::getPluginNames();
         $this->assertIsArray($va_plugins);
-        $this->assertCount(2, $va_plugins);
+        $this->assertCount(3, $va_plugins);
     }
 
     public function testStemmerFactoryCreates() {
