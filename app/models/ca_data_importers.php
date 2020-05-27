@@ -1989,7 +1989,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(2);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage()));
 								}
 							}
 						
@@ -2047,7 +2047,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(4);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate skipRowIfExpression %2: %3", $vs_idno, $va_item['settings']['skipRowIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate skipRowIfExpression %2: %3", $vs_idno, $va_item['settings']['skipRowIfExpression'], $e->getMessage()));
 								}
 							}
 
@@ -2070,7 +2070,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(3);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipGroupIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipGroupIfExpression'], $e->getMessage()));
 								}
 							}
 						
@@ -2093,7 +2093,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(2);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage()));
 								}
 							}
 						
@@ -2686,7 +2686,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 												}
 												
 												try {
-													if ((is_array($va_rel_info = Datamodel::getManyToOneRelations($vs_table_name, $vs_element)) && (sizeof($va_rel_info) > 0)) && is_array($va_element_data[$vs_element]['_related_related']) && sizeof($va_element_data[$vs_element]['_related_related'])) {
+													if ((is_array($va_rel_info = Datamodel::getManyToOneRelations($vs_table_name, $vs_element)) && (sizeof($va_rel_info) > 0)) && is_array($va_element_data[$vs_element]) && is_array($va_element_data[$vs_element]['_related_related']) && sizeof($va_element_data[$vs_element]['_related_related'])) {
 														foreach($va_element_data[$vs_element]['_related_related'] as $vs_rel_rel_table => $va_rel_rels) {
 															foreach($va_rel_rels as $vn_i => $va_rel_rel) {
 																if (!($t_rel_instance = Datamodel::getInstance($va_rel_info['one_table']))) { 
