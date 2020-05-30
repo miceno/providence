@@ -58,6 +58,5 @@ class StemmerFactoryTests extends TestCase {
         $instance->setPluginPath(__DIR__ . '/StemmerClasses');
         $class1 = $instance->create('Class1');
         $this->assertNotNull($class1);
-        $instance->setPluginPath(__DIR__ . '/StemmerClasses');
     }
 }
