@@ -34,43 +34,88 @@ use PHPUnit\Framework\TestCase;
 
 require_once(__CA_APP_DIR__ . "/helpers/CLIHelpers.php");
 
-class LocaleHelpersTest extends TestCase {
+class LocaleHelpersTest extends TestCase
+{
 
-    protected function setUp(): void {
+    private $ops_locales_by_code;
+
+    protected function setUp(): void
+    {
+        $this->ops_locales_by_code = $vs_locales_by_code = [
+            1 => "locale 1",
+            2 => "locale 2",
+            3 => "locale 3"
+        ];
     }
 
     /**
      * Delete all records we created for this test to avoid side effects with other tests
      */
-    protected function tearDown() : void {
+    protected function tearDown(): void
+    {
     }
 
     # -------------------------------------------------------
-    public function testGetLanguageFromLocaleWithLanguage() {
-        $locale = 'ca_ES';
+    public function testGetLanguageFromLocaleWithLanguage()
+    {
+        $locale  = 'ca_ES';
         $country = caGetLanguageFromLocale($locale);
         $this->assertEquals('ca', $country);
     }
 
     # -------------------------------------------------------
-    public function testGetLanguageFromLocaleWithEmptyLanguage() {
-        $locale = 'es_';
+    public function testGetLanguageFromLocaleWithEmptyLanguage()
+    {
+        $locale  = 'es_';
         $country = caGetLanguageFromLocale($locale);
         $this->assertEquals('es', $country);
     }
 
     # -------------------------------------------------------
-    public function testGetLanguageFromLocaleWithOnlyLanguage() {
-        $locale = 'es';
+    public function testGetLanguageFromLocaleWithOnlyLanguage()
+    {
+        $locale  = 'es';
         $country = caGetLanguageFromLocale($locale);
         $this->assertEquals('es', $country);
     }
 
     # -------------------------------------------------------
-    public function testGetLanguageFromLocaleFromNullUsesDefaultLocale() {
-        $locale = null;
+    public function testGetLanguageFromLocaleFromNullUsesDefaultLocale()
+    {
+        $locale  = null;
         $country = caGetLanguageFromLocale($locale);
         $this->assertEquals('en', $country);
     }
+
+    # -------------------------------------------------------
+    public function testCaFilterLocalesByCodeFilterWithNonExistingLocale()
+    {
+        $result = caFilterLocalesByCode($this->ops_locales_by_code, [1, 2, 6]);
+        $this->assertIsArray($result);
+        $this->assertEqualsCanonicalizing([1, 2], array_keys($result));
+    }
+
+    # -------------------------------------------------------
+    public function testCaFilterLocalesByCodeFilterWithEmptyFilter()
+    {
+        $result = caFilterLocalesByCode($this->ops_locales_by_code, []);
+        $this->assertIsArray($result);
+        $this->assertEqualsCanonicalizing([], array_keys($result));
+    }
+    # -------------------------------------------------------
+    public function testCaFilterLocalesByCodeFilterWithAllMissingLocales()
+    {
+        $result = caFilterLocalesByCode($this->ops_locales_by_code, [7,8,9]);
+        $this->assertIsArray($result);
+        $this->assertEqualsCanonicalizing([], array_keys($result));
+    }
+    # -------------------------------------------------------
+    public function testCaFilterLocalesByCodeFilterWithExistingLocalesAtTheEnd()
+    {
+        $result = caFilterLocalesByCode($this->ops_locales_by_code, [7,8,9,3,2]);
+        $this->assertIsArray($result);
+        $this->assertEqualsCanonicalizing([3,2], array_keys($result));
+    }
+    # -------------------------------------------------------
 
 }

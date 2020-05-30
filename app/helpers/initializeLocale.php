@@ -142,15 +142,6 @@
      */
 
     function caFilterLocalesByCode($va_system_locales, $va_locale_codes) {
-
         $va_result = array_intersect_key($va_system_locales, array_flip($va_locale_codes));
-        // $va_result = array();
-        // foreach ($va_system_locales as $vs_locale => $va_locale_info) {
-        //     $vs_lang = strtolower($va_locale_info['country']);
-        //     if (in_array($vs_lang, $va_locale_codes)) {
-        //         $va_result[$vs_locale] = $va_locale_info;
-        //     }
-        // }
-        // return array_unique($va_result);
         return $va_result;
     }
