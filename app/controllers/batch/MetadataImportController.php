@@ -170,7 +170,7 @@
  				'fileImportPath' => $this->request->getParameter("fileImportPath", pString),
  				
  				'importAllDatasets' => (bool)$this->request->getParameter("importAllDatasets", pInteger),
- 				# TODO: Remove this variable or refactor.
+ 				# TODO: Undefined variable $vs_name
  				'originalFilename' => $vs_name
  			);
  			
