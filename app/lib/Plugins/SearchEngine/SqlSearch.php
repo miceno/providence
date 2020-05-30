@@ -2123,9 +2123,9 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		try {
             // insert word
             $vs_locale_code = ca_locales::IDToCode($vn_locale_id);
-            $vs_country = caGetCountryFromLocale($vs_locale_code);
+            $vs_language = caGetLanguageFromLocale($vs_locale_code);
 
-            if (!($vs_stem = trim($this->opo_stemmer->stem($ps_word, $vs_country)))) { $vs_stem = $ps_word; }
+            if (!($vs_stem = trim($this->opo_stemmer->stem($ps_word, $vs_language)))) { $vs_stem = $ps_word; }
             if (mb_strlen($vs_stem) > 255) { $vs_stem = mb_substr($vs_stem, 0, 255); }
 
             $this->opqr_insert_word->execute($ps_word, $vs_stem, $vn_locale_id);

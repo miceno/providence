@@ -54,13 +54,12 @@
     /**
      *
      */
-    function caGetCountryFromLocale($ps_locale) {
-        $vs_country = explode('_', $ps_locale);
-        if (sizeof($vs_country) > 0){
-            $result = $vs_country[0];
-        } else {
-            $result = Configuration::load()->get('locale_default') ? : 'en';
+    function caGetLanguageFromLocale($ps_locale) {
+        if ($ps_locale === null){
+            $ps_locale = Configuration::load()->get('locale_default');
         }
+        $vs_country = explode('_', $ps_locale);
+        $result = $vs_country[0];
         return $result;
     }
 	# ----------------------------------------
