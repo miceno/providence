@@ -154,7 +154,8 @@ class DbStatement extends DbBase {
             }
         }
         catch (DatabaseException $e){
-            die("Unable to complete database operation for SQL: '{$this->ops_sql}' with params: ". print_r($pa_params, true));
+            print("Unable to complete database operation for SQL: '{$this->ops_sql}' with params: ". print_r($pa_params, true));
+            throw $e;
         }
 		return $o_res;
 	}
