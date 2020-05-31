@@ -5,9 +5,9 @@ dist: bionic
 addons:
   apt:
     packages:
-      - mysql-server-5.6
-      - mysql-client-core-5.6
-      - mysql-client-5.6
+      - mysql-server-5.7.30
+      - mysql-client-core-5.7.30
+      - mysql-client-5.7.30
 
 git:
   depth: 5
