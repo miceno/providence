@@ -103,7 +103,6 @@ class WLPlugMediaBinaryFile extends BaseMediaPlugin implements IWLPlugMedia {
 		$this->description = _t('Accepts any file unrecognized by other media plugins and stores it as-is');
 
 		$this->opo_config = Configuration::load();
-		$this->opo_external_app_config = Configuration::load(__CA_CONF_DIR__."/external_applications.conf");
 	}
 	# ------------------------------------------------
 	public function checkStatus() {
@@ -121,6 +120,7 @@ class WLPlugMediaBinaryFile extends BaseMediaPlugin implements IWLPlugMedia {
 	 */
 	public function divineFileFormat($ps_filepath) {
 		if ($ps_filepath == '') { return ''; }
+		if(!$this->opo_config->get('accept_all_files_as_media')) { return false; }
 
 		$this->filepath = $this->handle = $ps_filepath;
 		$this->properties['filesize'] = filesize($ps_filepath);
@@ -133,6 +133,7 @@ class WLPlugMediaBinaryFile extends BaseMediaPlugin implements IWLPlugMedia {
 	}
 	# ------------------------------------------------
 	public function read ($ps_filepath, $mimetype="", $options=null) {
+		if(!$this->opo_config->get('accept_all_files_as_media')) { return false; }
 		if ($this->filepath == $ps_filepath) {
 			# noop
 			return true;

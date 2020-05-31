@@ -818,7 +818,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					$o_notes = $o_sheet->getCellByColumnAndRow(10, $o_row->getRowIndex());
 					
 					if (!($vs_group = trim((string)$o_group->getValue()))) {
-						$vs_group = substr('_group_'.(string)$o_source->getValue()."_{$vn_row}", 0, 100);
+						$vs_group = '_group_'.md5((string)$o_source->getValue()."_{$vn_row}");
 					}
 					
 					$vs_source = trim((string)$o_source->getValue());
@@ -1873,7 +1873,15 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					foreach($va_items as $vn_item_id => $va_item) {
 						if ($vb_use_as_single_value = caGetOption('useAsSingleValue', $va_item['settings'], false)) {
 							// Force repeating values to be imported as a single value
-							$va_vals = array(ca_data_importers::getValueFromSource($va_item, $o_reader, array('otherValues' => $va_rule_set_values, 'delimiter' => caGetOption('delimiter', $va_item['settings'], ''), 'returnAsArray' => false, 'lookahead' => caGetOption('lookahead', $va_item['settings'], 0), 'filterToTypes' => caGetOption('filterToTypes', $va_item['settings'], null), 'filterToRelationshipTypes' => caGetOption('filterToRelationshipTypes', $va_item['settings'], null), 'restrictToRelationshipTypes' => caGetOption('restrictToRelationshipTypes', $va_item['settings'], null), 'hierarchicalDelimiter' => caGetOption('hierarchicalDelimiter', $va_item['settings'], null), 'log' => $o_log, 'logReference' => $vs_idno)));
+							$va_vals = [ca_data_importers::getValueFromSource($va_item, $o_reader, [
+								'otherValues' => $va_rule_set_values, 'delimiter' => caGetOption('delimiter', $va_item['settings'], ''), 
+								'returnAsArray' => false, 'lookahead' => caGetOption('lookahead', $va_item['settings'], 0), 
+								'filterToTypes' => caGetOption('filterToTypes', $va_item['settings'], null), 
+								'filterToRelationshipTypes' => caGetOption('filterToRelationshipTypes', $va_item['settings'], null), 
+								'restrictToRelationshipTypes' => caGetOption('restrictToRelationshipTypes', $va_item['settings'], null), 
+								'hierarchicalDelimiter' => caGetOption('hierarchicalDelimiter', $va_item['settings'], null), 
+								'log' => $o_log, 'logReference' => $vs_idno])
+							];
 						} else {
 							$va_vals = ca_data_importers::getValueFromSource($va_item, $o_reader, array('otherValues' => $va_rule_set_values, 'returnAsArray' => true, 'environment' => $va_environment, 'lookahead' => caGetOption('lookahead', $va_item['settings'], 0), 'filterToTypes' => caGetOption('filterToTypes', $va_item['settings'], null), 'filterToRelationshipTypes' => caGetOption('filterToRelationshipTypes', $va_item['settings'], null), 'restrictToRelationshipTypes' => caGetOption('restrictToRelationshipTypes', $va_item['settings'], null), 'hierarchicalDelimiter' => caGetOption('hierarchicalDelimiter', $va_item['settings'], null), 'log' => $o_log, 'logReference' => $vs_idno));
 						}
@@ -1945,6 +1953,11 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 								if($log_skip) { $o_log->logInfo(_t('[%1] Skipped group %2 because value for %3 matches is not in list of values', $vs_idno, $vn_group_id, $vs_item_terminal)); }
 								continue(3);
 							}
+							
+							if (isset($va_item['settings']['skipIfNoReplacementValue']) && (bool)$va_item['settings']['skipIfNoReplacementValue'] && !self::hasReplacementValue($vm_val, $va_item)) {
+								if($log_skip) { $o_log->logInfo(_t('[%1] Skipped mapping %2 because there is no replacement value for value %3', $vs_idno, $va_item['destination'], $vm_val)); }
+								continue(2);
+							}
 						
 							if (isset($va_item['settings']['default']) && strlen($va_item['settings']['default']) && !strlen($vm_val)) {
 								$vm_val = $va_item['settings']['default'];
@@ -1976,7 +1989,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(2);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage()));
 								}
 							}
 						
@@ -2034,7 +2047,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(4);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate skipRowIfExpression %2: %3", $vs_idno, $va_item['settings']['skipRowIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate skipRowIfExpression %2: %3", $vs_idno, $va_item['settings']['skipRowIfExpression'], $e->getMessage()));
 								}
 							}
 
@@ -2057,7 +2070,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(3);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipGroupIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipGroupIfExpression'], $e->getMessage()));
 								}
 							}
 						
@@ -2080,7 +2093,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 										continue(2);
 									}
 								} catch (Exception $e) {
-									$o_log->logDebug("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage());
+									$o_log->logDebug(_t("[%1] Could not evaluate expression %2: %3", $vs_idno, $va_item['settings']['skipIfExpression'], $e->getMessage()));
 								}
 							}
 						
@@ -2175,7 +2188,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 							
 							$vn_max_length = (!is_array($vm_val) && isset($va_item['settings']['maxLength']) && (int)$va_item['settings']['maxLength']) ? (int)$va_item['settings']['maxLength'] : null;
 					
-							if(isset($va_item['settings']['delimiter']) && $va_item['settings']['delimiter']) {
+							if(isset($va_item['settings']['delimiter']) && $va_item['settings']['delimiter'] && !$vb_use_as_single_value) {
 								if (!is_array($va_item['settings']['delimiter'])) { $va_item['settings']['delimiter'] = array($va_item['settings']['delimiter']); }
 							
 								if (sizeof($va_item['settings']['delimiter'])) {
@@ -2437,7 +2450,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 						}
 						continue;
 					}
-					if ($vs_error = DataMigrationUtils::postError($t_subject, _t("Could not insert new record for %1: ", $t_subject->getProperty('NAME_SINGULAR')), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
+					if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not insert new record for %2: ", $vs_idno, $t_subject->getProperty('NAME_SINGULAR')), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 					
 						ca_data_importers::logImportError($vs_error, $va_log_import_error_opts);
 						if ($vs_import_error_policy == 'stop') {
@@ -2466,7 +2479,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					}
 				
 					$t_subject->update(['queueIndexing' => true]);
-					if ($vs_error = DataMigrationUtils::postError($t_subject, _t("Could not update matched record"), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
+					if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not update matched record", $vs_idno), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 						ca_data_importers::logImportError($vs_error, $va_log_import_error_opts);
 						if ($vs_import_error_policy == 'stop') {
 							$o_log->logAlert(_t('Import stopped due to import error policy'));
@@ -2488,7 +2501,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 						
 						if ($vb_remove_labels) {
 							$t_subject->removeAllLabels(__CA_LABEL_TYPE_PREFERRED__, ['locales' => [$vn_locale_id]]);
-							if ($vs_error = DataMigrationUtils::postError($t_subject, _t("Could not remove preferred labels from matched record"), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
+							if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not remove preferred labels from matched record", $vs_idno), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 								ca_data_importers::logImportError($vs_error, $va_log_import_error_opts);
 								if ($vs_import_error_policy == 'stop') {
 									$o_log->logAlert(_t('Import stopped due to import error policy'));
@@ -2511,7 +2524,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 							}
 							if ($vb_remove_labels) {
 								$t_subject->removeAllLabels(__CA_LABEL_TYPE_NONPREFERRED__, ['locales' => [$vn_locale_id]]);
-								if ($vs_error = DataMigrationUtils::postError($t_subject, _t("Could not remove nonpreferred labels from matched record"), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
+								if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not remove nonpreferred labels from matched record", $vs_idno), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 									ca_data_importers::logImportError($vs_error, $va_log_import_error_opts);
 									if ($vs_import_error_policy == 'stop') {
 										$o_log->logAlert(_t('Import stopped due to import error policy'));
@@ -2538,7 +2551,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 							$t_subject->set($vs_idno_fld, $vs_proc_idno);
 							$t_subject->update(['queueIndexing' => true]);
 						
-							if ($vs_error = DataMigrationUtils::postError($t_subject, _t("Could update idno"), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
+							if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could update idno", $vs_idno), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 								ca_data_importers::logImportError($vs_error, $va_log_import_error_opts);
 								if ($vs_import_error_policy == 'stop') {
 									$o_log->logAlert(_t('Import stopped due to import error policy'));
@@ -2673,7 +2686,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 												}
 												
 												try {
-													if ((is_array($va_rel_info = Datamodel::getManyToOneRelations($vs_table_name, $vs_element)) && (sizeof($va_rel_info) > 0)) && is_array($va_element_data[$vs_element]['_related_related']) && sizeof($va_element_data[$vs_element]['_related_related'])) {
+													if ((is_array($va_rel_info = Datamodel::getManyToOneRelations($vs_table_name, $vs_element)) && (sizeof($va_rel_info) > 0)) && is_array($va_element_data[$vs_element]) && is_array($va_element_data[$vs_element]['_related_related']) && sizeof($va_element_data[$vs_element]['_related_related'])) {
 														foreach($va_element_data[$vs_element]['_related_related'] as $vs_rel_rel_table => $va_rel_rels) {
 															foreach($va_rel_rels as $vn_i => $va_rel_rel) {
 																if (!($t_rel_instance = Datamodel::getInstance($va_rel_info['one_table']))) { 
@@ -3313,6 +3326,18 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 		}
 		
 		return $pm_value;
+	}
+	# ------------------------------------------------------
+	/**
+	 * Check if value has a replacement value defined
+	 */
+	static public function hasReplacementValue($pm_value, $pa_item, $pa_options=null) {
+		if (strlen($pm_value) && is_array($pa_item['settings']['original_values'])) {
+			if (($vn_index = array_search(trim(mb_strtolower($pm_value)), $pa_item['settings']['original_values'])) !== false) {
+				return true;
+			}
+		}
+		return false;
 	}
 	# ------------------------------------------------------
 	/**

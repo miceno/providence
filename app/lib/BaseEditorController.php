@@ -444,7 +444,7 @@ class BaseEditorController extends ActionController {
 
 		// Are there metadata dictionary alerts?
 		$violations_to_prompt = $t_subject->getMetadataDictionaryRuleViolations(null, ['limitToShowAsPrompt' => true, 'screen_id' => $this->request->getActionExtra()]);
-		$this->getView()->setVar('show_show_notifications', (sizeof($violations_to_prompt) > 0));
+		$this->getView()->setVar('show_show_notifications', is_array($violations_to_prompt) && (sizeof($violations_to_prompt) > 0));
 		
 		$this->render('screen_html.php');
 	}
@@ -502,6 +502,7 @@ class BaseEditorController extends ActionController {
 	        	$this->Edit();
 	        	return;
 	        }
+	        
 			$vb_we_set_transaction = false;
 			if (!$t_subject->inTransaction()) {
 				$t_subject->setTransaction($o_t = new Transaction());
@@ -650,7 +651,7 @@ class BaseEditorController extends ActionController {
 				$this->opo_app_plugin_manager->hookDeleteItem(array('id' => $vn_subject_id, 'table_num' => $t_subject->tableNum(), 'table_name' => $subject_table, 'instance' => $t_subject));
 
 				# redirect
-				$this->redirectAfterDelete($t_subject->tableName());
+				$this->redirectAfterDelete($t_subject);
 			}
 		}
 
@@ -665,9 +666,17 @@ class BaseEditorController extends ActionController {
 	 * overridden in subclasses/implementations.
 	 * @param string $ps_table table name
 	 */
-	protected function redirectAfterDelete($ps_table) {
+	protected function redirectAfterDelete($t_subject) {
 		$this->getRequest()->close();
-		caSetRedirect($this->opo_result_context->getResultsUrlForLastFind($this->getRequest(), $ps_table));
+		
+		$redirect_url = $this->opo_result_context->getResultsUrlForLastFind($this->getRequest(), $t_subject->tableName());
+		if (($parent_id = $t_subject->get('parent_id')) > 0) {
+			$redirect_url = caEditorUrl($this->request, $t_subject->tableName(), $parent_id);
+		} elseif(!$redirect_url) {
+			$redirect_url = ResultContext::getResultsUrl($this->request, $t_subject->tableName(), 'basic_search');
+		}
+		
+		caSetRedirect($redirect_url);
 	}
 	# -------------------------------------------------------
 	/**
@@ -1361,6 +1370,8 @@ class BaseEditorController extends ActionController {
 			$limit_to_types = $this->getRequest()->config->get($this->ops_table_name.'_navigation_new_menu_limit_types_to');
 			$exclude_types = $this->getRequest()->config->get($this->ops_table_name.'_navigation_new_menu_exclude_types');
 			
+			$show_top_level_types_only = (bool)$this->getRequest()->config->get($this->ops_table_name.'_navigation_new_menu_shows_top_level_types_only');
+			$enforce_strict_type_hierarchy = $this->getRequest()->config->get($this->ops_table_name.'_enforce_strict_type_hierarchy');
 			
 			foreach($va_hier as $vn_item_id => $va_item) {
 			    if(is_array($limit_to_types) && sizeof($limit_to_types) && !in_array($va_item['idno'], $limit_to_types)) { continue; }
@@ -1371,13 +1382,15 @@ class BaseEditorController extends ActionController {
 				if ($va_item['parent_id'] != $vn_root_id) { continue; }
 				// does this item have sub-items?
 				$va_subtypes = array();
+				
 				if (
-					!(bool)$this->getRequest()->config->get($this->ops_table_name.'_navigation_new_menu_shows_top_level_types_only')
-					&&
-					!(bool)$this->getRequest()->config->get($this->ops_table_name.'_enforce_strict_type_hierarchy')
+					(!$show_top_level_types_only && !(bool)$enforce_strict_type_hierarchy)
+					||
+					(!$show_top_level_types_only && (bool)$enforce_strict_type_hierarchy && !(bool)$va_item['is_enabled']) 	
+						// If in strict mode and a top-level type is disabled, then show sub-types so user can select an enabled type
 				) {
 					if (isset($va_item['item_id']) && isset($va_types_by_parent_id[$va_item['item_id']]) && is_array($va_types_by_parent_id[$va_item['item_id']])) {
-						$va_subtypes = $this->_getSubTypes($va_types_by_parent_id[$va_item['item_id']], $va_types_by_parent_id, $vn_sort_type, $va_restrict_to_types);
+						$va_subtypes = $this->_getSubTypes($va_types_by_parent_id[$va_item['item_id']], $va_types_by_parent_id, $vn_sort_type, $va_restrict_to_types, ['firstEnabled' => true]);
 					}
 				}
 
@@ -1425,16 +1438,24 @@ class BaseEditorController extends ActionController {
 	 * @param array $pa_subtypes Array of subtypes
 	 * @param array $pa_types_by_parent_id Array of subtypes organized by parent
 	 * @param int $pn_sort_type Integer code indicating how to sort types in the menu
+	 * @param array $pa_restrict_to_types List of types to restrict returned type list to. [Default is null]
+	 * @param array $options Supported options include:
+	 *		 firstEnabled = Stop returning subtypes once an enabled item is found. [Default is false]
 	 * @return array List of subtypes ready for inclusion in a menu spec
 	 */
-	private function _getSubTypes($pa_subtypes, $pa_types_by_parent_id, $pn_sort_type, $pa_restrict_to_types=null) {
+	private function _getSubTypes($pa_subtypes, $pa_types_by_parent_id, $pn_sort_type, $pa_restrict_to_types=null, $options=null) {
 		$va_subtypes = array();
+		$first_enabled = caGetOption('firstEnabled', $options, false);
+		
 		foreach($pa_subtypes as $vn_i => $va_type) {
 			if (is_array($pa_restrict_to_types) && !in_array($va_type['item_id'], $pa_restrict_to_types)) { continue; }
-			if (isset($pa_types_by_parent_id[$va_type['item_id']]) && is_array($pa_types_by_parent_id[$va_type['item_id']])) {
-				$va_subsubtypes = $this->_getSubTypes($pa_types_by_parent_id[$va_type['item_id']], $pa_types_by_parent_id, $pn_sort_type, $pa_restrict_to_types);
+			
+			if ($first_enabled && $va_type['is_enabled']) {
+				$va_subsubtypes = [];	// in "first enabled" mode we don't pull subtypes when we encounter an enabled item
+			} elseif (isset($pa_types_by_parent_id[$va_type['item_id']]) && is_array($pa_types_by_parent_id[$va_type['item_id']])) {
+				$va_subsubtypes = $this->_getSubTypes($pa_types_by_parent_id[$va_type['item_id']], $pa_types_by_parent_id, $pn_sort_type, $pa_restrict_to_types, $options);
 			} else {
-				$va_subsubtypes = array();
+				$va_subsubtypes = [];
 			}
 
 			switch($pn_sort_type) {
@@ -1944,10 +1965,17 @@ class BaseEditorController extends ActionController {
 				throw new ApplicationException(_t('Invalid viewer'));
 			}
 
+			$va_display_info = caGetMediaDisplayInfo('media_overlay', $vs_mimetype);
+			if(($t_instance->numFiles() > 1) && ($multipage_viewer = caGetOption('viewer_for_multipage_images', $va_display_info, null))) {
+				$va_display_info['viewer'] = $vs_viewer_name = $multipage_viewer;
+				unset($va_display_info['use_mirador_for_image_list_length_at_least']);
+				unset($va_display_info['use_universal_viewer_for_image_list_length_at_least']);
+			}
+
 			$this->response->addContent($vs_viewer_name::getViewerHTML(
 				$this->request, 
 				"attribute:{$pn_value_id}", 
-				['context' => 'media_overlay', 't_instance' => $t_instance, 't_subject' => $t_subject, 'display' => caGetMediaDisplayInfo('media_overlay', $vs_mimetype)])
+				['context' => 'media_overlay', 't_instance' => $t_instance, 't_subject' => $t_subject, 'display' => $va_display_info])
 			);
 		} elseif ($pn_representation_id = $this->request->getParameter('representation_id', pInteger)) {		
 			if (!$t_subject->isReadable($this->request)) { 
@@ -2102,13 +2130,20 @@ class BaseEditorController extends ActionController {
 					throw new ApplicationException(_t('Invalid viewer'));
 				}
 				
+				$va_display_info = caGetMediaDisplayInfo('media_overlay', $vs_mimetype);
+				if(($t_instance->numFiles() > 1) && ($multipage_viewer = caGetOption('viewer_for_multipage_images', $va_display_info, null))) {
+					$va_display_info['viewer'] = $vs_viewer_name = $multipage_viewer;
+					unset($va_display_info['use_mirador_for_image_list_length_at_least']);
+					unset($va_display_info['use_universal_viewer_for_image_list_length_at_least']);
+				}
+				
 				$t_instance = new ca_attribute_values($va_identifier['id']);
 				$t_instance->useBlobAsMediaField(true);
 				$t_attr = new ca_attributes($t_instance->get('attribute_id'));
 				$t_subject = Datamodel::getInstanceByTableNum($t_attr->get('table_num'), true);
 				$t_subject->load($t_attr->get('row_id'));
 				
-				$this->response->addContent($vs_viewer_name::getViewerData($this->request, $ps_identifier, ['request' => $this->request, 't_subject' => $t_subject, 't_instance' => $t_instance, 'display' => caGetMediaDisplayInfo('media_overlay', $vs_mimetype)]));
+				$this->response->addContent($vs_viewer_name::getViewerData($this->request, $ps_identifier, ['request' => $this->request, 't_subject' => $t_subject, 't_instance' => $t_instance, 'display' => $va_display_info]));
 				return;
 				break;
 		}

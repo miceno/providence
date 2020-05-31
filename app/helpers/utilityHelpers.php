@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2007-2019 Whirl-i-Gig
+ * Copyright 2007-2020 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -44,6 +44,19 @@ require_once(__CA_LIB_DIR__.'/Parsers/ganon.php');
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SelfDescribing;
+
+/**
+ * array_key_first polyfill for PHP < 7.3
+ * @see https://www.php.net/manual/en/function.array-key-first.php
+ */
+if (!function_exists('array_key_first')) {
+    function array_key_first(array $arr) {
+        foreach($arr as $key => $unused) {
+            return $key;
+        }
+        return NULL;
+    }
+}
 
 # ----------------------------------------------------------------------
 # String localization functions (getText)
@@ -3202,6 +3215,8 @@ function caFileIsIncludable($ps_file) {
             case 'g.':
             case 'gram':
             case 'grams':
+            case 'gm':
+            case 'gm.':
                 return $vb_return_short ? 'g' : Zend_Measure_Weight::GRAM;
                 break;
             case 'mg':
