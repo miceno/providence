@@ -148,9 +148,15 @@ class DbStatement extends DbBase {
 	function executeWithParamsAsArray($pa_params, $pa_options=null) {
 		$this->clearErrors();
 
-		if ($o_res = $this->opo_db->execute($this, $this->opo_native_statement ? $this->opo_native_statement : $this, $this->ops_sql, $pa_params, $pa_options)) {
-			$this->opn_last_insert_id = $this->opo_db->getLastInsertID($this);
-		}
+        try {
+            if ($o_res = $this->opo_db->execute($this, $this->opo_native_statement ? $this->opo_native_statement : $this, $this->ops_sql, $pa_params, $pa_options)) {
+                $this->opn_last_insert_id = $this->opo_db->getLastInsertID($this);
+            }
+        }
+        catch (DatabaseException $e){
+            $this->_processDatabaseException($e, $this->opo_db);
+            die("Unable to complete database operation for SQL: '{$this->ops_sql}' with params: ". print_r($pa_params, true));
+        }
 		return $o_res;
 	}
 
