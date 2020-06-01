@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: CollectiveAccess Providence\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-31 19:45+0200\n"
-"PO-Revision-Date: 2020-06-01 00:59+0200\n"
+"PO-Revision-Date: 2020-06-02 00:32+0200\n"
 "Last-Translator: Orestes Sanchez <orestes@estotienearreglo.es>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/collectiveaccess/"
 "collectiveaccess-providence/language/ca_ES/)\n"
@@ -118,14 +118,12 @@ msgid "There are no users"
 msgstr "No hi ha usuaris"
 
 #: app/controllers/administrate/access/UsersController.php:406
-#, fuzzy
 msgid "The user does not exist"
 msgstr "L'usuari no existeix"
 
 #: app/controllers/administrate/access/UsersController.php:439
-#, fuzzy
 msgid "The registrations have been approved"
-msgstr "El registre s'aprobat"
+msgstr "Les inscripcions s'han aprovat"
 
 #: app/controllers/administrate/access/UsersController.php:442
 msgid "Please use the checkboxes to select registrations for approval"
@@ -311,7 +309,6 @@ msgid "Match using directory name, then file name"
 msgstr "Aparellar usant el nom de carpeta i després el d'arxiu"
 
 #: app/controllers/batch/MediaImportController.php:156
-#, fuzzy
 msgid "matches exactly"
 msgstr "coincideix exactament"
 
@@ -512,9 +509,8 @@ msgid "Quick search"
 msgstr "Búsqueda rápida"
 
 #: app/controllers/find/RelatedListController.php:60
-#, fuzzy
 msgid "user defined"
-msgstr "Orden definido por el usuario"
+msgstr "definit per l'usuari"
 
 #: app/controllers/find/RelatedListController.php:116
 #: app/controllers/find/RelatedListController.php:121
@@ -989,9 +985,8 @@ msgid "Could not delete set %1: %2"
 msgstr "No s'ha pogut esborrar el conjunt %1: %2"
 
 #: app/controllers/manage/SetController.php:291
-#, fuzzy
 msgid "You do not have access to the selected sets"
-msgstr "No tiene acceso al conjunto"
+msgstr "No teniu accés als conjunts seleccionats"
 
 #: app/controllers/manage/SetController.php:364
 msgid "Invalid operation"
@@ -1026,9 +1021,8 @@ msgid "All sets"
 msgstr "Tots els conjunts"
 
 #: app/controllers/manage/SetController.php:554
-#, fuzzy
 msgid "Sets by user"
-msgstr "Interfaz de edición para conjuntos"
+msgstr "Conjunts per usuari"
 
 #: app/controllers/manage/TagsController.php:77
 msgid "There are no unmoderated tags"
@@ -1081,7 +1075,6 @@ msgid "tags"
 msgstr "etiquetas"
 
 #: app/controllers/manage/ToolsController.php:336
-#, fuzzy
 msgid "Invalid path"
 msgstr "Ruta al controlador inválida"
 
@@ -1126,7 +1119,7 @@ msgstr "Tabla inválida"
 
 #: app/controllers/manage/WatchedItemsController.php:131
 msgid "Added set '%1' with %2 items"
-msgstr ""
+msgstr "S'ha afegit el conjunt \"%1\" amb %2 elements"
 
 #: app/controllers/manage/bundle_displays/BundleDisplayEditorController.php:60
 msgid "You cannot edit that display"
@@ -1134,12 +1127,11 @@ msgstr "No puede editar esa visualización"
 
 #: app/controllers/manage/metadata_alert_rules/MetadataAlertRuleEditorController.php:62
 msgid "You cannot edit that rule"
-msgstr ""
+msgstr "No podeu editar aquesta regla"
 
 #: app/controllers/manage/metadata_alert_rules/MetadataAlertRuleEditorController.php:119
-#, fuzzy
 msgid "No trigger"
-msgstr "disparar campo %1 según regla %2"
+msgstr "Sense activador"
 
 #: app/controllers/manage/search_forms/SearchFormEditorController.php:60
 msgid "You cannot edit that form"
@@ -1187,47 +1179,47 @@ msgstr "No se ha definido un conjunto"
 
 #: app/controllers/manage/sets/SetEditorController.php:274
 msgid "Could not duplicate items in set: %1"
-msgstr ""
+msgstr "No es poden duplicar els elements del conjunt: %1"
 
 #: app/controllers/manage/sets/SetEditorController.php:279
 msgid "Records have been successfully duplicated and added to set"
-msgstr ""
+msgstr "Els registres s'han duplicat amb èxit i s'afegeixen al conjunt"
 
 #: app/controllers/manage/sets/SetEditorController.php:282
 msgid "Cannot duplicate items"
-msgstr ""
+msgstr "No es poden duplicar els elements"
 
 #: app/controllers/manage/sets/SetEditorController.php:302
 msgid "No items are available for export"
-msgstr ""
+msgstr "No hi ha articles disponibles per a l'exportació"
 
 #: app/controllers/statistics/DashboardController.php:69
 msgid "Invalid data filter"
-msgstr ""
+msgstr "Filtre de dades no vàlid"
 
 #: app/controllers/statistics/DashboardController.php:98
 msgid "view all"
-msgstr ""
+msgstr "veure-les totes"
 
 #: app/controllers/statistics/DashboardController.php:102
 msgid "Statistics for site <em>%1</em>"
-msgstr ""
+msgstr "Estadístiques del lloc <em>%1</em>"
 
 #: app/controllers/statistics/DashboardController.php:104
 msgid "Statistics for group <em>%1</em>"
-msgstr ""
+msgstr "Estadístiques del grup <em>%1</em>"
 
 #: app/controllers/statistics/DashboardController.php:110
 msgid "No statistics available"
-msgstr ""
+msgstr "No hi ha estadístiques disponibles"
 
 #: app/controllers/statistics/DashboardController.php:113
 msgid "Statistics for %1"
-msgstr ""
+msgstr "Estadístiques de %1"
 
 #: app/controllers/statistics/DashboardController.php:116
 msgid "Statistics for all %1 sites"
-msgstr ""
+msgstr "Estadístiques de tots els %1 llocs"
 
 #: app/controllers/system/AuthController.php:67
 msgid "Login was invalid"
@@ -1255,7 +1247,7 @@ msgstr ""
 
 #: app/controllers/system/PreferencesController.php:121
 msgid "No duplication preferences for %1"
-msgstr ""
+msgstr "No hi ha preferències de duplicació per a %1"
 
 #: app/controllers/system/PreferencesController.php:125
 msgid "Invalid table: %1"
@@ -1315,38 +1307,48 @@ msgstr "reemplazar valores"
 msgid ""
 "No filename-to-idno matching patterns set for %1. Check your configuration."
 msgstr ""
+"No s'ha definit cap patró de coincidència de noms de fitxer a idno per a %1. "
+"Comprovi la seva configuració."
 
 #: app/helpers/batchHelpers.php:255
 msgid ""
 "Filename-to-idno matching replacement pattern %1 in %2 is not a valid PCRE. "
 "Check your configuration."
 msgstr ""
+"El patró de reemplaçament de noms de fitxer a idno '%1' a '%2' no és una "
+"expressió PCRE vàlid. Comprovi la seva configuració."
 
 #: app/helpers/batchHelpers.php:277
 msgid "No idno replacement patterns set for %1. Check your configuration."
 msgstr ""
+"No hi ha patrons de substitució de idno establerts per a %1. Comprovi la "
+"seva configuració."
 
 #: app/helpers/batchHelpers.php:283
 msgid ""
 "Idno replacement pattern %1 in %2 is not a valid PCRE. Check your "
 "configuration."
 msgstr ""
+"El patró de substitució de noms de fitxer a idno '%1' a '%2' no és una "
+"expressió PCRE vàlida. Comprovi la seva configuració."
 
 #: app/helpers/batchHelpers.php:306
 msgid "No filename replacement patterns set for %1. Check your configuration."
 msgstr ""
+"No s'ha definit cap patró de substitució del nom del fitxer per a %1. "
+"Comprovi la seva configuració."
 
 #: app/helpers/batchHelpers.php:312
 msgid ""
 "Filename replacement pattern %1 in %2 is not a valid PCRE. Check your "
 "configuration."
 msgstr ""
+"El patró de substitució del nom del fitxer '%1' de '%2' no és una PCRE "
+"vàlida. Comprovi la seva configuració."
 
 #: app/helpers/batchHelpers.php:354
-#, fuzzy
-#| msgid "Found %1 files in directory '%2'"
 msgid "Matching on files in directory %1"
-msgstr "Encontrados %1 archivos en la carpeta '%2'"
+msgstr "Coincidència dels fitxers al directori '%1'"
 
 #: app/helpers/batchHelpers.php:373 app/lib/BatchProcessor.php:785
 msgid "Processing mediaFilenameToObjectIdnoRegexes entry %1"
@@ -1385,28 +1387,24 @@ msgstr ""
 "Saltada la sustición %1 porque no se ha definido expresión de búsqueda."
 
 #: app/helpers/batchHelpers.php:428
-#, fuzzy
-#| msgid "Matched name %1 on regex %2"
 msgid "Extracted value from name %1 using regex %2"
-msgstr "Emparejado el nombre %1 según la expresión regular %2"
+msgstr "Valor extret del nom '%1' utilitzant regex '%2'"
 
 #: app/helpers/batchHelpers.php:436
 msgid "STARTS match on %1 to value %2"
-msgstr ""
+msgstr "STARTS a coincidir amb %1 al valor %2"
 
 #: app/helpers/batchHelpers.php:440
 msgid "ENDS match on %1 to value %2"
-msgstr ""
+msgstr "ENDS a coincidir amb %1 al valor %2"
 
 #: app/helpers/batchHelpers.php:444
 msgid "CONTAINS match on %1 to value %2"
-msgstr ""
+msgstr "CONTAINS a coincidir amb %1 al valor %2"
 
 #: app/helpers/batchHelpers.php:449
-#, fuzzy
-#| msgid "Couldn't match name %1 on regex %2"
 msgid "EXACT match on %1 to value %2"
-msgstr "No se ha podido emparejar el nombre %1 con la expresión regular %2"
+msgstr "Coincidència EXACTA de '%1' al valor '%2'"
 
 #: app/helpers/batchHelpers.php:455
 msgid "Case-insensitive match on %1 to value %2"
@@ -1582,15 +1580,15 @@ msgstr "Referenciado %1 veces"
 
 #: app/helpers/displayHelpers.php:378
 msgid "%1 reference in %2"
-msgstr ""
+msgstr "%1 referència en %2"
 
 #: app/helpers/displayHelpers.php:387
 msgid "Has %1 child"
-msgstr ""
+msgstr "Té %1 fill"
 
 #: app/helpers/displayHelpers.php:389
 msgid "Has %1 children"
-msgstr ""
+msgstr "Té %1 fills"
 
 #: app/helpers/displayHelpers.php:422
 msgid "This %1 is referenced %2 time"
@@ -1628,7 +1626,7 @@ msgstr "Buidar"
 
 #: app/helpers/displayHelpers.php:457
 msgid "Child records will be deleted"
-msgstr ""
+msgstr "Els registres fills s'eliminaran"
 
 #: app/helpers/displayHelpers.php:543
 msgid "References to this %1"
@@ -1648,12 +1646,11 @@ msgstr "esborrar aquestes referències"
 
 #: app/helpers/displayHelpers.php:564
 msgid "transfer these references and accompanying metadata to"
-msgstr ""
+msgstr "transferir aquestes referències i les metadades a"
 
 #: app/helpers/displayHelpers.php:592
-#, fuzzy
 msgid "References by this %1"
-msgstr "Referencias a este %1"
+msgstr "Referències d'aquesta %1"
 
 #: app/helpers/displayHelpers.php:639 app/helpers/displayHelpers.php:2822
 #: app/lib/Attributes/Values/MediaAttributeValue.php:225
@@ -1757,7 +1754,6 @@ msgid "Previous Image"
 msgstr "Imatge anterior"
 
 #: app/helpers/displayHelpers.php:1129
-#, fuzzy
 msgid "Next Image"
 msgstr "Següent imatge"
 
@@ -1868,13 +1864,12 @@ msgid "Last changed on %1"
 msgstr "Último cambio: %1"
 
 #: app/helpers/displayHelpers.php:1344
-#, fuzzy
 msgid "(on this tab)"
-msgstr "Separat per tabuladors"
+msgstr "(en aquesta pestanya)"
 
 #: app/helpers/displayHelpers.php:1359
 msgid "(on tab <em>%1</em>)"
-msgstr ""
+msgstr "(a la pestanya <em>%1</em>)"
 
 #: app/helpers/displayHelpers.php:1368
 msgid "%1 problems on this tab require attention (of %2 total)"
@@ -1953,9 +1948,8 @@ msgid "Add new %1 to lot"
 msgstr "Añadir un/a nuevo/a %1 al lote"
 
 #: app/helpers/displayHelpers.php:1537
-#, fuzzy
 msgid "%1 related %2"
-msgstr "[%1] Relacionado %2 (%3) con el %4 relacionado con la relación %5"
+msgstr "%1 relacionades amb %2"
 
 #: app/helpers/displayHelpers.php:1548
 #: app/lib/BundlableLabelableBaseModelWithAttributes.php:2035
@@ -1989,11 +1983,11 @@ msgstr "Tipo de contenido"
 
 #: app/helpers/displayHelpers.php:1602
 msgid "Duplicate items in this set and add to"
-msgstr ""
+msgstr "Duplicar membres en aquest conjunt i afegir a"
 
 #: app/helpers/displayHelpers.php:1604
 msgid "current set"
-msgstr ""
+msgstr "conjunt actual"
 
 #: app/helpers/displayHelpers.php:1605
 msgid "new set"
@@ -2030,7 +2024,7 @@ msgstr "Es %1"
 
 #: app/helpers/displayHelpers.php:1674 app/helpers/displayHelpers.php:1677
 msgid "Rule content type"
-msgstr ""
+msgstr "Tipus de contingut de la regla"
 
 #: app/helpers/displayHelpers.php:1696
 msgid "Add a %1 to this list"
@@ -2139,7 +2133,7 @@ msgstr "Exportar dades"
 
 #: app/helpers/displayHelpers.php:1906
 msgid "Export to external repository"
-msgstr ""
+msgstr "Exporta-lo a un repositori extern"
 
 #: app/helpers/displayHelpers.php:2064
 msgid "Batch editing %1 %2 in set"
@@ -2159,7 +2153,7 @@ msgstr "Esborrar <strong><em>tots</em></strong> els registres del conjunt"
 
 #: app/helpers/displayHelpers.php:2099
 msgid "Set type for records in set"
-msgstr ""
+msgstr "Establir el tipus per als registres del conjunt"
 
 #: app/helpers/displayHelpers.php:2113
 msgid "Close options"
@@ -2195,7 +2189,7 @@ msgstr "↓"
 
 #: app/helpers/displayHelpers.php:3388
 msgid "Sort using %1 %2"
-msgstr ""
+msgstr "Ordena amb %1 %2"
 
 #: app/helpers/displayHelpers.php:3405
 msgid "Return to home locations"
@@ -2248,11 +2242,11 @@ msgstr "L'identificador no es vàlid: %1"
 #: app/lib/BaseEditorController.php:2075 app/lib/BaseEditorController.php:2161
 #: app/lib/BaseEditorController.php:2199
 msgid "Cannot view media"
-msgstr ""
+msgstr "No es pot veure el contingut multimèdia"
 
 #: app/helpers/displayHelpers.php:4088
 msgid "Invalid viewer: %1/%2"
-msgstr ""
+msgstr "Visualitzador no vàlid: %1/%2"
 
 #: app/helpers/displayHelpers.php:4116 app/lib/BatchProcessor.php:346
 msgid "Invalid subject"
@@ -2267,7 +2261,7 @@ msgstr "Tema inválido"
 #: app/lib/BaseEditorController.php:2176 app/lib/BaseEditorController.php:2184
 #: app/lib/BaseEditorController.php:2214 app/lib/BaseEditorController.php:2222
 msgid "Invalid viewer"
-msgstr ""
+msgstr "Visualitzador no vàlid"
 
 #: app/helpers/displayHelpers.php:4175 app/helpers/displayHelpers.php:4240
 #: app/helpers/displayHelpers.php:4289 app/helpers/displayHelpers.php:4338
@@ -2278,7 +2272,7 @@ msgstr "L'identificador no es vàlid"
 
 #: app/helpers/displayHelpers.php:4368
 msgid "Invalid viewer %1/%2"
-msgstr ""
+msgstr "L'espectador no és vàlid %1/%2"
 
 #: app/helpers/displayHelpers.php:4386 app/lib/BaseEditorController.php:1948
 #: app/lib/BaseEditorController.php:2064 app/lib/BaseEditorController.php:2657
@@ -2302,7 +2296,7 @@ msgstr "El formato no es vàlid"
 
 #: app/helpers/exportHelpers.php:190
 msgid "Invalid export type"
-msgstr ""
+msgstr "Tipus d'exportació no vàlid"
 
 #: app/helpers/exportHelpers.php:479 app/helpers/printHelpers.php:532
 #: app/lib/BaseEditorController.php:920 app/lib/BaseEditorController.php:1011
@@ -3678,12 +3672,12 @@ msgid "[%6] Got parent %1 (%2) with id %3 and type %4 for %5"
 msgstr "[%6] Obtenido padre %1 (%2) con id %3 y tipo %4 para %5"
 
 #: app/helpers/importHelpers.php:240
-#, fuzzy
-#| msgid "Could not create root for relationship %1: %2"
 msgid ""
 "[%6] Could not create relationship between parent %1 and %2 for ids %3 and "
 "%4 with type %5: %7"
-msgstr "No se ha podido crear la raíz para la relación %1: %2"
+msgstr ""
+"[%6] No s'ha pogut crear la relació entre el pare '%1' i el '%2' per a "
+"l'identificador '%3' i '%4' amb el tipus '%5': %7"
 
 #: app/helpers/importHelpers.php:542 app/helpers/importHelpers.php:548
 msgid "[importHelpers:caProcessRefineryRelated] No name specified for table %1"
@@ -3761,6 +3755,8 @@ msgid ""
 "Cannot write log to %1 or temporary directory %2. Please check directory "
 "permissions and retry."
 msgstr ""
+"No es pot escriure el registre a %1 o al directori temporal %2. Comproveu "
+"els permisos del directori i torneu-ho a provar."
 
 #: app/helpers/logHelpers.php:98
 msgid ""
@@ -3880,15 +3876,15 @@ msgstr "Etiquetas"
 
 #: app/helpers/themeHelpers.php:530
 msgid "Add your tags and comment"
-msgstr ""
+msgstr "Afegiu les vostres etiquetes i comentari"
 
 #: app/helpers/themeHelpers.php:532
 msgid "Login/register to comment on this object"
-msgstr ""
+msgstr "Inicia sessió/registra't per comentar aquest objecte"
 
 #: app/helpers/themeHelpers.php:595
 msgid "this %1 contains no items"
-msgstr ""
+msgstr "aquesta %1 no conté cap element"
 
 #: app/helpers/themeHelpers.php:605 app/helpers/themeHelpers.php:681
 msgid "Items: %1"
@@ -3906,7 +3902,7 @@ msgstr "Comentarios"
 
 #: app/helpers/themeHelpers.php:611 app/helpers/themeHelpers.php:677
 msgid "Edit Name/Description"
-msgstr ""
+msgstr "Edita el nom/la descripció"
 
 #: app/helpers/themeHelpers.php:634 app/helpers/themeHelpers.php:706
 #: themes/default/views/find/Results/ca_collections_results_list_html.php:48
@@ -3927,11 +3923,11 @@ msgstr "Ver"
 
 #: app/helpers/themeHelpers.php:674
 msgid "Share %1"
-msgstr ""
+msgstr "Comparteix %1"
 
 #: app/helpers/themeHelpers.php:675
 msgid "Manage %1 Access"
-msgstr ""
+msgstr "Administra l'accés %1"
 
 #: app/helpers/themeHelpers.php:681
 msgid "Comments: %1"
@@ -3955,24 +3951,23 @@ msgstr "Comentaris:"
 
 #: app/helpers/themeHelpers.php:924
 msgid "lightbox"
-msgstr ""
+msgstr "àlbum"
 
 #: app/helpers/themeHelpers.php:928 app/helpers/themeHelpers.php:932
 msgid "lightboxes"
-msgstr ""
+msgstr "àlbums"
 
 #: app/helpers/themeHelpers.php:944 app/helpers/themeHelpers.php:948
-#, fuzzy
 msgid "assignment"
 msgstr "tasca"
 
 #: app/helpers/themeHelpers.php:952
 msgid "classroom"
-msgstr ""
+msgstr "aula"
 
 #: app/helpers/themeHelpers.php:992
 msgid "Login to add to %1"
-msgstr ""
+msgstr "Inici la sessió per afegir-lo a %1"
 
 #: app/helpers/themeHelpers.php:1006 app/helpers/themeHelpers.php:1020
 #: themes/default/views/bundles/history_tracking_chronology.php:123
@@ -3987,7 +3982,6 @@ msgstr "Afegir a %1"
 #: app/helpers/themeHelpers.php:1067 app/plugins/vimeo/views/auth_html.php:44
 #: themes/default/views/system/forgot_password_html.php:65
 #: themes/default/views/system/password_reset_form_html.php:89
-#, fuzzy
 msgid "Submit"
 msgstr "Enviar"
 
@@ -4004,12 +3998,10 @@ msgid "Reset"
 msgstr "Reiniciar"
 
 #: app/helpers/themeHelpers.php:1090
-#, fuzzy
 msgid "AND"
 msgstr "I"
 
 #: app/helpers/themeHelpers.php:1090
-#, fuzzy
 msgid "OR"
 msgstr "O"
 
@@ -4020,11 +4012,11 @@ msgstr "Palabras clave"
 
 #: app/helpers/utilityHelpers.php:1141 app/conf/browse.conf:284
 msgid "year"
-msgstr "año"
+msgstr "any"
 
 #: app/helpers/utilityHelpers.php:1141 app/conf/browse.conf:285
 msgid "years"
-msgstr "años"
+msgstr "anys"
 
 #: app/helpers/utilityHelpers.php:1142
 msgid "month"
@@ -4036,11 +4028,11 @@ msgstr "meses"
 
 #: app/helpers/utilityHelpers.php:1143
 msgid "day"
-msgstr "día"
+msgstr "dia"
 
 #: app/helpers/utilityHelpers.php:1143 app/lib/BaseSettings.php:691
 msgid "days"
-msgstr "días"
+msgstr "dies"
 
 #: app/helpers/utilityHelpers.php:1144
 msgid "hour"
@@ -4048,42 +4040,40 @@ msgstr "hora"
 
 #: app/helpers/utilityHelpers.php:1144 app/lib/BaseSettings.php:691
 msgid "hours"
-msgstr "horas"
+msgstr "hores"
 
 #: app/helpers/utilityHelpers.php:1145
 msgid "minute"
-msgstr "minuto"
+msgstr "minut"
 
 #: app/helpers/utilityHelpers.php:1145
 msgid "minutes"
-msgstr "minutos"
+msgstr "minuts"
 
 #: app/helpers/utilityHelpers.php:1146
 msgid "second"
-msgstr "segundo"
+msgstr "segon"
 
 #: app/helpers/utilityHelpers.php:1146
 msgid "seconds"
-msgstr "segundos"
+msgstr "segons"
 
 #: app/helpers/utilityHelpers.php:3003
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:189
 msgid "An error occurred while querying an external webservice"
-msgstr ""
+msgstr "S'ha produït un error en consultar un servei web extern"
 
 #: app/helpers/utilityHelpers.php:3003
-#, fuzzy
-#| msgid "user note"
 msgid " at %1"
-msgstr "Es %1"
+msgstr " en %1"
 
 #: app/helpers/utilityHelpers.php:3157
 msgid "%1 is not a valid unit of length [%2]"
-msgstr "%1 no es una unidad de longitud válida [%2]"
+msgstr "%1 no és una unitat de longitud vàlida [%2]"
 
 #: app/helpers/utilityHelpers.php:3163 app/helpers/utilityHelpers.php:3292
 msgid "Not a valid measurement"
-msgstr "No es una medida válida"
+msgstr "No és una mesura vàlida"
 
 #: app/helpers/utilityHelpers.php:3167 app/helpers/utilityHelpers.php:3296
 msgid "Must not be less than zero"
@@ -4114,6 +4104,8 @@ msgstr ""
 #: app/helpers/utilityHelpers.php:4265 app/lib/Media/Remote/Base.php:113
 msgid "Cannot open temporary file for media fetched from URL [%1]"
 msgstr ""
+"No es pot obrir el fitxer temporal per als fitxers multimèdia obtinguts de "
+"l'URL [%1]"
 
 #: app/lib/AppNavigation.php:462 app/lib/AppNavigation.php:467
 #: app/lib/AppNavigation.php:493 app/lib/AppNavigation.php:513
@@ -4177,33 +4169,33 @@ msgstr "No se dispone de registro de cambios"
 
 #: app/lib/ApplicationChangeLog.php:218
 msgid "Subject"
-msgstr "Tema"
+msgstr "Assumpte"
 
 #: app/lib/ApplicationChangeLog.php:288 app/lib/ApplicationChangeLog.php:1120
 msgid "Added"
-msgstr "Añadido"
+msgstr "Afegit"
 
 #: app/lib/ApplicationChangeLog.php:289 app/lib/ApplicationChangeLog.php:1121
 msgid "Edited"
-msgstr "Editado"
+msgstr "Editat"
 
 #: app/lib/ApplicationChangeLog.php:290 app/lib/ApplicationChangeLog.php:1122
 msgid "Deleted"
-msgstr "Eliminado"
+msgstr "Suprimit"
 
 #: app/lib/ApplicationChangeLog.php:430 app/lib/ApplicationChangeLog.php:1271
 #: app/lib/Attributes/Values/ListAttributeValue.php:465
 msgid "Not set"
-msgstr "- Sin asignar -"
+msgstr "No establert"
 
 #: app/lib/ApplicationChangeLog.php:433 app/lib/ApplicationChangeLog.php:1274
 msgid "Non-existent"
-msgstr "Inexistente"
+msgstr "Inexistent"
 
 #: app/lib/ApplicationChangeLog.php:1198 app/lib/ApplicationChangeLog.php:1269
 #: themes/default/views/logs/global_change_log_html.php:136
 msgid "&lt;MISSING&gt;"
-msgstr ""
+msgstr "&lt;DESAPAREGUT&gt;"
 
 #: app/lib/ApplicationChangeLog.php:1306 app/lib/ApplicationChangeLog.php:1321
 #: app/lib/ApplicationChangeLog.php:1365
@@ -4212,7 +4204,7 @@ msgstr "Establir %1 a %2"
 
 #: app/lib/ApplicationChangeLog.php:1405
 msgid "Related to %1 (%2)"
-msgstr ""
+msgstr "Relacionades amb %1 (%2)"
 
 #: app/lib/Attributes/Values/AuthorityAttributeValue.php:185
 msgid "Value %1 was not set for %2 because it does not refer to an existing %3"
@@ -4910,27 +4902,31 @@ msgstr "Color per defecte"
 
 #: app/lib/Attributes/Values/ColorAttributeValue.php:97
 msgid "Show hex color value below color chip?"
-msgstr ""
+msgstr "Mostra el valor de color hexadecimal a sota del xip de color?"
 
 #: app/lib/Attributes/Values/ColorAttributeValue.php:98
 msgid ""
 "Check this option to display the hex value of the selected color below the "
 "color chip."
 msgstr ""
+"Marqueu aquesta opció per mostrar el valor hexadecimal del color seleccionat "
+"a sota del xip de color."
 
 #: app/lib/Attributes/Values/ColorAttributeValue.php:105
 msgid "Show RGB color value below color chip?"
-msgstr ""
+msgstr "Mostra el valor de color RGB a sota del xip de color?"
 
 #: app/lib/Attributes/Values/ColorAttributeValue.php:106
 msgid ""
 "Check this option to display the RGB value of the selected color below the "
 "color chip."
 msgstr ""
+"Marqueu aquesta opció per a mostrar el valor RGB del color seleccionat a "
+"sota del xip de color."
 
 #: app/lib/Attributes/Values/ColorAttributeValue.php:148
 msgid "Color is invalid"
-msgstr ""
+msgstr "El color no és vàlid"
 
 #: app/lib/Attributes/Values/ContainerAttributeValue.php:51
 msgid ""
@@ -4959,7 +4955,7 @@ msgstr "Separador que usar para valores múltiples."
 
 #: app/lib/Attributes/Values/ContainerAttributeValue.php:116
 msgid "Display template for read-only mode"
-msgstr ""
+msgstr "Mostra la plantilla per al mode de només lectura"
 
 #: app/lib/Attributes/Values/ContainerAttributeValue.php:118
 msgid ""
@@ -4967,6 +4963,10 @@ msgid ""
 "set, existing values are always displayed in read-only mode until you click "
 "to edit. This can be used to preserve screen space for large containers."
 msgstr ""
+"Disseny utilitzat quan un valor de contenidor és en mode només de lectura. "
+"Si s'estableix aquesta plantilla, els valors existents sempre es mostren en "
+"mode de només lectura fins que feu clic per editar-lo. Això es pot utilitzar "
+"per preservar l'espai de la pantalla per a contenidors grans."
 
 #: app/lib/Attributes/Values/CurrencyAttributeValue.php:56
 #: app/lib/Attributes/Values/IntegerAttributeValue.php:66
@@ -5062,38 +5062,34 @@ msgid "%1 must be less than %2"
 msgstr "%1 debe ser menos de %2"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:50
-#, fuzzy
-#| msgid "Display format"
 msgid "Date display format"
-msgstr "Formato de visualización"
+msgstr "Format de visualització de la data"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:52
-#, fuzzy
-#| msgid "Use system default"
 msgid "System default"
-msgstr "Usar valor por defecto del sistema"
+msgstr "Predeterminat del sistema"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:53
 msgid "Formatted as text (ex. July 20, 1969)"
-msgstr ""
+msgstr "Formatat com a text (ex. 20 de juliol de 1969)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:54
 msgid "Formatted as delimited (ex. 7/20/1969)"
-msgstr ""
+msgstr "Formatat com delimitat (ex. 20/7/1969)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:55
 msgid "ISO-8601 (ex. 1969-07-20)"
-msgstr ""
+msgstr "ISO-8601 (ex. 1969-07-20)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:56
-#, fuzzy
-#| msgid "Created by"
 msgid "As entered by user"
-msgstr "Creado por"
+msgstr "Com s'ha introduït per l'usuari"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:58
 msgid "Format to use for display of dates, if different from system default."
 msgstr ""
+"Format a utilitzar per a la visualització de dates, si és diferent del "
+"predeterminat del sistema."
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:65
 msgid "Date range boundaries"
@@ -5129,45 +5125,47 @@ msgstr ""
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:105
 msgid "Date picker date format"
-msgstr ""
+msgstr "Format de data del selector de dates"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:107
 msgid "ISO-8601 (ex. 2012-07-16)"
-msgstr ""
+msgstr "ISO-8601 (ex. 2012-07-16)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:108
 msgid "US Delimited (ex. 07/16/2012)"
-msgstr ""
+msgstr "Estats Units delimitats (ex. 07/16/2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:109
 msgid "European Delimited (ex. 16/07/2012)"
-msgstr ""
+msgstr "Delimitada per Europa (ex. 16/07/2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:110
 msgid "Month Day, Year (ex. July 16, 2012)"
-msgstr ""
+msgstr "Mes Dia, Any (ex. juliol 16, 2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:111
 msgid "Month Day Year (ex. July 16 2012)"
-msgstr ""
+msgstr "Mes Dia Any (ex. juliol 16 2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:112
 msgid "Day Month Year (ex. 16 July 2012)"
-msgstr ""
+msgstr "Dia Mes Any (ex. 16 juliol 2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:113
 msgid "Short month Day Year (ex. Jul 16 2012)"
-msgstr ""
+msgstr "Mes curt Dia Any (ex. Jul 16 2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:114
 msgid "Day Short month Year (ex. 16 July 2012)"
-msgstr ""
+msgstr "Dia Mes curt Any (ex. 16 jul 2012)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:116
 msgid ""
 "Format to use for dates selected from the date picker. (The default is YY-MM-"
 "DD format.)"
 msgstr ""
+"Format que s'utilitzarà per a les dates seleccionades del selector de dates. "
+"(El format predeterminat és YY-MM-DD.)"
 
 #: app/lib/Attributes/Values/DateRangeAttributeValue.php:131
 msgid "Is a lifespan"
@@ -5279,6 +5277,8 @@ msgid ""
 "Check this option if you don't want your FloorPlan values to be locale-"
 "specific. (The default is to not be.)"
 msgstr ""
+"Marqueu aquesta opció si no voleu que els valors de FloorPlan siguin "
+"específics. (El valor per defecte és no ser.)"
 
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:79
 #: app/lib/Attributes/Values/GeoNamesAttributeValue.php:79
@@ -5316,29 +5316,30 @@ msgstr "La entrada estaba vacía."
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:172
 msgid "Floor plan is not supported outside of a request context"
 msgstr ""
+"El plànol de la planta no està suportat fora d'un context de sol·licitud"
 
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:179
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:189
 msgid "Floor plan is not supported"
-msgstr ""
+msgstr "El plànol de planta no està suportat"
 
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:219
 msgid "Floor plan for <em>%1</em>"
-msgstr ""
+msgstr "Plànol de la planta per a <em>%1</em>"
 
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:222
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:234
 msgid "%1 annotation on this floor plan"
-msgstr ""
+msgstr "%1 anotació en aquest pla de planta"
 
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:222
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:235
 msgid "%1 annotations on this floor plan"
-msgstr ""
+msgstr "%1 anotacions en aquest pla de planta"
 
 #: app/lib/Attributes/Values/FloorplanAttributeValue.php:225
 msgid "Edit floor plan"
-msgstr ""
+msgstr "Editar plànol de planta"
 
 #: app/lib/Attributes/Values/GeoNamesAttributeValue.php:71
 msgid ""
@@ -5406,13 +5407,15 @@ msgstr "Más &rsaquo;"
 
 #: app/lib/Attributes/Values/GeocodeAttributeValue.php:72
 msgid "Points are directional"
-msgstr ""
+msgstr "Els punts són direccionals"
 
 #: app/lib/Attributes/Values/GeocodeAttributeValue.php:73
 msgid ""
 "Check this option to enable setting of directions for point locations. (The "
 "default is not to be.)"
 msgstr ""
+"Marqueu aquesta opció per habilitar la configuració d'indicacions per a "
+"ubicacions de punts. (El valor per defecte no és ser.)"
 
 #: app/lib/Attributes/Values/GeocodeAttributeValue.php:136
 msgid "Tile server URL"
@@ -5486,9 +5489,8 @@ msgstr ""
 "locale. (El valor por defecto es que no lo sean.)"
 
 #: app/lib/Attributes/Values/InformationServiceAttributeValue.php:144
-#, fuzzy
 msgid "Sort using list"
-msgstr "Ordenar usant la llista"
+msgstr "Ordenar usando"
 
 #: app/lib/Attributes/Values/InformationServiceAttributeValue.php:145
 msgid ""
@@ -5497,12 +5499,21 @@ msgid ""
 "service item uri or id and a rank that reflects the desired sort order. "
 "Leave empty to sort information service items by their value."
 msgstr ""
+"Codi de llista per a la llista per ordenar els valors de servei "
+"d'informació. Cada element de la llista de referència ha de tenir un "
+"identificador que coincideixi amb l'URI o l'identificador de l'element del "
+"servei d'informació i un rang numèric que reflecteixi l'ordre d'ordenació "
+"desitjat. Deixeu-los buits per ordenar els elements del servei d'informació "
+"pel seu valor."
 
 #: app/lib/Attributes/Values/InformationServiceAttributeValue.php:272
 msgid ""
 "Value for InformationService lookup has to be an ID or URL that returns "
 "exactly 1 hit. We got more or no hits. Value was %1"
 msgstr ""
+"El valor per a la consulta de servei InformationService ha de ser un ID o "
+"URL que retorna exactament 1 hit. Hem aconseguit més o cap colpeix. El valor "
+"era '%1'"
 
 #: app/lib/Attributes/Values/InformationServiceAttributeValue.php:371
 msgid "Less &rsaquo;"
@@ -5810,12 +5821,13 @@ msgstr ""
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:82
 msgid "Allow implicit null values?"
-msgstr ""
+msgstr "Voleu permetre valors nuls implícits?"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:83
 msgid ""
 "Check this option if you want to accept an empty selection as a null value."
 msgstr ""
+"Marqueu aquesta opció si voleu acceptar una selecció buida com a valor nul."
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:90
 msgid "No value text"
@@ -5920,7 +5932,7 @@ msgstr ""
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:211
 msgid "Current selection template"
-msgstr ""
+msgstr "Plantilla de selecció actual"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:213
 msgid ""
@@ -5929,16 +5941,22 @@ msgid ""
 "currently selected list item), ^hierarchy (the full hierarchal path to the "
 "list item)."
 msgstr ""
+"Plantilla de format de text de selecció actual. Podeu utilitzar les següents "
+"etiquetes: ^current (l'element de la llista actualment seleccionat), ^parent "
+"(el pare de l'element de la llista actualment seleccionat), ^hierarchy (la "
+"ruta jeràrquica completa a l'element de la llista)."
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:220
 msgid "Minimize existing values?"
-msgstr ""
+msgstr "Minimitzar els valors existents?"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:221
 msgid ""
 "Check this option if existing values should displayed in a minimized, non-"
 "editable format."
 msgstr ""
+"Marqueu aquesta opció si els valors existents s'han de mostrar en un format "
+"minimitzat i no editable."
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:422
 msgid "Value %1 was not set for %2 because it does not exist in list %3"
@@ -5954,21 +5972,23 @@ msgstr "El valor %3 para %1 [%2] no es válido"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:675
 msgid "Hide bundles if value is not set"
-msgstr ""
+msgstr "Amaga les caselles si el valor no està configurat"
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:676
 msgid ""
 "Select bundles from the list below to be hidden when no value is set for "
 "this element."
 msgstr ""
+"Seleccioneu caselles de la llista següent per ocultar-se quan no s'hagi "
+"definit cap valor per a aquest element."
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:688
 msgid "Hide bundles if \"%1\" is selected"
-msgstr ""
+msgstr "Amaga les caselles si se selecciona \"%1\""
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:689
 msgid "Select bundles from the list below."
-msgstr ""
+msgstr "Seleccioneu les caselles de la llista següent."
 
 #: app/lib/Attributes/Values/ListAttributeValue.php:742
 msgid "The list must have exactly two items to be used as a yes/no checkbox"
@@ -5985,6 +6005,8 @@ msgid ""
 "dependent field visibility is only supported for radio buttons and drop-down "
 "(select) menus"
 msgstr ""
+"la visibilitat del camp dependent només és compatible amb els botons de "
+"ràdio i els menús desplegables (selecció)"
 
 #: app/lib/Attributes/Values/LoansAttributeValue.php:48
 msgid "Check this option if you want to require that a loan be selected."
@@ -6117,6 +6139,10 @@ msgid ""
 "Choose <em>most recently added </em> to sort with most recently entered "
 "values first."
 msgstr ""
+"Si el suggeriment de valors existents està activat, aquesta opció determina "
+"com s'ordenen els valors retornats. Trieu <em>valor</em> per ordenar "
+"alfabèticament. Trieu <em>més recentment afegit</em> per ordenar amb els "
+"valors introduïts recentment."
 
 #: app/lib/Attributes/Values/TextAttributeValue.php:133
 #: app/lib/Attributes/Values/UrlAttributeValue.php:133
@@ -6131,6 +6157,11 @@ msgid ""
 "(user last name), <em>^currentuser.email</em> (user email address) and  "
 "<em>^currentuser.user_name</em> (login name),  "
 msgstr ""
+"Text per emplenar prèviament un atribut acabat de crear. Pot utilitzar els "
+"cordons següents per incloure informació sobre l'usuari actualment "
+"registrat: <em>^currentuser.fname</em> (nom de l'usuari), <em>^currentuser."
+"lname</em> (cognom de l'usuari), <em>^currentuser.email</em> (adreça d'e-"
+"mail d'usuari) i <em>^ currentuser.user_name</em> (nom de connexió),  "
 
 #: app/lib/Attributes/Values/TextAttributeValue.php:175
 msgid ""
@@ -6138,6 +6169,10 @@ msgid ""
 "tags prefixed with the ^ character can be used to represent the value in the "
 "template. For example: <em>^my_element_code</em>."
 msgstr ""
+"Disseny per al valor quan s'utilitza en una pantalla (pot incloure HTML). "
+"Les etiquetes de codi d'element precedides amb el caràcter ^ es poden "
+"utilitzar per representar el valor de la plantilla. Per exemple: "
+"<em>^my_element_code</em>."
 
 #: app/lib/Attributes/Values/TextAttributeValue.php:191
 msgid "Is dependent value?"
@@ -6170,15 +6205,15 @@ msgstr ""
 
 #: app/lib/Attributes/Values/TextAttributeValue.php:218
 msgid "Reference media in"
-msgstr ""
+msgstr "Referència multimèdia inserida"
 
 #: app/lib/Attributes/Values/TextAttributeValue.php:219
 msgid "Allow in-line references in text to a media element."
-msgstr ""
+msgstr "Permet les referències en línia del text a un element multimèdia."
 
 #: app/lib/Attributes/Values/TextAttributeValue.php:384
 msgid "This field value already exists!"
-msgstr ""
+msgstr "Aquest valor de camp ja existeix!"
 
 #: app/lib/Attributes/Values/TimeCodeAttributeValue.php:66
 msgid ""
@@ -6231,15 +6266,15 @@ msgstr "Abrir &rsaquo;"
 
 #: app/lib/Attributes/Values/UrlAttributeValue.php:381
 msgid "Could not open remote URL [%1]"
-msgstr ""
+msgstr "No es pot obrir l'adreça URL remota [%1]"
 
 #: app/lib/Attributes/Values/UrlAttributeValue.php:385
 msgid "Could not read data from remote URL [%1]"
-msgstr ""
+msgstr "No es poden llegir dades de l'URL remot [%1]"
 
 #: app/lib/Attributes/Values/UrlAttributeValue.php:414
 msgid "Checking values for element code [%1]"
-msgstr ""
+msgstr "Comprovant valors del codi de l'element [%1]"
 
 #: app/lib/Attributes/Values/UrlAttributeValue.php:419
 msgid "Processing element [%1]"
@@ -6248,10 +6283,11 @@ msgstr "Processant element [%1]"
 #: app/lib/Attributes/Values/UrlAttributeValue.php:432
 msgid "There was an error while veryfing URL for %1 with ID %2: %3"
 msgstr ""
+"S'ha produït un error mentre es verificava la URL per a %1 amb ID %2: %3"
 
 #: app/lib/Attributes/Values/UrlAttributeValue.php:438
 msgid "Open record"
-msgstr ""
+msgstr "Obrir el registre"
 
 #: app/lib/Attributes/Values/WeightAttributeValue.php:236
 msgid "%1 must not be less than zero"
@@ -6266,6 +6302,8 @@ msgid ""
 "No directories key found in authentication config. Are you using an old "
 "configuration?"
 msgstr ""
+"No hi ha cap clau de directoris LDAP en la configuració d'autenticació. Està "
+"utilitzant una configuració antiga?"
 
 #: app/lib/Auth/AbstractLDAPAuthAdapter.php:176
 #: app/lib/Auth/Adapters/Okta.php:153 app/lib/Auth/Adapters/Shibboleth.php:90
@@ -6274,11 +6312,12 @@ msgstr "No se ha encontrado ese usuario."
 
 #: app/lib/Auth/AbstractLDAPAuthAdapter.php:325
 msgid "Password for directory bind cannot be empty!"
-msgstr ""
+msgstr "La contrasenya per a la vinculació de directori no pot estar buida!"
 
 #: app/lib/Auth/AbstractLDAPAuthAdapter.php:339
 msgid "Couldn't apply bind RDN filter for directory. LDAP search failed"
 msgstr ""
+"No s'ha pogut aplicar el filtre RDN per al directori. Ha fallat la cerca LDAP"
 
 #: app/lib/Auth/Adapters/ExternalDB.php:67
 #: app/lib/Auth/Adapters/ExternalDB.php:130
@@ -6306,14 +6345,10 @@ msgstr ""
 "datos externa porque la clase user no ha sido fijada."
 
 #: app/lib/Auth/Adapters/HTTPHeaders.php:53
-#, fuzzy
-#| msgid ""
-#| "Could not login user %1 using external database because external "
-#| "authentication failed [%2]"
 msgid "Could not login user %1 using http headers are missing failed %2 [%3]"
 msgstr ""
-"No se ha podido iniciar sesión para el usuario %1 usando la base de datos "
-"externa porque la autentificación externa no ha tenido éxito [%2]"
+"No s'ha pogut iniciar la sessió l'usuari %1 que utilitza capçaleres HTTP que "
+"falten %2 [%3]"
 
 #: app/lib/Auth/Adapters/HTTPHeaders.php:117
 #: app/lib/Auth/BaseAuthAdapter.php:71
@@ -6324,21 +6359,18 @@ msgstr ""
 "desde un programa."
 
 #: app/lib/Auth/Adapters/HTTPHeaders.php:120
-#, fuzzy
-#| msgid ""
-#| "Authentication back-end doesn't support deleting users programmatically."
 msgid "Authentication back-end doesn't support updating users passwords."
 msgstr ""
-"La maquinaria de autenticación no tiene funcionalidad para eliminar usuarios "
-"desde un programa."
+"L'autenticació del servidor no suporta l'actualització de contrasenyes "
+"d'usuaris."
 
 #: app/lib/Auth/Adapters/Okta.php:89 app/lib/Auth/Adapters/Shibboleth.php:72
 msgid "User could not be authenticated."
-msgstr ""
+msgstr "L'usuari no s'ha pogut autenticar."
 
 #: app/lib/Auth/Adapters/Okta.php:98
 msgid "Token is invalid."
-msgstr ""
+msgstr "Token no és vàlid."
 
 #: app/lib/Auth/Adapters/Okta.php:134
 msgid "User is not active."
@@ -6346,19 +6378,19 @@ msgstr "L'usuari està inactiu."
 
 #: app/lib/Auth/Adapters/Okta.php:150
 msgid "User information is invalid."
-msgstr ""
+msgstr "La informació d'usuari no és vàlida."
 
 #: app/lib/Auth/Adapters/Okta.php:232
 msgid "Could not exchange Okta code for an access token"
-msgstr ""
+msgstr "No s'ha pogut intercanviar el codi Okta per a un testimoni d'accés"
 
 #: app/lib/Auth/Adapters/Okta.php:235
 msgid "Verification of Okta JWT failed"
-msgstr ""
+msgstr "No s'ha pogut verificar l'Okta JWT"
 
 #: app/lib/Auth/Adapters/Okta.php:241
 msgid "An Okta error during login has occurred"
-msgstr ""
+msgstr "S'ha produït un error d'Okta durant l'inici de sessió"
 
 #: app/lib/Auth/Adapters/Okta.php:357
 msgid "Could not connect to Okta."
@@ -6385,7 +6417,7 @@ msgstr ""
 
 #: app/lib/BanHammer.php:60
 msgid "Cannot open BanHammer plugin directory %1"
-msgstr ""
+msgstr "No es pot obrir el directori de connectors de BanHammer %1"
 
 #: app/lib/BaseAdvancedSearchController.php:71
 msgid "%1 advanced search"
@@ -6504,6 +6536,8 @@ msgstr "S'han esborrat %1 fills"
 #: app/lib/BaseEditorController.php:603
 msgid "Could not move references to other items in metadata before delete: %1"
 msgstr ""
+"No s'ha pogut moure les referències a altres elements de les metadades abans "
+"de suprimir: %1"
 
 #: app/lib/BaseEditorController.php:631
 msgid "%1 was deleted"
@@ -6573,7 +6607,7 @@ msgstr "La transformación ha fallado"
 
 #: app/lib/BaseEditorController.php:2455
 msgid "No media to download for this type of record"
-msgstr ""
+msgstr "No hi ha cap suport per descarregar per a aquest tipus de registre"
 
 #: app/lib/BaseEditorController.php:2567
 msgid "downloaded_file"
@@ -6597,11 +6631,11 @@ msgstr "No s'ha configurat cap política"
 
 #: app/lib/BaseEditorController.php:2742
 msgid "%1 %2 returned to home location; %3 already home"
-msgstr ""
+msgstr "%1 %2 ha tornat a la ubicació d'inici; %3 ja han tornat"
 
 #: app/lib/BaseEditorController.php:2742
 msgid "%1 %2 returned to home locations; %3 already home"
-msgstr ""
+msgstr "%1 %2 han tornat a la ubicació d'inici; %3 ja han tornat"
 
 #: app/lib/BaseEditorController.php:2744
 msgid "%1 %2 returned to home location"
@@ -6612,16 +6646,12 @@ msgid "%1 %2 returned to home locations"
 msgstr "S'han tornat %1 %2 a l'ubicació d'inici"
 
 #: app/lib/BaseEditorController.php:2747
-#, fuzzy
-#| msgid "No error"
 msgid "%1 errors"
-msgstr "%1 errores para %2 representaciones"
+msgstr "%1 errors"
 
 #: app/lib/BaseEditorController.php:2751
-#, fuzzy
-#| msgid "No tools are available"
 msgid "No policies available"
-msgstr "No hay herramientas disponibles"
+msgstr "No hi ha polítiques disponibles"
 
 #: app/lib/BaseFindController.php:275
 #: app/lib/Import/DataReaders/TabDelimitedDataReader.php:55
@@ -6635,10 +6665,8 @@ msgid "Comma delimited (CSV)"
 msgstr "Separat per comes (CSV)"
 
 #: app/lib/BaseFindController.php:276
-#, fuzzy
-#| msgid "Spreadsheet with media icons (XLSX)"
 msgid "Spreadsheet (XLSX)"
-msgstr "Hoja de cálculo con iconos (XLSX)"
+msgstr "Full de càlcul (XLSX)"
 
 #: app/lib/BaseFindController.php:276
 msgid "Word processing (DOCX)"
@@ -6653,16 +6681,12 @@ msgid "Invalid set"
 msgstr "Conjunto no válido"
 
 #: app/lib/BaseFindController.php:682
-#, fuzzy
-#| msgid "You cannot edit this set"
 msgid "You cannot edit sets"
-msgstr "No puede editar el conjunto"
+msgstr "No podeu editar conjunts"
 
 #: app/lib/BaseFindController.php:741
-#, fuzzy
-#| msgid "You cannot edit this set"
 msgid "You cannot create sets"
-msgstr "No puede editar el conjunto"
+msgstr "No podeu crear conjunts"
 
 #: app/lib/BaseFindController.php:772
 msgid "Search could not be saved"
@@ -6673,10 +6697,8 @@ msgid "Could not generate ZIP file for download"
 msgstr "No se ha podido generar el fichero ZIP para descarga"
 
 #: app/lib/BaseFindController.php:1088
-#, fuzzy
-#| msgid "Cannot write to %1"
 msgid "Cannot edit %1"
-msgstr "No se puede escribir a %1"
+msgstr "No es pot editar %1"
 
 #: app/lib/BaseInterstitialController.php:73
 #: app/lib/BaseInterstitialController.php:144
@@ -6710,50 +6732,36 @@ msgid "Create <em>%1</em>?"
 msgstr "¿Crear <em>%1</em>?"
 
 #: app/lib/BaseLookupController.php:212
-#, fuzzy
-#| msgid "No matches found for <em>%1</em>"
 msgid "No matches found for \"%1\""
-msgstr "No se han encontrado resultados para <em>%1</em>"
+msgstr "No s'ha trobat cap coincidència per a \"%1\""
 
 #: app/lib/BaseLookupController.php:225
-#, fuzzy
-#| msgid "You do not have access to set %1"
 msgid "You do not have access to search %1"
-msgstr "No tiene acceso al conjunto %1"
+msgstr "No teniu accés a la cerca %1"
 
 #: app/lib/BaseLookupController.php:526 app/lib/BaseLookupController.php:554
-#, fuzzy
-#| msgid "Could not save %1"
 msgid "Could not load %1"
-msgstr ""
-"No se ha podido cargar el %1 preexistente con id %2 (%3) en "
-"DataMigrationUtils::_getID() [ESTO NO DEBERÍA OCURRIR]"
+msgstr "No es pot carregar %1"
 
 #: app/lib/BaseLookupController.php:560
-#, fuzzy
-#| msgid "Invalid search type"
 msgid "Invalid hierarchy type"
-msgstr "Tipo de búsqueda no válido"
+msgstr "Tipus de jerarquia no vàlido"
 
 #: app/lib/BaseLookupController.php:564
-#, fuzzy
-#| msgid "File type is not supported"
 msgid "Sorting is not supported for %1"
-msgstr "El tipo de archivo no es compatible"
+msgstr "No s'admet l'ordenació per a %1"
 
 #: app/lib/BaseLookupController.php:573
 msgid "%1 must have default sort set to rank"
-msgstr ""
+msgstr "%1 ha de tenir la classificació per defecte establerta a \"per rang\""
 
 #: app/lib/BaseLookupController.php:581
 msgid "%1 must have sort configured to use rank"
-msgstr ""
+msgstr "%1 ha de tenir una classificació configurada per utilitzar el rang"
 
 #: app/lib/BaseLookupController.php:587
-#, fuzzy
-#| msgid "Could not update %1.%2: %3"
 msgid "Could not update rank: %1"
-msgstr "No se ha podido actualizar %1.%2: %3"
+msgstr "No es pot actualitzar la classificació: %1"
 
 #: app/lib/BaseModel.php:947 app/lib/Search/SearchEngine.php:571
 #: app/models/ca_data_exporter_items.php:286
@@ -6847,14 +6855,12 @@ msgid "The value of %1 must be unique"
 msgstr "El valor de %1 debe ser único"
 
 #: app/lib/BaseModel.php:2187
-#, fuzzy
-#| msgid "relationship type"
 msgid "Invalid relationship type"
-msgstr "tipus de relació"
+msgstr "Tipus de relació no vàlida"
 
 #: app/lib/BaseModel.php:2189
 msgid "Invalid relationship reference for %1"
-msgstr ""
+msgstr "Referència de relació no vàlida per a %1"
 
 #: app/lib/BaseModel.php:2375
 msgid "Date is undefined but field %1 does not support NULL values"
@@ -7122,10 +7128,9 @@ msgstr ""
 
 #: app/lib/BaseModel.php:8236 app/lib/BaseModel.php:8331
 #: app/lib/BaseModel.php:8426 app/lib/BaseModel.php:8519
-#, fuzzy
 #| msgid "NONE"
 msgid "- NONE -"
-msgstr "ninguno"
+msgstr "- CAP -"
 
 #: app/lib/BaseModel.php:8592
 msgid "Value must be unique. Please try another."
@@ -7187,26 +7192,20 @@ msgid "Comment was not created by specified user"
 msgstr "El comentario no fue creado por el usuario especificado"
 
 #: app/lib/BaseModel.php:10699 app/models/ca_item_comments.php:565
-#, fuzzy
-#| msgid "Create set %1"
 msgid "Comment made in set %1"
-msgstr "Crear conjunto %1"
+msgstr "Comentari realitzat en el conjunt %1"
 
 #: app/lib/BaseModel.php:11539 app/lib/BaseModel.php:11548
 #: app/lib/BaseModel.php:11595 app/lib/BaseModel.php:11630
 #: app/lib/LabelableBaseModelWithAttributes.php:715
 #: app/lib/LabelableBaseModelWithAttributes.php:766
-#, fuzzy
-#| msgid "Invalid property '%1'"
 msgid "Invalid numeric operator: %1"
-msgstr "Propiedad no válida '%1'"
+msgstr "Operador numèric no vàlid: %1"
 
 #: app/lib/BaseModel.php:11638 app/lib/LabelableBaseModelWithAttributes.php:722
 #: app/lib/LabelableBaseModelWithAttributes.php:768
-#, fuzzy
-#| msgid "Invalid transformation %1"
 msgid "Invalid string operator: %1"
-msgstr "Transformación inválida %1"
+msgstr "Operador de cadena no vàlid: %1"
 
 #: app/lib/BaseModelWithAttributes.php:142
 msgid "Cannot add another value; only %1 value is allowed"
@@ -7233,9 +7232,8 @@ msgstr "No se puede eliminar el valor: se requieren al menos %1 valores"
 #: app/lib/BundlableLabelableBaseModelWithAttributes.php:2327
 #: app/lib/Plugins/SearchEngine/SqlSearch.php:972
 #: app/lib/Search/SearchEngine.php:148
-#, fuzzy
 msgid "SET"
-msgstr "conjunto"
+msgstr "ESTABLIR"
 
 #: app/lib/BaseModelWithAttributes.php:1644
 msgid "Element is not the root of the element set"
@@ -7254,10 +7252,8 @@ msgid "Cannot be used as a reference"
 msgstr "No se puede usar como referencia"
 
 #: app/lib/BaseModelWithAttributes.php:2939
-#, fuzzy
-#| msgid "Invalid parent"
 msgid "Invalid target ID"
-msgstr "Antecessor no vàlid"
+msgstr "Identificador de destinació no vàlid"
 
 #: app/lib/BaseQuickAddController.php:189
 msgid "No interface defined for %1"
@@ -7289,10 +7285,8 @@ msgid "%1 search"
 msgstr "búsqueda de %1"
 
 #: app/lib/BaseSearchController.php:123
-#, fuzzy
-#| msgid "Sort order"
 msgid "Set order: %1"
-msgstr "Orden de clasificación"
+msgstr "Estableix l'ordre: %1"
 
 #: app/lib/BaseSearchController.php:438 app/lib/Search/QuickSearch.php:52
 #: app/models/ca_metadata_alert_rules.php:78 app/models/ca_set_items.php:67
@@ -7356,10 +7350,8 @@ msgid "Key"
 msgstr "Clave"
 
 #: app/lib/BaseSettings.php:548
-#, fuzzy
-#| msgid "lists"
 msgid "All lists"
-msgstr "listas"
+msgstr "Totes les llistes"
 
 #: app/lib/BaseSettings.php:597 app/lib/BaseSettings.php:602
 msgid "User defined sort order"
@@ -7378,19 +7370,16 @@ msgid "Element: %1"
 msgstr "Elemento: %1"
 
 #: app/lib/BaseSettings.php:691
-#, fuzzy
 msgid "weeks"
 msgstr "setmanes"
 
 #: app/lib/BaseSettings.php:692
-#, fuzzy
 msgid "before"
-msgstr "Ajuste de texto antes de la exportación"
+msgstr "abans"
 
 #: app/lib/BaseSettings.php:692
-#, fuzzy
 msgid "after"
-msgstr "Ajuste de texto tras la exportación"
+msgstr "després"
 
 #: app/lib/BaseVersionUpdater.php:133
 msgid ""
@@ -7864,7 +7853,7 @@ msgstr "de %1 relacionado"
 #: app/lib/BundlableLabelableBaseModelWithAttributes.php:2050
 #: app/models/ca_bundle_displays.php:1014
 msgid "Generic bundle"
-msgstr ""
+msgstr "Casella genèrica"
 
 #: app/lib/BundlableLabelableBaseModelWithAttributes.php:2075
 msgid "alternates from related %1"
@@ -8125,12 +8114,17 @@ msgid ""
 "CollectiveAccess requires PHP version 5.6 or higher to function properly. "
 "You're running %1. Please upgrade."
 msgstr ""
+"CollectiveAccess requereix PHP versió 5.6 o superior per funcionar "
+"correctament. Esteu executant %1. Si us plau actualitzi."
 
 #: app/lib/ConfigurationCheck.php:280
 msgid ""
 "Your setup.php file does not include a setting for __CA_SITE_PROTOCOL__. "
 "Please update it using the current setup.php-dist as a template."
 msgstr ""
+"El seu arxiu de 'setup.php' no inclou una configuració per a "
+"__CA_SITE_PROTOCOL__. Si us plau actualitzi'l utilitzant l'actual 'setup.php-"
+"dist' com a plantilla."
 
 #: app/lib/ConfigurationCheck.php:291
 msgid ""
@@ -8138,6 +8132,9 @@ msgid ""
 "webserver. Please change the permissions of %1 and enable the user which "
 "runs the webserver to write to this directory."
 msgstr ""
+"Sembla que el directori per a arxius temporals no és enregistrable pel "
+"servidor web. Canvieu els permisos de %1 i habiliteu l'usuari que executa el "
+"servidor web per escriure-ho a aquest directori."
 
 #: app/lib/ConfigurationCheck.php:308
 msgid ""
@@ -8145,6 +8142,9 @@ msgid ""
 "change the permissions of %1 and enable the user which runs the webserver to "
 "write to this directory."
 msgstr ""
+"Sembla que el directori de la memòria cau no és enregistrable pel servidor "
+"web. Canvieu els permisos de %1 i habiliteu l'usuari que executa el servidor "
+"web per escriure-ho a aquest directori."
 
 #: app/lib/ConfigurationCheck.php:318
 msgid ""
@@ -8152,6 +8152,10 @@ msgid ""
 "change the permissions of %1 (or create it if it doesn't exist already) and "
 "enable the user which runs the webserver to write to this directory."
 msgstr ""
+"Sembla que el directori de registre no és enregistrable pel servidor web. Si "
+"us plau, canvieu els permisos de %1 (o creeu-lo si no existeix ja) i "
+"habiliteu l'usuari que executi el servidor web per escriure a aquest "
+"directori."
 
 #: app/lib/ConfigurationCheck.php:326
 msgid ""
@@ -8159,6 +8163,10 @@ msgid ""
 "change the permissions of %1 (or create it if it doesn't exist already) and "
 "enable the user which runs the webserver to write to this directory."
 msgstr ""
+"Sembla que el directori multimèdia no és pot escriure pel servidor web. Si "
+"us plau, canvieu els permisos de %1 (o creeu-lo si no existeix ja) i "
+"habiliteu l'usuari que executi el servidor web per escriure a aquest "
+"directori."
 
 #: app/lib/ConfigurationCheck.php:338
 msgid ""
@@ -8166,6 +8174,9 @@ msgid ""
 "webserver. Please change the permissions of %1 and enable the user which "
 "runs the webserver to write to this directory."
 msgstr ""
+"Sembla que el directori de memòria clau de filtratge de HTML no és escriure "
+"pel servidor web. Canvieu els permisos de %1 i habiliteu l'usuari que "
+"executa el servidor web per escriure-ho a aquest directori."
 
 #: app/lib/ConfigurationCheck.php:348
 #, fuzzy
@@ -8349,6 +8360,9 @@ msgid ""
 "webserver. Please change the permissions for %1 and enable the user which "
 "runs the webserver to write to this directory."
 msgstr ""
+"Sembla un subdirectori en el directori de multimèdia no és pot escriure pel "
+"servidor web. Canvieu els permisos de %1 i habiliteu l'usuari que executa el "
+"servidor web per escriure a aquest directori."
 
 #: app/lib/ConfigurationCheck.php:476
 msgid ""
@@ -8574,7 +8588,7 @@ msgstr "Esconder formulario de búsqueda"
 
 #: app/lib/ConfigurationExporter.php:1524
 msgid "Exporting changes for search form %1"
-msgstr ""
+msgstr "Exportant els canvis per al formulari de cerca %1"
 
 #: app/lib/ConfigurationExporter.php:1691
 #, fuzzy
@@ -8755,22 +8769,28 @@ msgid ""
 "Values are ExifTool XML element names. See http://www.sno.phy.queensu.ca/"
 "~phil/exiftool/metafiles.html#xml"
 msgstr ""
+"Els valors són els noms dels elements XML de l'ExifTool. Veure http://www."
+"sno.phy.queensu.ca/~phil/exiftool/metafiles.html#xml"
 
 #: app/lib/Export/ExportFormats/ExportExifTool.php:134
 msgid "ExifTool must be installed and available!"
-msgstr ""
+msgstr "ExifTool ha d'estar instal·lat i disponible!"
 
 #: app/lib/Export/ExportFormats/ExportExifTool.php:150
 msgid ""
 "%1 is not a valid element for ExifTool exports. It must be in of one of the "
 "ExifTool namespaces."
 msgstr ""
+"%1 no és un element vàlid per a les exportacions de ExifTool. Ha d'estar en "
+"un dels espais de noms d'ExifTool."
 
 #: app/lib/Export/ExportFormats/ExportExifTool.php:157
 msgid ""
 "ExifTool mappings can't be hierarchical. It looks like element %1 has "
 "children."
 msgstr ""
+"Els assignacions ExifTool no poden ser jeràrquiques. Sembla que l'element %1 "
+"té descendents."
 
 #: app/lib/Export/ExportFormats/ExportJSON.php:41
 #, fuzzy
@@ -8999,13 +9019,15 @@ msgstr ""
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2378
 msgid "Include history from lots (%1) related to child objects"
-msgstr ""
+msgstr "Inclou l'historial de lots (%1) relacionats amb objectes descendents"
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2379
 msgid ""
 "If checked history from lots that are related to sub-objects (children) is "
 "included."
 msgstr ""
+"Si està marcada, s'inclou l'historial de lots que estan relacionats amb sub-"
+"objectes (descendents)."
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2386
 #, fuzzy
@@ -9091,7 +9113,7 @@ msgstr ""
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2797
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2881
 msgid "Include history from %1 related to child objects"
-msgstr ""
+msgstr "Incloeu l'historial de %1 relacionades amb objectes descendents"
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2462
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2546
@@ -9103,6 +9125,8 @@ msgid ""
 "If checked history from %1 that are related to sub-objects (children) is "
 "included."
 msgstr ""
+"Si està marcada, s'inclou l'historial verificat de %1 relacionades amb els "
+"subobjectes (descendents)."
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2469
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2553
@@ -9375,12 +9399,16 @@ msgstr ""
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2991
 msgid "Include history from deaccession information related to child objects"
 msgstr ""
+"Incloure història de la desadhesió informació relacionada amb els objectes "
+"descendents"
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2992
 msgid ""
 "If checked history from deaccession information that are related to sub-"
 "objects (children) is included."
 msgstr ""
+"Si està marcada, s'inclou informació de l'historial de desadhesió "
+"relacionada amb els subobjectes (descendents)."
 
 #: app/lib/HistoryTrackingCurrentValueTrait.php:2999
 #, fuzzy
@@ -9515,7 +9543,7 @@ msgstr "No se puede borrar el elemento, porque está en uso (%1)"
 #: app/lib/IDNumbering/MultipartIDNumber.php:1032
 #: themes/default/views/administrate/setup/elements_edit_html.php:74
 msgid "Changing this value may break parts of the system configuration"
-msgstr ""
+msgstr "Canviar aquest valor pot trencar parts de la configuració del sistema"
 
 #: app/lib/IDNumbering/MultipartIDNumber.php:1058
 #: app/lib/IDNumbering/SMFMultipartIDNumber.php:772
@@ -9550,11 +9578,11 @@ msgstr "A %1 debe dársele el valor de %2"
 
 #: app/lib/IDNumbering/UUIDNumber.php:128
 msgid "A value is reuiqred for UUID Versions 3 & 5"
-msgstr ""
+msgstr "Un valor és requerit per a versions de UUID 3 & 5"
 
 #: app/lib/IDNumbering/UUIDNumber.php:131
 msgid "A NamespaceID (root UUID) is required for UUID %1"
-msgstr ""
+msgstr "S'ha de requerir un NamespaceID per a UUID %1"
 
 #: app/lib/Import/BaseRefinery.php:90
 #: app/refineries/collectionIndentedHierarchyBuilder/collectionIndentedHierarchyBuilderRefinery.php:260
@@ -9642,11 +9670,11 @@ msgstr ""
 
 #: app/lib/Import/DataReaders/EADReader.php:94
 msgid "Encoded Archival Description Schema (EAD) XML Reader"
-msgstr ""
+msgstr "Lector XML d'Esquema Descriptiu d'Arxivística (EAD)"
 
 #: app/lib/Import/DataReaders/EADReader.php:95
 msgid "Encoded Archival Description Schema (EAD) XML"
-msgstr ""
+msgstr "XML d'Esquema Descriptiu d'Arxivística (EAD)"
 
 #: app/lib/Import/DataReaders/EADReader.php:96
 #, fuzzy
@@ -9668,7 +9696,7 @@ msgstr "Lee archivos XLSX de Microsoft Excel"
 
 #: app/lib/Import/DataReaders/ExcelDataReader.php:167
 msgid "Invalid Excel (XLSX) column specified '%1'"
-msgstr ""
+msgstr "La columna especificada '%1' de l'Excel (XLSX) no és vàlida"
 
 #: app/lib/Import/DataReaders/ExifDataReader.php:52
 msgid "EXIF data reader"
@@ -9752,15 +9780,16 @@ msgstr "Lee archivos MARC"
 
 #: app/lib/Import/DataReaders/MODSReader.php:94
 msgid "Metadata Object Description Schema (MODS) XML Reader"
-msgstr ""
+msgstr "Lector XML d'Esquema Descriptiu d'Objectes de Metadades (MODS)"
 
 #: app/lib/Import/DataReaders/MODSReader.php:95
 msgid "Metadata Object Description Schema (MODS) XML"
-msgstr ""
+msgstr "XML d'Esquema Descriptiu d'Objectes de Metadades (MODS)"
 
 #: app/lib/Import/DataReaders/MODSReader.php:96
 msgid "Reads Metadata Object Description Schema (MODS) XML files"
 msgstr ""
+"Llegeix fitxers XML d'Esquema Descriptiu d'Objectes de Metadades (MODS)"
 
 #: app/lib/Import/DataReaders/MediaBinReader.php:95
 #, fuzzy
@@ -9770,7 +9799,7 @@ msgstr "Lector de Vernon XML"
 
 #: app/lib/Import/DataReaders/MediaBinReader.php:96
 msgid "MediaBIN XML"
-msgstr ""
+msgstr "MediaBIN XML"
 
 #: app/lib/Import/DataReaders/MediaBinReader.php:97
 #, fuzzy
@@ -9876,7 +9905,7 @@ msgstr "Lee los datos EXIF embebidos"
 
 #: app/lib/Import/DataReaders/ResourceSpaceDataReader.php:56
 msgid "Reads metadata and file paths from ResourceSpace"
-msgstr ""
+msgstr "Llegeix metadades i camins d'arxiu des de ResourceSpace"
 
 #: app/lib/Import/DataReaders/SimpleXMLReader.php:48
 #, fuzzy
@@ -9886,7 +9915,7 @@ msgstr "Lector de Vernon XML"
 
 #: app/lib/Import/DataReaders/SimpleXMLReader.php:49
 msgid "Simple XML"
-msgstr ""
+msgstr "Simple XML"
 
 #: app/lib/Import/DataReaders/SimpleXMLReader.php:50
 #, fuzzy
@@ -9941,11 +9970,11 @@ msgstr "Lee archivos XML de Vernon"
 
 #: app/lib/Import/DataReaders/WordpressRSSReader.php:94
 msgid "Wordpress RSS Reader"
-msgstr ""
+msgstr "Lector de RSS de WordPress"
 
 #: app/lib/Import/DataReaders/WordpressRSSReader.php:95
 msgid "Wordpress RSS"
-msgstr ""
+msgstr "RSS de WordPress"
 
 #: app/lib/Import/DataReaders/WordpressRSSReader.php:96
 #, fuzzy
@@ -9974,13 +10003,15 @@ msgstr "Lector de datos EXIF"
 
 #: app/lib/Import/DataReaders/iDigBioDataReader.php:65
 msgid "iDigBio"
-msgstr ""
+msgstr "iDigBio"
 
 #: app/lib/Import/DataReaders/iDigBioDataReader.php:66
 msgid ""
 "Reads data from the iDigBio data service (http://idigbio.org) using the "
 "version 2 API"
 msgstr ""
+"Llegeix les dades del servei de dades iDigBio (http://idigbio.org) "
+"utilitzant l'API de la versió 2"
 
 #: app/lib/LabelableBaseModelWithAttributes.php:1997
 msgid "Label must not be blank"
@@ -10030,7 +10061,7 @@ msgstr "1 visualización disponible"
 #: app/lib/Media/BaseMediaViewer.php:152
 #: app/lib/Media/MediaViewers/UniversalViewer.php:219
 msgid "Media search autocomplete is not available"
-msgstr ""
+msgstr "La compleció automàtica per multimèdia no està disponible"
 
 #: app/lib/Media/MediaViewers/Diva.php:94
 #: app/lib/Media/MediaViewers/Diva.php:124
@@ -10094,6 +10125,7 @@ msgstr ""
 #: app/lib/Media/Remote/Flickr.php:118
 msgid "Could not get image info for given Flickr ID %1"
 msgstr ""
+"No s'ha pogut obtenir la informació d'imatge de l'ID de Flickr indicat %1"
 
 #: app/lib/Media/Remote/Flickr.php:122
 #, fuzzy
@@ -10121,6 +10153,8 @@ msgid ""
 "Message for the alert notification sent to users. This is a display template "
 "with access to all metadata in the affected record."
 msgstr ""
+"Missatge per a la notificació d'alerta enviada als usuaris. Es tracta d'una "
+"plantilla de vista amb accés a totes les metadades del registre afectat."
 
 #: app/lib/MetadataAlerts/TriggerTypes/Base.php:126
 #, fuzzy
@@ -10142,11 +10176,11 @@ msgstr "Eliminar anotación"
 
 #: app/lib/MetadataAlerts/TriggerTypes/Base.php:129
 msgid "Choose methods to deliver notifications here."
-msgstr ""
+msgstr "Trieu mètodes per enviar notificacions aquí."
 
 #: app/lib/MetadataAlerts/TriggerTypes/Base.php:179
 msgid "Metadata alert rule '%1' triggered for record %2"
-msgstr ""
+msgstr "S'ha activat la regla d'alerta de metadades \"%1\" per al registre %2"
 
 #: app/lib/MetadataAlerts/TriggerTypes/Base.php:224
 #, fuzzy
@@ -10166,6 +10200,10 @@ msgid ""
 "Note that if the event is a date range, the trigger will fire before the "
 "beginning of the range or after the end of the range."
 msgstr ""
+"Definiu un interval abans o després d'un esdeveniment durant el qual activar "
+"una notificació. Tingueu en compte que si l'esdeveniment és un interval de "
+"dates, el disparador s'activarà abans de l'inici de l'interval o després del "
+"final de l'interval."
 
 #: app/lib/MetadataAlerts/TriggerTypes/Modification.php:130
 #, fuzzy
@@ -10185,7 +10223,7 @@ msgstr "El valor para %1 debe estar entre %2 y %3"
 
 #: app/lib/Parsers/ExpressionParser/ExpressionVisitor.php:69
 msgid "Invalid number of arguments. Number of arguments passed: %1"
-msgstr ""
+msgstr "El nombre d'arguments no és vàlid. Nombre d'arguments sol·licitats: %1"
 
 #: app/lib/Parsers/MediaMetadata/XMPParser.php:108
 msgid "Mimetype of file"
@@ -10390,11 +10428,11 @@ msgstr "Ofrece acceso al servicio de Linked Open Data de Getty AAT"
 
 #: app/lib/Plugins/InformationService/ALANSL.php:54
 msgid "APC - Australian Plant Census"
-msgstr ""
+msgstr "APC - Cens de Plantes d'Austràlia"
 
 #: app/lib/Plugins/InformationService/ALANSL.php:55
 msgid "APNI - Australian Plant Name Index"
-msgstr ""
+msgstr "APNI - Índex de Noms de Planta d'Austràlia"
 
 #: app/lib/Plugins/InformationService/ALANSL.php:59
 #, fuzzy
@@ -10404,11 +10442,11 @@ msgstr "Informativo"
 
 #: app/lib/Plugins/InformationService/ALANSL.php:60
 msgid "The format that the extra information displayed on the page comes in"
-msgstr ""
+msgstr "El format en què ve la informació addicional que apareix en la pàgina"
 
 #: app/lib/Plugins/InformationService/ALANSL.php:66
 msgid "Index Fields"
-msgstr ""
+msgstr "Campos per a l'índex"
 
 #: app/lib/Plugins/InformationService/ALANSL.php:67
 msgid ""
@@ -10418,6 +10456,12 @@ msgid ""
 "\t\t\tAvailable fields are at https://biodiversity.org.au/nsl/docs/main."
 "html#nslsimplename."
 msgstr ""
+"Especifiqueu els camps addicionals que voleu incloure a l'índex de cerca.\n"
+"\t\t\tEls noms dels camps han d'estar separats per un o més espais o línies "
+"noves.\n"
+"\t\t\tEls valors que no coincideixin amb els camps disponibles s'ignoraran.\n"
+"\t\t\tEls camps disponibles són a https://biodiversity.org.au/nsl/docs/main."
+"html#nslsimplename."
 
 #: app/lib/Plugins/InformationService/ALANSL.php:174
 #, fuzzy
@@ -10631,7 +10675,7 @@ msgstr "ID Inválido"
 #, fuzzy
 #| msgid "Links"
 msgid "Link"
-msgstr "No se ha podido cargar enlace de %1 - representación"
+msgstr "Enllaç"
 
 #: app/lib/Plugins/InformationService/EOL.php:146
 #, fuzzy
@@ -10641,14 +10685,12 @@ msgstr "Identificador"
 
 #: app/lib/Plugins/InformationService/EOL.php:151
 msgid "%1 [%3] (source: %2)"
-msgstr ""
+msgstr "%1 [%3] (font: %2)"
 
 #: app/lib/Plugins/InformationService/EOL.php:159
 #, fuzzy
 msgid "Taxonomy"
-msgstr ""
-"Marque esta opción si no quiere que sus valores de Taxonomía sean "
-"específicios a cada locale. (El valor por defecto es que no lo sean)"
+msgstr "Taxonomia per a mostrar a la ruta de navegació per als tipus d'entrada"
 
 #: app/lib/Plugins/InformationService/Iconclass.php:60
 #, fuzzy
@@ -10671,7 +10713,7 @@ msgstr "Regions"
 #: app/lib/Plugins/InformationService/Nomisma.php:46
 #, fuzzy
 msgid "Materials"
-msgstr "Tesauro de Material Gráfico"
+msgstr "Materials"
 
 #: app/lib/Plugins/InformationService/Nomisma.php:47
 #, fuzzy
@@ -10681,12 +10723,12 @@ msgstr "Destino(s)"
 
 #: app/lib/Plugins/InformationService/Nomisma.php:48
 msgid "Hoards"
-msgstr ""
+msgstr "Hordes"
 
 #: app/lib/Plugins/InformationService/Nomisma.php:49
 #, fuzzy
 msgid "Person"
-msgstr "Individuo (Persona)"
+msgstr "Persona"
 
 #: app/lib/Plugins/InformationService/Nomisma.php:52
 #, fuzzy
@@ -10697,6 +10739,7 @@ msgstr "Sesiones de usuario"
 #: app/lib/Plugins/InformationService/Nomisma.php:53
 msgid "Leave all unselected to use all available ontologies."
 msgstr ""
+"Deixar tot no seleccionat per utilitzar totes les ontologies disponibles."
 
 #: app/lib/Plugins/InformationService/Nomisma.php:71
 #, fuzzy
@@ -10709,28 +10752,35 @@ msgid ""
 "Provides access to PELLA numismatic data service (http://numismatics.org/"
 "pella/)"
 msgstr ""
+"Proporciona accés al servei de dades numismàtica de PELLA (http://"
+"numismatics.org/pella/)"
 
 #: app/lib/Plugins/InformationService/Ptolemaic.php:58
 msgid ""
 "Provides access to Ptolemaic Coins Online numismatic data service (http://"
 "numismatics.org/pco/)"
 msgstr ""
+"Proporciona accés al servei en línia de dades numismàtiques de Monedes "
+"Ptolemaiques (http://numismatics.org/pco/)"
 
 #: app/lib/Plugins/InformationService/ResourceSpace.php:49
 msgid "ResourceSpace user name"
-msgstr ""
+msgstr "Nom de l'usuari ResourceSpace"
 
 #: app/lib/Plugins/InformationService/ResourceSpace.php:50
 msgid ""
 "ResourceSpace login user name used to connect to the CARE ResourceSpace "
 "instance"
 msgstr ""
+"Nom de l'usuari utilitzat per connectar a la instància de CARE ResourceSpace"
 
 #: app/lib/Plugins/InformationService/ResourceSpace.php:58
 msgid ""
 "ResourceSpace API Key. Used to connect to ResourceSpace for all queries by "
 "this user."
 msgstr ""
+"Clau d'API de ResourceSpace. S'utilitza per connectar-se a ResourceSpace per "
+"a totes les consultes d'aquest usuari."
 
 #: app/lib/Plugins/InformationService/ResourceSpace.php:80
 #, fuzzy
@@ -10743,24 +10793,28 @@ msgid ""
 "Provides access to Seleucid Coins Online numismatic data service (http://"
 "numismatics.org/sco/)"
 msgstr ""
+"Proporciona accés al servei de dades numismàtica en línia de Monedes "
+"Selèucides (http://numismatics.org/sco/)"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:58
 msgid "SPARQL query"
-msgstr ""
+msgstr "Consulta SPARQL"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:60
 msgid ""
 "Insert SPARQL query here. Replace the query argument with ***PLACEHOLDER*** "
 "text."
 msgstr ""
+"Insereix una consulta SPARQL aquí. Substitueix l'argument de consulta amb el "
+"text ***PLACEHOLDER***."
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:67
 msgid "SPARQL endpoint"
-msgstr ""
+msgstr "Punt d'entrada SPARQL"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:69
 msgid "SPARQL endpoint, default Wikidata."
-msgstr ""
+msgstr "Punt d'entrada SPARQL, per omissió Wikidata."
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:76
 #, fuzzy
@@ -10770,11 +10824,11 @@ msgstr "Duplicar elementos de lista"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:78
 msgid "Where is the results list? Keys hierarchy, separated by >"
-msgstr ""
+msgstr "On és la llista de resultats? Jerarquia de claus, separades per >"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:85
 msgid "Keys hierarchy to get element URL"
-msgstr ""
+msgstr "Jerarquia de claus per obtenir l'URL de l'element"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:87
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:96
@@ -10788,6 +10842,8 @@ msgid ""
 "Keys hierarchy to get element Label, used for autocomplete search and "
 "dropdown label"
 msgstr ""
+"Jerarquia de claus per obtenir l'etiqueta d'element, utilitzada per a la "
+"compleció automàtica i el desplegable d'etiquetes"
 
 #: app/lib/Plugins/InformationService/SparqlEndpoint.php:209
 #, fuzzy
@@ -11020,6 +11076,8 @@ msgstr "Error al extraer el clip de %1 a %2: %3"
 msgid ""
 "Accepts any file unrecognized by other media plugins and stores it as-is"
 msgstr ""
+"Accepta qualsevol fitxer no reconegut per altres complements multimèdia i "
+"l'emmagatzema com-és"
 
 #: app/lib/Plugins/Media/BinaryFile.php:127
 #: app/lib/Plugins/Media/BinaryFile.php:149
@@ -11331,10 +11389,12 @@ msgid ""
 "MeshLab cannot be found: you will not be able to process 3D files; you can "
 "obtain MeshLab at http://www.meshlab.net/"
 msgstr ""
+"No s'ha trobat el MeshLab: no podreu processar els fitxers en 3D; vostè pot "
+"obtenir MeshLab a http://www.meshlab.net/"
 
 #: app/lib/Plugins/Media/Mesh.php:154
 msgid "Found MeshLab"
-msgstr ""
+msgstr "S'ha trobat MeshLab"
 
 #: app/lib/Plugins/Media/Mesh.php:292
 msgid "File %1 is not a 3D model"
@@ -11367,7 +11427,7 @@ msgstr ""
 
 #: app/lib/Plugins/Media/Office.php:241
 msgid "Unsupported mimetype %1"
-msgstr ""
+msgstr "El tipus MIME '%1' no s'admet"
 
 #: app/lib/Plugins/Media/Office.php:402
 msgid "File %1 is not a Microsoft Word, Excel or PowerPoint document"
@@ -11400,7 +11460,7 @@ msgstr "No se ha encontrado Ghostscript: las vistas previas no se crearán"
 
 #: app/lib/Plugins/Media/PDFWand.php:182
 msgid "Found Ghostscript"
-msgstr ""
+msgstr "S'ha trobat Ghostscript"
 
 #: app/lib/Plugins/Media/PDFWand.php:185
 msgid ""
@@ -11414,7 +11474,7 @@ msgstr ""
 
 #: app/lib/Plugins/Media/PDFWand.php:188
 msgid "Found PDFToText"
-msgstr ""
+msgstr "S'ha trobat PDFToText"
 
 #: app/lib/Plugins/Media/PDFWand.php:191
 msgid ""
@@ -11428,7 +11488,7 @@ msgstr ""
 
 #: app/lib/Plugins/Media/PDFWand.php:194
 msgid "Found PDFMiner"
-msgstr ""
+msgstr "S'ha trobat PDFMiner"
 
 #: app/lib/Plugins/Media/PDFWand.php:341
 msgid "File %1 is not a PDF"
@@ -11465,14 +11525,16 @@ msgid ""
 "Accepts ZIP archives containing 360 spinnable images in SpinCar format "
 "(http://SpinCar.com)"
 msgstr ""
+"Accepta arxius ZIP que contenen imatges panoràmiques de 360 en format "
+"SpinCar (http://SpinCar.com)"
 
 #: app/lib/Plugins/Media/Spin360.php:220
 msgid "File %1 is not a valid ZIP archive or does not contain valid images"
-msgstr ""
+msgstr "El fitxer %1 no és un arxiu ZIP vàlid o no conté imatges vàlides"
 
 #: app/lib/Plugins/Media/Video.php:170
 msgid "Provides ffmpeg-based video processing"
-msgstr ""
+msgstr "Proporciona processament de vídeo basat en ffmpeg"
 
 #: app/lib/Plugins/Media/Video.php:194
 msgid ""
@@ -11524,6 +11586,9 @@ msgid ""
 "type conflict. Try recreating the entire search index. The original error "
 "was %1"
 msgstr ""
+"S'ha produït un error en actualitzar l'assignació ElasticSearch. Això és "
+"probablement a causa d'un conflicte de tipus. Proveu de recrear tot l'índex "
+"de cerca. L'error original era '%1'"
 
 #: app/lib/Plugins/SearchEngine/ElasticSearch/Field.php:72
 #, fuzzy
@@ -11536,6 +11601,8 @@ msgid ""
 "Could not disambiguate field type for content table name %1 indexing field "
 "name %2"
 msgstr ""
+"No s'ha pogut desambiguar el tipus de camp per al nom de la taula de "
+"contingut %1 nom del camp d'indexació %2"
 
 #: app/lib/Plugins/SearchEngine/ElasticSearchConfigurationSettings.php:94
 msgid "ElasticSearch up and running"
@@ -11584,7 +11651,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Last modified"
 msgid "modified"
-msgstr "Última modificación"
+msgstr "Editat"
 
 #: app/lib/Plugins/SearchEngine/SqlSearch.php:866
 #: app/lib/Plugins/SearchEngine/SqlSearch.php:1033
@@ -11592,7 +11659,7 @@ msgstr "Última modificación"
 #, fuzzy
 #| msgid "Create"
 msgid "created"
-msgstr "Creat el"
+msgstr "creat"
 
 #: app/lib/Plugins/SearchEngine/SqlSearchConfigurationSettings.php:77
 msgid "MySQL is back-end database"
@@ -11976,6 +12043,9 @@ msgid ""
 "TRUNCATING %1\n"
 "\n"
 msgstr ""
+"\n"
+"TRUNCANT %1\n"
+"\n"
 
 #: app/lib/Search/SearchIndexer.php:207
 #, fuzzy
@@ -11991,7 +12061,7 @@ msgstr "Indexando %1"
 
 #: app/lib/Search/SearchIndexer.php:267
 msgid "Memory: %1"
-msgstr ""
+msgstr "Mem: %1"
 
 #: app/lib/Search/SearchIndexer.php:301
 msgid ""
@@ -12000,6 +12070,10 @@ msgid ""
 "\n"
 "Done! [Indexing for %1 took %2]\n"
 msgstr ""
+"\n"
+"\n"
+"\n"
+"Fet! [La indexació de %1 ha tardat %2]\n"
 
 #: app/lib/Search/SearchIndexer.php:302
 msgid ""
@@ -12008,6 +12082,10 @@ msgid ""
 "until now. So you still might have to wait a while for the script to "
 "finish.\n"
 msgstr ""
+"Fixi's que si està utilitzant un servei de recerca extern com ElasticSearch, "
+"les dades només es poden ara enviar al servei present perquè s'amorava fins "
+"ara. Així encara podria haver d'esperar una estona perquè l'escriptura "
+"acabi.\n"
 
 #: app/lib/Search/SearchIndexer.php:308
 #: app/lib/SortValueReloadingProgress.php:173
@@ -12177,12 +12255,16 @@ msgstr "metadataPrefix o default_format son inválidos"
 #: app/lib/Service/ReplicationService.php:212
 msgid "Could not upload file [%1] to target [%2]. HTTP response code was %3."
 msgstr ""
+"No es pot penjar el fitxer [%1] per a l'objectiu [%2]. El codi de resposta "
+"HTTP era '%3'."
 
 #: app/lib/Service/ReplicationService.php:214
 msgid ""
 "Could not upload file [%1] to target [%2]. HTTP response code was %3. "
 "Retrying (%4 remaining)"
 msgstr ""
+"No es pot penjar el fitxer [%1] per a l'objectiu [%2]. El codi de resposta "
+"HTTP era '%3'. Reintentant (%4 restant)"
 
 #: app/lib/Service/ReplicationService.php:289
 #, fuzzy
@@ -12205,17 +12287,19 @@ msgstr "registro del log de importación de datos"
 #: app/lib/Service/ReplicationService.php:343
 #: app/lib/Service/ReplicationService.php:365
 msgid "Log entry was: %1"
-msgstr ""
+msgstr "L'entrada del registre era: %1"
 
 #: app/lib/Service/ReplicationService.php:423
 msgid ""
 "It seems like there was an error while deduplicating records. Keys were: %1"
 msgstr ""
+"Sembla com hi havia un error mentre desduplicava registres. Les claus eren: "
+"'%1'"
 
 #: app/lib/Service/StatisticsService.php:100
 #: app/lib/Service/StatisticsService.php:102
 msgid "after %1"
-msgstr ""
+msgstr "després de %1"
 
 #: app/lib/SortValueReloadingProgress.php:156
 msgid "Representation"
@@ -12229,15 +12313,17 @@ msgstr "No se ha podido encontrar la lista con código de lista %1"
 
 #: app/lib/Sync/LogEntry/Attribute.php:57
 msgid "We have an attribute log entry without element code."
-msgstr ""
+msgstr "Tenim una entrada de registre d'atributs sense codi d'element."
 
 #: app/lib/Sync/LogEntry/Attribute.php:62
 msgid "Couldn't find row_guid for insert attribute log entry."
-msgstr ""
+msgstr "No s'ha pogut trobar row_guid per a un registre d'inserció d'atribut."
 
 #: app/lib/Sync/LogEntry/Attribute.php:68
 msgid "Couldn't find attribute_guid for update attribute log entry."
 msgstr ""
+"No s'ha pogut trobar attribute_guid per a un registre d'actualització "
+"d'atributs."
 
 #: app/lib/Sync/LogEntry/Attribute.php:73
 #, fuzzy
@@ -12253,7 +12339,7 @@ msgstr "No se ha podido encontrar la lista con código de lista %1"
 
 #: app/lib/Sync/LogEntry/AttributeValue.php:60
 msgid "No element code found in attribute value log entry"
-msgstr ""
+msgstr "Cap codi d'element trobat en registre de valor d'atributs"
 
 #: app/lib/Sync/LogEntry/AttributeValue.php:67
 #, fuzzy
@@ -12263,7 +12349,7 @@ msgstr "No se ha encontrado lista con identificador %1"
 
 #: app/lib/Sync/LogEntry/AttributeValue.php:70
 msgid "No attribute_guid found for attribute value log entry"
-msgstr ""
+msgstr "No s'ha trobat cap attribute_guid per al registre de valor d'atributs"
 
 #: app/lib/Sync/LogEntry/AttributeValue.php:90
 #, fuzzy
@@ -12274,15 +12360,21 @@ msgstr "No se ha encontrado lista con identificador %1"
 #: app/lib/Sync/LogEntry/AttributeValue.php:94
 msgid "Invalid list item code %1 for attribute value log entry."
 msgstr ""
+"Codi d'element de llista '%1' no és vàlid per al registre de valor "
+"d'atributs."
 
 #: app/lib/Sync/LogEntry/AttributeValue.php:98
 msgid "Invalid list item label %1 for attribute value log entry."
 msgstr ""
+"L'etiqueta de membre de llista no és vàlida %1 per al registre de valor "
+"d'atributs."
 
 #: app/lib/Sync/LogEntry/AttributeValue.php:104
 msgid ""
 "Referenced element is not of type List, but item_id is set in the snapshot"
 msgstr ""
+"L'element referenciat no és de tipus Llista, però item_id es defineix a la "
+"instantània"
 
 #: app/lib/Sync/LogEntry/Base.php:367
 msgid "Could not load GUID %1 (referenced in HIERARCHY_PARENT_ID_FLD)"
@@ -12645,10 +12737,14 @@ msgstr "Número de líneas que saltar antes de leer datos."
 #: app/lib/Utils/CLITools.php:182
 msgid "ISO locale code to use. Default is en_US."
 msgstr ""
+"Codi d'ISO de la configuració regional a utilitzar. El valor per defecte és "
+"en_US."
 
 #: app/lib/Utils/CLITools.php:183
 msgid "Column number to use for item values. Omit to not set item values."
 msgstr ""
+"Número de columna que s'utilitzarà per als valors de l'element. Ometre per "
+"no establir els valors de l'element."
 
 #: app/lib/Utils/CLITools.php:184
 msgid ""
@@ -13173,6 +13269,9 @@ msgid ""
 "Updates the installation profile to match a supplied profile name. Backup "
 "your database before you use this!"
 msgstr ""
+"Actualitza el perfil d'instal·lació perquè coincideixi amb un nom de perfil "
+"subministrat. Faci una còpia de seguretat de la seva base de dades abans que "
+"utilitzi això!"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:256
 msgid "The PHP DOM extension is required to export profiles"
@@ -13219,6 +13318,8 @@ msgid ""
 "Limit output to configuration changes made after this UNIX timestamp. "
 "(Optional)"
 msgstr ""
+"Limiteu la sortida als canvis de configuració fets després d'aquesta marca "
+"de temps UNIX (opcional)"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:308
 msgid "Export current system configuration as an XML installation profile."
@@ -13236,19 +13337,23 @@ msgid ""
 "Missing required parameter: targets. Try checking the help for this "
 "subcommand."
 msgstr ""
+"Falta el paràmetre requerit: targets. Proveu de comprovar l'ajuda d'aquest "
+"subcomandament."
 
 #: app/lib/Utils/CLIUtils/Configuration.php:333
 msgid ""
 "Missing required parameter: username. Try checking the help for this "
 "subcommand."
 msgstr ""
+"Falta el paràmetre requerit: username. Proveu de comprovar l'ajuda d'aquest "
+"subcomandament."
 
 #: app/lib/Utils/CLIUtils/Configuration.php:338
 #: app/lib/Utils/CLIUtils/Maintenance.php:609
 #, fuzzy
 #| msgid "Password"
 msgid "Password: "
-msgstr "Contraseña"
+msgstr "Contrasenya: "
 
 #: app/lib/Utils/CLIUtils/Configuration.php:351
 msgid "[push-config-changes] Start preparing to push config changes"
@@ -13286,6 +13391,7 @@ msgstr ""
 #: app/lib/Utils/CLIUtils/Configuration.php:384
 msgid "Finished partial configuration export for target %1"
 msgstr ""
+"S'ha acabat l'exportació de la configuració parcial per a l'objectiu %1"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:386
 msgid ""
@@ -13296,6 +13402,8 @@ msgstr ""
 #: app/lib/Utils/CLIUtils/Configuration.php:410
 msgid "Pushing to target '%1' seems to have failed. HTTP response code was %2."
 msgstr ""
+"L'enviament a l'objectiu '%1' sembla haver fallat. El codi de resposta HTTP "
+"era '%2'."
 
 #: app/lib/Utils/CLIUtils/Configuration.php:411
 msgid ""
@@ -13316,12 +13424,16 @@ msgid ""
 "Pushing to target '%1' seems to have failed. Response was not marked as "
 "okay. Errors were: %2"
 msgstr ""
+"L'enviament a l'objectiu '%1' sembla haver fallat. La resposta no estava "
+"marcada com a bé. Els errors eren: '%2'"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:424
 msgid ""
 "Pushing to target '%1' seems to have failed. Response was not marked as "
 "okay. Raw response was: %2"
 msgstr ""
+"L'enviament a l'objectiu '%1' sembla haver fallat. La resposta no estava "
+"marcada com a bé. La resposta en cru era: '%2'"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:428
 msgid "[push-config-changes] Finished processing target '%1'"
@@ -13346,18 +13458,27 @@ msgid ""
 "Comma- or semicolon separated list of target systems to push changes to. We "
 "assume the same service account exists on all of these systems"
 msgstr ""
+"Llista separada per comes o punt i coma de sistemes de destinació per a "
+"l'enviament dels canvis. Assumim el mateix compte de servei en tots aquests "
+"sistemes"
 
 #: app/lib/Utils/CLIUtils/Configuration.php:442
 msgid ""
 "User name to use to log into the targets. We assume the same credentials can "
 "be used to log into all target systems."
 msgstr ""
+"Nom d'usuari a utilitzar per iniciar sessió en les destinacions. Assumim que "
+"les mateixes credencials es poden utilitzar per accedir a tots els sistemes "
+"de destinació."
 
 #: app/lib/Utils/CLIUtils/Configuration.php:443
 msgid ""
 "Password to use to log into the targets. We assume the same credentials can "
 "be used to log into all target systems."
 msgstr ""
+"Contrasenya a utilitzar per iniciar sessió en les destinacions. Assumim que "
+"les mateixes credencials es poden utilitzar per accedir a tots els sistemes "
+"de destinació."
 
 #: app/lib/Utils/CLIUtils/Configuration.php:444
 msgid ""
@@ -13367,6 +13488,11 @@ msgid ""
 "use that instead. This parameter is a fixed offset/\"starting point\" of "
 "sorts."
 msgstr ""
+"Marca de temps per utilitzar-la per filtrar els canvis de configuració que "
+"s'han d'exportar/empènyer. Opcional. La marca de temps només s'utilitza per "
+"a la primera empenta d'aquest sistema. Després, el sistema mestre "
+"emmagatzemarà l'última marca de temps d'empenta i l'utilitzarà en el seu "
+"lloc. Aquest paràmetre és un tipus de desplaçament fix/\"punt de partida\"."
 
 #: app/lib/Utils/CLIUtils/Configuration.php:445
 #: app/lib/Utils/CLIUtils/ContentManagement.php:56
@@ -13399,11 +13525,11 @@ msgstr ""
 #: app/lib/Utils/CLIUtils/Configuration.php:463
 #: app/lib/Utils/CLIUtils/Configuration.php:470
 msgid "Pushes configuration changes from this system out to other systems."
-msgstr ""
+msgstr "Envia els canvis de configuració d'aquest sistema a altres sistemes."
 
 #: app/lib/Utils/CLIUtils/ContentManagement.php:44
 msgid "Scanning templates for tags"
-msgstr ""
+msgstr "Escaneig de plantilles cercant etiquetes"
 
 #: app/lib/Utils/CLIUtils/ContentManagement.php:47
 #: app/lib/Utils/CLIUtils/Performance.php:105
@@ -13424,13 +13550,15 @@ msgstr "Gestión de contenidos"
 
 #: app/lib/Utils/CLIUtils/ContentManagement.php:72
 msgid "Scan site page templates for tags."
-msgstr ""
+msgstr "Escaneja plantilles de pàgina cercant etiquetes."
 
 #: app/lib/Utils/CLIUtils/ContentManagement.php:79
 msgid ""
 "Scan site page template for tags to build the content management editing "
 "user interface."
 msgstr ""
+"Escannegi plantilla de pàgina cercant etiquetes per construir la interfície "
+"d'usuari per l'edició de continguts."
 
 #: app/lib/Utils/CLIUtils/Cron.php:45
 msgid "Processing queued tasks..."
@@ -13472,7 +13600,7 @@ msgstr "Procesar tareas en cola de espera."
 
 #: app/lib/Utils/CLIUtils/Cron.php:110
 msgid "Called from command line"
-msgstr ""
+msgstr "Crida des de la línia d'ordres"
 
 #: app/lib/Utils/CLIUtils/Cron.php:176
 #, fuzzy
@@ -13482,7 +13610,7 @@ msgstr "Procesar tareas en cola de espera."
 
 #: app/lib/Utils/CLIUtils/Cron.php:183
 msgid "Show a detailed listing of tasks on the task queue."
-msgstr ""
+msgstr "Mostra una llista detallada de les tasques a la cua de tasques."
 
 #: app/lib/Utils/CLIUtils/ImportExport.php:43
 msgid ""
@@ -23690,7 +23818,7 @@ msgstr "Por etiqueta"
 
 #: app/models/ca_lists.php:78
 msgid "By rank"
-msgstr "Por rango"
+msgstr "Per rang"
 
 #: app/models/ca_lists.php:79
 msgid "By value"
@@ -24131,7 +24259,7 @@ msgstr "Crear grupos de usuarios"
 #: app/models/ca_metadata_alert_rules.php:259
 #, fuzzy
 msgid "Trigger"
-msgstr "disparar campo %1 según regla %2"
+msgstr "Desencadenar"
 
 #: app/models/ca_metadata_alert_rules_x_user_groups.php:40
 #, fuzzy
@@ -24226,7 +24354,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Description"
 msgid "Definition"
-msgstr "La definición de subcampo %1 no es válida"
+msgstr "Definició"
 
 #: app/models/ca_metadata_dictionary_entries.php:61
 msgid "Extended text describing standards for entry in this data entry bundle."
@@ -24292,16 +24420,12 @@ msgid "data dictionary entry names"
 msgstr "Entradas de diccionario de metadatos"
 
 #: app/models/ca_metadata_dictionary_entry_labels.php:70
-#, fuzzy
-#| msgid "Metadata dictionary entry"
 msgid "Name of dictionary entry"
-msgstr "Entrada de diccionario de metadatos"
+msgstr "Nom de l'entrada del diccionari"
 
 #: app/models/ca_metadata_dictionary_entry_labels.php:86
-#, fuzzy
-#| msgid "Description of editor"
 msgid "Description of entry"
-msgstr "Descripción de la interfaz de edición"
+msgstr "Descripció de l'entrada"
 
 #: app/models/ca_metadata_dictionary_rule_violations.php:38
 msgid "Metadata dictionary rule violation"
@@ -24325,10 +24449,8 @@ msgstr ""
 "Denominación breve para esta regla. Se mostrará en listados de problemas."
 
 #: app/models/ca_metadata_dictionary_rules.php:59
-#, fuzzy
-#| msgid "Show lots"
 msgid "Show as prompt"
-msgstr "Mostrar lotes"
+msgstr "Mostra'l com a indicatiu"
 
 #: app/models/ca_metadata_dictionary_rules.php:60
 msgid "Display violations of this rule as on-screen prompts."
@@ -24719,20 +24841,14 @@ msgid "multipart ID numbering sequences"
 msgstr "secuencias de numeración de ID de varias partes"
 
 #: app/models/ca_notification_subjects.php:35
-#, fuzzy
-#| msgid "Invalid subject"
 msgid "notification subject"
-msgstr "Tema inválido"
+msgstr "assumpte de notificació"
 
 #: app/models/ca_notification_subjects.php:36
-#, fuzzy
-#| msgid "Invalid subject"
 msgid "notification subjects"
-msgstr "Tema inválido"
+msgstr "assumptes de notificació"
 
 #: app/models/ca_notification_subjects.php:51
-#, fuzzy
-#| msgid "Location"
 msgid "Notification"
 msgstr "Notificacions"
 
@@ -24741,10 +24857,8 @@ msgid "Notification this subject definition belongs to."
 msgstr ""
 
 #: app/models/ca_notification_subjects.php:73
-#, fuzzy
-#| msgid "can read"
 msgid "Was read?"
-msgstr "puede leer"
+msgstr "Llegit?"
 
 #: app/models/ca_notification_subjects.php:74
 #, fuzzy
@@ -28199,7 +28313,7 @@ msgstr "1 visualización disponible"
 #: app/plugins/ArtefactsCanada/controllers/ExportController.php:187
 #, fuzzy
 msgid "Processing"
-msgstr "Procesamiento finalizado"
+msgstr "S'està processant"
 
 #: app/plugins/ArtefactsCanada/controllers/ExportController.php:230
 msgid "Download Artefacts Canada data as ZIP file (%1)"
@@ -29585,7 +29699,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Representation"
 msgid "present"
-msgstr "Expandir/colapsar si no hay valor presente"
+msgstr "actual"
 
 #: app/refineries/dateJoiner/dateJoinerRefinery.php:153
 msgid ""
@@ -31656,7 +31770,7 @@ msgstr "No hay comentarios %1"
 #, fuzzy
 #| msgid "Representations"
 msgid "Registrations"
-msgstr "El registre s'aprobat"
+msgstr "Inscripcions"
 
 #: app/widgets/recentRegistrations/recentRegistrationsWidget.php:44
 #, fuzzy
@@ -34072,7 +34186,7 @@ msgstr "Entrada de diccionario de metadatos"
 #, fuzzy
 #| msgid "Bundle name"
 msgid "Bundle"
-msgstr "Nombre del paquete"
+msgstr "Paquet"
 
 #: themes/default/views/administrate/setup/data_dictionary_list_html.php:104
 #, fuzzy
@@ -34568,7 +34682,7 @@ msgstr ""
 #: themes/default/views/batch/mediaimport/import_options_html.php:465
 #, fuzzy
 msgid "to %1 with relationship type"
-msgstr "a %1 amb tipus de relació"
+msgstr "a %1 con tipo de relación:"
 
 #: themes/default/views/batch/mediaimport/import_options_html.php:485
 msgid "Skip files"
@@ -34676,13 +34790,13 @@ msgstr ""
 #, fuzzy
 #| msgid "File path"
 msgid "File upload"
-msgstr "Archivo de subtítulos que subir"
+msgstr "Càrrega de fitxers"
 
 #: themes/default/views/batch/metadataimport/importer_list_html.php:124
 #, fuzzy
 #| msgid "Upload"
 msgid "Reload"
-msgstr "Id de representación de objeto que recargar"
+msgstr "Recarrega"
 
 #: themes/default/views/batch/metadataimport/importer_run_html.php:44
 msgid "Importer"
@@ -35100,7 +35214,7 @@ msgstr "por %1 usuario"
 #: app/conf/navigation.conf:4575
 #, fuzzy
 msgid "Check out"
-msgstr "Puede dar salida de biblioteca"
+msgstr "Prestar"
 
 #: themes/default/views/bundles/ca_object_checkouts.php:108
 msgid "Check out notes"
@@ -35635,7 +35749,7 @@ msgstr "Localizaciones relacionadas"
 #: themes/default/views/bundles/history_tracking_current_contents.php:110
 #, fuzzy
 msgid "Empty"
-msgstr "Puede estar vacío"
+msgstr "Buit"
 
 #: themes/default/views/bundles/intrinsic.php:94
 msgid "Inherit from parent?"
@@ -36185,7 +36299,7 @@ msgstr "Resultados"
 #, fuzzy
 #| msgid "Loading..."
 msgid "Loading... "
-msgstr "Cargando"
+msgstr "Carregant… "
 
 #: themes/default/views/find/Results/search_options_html.php:128
 #, fuzzy
@@ -36196,12 +36310,12 @@ msgstr "Crear registro hijo"
 #: themes/default/views/find/Results/search_options_html.php:128
 #, fuzzy
 msgid "show"
-msgstr "Mostrar"
+msgstr "mostra"
 
 #: themes/default/views/find/Results/search_options_html.php:128
 #, fuzzy
 msgid "hide"
-msgstr "Esconder"
+msgstr "amaga"
 
 #: themes/default/views/find/Results/search_options_html.php:145
 #, fuzzy
@@ -36273,7 +36387,7 @@ msgstr "Todos los resultados: %1"
 #: app/conf/navigation.conf:4587
 #, fuzzy
 msgid "Check in"
-msgstr "Comprobar configuración"
+msgstr "Retornar"
 
 #: themes/default/views/library/checkin/items_html.php:6
 msgid "Item name or number being returned"
@@ -36418,7 +36532,7 @@ msgstr "Descàrregues"
 #, fuzzy
 #| msgid "Record type"
 msgid "Record"
-msgstr "Volver al registro"
+msgstr "Registre"
 
 #: themes/default/views/logs/download_html.php:47
 #, fuzzy
@@ -36543,7 +36657,7 @@ msgstr "%4 #%3 on %1 from %2"
 #, fuzzy
 #| msgid "Changes"
 msgid "Change"
-msgstr "Cambiar el tipo"
+msgstr "Canviar"
 
 #: themes/default/views/logs/global_change_log_html.php:166
 #, fuzzy
@@ -36611,9 +36725,7 @@ msgstr ""
 #, fuzzy
 #| msgid "View"
 msgid "Views"
-msgstr ""
-"Conjunto de recursos visuales (vistas, CSS, gráficos) que determinan la "
-"apariencia de la interfaz de usuario"
+msgstr "Vistes"
 
 #: themes/default/views/manage/Pawtucket/page_list_html.php:93
 msgid "<em>Providence help menu</em>"
@@ -36704,7 +36816,7 @@ msgstr "Saltar a la página:"
 #, fuzzy
 #| msgid "day"
 msgid "any"
-msgstr "No ha definido ningún equipo"
+msgstr "qualsevol"
 
 #: themes/default/views/manage/Search/ca_item_comments_search_controls_html.php:47
 #, fuzzy
@@ -37778,7 +37890,7 @@ msgstr "Descripción de anotación"
 #, fuzzy
 #| msgid "Checkout id"
 msgid "checkout"
-msgstr "salida de objetos"
+msgstr "pagament"
 
 #: app/conf/browse.conf:80
 #, fuzzy
@@ -38087,13 +38199,13 @@ msgstr "Duplicación"
 #, fuzzy
 #| msgid "List"
 msgid "Lists"
-msgstr "listas"
+msgstr "Llistes"
 
 #: app/conf/navigation.conf:3545
 #, fuzzy
 #| msgid "Display"
 msgid "Displays"
-msgstr "visualizaciones"
+msgstr "Visualitzador"
 
 #: app/conf/navigation.conf:3571 app/conf/user_pref_defs.conf:107
 msgid "User profile"
@@ -38235,7 +38347,7 @@ msgstr "Actualizar archivo de contenido"
 #, fuzzy
 #| msgid "Preview media"
 msgid "Preview"
-msgstr "Previsualizar archivo de contenido"
+msgstr "Previsualitza"
 
 #: app/conf/navigation.conf:4247
 msgid "Logs"
@@ -38245,7 +38357,7 @@ msgstr "Logs (Registros)"
 #, fuzzy
 #| msgid "Changes"
 msgid "Change log"
-msgstr "No se dispone de registro de cambios"
+msgstr "Registre de canvi"
 
 #: app/conf/navigation.conf:4264
 msgid "Events log"
@@ -41734,10 +41846,8 @@ msgstr ""
 "duplicarán."
 
 #: app/conf/user_pref_defs.conf:1484
-#, fuzzy
-#| msgid "Duplicate lists"
 msgid "Duplicate items?"
-msgstr "¿Duplicar elementos?"
+msgstr "Duplicar elements?"
 
 #: app/conf/user_pref_defs.conf:1485
 msgid "If checked all items in the set will be included in the duplicated set."
@@ -41756,10 +41866,8 @@ msgid ""
 msgstr "Si se marca, todos los lugares se incluirán en el conjunto duplicado."
 
 #: app/conf/user_pref_defs.conf:1524
-#, fuzzy
-#| msgid "Quick search"
 msgid "Quick search settings"
-msgstr "Búsqueda rápida"
+msgstr "Configuració de la cerca ràpida"
 
 #: app/conf/user_pref_defs.conf:1525
 msgid "Customizes the scope and order of quick search results"
@@ -41810,10 +41918,8 @@ msgid "Your country."
 msgstr "Su país."
 
 #: app/conf/user_pref_defs.conf:1620
-#, fuzzy
-#| msgid "Postal code"
 msgid "Postal code"
-msgstr "Código postal"
+msgstr "Codi postal"
 
 #: app/conf/user_pref_defs.conf:1621
 msgid "Your postal code."
