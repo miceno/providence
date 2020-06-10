@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2012-2019 Whirl-i-Gig
+ * Copyright 2012-2020 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -496,6 +496,21 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 	}
 	# ------------------------------------------------------
 	/**
+	 * Check if exporter with code (and optionally table name/num exists
+	 *
+	 * @param string $exporter_code 
+	 * @param mixed $table Optional numeric table number or name
+	 * @param array $options No options are currently supported.
+	 *
+	 * @return bool
+	 */
+	static public function exporterExists($exporter_code, $table=null, $options=null) {
+		$d = ['exporter_code' => $exporter_code];
+		if (!is_null($table)) { $d['table_num'] = Datamodel::getTableName($table); }
+		return (self::find($d, ['returnAs' => 'count']) > 0);
+	}
+	# ------------------------------------------------------
+	/**
 	 * Return list of available data exporters
 	 *
 	 * @param int $pn_table_num
@@ -711,7 +726,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 		$pa_errors = array();
 
-		$o_excel = PHPExcel_IOFactory::load($ps_source);
+		$o_excel = \PhpOffice\PhpSpreadsheet\IOFactory::load($ps_source);
 		$o_sheet = $o_excel->getSheet(0);
 
 		$vn_row = 0;
@@ -725,7 +740,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 			}
 
 			$vn_row_num = $o_row->getRowIndex();
-			$o_cell = $o_sheet->getCellByColumnAndRow(0, $vn_row_num);
+			$o_cell = $o_sheet->getCellByColumnAndRow(1, $vn_row_num);
 			$vs_mode = (string)$o_cell->getValue();
 
 			switch(strtolower($vs_mode)) {
@@ -733,13 +748,13 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 				case 'constant':
 				case 'variable':
 				case 'repeatmappings':
-					$o_id = $o_sheet->getCellByColumnAndRow(1, $o_row->getRowIndex());
-					$o_parent = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
-					$o_element = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
-					$o_source = $o_sheet->getCellByColumnAndRow(4, $o_row->getRowIndex());
-					$o_options = $o_sheet->getCellByColumnAndRow(5, $o_row->getRowIndex());
-					$o_orig_values = $o_sheet->getCellByColumnAndRow(7, $o_row->getRowIndex());
-					$o_replacement_values = $o_sheet->getCellByColumnAndRow(8, $o_row->getRowIndex());
+					$o_id = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+					$o_parent = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
+					$o_element = $o_sheet->getCellByColumnAndRow(4, $o_row->getRowIndex());
+					$o_source = $o_sheet->getCellByColumnAndRow(5, $o_row->getRowIndex());
+					$o_options = $o_sheet->getCellByColumnAndRow(6, $o_row->getRowIndex());
+					$o_orig_values = $o_sheet->getCellByColumnAndRow(8, $o_row->getRowIndex());
+					$o_replacement_values = $o_sheet->getCellByColumnAndRow(9, $o_row->getRowIndex());
 
 					if($vs_id = trim((string)$o_id->getValue())) {
 						$va_ids[] = $vs_id;
@@ -848,8 +863,8 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 					break;
 				case 'setting':
-					$o_setting_name = $o_sheet->getCellByColumnAndRow(1, $o_row->getRowIndex());
-					$o_setting_value = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+					$o_setting_name = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+					$o_setting_value = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
 
 					switch($vs_setting_name = (string)$o_setting_name->getValue()) {
 						case 'typeRestrictions':		// older mapping worksheets use "inputTypes" instead of the preferred "inputFormats"
@@ -868,7 +883,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 		}
 
 		// try to extract replacements from 2nd sheet in file
-		// PHPExcel will throw an exception if there's no such sheet
+		// \PhpOffice\PhpSpreadsheet\Spreadsheet will throw an exception if there's no such sheet
 		try {
 			$o_sheet = $o_excel->getSheet(1);
 			$vn_row = 0;
@@ -879,15 +894,15 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 				}
 
 				$vn_row_num = $o_row->getRowIndex();
-				$o_cell = $o_sheet->getCellByColumnAndRow(0, $vn_row_num);
+				$o_cell = $o_sheet->getCellByColumnAndRow(1, $vn_row_num);
 				$vs_mapping_num = trim((string)$o_cell->getValue());
 
 				if(strlen($vs_mapping_num)<1) {
 					continue;
 				}
 
-				$o_search = $o_sheet->getCellByColumnAndRow(1, $o_row->getRowIndex());
-				$o_replace = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+				$o_search = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+				$o_replace = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
 
 				if(!isset($va_mapping[$vs_mapping_num])) {
 					$pa_errors[] = $m = _t("Warning: Replacement sheet references invalid mapping number '%1'. Ignoring row.",$vs_mapping_num);
@@ -917,7 +932,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 				$vn_row++;
 			}
-		} catch(PHPExcel_Exception $e) {
+		} catch(\PhpOffice\PhpSpreadsheet\Exception $e) {
 			// noop, because we don't care: mappings without replacements are still valid
 		}
 
@@ -2284,7 +2299,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 		
 	    $a_to_z = range('A', 'Z');
 		
-	    $workbook = new PHPExcel();
+	    $workbook = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 	    $o_sheet = $workbook->getActiveSheet();
 	    $columntitlestyle = array(
 			'font'=>array(
@@ -2292,28 +2307,28 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 					'size' => 12,
 					'bold' => true),
 			'alignment'=>array(
-					'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-					'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER,
+					'horizontal'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					'vertical'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
 					'wrap' => true,
 					'shrinkToFit'=> true),
 			'borders' => array(
 					'allborders'=>array(
-							'style' => PHPExcel_Style_Border::BORDER_THICK)));
+							'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK)));
         $cellstyle = array(
                 'font'=>array(
                         'name' => 'Arial',
                         'size' => 11,
                         'bold' => false),
                 'alignment'=>array(
-                        'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                        'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                        'horizontal'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                        'vertical'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
                         'wrap' => true,
                         'shrinkToFit'=> true),
                 'borders' => array(
                         'allborders'=>array(
-                                'style' => PHPExcel_Style_Border::BORDER_THIN)));
+                                'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)));
 
-        $o_sheet->getDefaultStyle()->applyFromArray($cellstyle);
+        $o_sheet->getParent()->getDefaultStyle()->applyFromArray($cellstyle);
         $o_sheet->setTitle(_t("Exporter %1", $exporter_code));
         
         $o_sheet->getRowDimension($vn_line)->setRowHeight(30);
@@ -2377,7 +2392,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
             }
         }
         
-        $o_writer = new PHPExcel_Writer_Excel2007($workbook);
+        $o_writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($workbook);
  	    $o_writer->save($file);
         return true;   
 	}

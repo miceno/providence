@@ -34,7 +34,6 @@
    *
    */
    require_once(__CA_LIB_DIR__."/Logging/KLogger/KLogger.php");
-   
 	# ---------------------------------------
 	/**
 	 * Return KLogger instance for import log
@@ -62,7 +61,7 @@
 	 *
 	 * @param array $options Options include:
 	 *
-	 *                       logDirectory = Directory containing logs. [Default is to use app.conf $ps_opt_name value]
+	 *                       logDirectory = Directory containing logs. [Default is to use app.conf $opt_name value]
 	 *						 logName = Optional log name. [Default is to use a generic log name]
 	 *
 	 *                       logLevel = KLogger numeric constant of string code for log level. Valid string codes
