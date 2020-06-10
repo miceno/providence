@@ -29,6 +29,7 @@
     "phpoffice/phpword": "v0.15.*",
     "phpunit/phpunit": "8.5",
     "scholarslab/bagit": "~0.2",
+    "symfony/yaml": "5.1.*",
     "srmklive/flysystem-dropbox-v2": ">=1.0.0",
     "tedivm/stash": "0.14.*"
   },
