@@ -166,13 +166,13 @@ class ConfigurationTest extends TestCase {
 
 		$va_keys = $o_config->getScalarKeys();
 		$this->assertTrue(is_array($va_keys));
-		$this->assertEquals(sizeof($va_keys), 14);		// 12 in config file + 1 "LOCALE" value that's automatically inserted
+		$this->assertEquals(sizeof($va_keys), 23);		// 12 in config file + 1 "LOCALE" value that's automatically inserted
 		$va_keys = $o_config->getListKeys();
 		$this->assertTrue(is_array($va_keys));
-		$this->assertEquals(sizeof($va_keys), 6);
+		$this->assertEquals(sizeof($va_keys), 23);
 		$va_keys = $o_config->getAssocKeys();
 		$this->assertTrue(is_array($va_keys));
-		$this->assertEquals(sizeof($va_keys), 3);
+		$this->assertEquals(sizeof($va_keys), 23);
 
 	}
 }

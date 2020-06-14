@@ -215,14 +215,14 @@ class Configuration {
 		//
 		// Insert current user locale as constant into configuration.
 		//
-		$this->ops_config_settings['scalars']['LOCALE'] = $g_ui_locale;
+		$this->ops_config_settings['LOCALE'] = $g_ui_locale;
 
 		#
 		# load specified config file
 		#
 		$vs_config_file_path = array_shift($va_config_file_list);
 		if (file_exists($vs_config_file_path) && $this->loadFile($vs_config_file_path, false, false)) {
-			$this->ops_config_settings["ops_config_file_path"] = $vs_config_file_path;
+			$this->ops_config_file_path = $vs_config_file_path;
 		}
 
 
@@ -323,16 +323,16 @@ class Configuration {
 					case 10:
 						switch($vs_token) {
 							case '[':
-								if(!is_array($this->ops_config_settings["lists"][$vs_key]) || !$vb_merge_mode) {
-									$this->ops_config_settings["lists"][$vs_key] = array();
+								if(!is_array($this->ops_config_settings[$vs_key]) || !$vb_merge_mode) {
+									$this->ops_config_settings[$vs_key] = array();
 								}
 								$vn_state = 30;
 								break;
 							case '{':
-								if(!is_array($this->ops_config_settings["assoc"][$vs_key]) || !$vb_merge_mode) {
-									$this->ops_config_settings["assoc"][$vs_key] = array();
+								if(!is_array($this->ops_config_settings[$vs_key]) || !$vb_merge_mode) {
+									$this->ops_config_settings[$vs_key] = array();
 								}
-								$va_assoc_pointer_stack[] =& $this->ops_config_settings["assoc"][$vs_key];
+								$va_assoc_pointer_stack[] =& $this->ops_config_settings[$vs_key];
 								$vn_state = 40;
 								break;
 							case '"':
@@ -356,7 +356,7 @@ class Configuration {
 
 									if(!$vn_in_quote) {
 										if (sizeof($va_tokens) == 0) {
-											$this->ops_config_settings["scalars"][$vs_key] = $this->_trimScalar($vs_scalar_value);
+											$this->ops_config_settings[$vs_key] = $this->_interpolateScalar($this->_trimScalar($vs_scalar_value));
 											$vn_state = -1;
 										}
 									}
@@ -373,20 +373,20 @@ class Configuration {
 								$vn_in_quote = 0;
 								$vn_state = -1;
 
-								$this->ops_config_settings["scalars"][$vs_key] = $vs_scalar_value;
+								$this->ops_config_settings[$vs_key] = $this->_interpolateScalar($vs_scalar_value);
 								break;
 							}
 						}
 
 						if (preg_match("/[\r\n]/", $vs_token) && !$vn_in_quote) {
-							$this->ops_config_settings["scalars"][$vs_key] = $this->_trimScalar($vs_scalar_value);
+							$this->ops_config_settings[$vs_key] = $this->_interpolateScalar($this->_trimScalar($vs_scalar_value));
 							$vn_state = -1;
 						} else {
 							if ((sizeof($va_tokens) == 0) && !$vn_in_quote) {
 								$vs_scalar_value .= $vs_token;
 
 								# accept scalar
-								$this->ops_config_settings["scalars"][$vs_key] = $this->_trimScalar($vs_scalar_value);
+								$this->ops_config_settings[$vs_key] = $this->_interpolateScalar($this->_trimScalar($vs_scalar_value));
 
 								# initialize
 								$vn_state = -1;
@@ -421,7 +421,7 @@ class Configuration {
 									$vs_scalar_value .= ",";
 								} else {
 									if (strlen($vs_item = trim($this->_interpolateScalar($this->_trimScalar($vs_scalar_value)))) > 0) {
-										$this->ops_config_settings["lists"][$vs_key][] = $vs_item;
+										$this->ops_config_settings[$vs_key][] = $vs_item;
 									}
 									$vs_scalar_value = "";
 									$vb_quoted_item_is_closed = false;
@@ -435,7 +435,7 @@ class Configuration {
 								} else {
 									# accept list
 									if (strlen($vs_item = trim($this->_interpolateScalar($this->_trimScalar($vs_scalar_value)))) > 0) {
-										$this->ops_config_settings["lists"][$vs_key][] = $vs_item;
+										$this->ops_config_settings[$vs_key][] = $vs_item;
 									}
 									# initialize
 									$vn_state = -1;
@@ -746,7 +746,7 @@ class Configuration {
 				}
 			}
 			if ((($vn_state == 10) || ($vn_state == 20)) && !$vn_in_quote) {
-				$this->ops_config_settings["scalars"][$vs_key] = "";
+				$this->ops_config_settings[$vs_key] = "";
 				$vn_state = -1;
 			}
 
@@ -784,12 +784,6 @@ class Configuration {
 			return false;
 		}
 
-		// interpolate scalars
-		if (is_array($this->ops_config_settings["scalars"])) {
-			foreach($this->ops_config_settings["scalars"] as $vs_key => $vs_val) {
-				$this->ops_config_settings["scalars"][$vs_key] = $this->_interpolateScalar($vs_val);
-			}
-		}
 		fclose($r_file);
 
 		return true;
@@ -831,12 +825,6 @@ class Configuration {
             $this->ops_error = "";
 
             $vs_tmp = $this->getScalar($ps_key);
-            if (!strlen($vs_tmp)) {
-                $vs_tmp = $this->getList($ps_key);
-            }
-            if (!is_array($vs_tmp) && !strlen($vs_tmp)) {
-                if (is_array($vs_tmp = $this->getAssoc($ps_key))) { $assoc_exists = true; }
-            }
             Configuration::$s_get_cache[$this->ops_md5_path][$ps_key] = $vs_tmp;
 
             if (!is_array($vs_tmp) && !strlen($vs_tmp)) { continue; }
@@ -856,10 +844,8 @@ class Configuration {
 		if (isset(Configuration::$s_get_cache[$this->ops_md5_path][$ps_key])) { return true; }
 		$this->ops_error = "";
 
-		if (array_key_exists($ps_key, $this->ops_config_settings["scalars"])) { return true; }
-		if (array_key_exists($ps_key, $this->ops_config_settings["lists"])) { return true; }
-		if (array_key_exists($ps_key, $this->ops_config_settings["assoc"])) { return true; }
-		
+		if (array_key_exists($ps_key, $this->ops_config_settings)) { return true; }
+
 		return false;
 	}
 	/* ---------------------------------------- */
@@ -891,9 +877,22 @@ class Configuration {
 	 * @return string
 	 */
 	public function getScalar($ps_key) {
+		return $this->getValue( $ps_key );
+	}
+	/* ---------------------------------------- */
+	/**
+	 * Get configuration value
+	 *
+	 * @param string $ps_key Name of  configuration value to get. getValue() will look for the
+	 * configuration value only as a scalar. Like-named list or associative array values are
+	 * ignored.
+	 *
+	 * @return string
+	 */
+	public function getValue($ps_key) {
 		$this->ops_error = "";
-		if (isset($this->ops_config_settings["scalars"][$ps_key])) {
-			return $this->ops_config_settings["scalars"][$ps_key];
+		if (isset($this->ops_config_settings[$ps_key])) {
+			return $this->ops_config_settings[$ps_key];
 		} else {
 			return false;
 		}
@@ -907,7 +906,7 @@ class Configuration {
 	 */
 	public function getScalarKeys() {
 		$this->ops_error = "";
-		return array_keys($this->ops_config_settings["scalars"]);
+		return array_keys($this->ops_config_settings);
 	}
 	/* ---------------------------------------- */
 	/**
@@ -918,7 +917,7 @@ class Configuration {
 	 */
 	public function getListKeys() {
 		$this->ops_error = "";
-		return array_keys($this->ops_config_settings["lists"]);
+		return array_keys($this->ops_config_settings);
 	}
 	/* ---------------------------------------- */
 	/**
@@ -929,7 +928,7 @@ class Configuration {
 	 */
 	public function getAssocKeys() {
 		$this->ops_error = "";
-		return @array_keys($this->ops_config_settings["assoc"]);
+		return @array_keys($this->ops_config_settings);
 	}
 	/* ---------------------------------------- */
 	/**
@@ -943,12 +942,9 @@ class Configuration {
 	 */
 	public function getList($ps_key) {
 		$this->ops_error = "";
-		if (isset($this->ops_config_settings["lists"][$ps_key])) {
-			if (is_array($this->ops_config_settings["lists"][$ps_key])) {
-				return $this->ops_config_settings["lists"][$ps_key];
-			} else {
-				return null;
-			}
+		$list = $this->getValue( $ps_key );
+		if (is_array($list)) {
+			return $list;
 		} else {
 			return null;
 		}
@@ -965,12 +961,9 @@ class Configuration {
 	 */
 	public function getAssoc($ps_key) {
 		$this->ops_error = "";
-		if (isset($this->ops_config_settings["assoc"][$ps_key])) {
-			if (is_array($this->ops_config_settings["assoc"][$ps_key])) {
-				return $this->ops_config_settings["assoc"][$ps_key];
-			} else {
-				return null;
-			}
+		$assoc = $this->getValue( $ps_key );
+		if (is_array($assoc)) {
+			return $assoc;
 		} else {
 			return null;
 		}
@@ -982,12 +975,7 @@ class Configuration {
 	 * @return string
 	 */
 	public function toJson() {
-		$config = array_merge(
-			is_array($this->ops_config_settings["scalars"]) ? $this->ops_config_settings["scalars"] : [], 
-			is_array($this->ops_config_settings["lists"]) ? $this->ops_config_settings["lists"] : [], 
-			is_array($this->ops_config_settings["assoc"]) ? $this->ops_config_settings["assoc"] : []
-		);	
-		return caFormatJson(json_encode($config));
+		return caFormatJson(json_encode($this->ops_config_settings));
 	}
 	/* ---------------------------------------- */
 	/**
