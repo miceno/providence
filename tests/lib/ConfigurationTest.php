@@ -36,16 +36,46 @@ define("__CA_DISABLE_CONFIG_CACHING__", true);
 require_once(__CA_LIB_DIR__.'/Configuration.php');
 
 class ConfigurationTest extends TestCase {
-	public function testScalars() {
+	public function testScalarsAScalar() {
 		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
 
-		$this->assertEquals($o_config->get('a_scalar'), 'Hi there');
-		$this->assertEquals($o_config->get('a_translated_scalar'), 'Hej da!');
-		$this->assertEquals($o_config->get('a_scalar_starting_with_a_bracket'), '[The bracket is part of the string]');
-		$this->assertEquals($o_config->get('a_scalar_using_a_macro'), '/usr/local/fish');
-		$this->assertEquals($o_config->get('a_scalar_using_an_embedded_macro'), 'This scalar is embedded: "/usr/local/fish"');
-		$this->assertEquals($o_config->get('a_scalar_with_utf_8_chars'), 'Expreß zug: חי תהער');
-		$this->assertEquals($o_config->get('a_scalar_with_line_breaks'), "Foo\nHello\nWorld\n");
+		$this->assertEquals('Hi there', $o_config->get('a_scalar'));
+	}
+
+	public function testScalarsATranslatedScalar() {
+		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
+
+		$this->assertEquals('Hej da!', $o_config->get('a_translated_scalar'));
+	}
+
+	public function testScalarsAScalarStartingWithBracket() {
+		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
+
+		$this->assertEquals('[The bracket is part of the string]', $o_config->get('a_scalar_starting_with_a_bracket'));
+	}
+
+	public function testScalarsAScalarUsingMacro() {
+		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
+
+		$this->assertEquals('/usr/local/fish', $o_config->get('a_scalar_using_a_macro'));
+	}
+
+	public function testScalarsAScalarUsingEmbeddedMacro() {
+		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
+
+		$this->assertEquals('This scalar is embedded: "/usr/local/fish"', $o_config->get('a_scalar_using_an_embedded_macro'));
+	}
+
+	public function testScalarsAScalarWithUtf8Chars() {
+		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
+
+		$this->assertEquals('Expreß zug: חי תהער', $o_config->get('a_scalar_with_utf_8_chars'));
+	}
+
+	public function testScalarsAScalarWithLineBreaks() {
+		$o_config = new Configuration(__CA_BASE_DIR__.'/tests/lib/data/test.conf', false, true);
+
+		$this->assertEquals("Foo\nHello\nWorld\n", $o_config->get('a_scalar_with_line_breaks'));
 	}
 
 	public function testLists() {
