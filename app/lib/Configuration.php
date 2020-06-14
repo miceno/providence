@@ -169,8 +169,9 @@ class Configuration {
                 if (file_exists($vs_inherited_config_path) && !in_array($vs_inherited_config_path, $va_config_file_list) && ($vs_inherited_config_path !== $vs_config_file_path)) {
                     array_unshift($va_config_file_list, $vs_inherited_config_path);
                 }
-                if(!file_exists(__CA_THEMES_DIR__."/{$vs_inherit_from_theme}/conf/app.conf")) { break; }
-                $o_config = Configuration::load(__CA_THEMES_DIR__."/{$vs_inherit_from_theme}/conf/app.conf", false, false, true);
+	            $config_filename = __CA_THEMES_DIR__ . "/{$vs_inherit_from_theme}/conf/app.conf";
+	            if(!file_exists( $config_filename )) { break; }
+                $o_config = Configuration::load( $config_filename, false, false, true);
                 if ($i > 10) { break; } // max 10 levels
             }
 		}
