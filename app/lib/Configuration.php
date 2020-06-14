@@ -79,7 +79,7 @@ class Configuration {
 	 * @access private
 	 */
 	private $opb_debug = false;
-	
+
 	/**
 	 * MD5 hash for current configuration file path
 	 *
@@ -90,7 +90,7 @@ class Configuration {
 	static $s_get_cache;
 	static $s_config_cache = null;
 	static $s_have_to_write_config_cache = false;
-	
+
 
 	/* ---------------------------------------- */
 	/**
@@ -129,9 +129,9 @@ class Configuration {
 		global $g_ui_locale, $g_configuration_cache_suffix;
 
 		$this->ops_config_file_path = $ps_file_path ? $ps_file_path : __CA_APP_CONFIG__;	# path to configuration file
-		
+
 		$va_config_file_list = [];
-		
+
 		// cache key for on-disk caching
 		$vs_path_as_md5 = md5($_SERVER['HTTP_HOST'].$this->ops_config_file_path.'/'.$g_ui_locale.(isset($g_configuration_cache_suffix) ? '/'.$g_configuration_cache_suffix : ''));
 
@@ -141,18 +141,17 @@ class Configuration {
 		$va_config_path_components = explode("/", $this->ops_config_file_path);
 		$vs_config_filename = array_pop($va_config_path_components);
 
-
         $vs_top_level_config_path = $this->ops_config_file_path;
 		if (!$pb_dont_load_from_default_path) {
 			if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists(__CA_LOCAL_CONFIG_DIRECTORY__.'/'.$vs_config_filename)) {
 				$va_config_file_list[] = $vs_top_level_config_path = __CA_LOCAL_CONFIG_DIRECTORY__.'/'.$vs_config_filename;
-			} 
-			
+			}
+
 			// Theme config overrides local config
 			if (defined('__CA_DEFAULT_THEME_CONFIG_DIRECTORY__') && file_exists(__CA_DEFAULT_THEME_CONFIG_DIRECTORY__.'/'.$vs_config_filename)) {
 				$va_config_file_list[] = $vs_top_level_config_path = __CA_DEFAULT_THEME_CONFIG_DIRECTORY__.'/'.$vs_config_filename;
 			}
-			
+
 			// Appname-specific config overrides local config
 			$appname_specific_path = __CA_LOCAL_CONFIG_DIRECTORY__.'/'.pathinfo($vs_config_filename, PATHINFO_FILENAME).'_'.__CA_APP_NAME__.'.'.pathinfo($vs_config_filename, PATHINFO_EXTENSION);
 			if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists($appname_specific_path)) {
@@ -161,8 +160,6 @@ class Configuration {
 		}
 		$o_config = ($vs_top_level_config_path === $this->ops_config_file_path) ? $this : Configuration::load($vs_top_level_config_path, false, false, true);
 
-        
-		
 		$vs_filename = pathinfo($ps_file_path, PATHINFO_BASENAME);
 		if (($vb_inherit_config = $o_config->get('allowThemeInheritance')) && !$pb_dont_load_from_default_path) {
 		    $i=0;
@@ -189,7 +186,7 @@ class Configuration {
 
 			if(!$vb_setup_has_changed && isset(self::$s_config_cache[$vs_path_as_md5])) {
 				$vb_cache_is_invalid = false;
-				
+
 				foreach($va_config_file_list as $vs_config_file_path) {
 				    $vs_config_mtime = caGetFileMTime($vs_config_file_path);
                     if($vs_config_mtime != self::$s_config_cache[$k='mtime_'.$vs_path_as_md5.md5($vs_config_file_path)]) { // config file has changed
@@ -205,7 +202,6 @@ class Configuration {
 					return;
 				}
 			}
-
 		}
 
 		# load hash
@@ -227,8 +223,8 @@ class Configuration {
 		if (file_exists($vs_config_file_path) && $this->loadFile($vs_config_file_path, false, false)) {
 			$this->ops_config_settings["ops_config_file_path"] = $vs_config_file_path;
 		}
-		
-		
+
+
         if (sizeof($va_config_file_list) > 0) {
             foreach($va_config_file_list as $vs_config_file_path) {
                 if (file_exists($vs_config_file_path)) {
@@ -242,13 +238,13 @@ class Configuration {
 			// we loaded this cfg from file, so we have to write the
 			// config cache to disk at least once on this request
 			self::$s_have_to_write_config_cache = true;
-			
+
 			ExternalCache::save('ConfigurationCache', self::$s_config_cache, 'default', 3600 * 3600 * 30);
 		}
 	}
 	/* ---------------------------------------- */
 	/**
-	 * Parses configuration file located at $ps_file_path.
+	 * Parses CONF configuration file located at $ps_file_path.
 	 *
 	 * @param $ps_filepath - absolute path to configuration file to parse
 	 * @param $pb_die_on_error - if true, die() will be called on parse error halting request; default is false
@@ -500,7 +496,7 @@ class Configuration {
 										if ($pb_die_on_error) { $this->_dieOnError(); }
 										return false;
 									}
-                                    
+
 									$vn_state = 50;
 									$vb_quoted_item_is_closed = false;
 								}
@@ -610,7 +606,7 @@ class Configuration {
 										$va_assoc_pointer_stack[$i][$vs_assoc_key] = array();
 									}
 									$va_assoc_pointer_stack[] =& $va_assoc_pointer_stack[$i][$vs_assoc_key];
-									
+
 									$vn_state = 40;
 									$vs_key = $vs_assoc_key = $vs_scalar_value = "";
 									$vn_in_quote = 0;
@@ -819,7 +815,7 @@ class Configuration {
 	 *
 	 * @param mixed $pm_key Name of configuration key to fetch. get() will look for the
 	 * key first as a scalar, then as a list and finally as an associative array.
-	 * The first value found is returned. If an array of values are passed get() will try 
+	 * The first value found is returned. If an array of values are passed get() will try
 	 * each key in turn until a value is found.
 	 *
 	 * @return mixed A string, indexed array (list) or associative array, depending upon what
@@ -828,7 +824,7 @@ class Configuration {
 	public function get($pm_key) {
 	    $assoc_exists = false;
 	    if (!is_array($pm_key)) { $pm_key = [$pm_key]; }
-	    
+
 	    foreach($pm_key as $ps_key) {
             if (isset(Configuration::$s_get_cache[$this->ops_md5_path][$ps_key]) && Configuration::$s_get_cache[$this->ops_md5_path][$ps_key]) { return Configuration::$s_get_cache[$this->ops_md5_path][$ps_key]; }
             $this->ops_error = "";
@@ -841,7 +837,7 @@ class Configuration {
                 if (is_array($vs_tmp = $this->getAssoc($ps_key))) { $assoc_exists = true; }
             }
             Configuration::$s_get_cache[$this->ops_md5_path][$ps_key] = $vs_tmp;
-            
+
             if (!is_array($vs_tmp) && !strlen($vs_tmp)) { continue; }
             return $vs_tmp;
         }
@@ -1000,13 +996,13 @@ class Configuration {
 	 */
 	public function validate() {
 		$f = pathinfo($this->ops_config_file_path, PATHINFO_BASENAME);
-		
-		$v = new \Opis\JsonSchema\Validator();	
+
+		$v = new \Opis\JsonSchema\Validator();
 		$loader = new \Opis\JsonSchema\Loaders\File("https://collectiveaccess.org", [__CA_LIB_DIR__."/Configuration/".ucfirst(strtolower(__CA_APP_TYPE__))."/schemas"]);
 		if (!($schema = $loader->loadSchema("https://collectiveaccess.org/{$f}.schema.json"))) { return null; } 	// no schema loaded
 
 		$result = $v->schemaValidation(json_decode($this->toJson()), $schema);
-		
+
 		return $result;
 	}
 	/* ---------------------------------------- */
