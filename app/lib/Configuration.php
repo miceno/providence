@@ -30,6 +30,8 @@
  * ----------------------------------------------------------------------
  */
 
+use Symfony\Component\Yaml\Exception\ParseException;
+
 /**
  *
  */
@@ -207,6 +209,12 @@ class Configuration {
 
 		# load hash
 		$this->ops_config_settings = [];
+
+		# try loading global.yaml file
+		$vs_global_path = join("/", $va_config_path_components).'/global.yaml';
+        if (file_exists($vs_global_path)) {
+            $this->loadYaml($vs_global_path, false);
+        }
 
 		# try loading global.conf file
 		$vs_global_path = join("/", $va_config_path_components).'/global.conf';
@@ -787,6 +795,29 @@ class Configuration {
 		fclose($r_file);
 
 		return true;
+	}
+	/* ---------------------------------------- */
+	/**
+	 * Parses YAML configuration file located at $ps_file_path.
+	 *
+	 * @param $ps_filepath - absolute path to configuration file to parse
+	 * @param $pb_die_on_error - if true, die() will be called on parse error halting request; default is false
+	 * @return boolean - returns true if parse succeeded, false if parse failed
+	 */
+	public function loadYaml($ps_filepath, $pb_die_on_error=false) {
+
+		try {
+			$config = Yaml::parseFile( $ps_filepath );
+		} catch ( ParseException $e ) {
+			$this->ops_error = "Couldn't open configuration file '" . $ps_filepath . "'";
+			if ( $pb_die_on_error ) {
+				$this->_dieOnError();
+			}
+			return false;
+		}
+
+		return $config;
+
 	}
 	/* ---------------------------------------- */
 	private function _formatTokenHistory($pa_token_history, $pa_options=null) {
