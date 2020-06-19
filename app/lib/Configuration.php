@@ -31,6 +31,7 @@
  */
 
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  *
@@ -649,9 +650,9 @@ class Configuration {
 								}
 								$vb_escape_set = false;
 								break;
-							# -------------------
-							# open list
-							case '[':
+                            # -------------------
+                            # open list
+                            case '[':
 								if ($vn_in_quote || $vb_escape_set) {
 									$vs_scalar_value .= $vs_token;
 								} else {
@@ -794,7 +795,7 @@ class Configuration {
 
 		fclose($r_file);
 
-		return true;
+		return $this->ops_config_settings;
 	}
 	/* ---------------------------------------- */
 	/**
@@ -819,6 +820,29 @@ class Configuration {
 		return $config;
 
 	}
+
+	/* ---------------------------------------- */
+    /**
+     * Merge two configurations.
+     *
+     * @param $left
+     * @param $right
+     * @return array
+     */
+    static public function mergeConfig($left, $right){
+	    return array_merge_recursive($left, $right);
+    }
+	/* ---------------------------------------- */
+    /**
+     * Merge with replace two configurations.
+     *
+     * @param $left
+     * @param $right
+     * @return array
+     */
+    static public function mergeAndReplaceConfig($left, $right){
+	    return array_replace_recursive($left, $right);
+    }
 	/* ---------------------------------------- */
 	private function _formatTokenHistory($pa_token_history, $pa_options=null) {
 		if (!is_array($pa_options)) { $pa_options = array(); }
@@ -1093,6 +1117,13 @@ class Configuration {
 	public static function clearCache() {
 		ExternalCache::delete('ConfigurationCache');
 		self::$s_config_cache = null;
+	}
+	/* ---------------------------------------- */
+	/**
+	 * Empty configuration
+	 */
+	public function clear() {
+		$this->ops_config_settings = [];
 	}
 	/* ---------------------------------------- */
 	/**
