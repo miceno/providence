@@ -35,10 +35,26 @@ define("__CA_DISABLE_CONFIG_CACHING__", true);
 
 require_once(__CA_LIB_DIR__.'/Configuration.php');
 
+function arrays_are_similar($a, $b) {
+	// if the indexes don't match, return immediately
+	if (count(array_diff_assoc($a, $b))) {
+		return false;
+	}
+	// we know that the indexes, but maybe not values, match.
+	// compare the values between the two arrays
+	foreach($a as $k => $v) {
+		if ($v !== $b[$k]) {
+			return false;
+		}
+	}
+	// we have identical indexes, and no unequal values
+	return true;
+}
+
 class ConfigurationYamlTest extends TestCase {
 
 	/**
-	 * @var bool
+	 * @var array|bool
 	 */
 	private $yaml_config;
 	/**
@@ -57,8 +73,15 @@ class ConfigurationYamlTest extends TestCase {
 		$this->legacy_config = $o_config->loadFile(__CA_BASE_DIR__.'/tests/conf/legacy_app.conf');
 	}
 
-	public function testLoadYaml(){
+	public function testLoadYamlKeys(){
 		$this->assertEqualsCanonicalizing(array_keys($this->legacy_config), array_keys($this->yaml_config));
+	}
+
+	public function testLoadLegacyAndYamlAreEqual() {
+		$json_text = caFormatJson(json_encode($this->yaml_config));
+		$this->assertSame(
+				array_diff_assoc($this->legacy_config, $this->yaml_config),
+				array_diff_assoc($this->yaml_config, $this->legacy_config));
 	}
 
 	public function testYamlTrue(){

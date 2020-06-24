@@ -23,6 +23,7 @@
 #
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+translated_string: _t("Open")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -839,10 +840,10 @@ out_of_process_search_indexing_dont_verify_ssl_cert: 0
 # Set a display template here to customize display of captions under thumbnails in the thumbnail result view. The
 # template will be evaluated relative to each record in the result set.
 #
-ca_objects_results_thumbnail_caption_template: "^ca_objects.preferred_labels.name%truncate: 27&ellipsis: 1<br/><l>^ca_objects.idno</l>"
-ca_occurrences_results_thumbnail_caption_template: "^ca_occurrences.preferred_labels.name%truncate: 27&ellipsis: 1<br/><l>^ca_occurrences.idno</l>"
-ca_entities_results_thumbnail_caption_template: "^ca_entities.preferred_labels.name%truncate: 27&ellipsis: 1<br/><l>^ca_entities.idno</l>"
-ca_collections_results_thumbnail_caption_template: "^ca_collections.preferred_labels.name%truncate: 27&ellipsis: 1<br/><l>^ca_collections.idno</l>"
+ca_objects_results_thumbnail_caption_template: "^ca_objects.preferred_labels.name%truncate=27&ellipsis=1<br/><l>^ca_objects.idno</l>"
+ca_occurrences_results_thumbnail_caption_template: "^ca_occurrences.preferred_labels.name%truncate=27&ellipsis=1<br/><l>^ca_occurrences.idno</l>"
+ca_entities_results_thumbnail_caption_template: "^ca_entities.preferred_labels.name%truncate=27&ellipsis=1<br/><l>^ca_entities.idno</l>"
+ca_collections_results_thumbnail_caption_template: "^ca_collections.preferred_labels.name%truncate=27&ellipsis=1<br/><l>^ca_collections.idno</l>"
 
 # -----------------------------------
 # Search/browse result set sorting
@@ -856,7 +857,7 @@ restrict_find_result_sort_options_to_current_display: 1
 # Sorts for specific tables can be configured to show in all cases using <table>_include_result_sorts
 # The value is a list of sorts with the sort specification on the left and display name of the sort on the right
 #
-ca_objects_include_result_sorts:
+ca_objects_include_result_sorts: []
 #    ca_entities.preferred_labels.surname/artist: _(Artist)
 
 
@@ -1083,14 +1084,14 @@ enable_dependent_field_visibility: 0
 # Options controlling how the editor displays the value may be set for each global. Width and height control the size
 # of the element; usewysiwygeditor enables a "wysiwyg" rich text editor for formatted text.
 #
-global_template_values:
-#hours_of_operation :
-#	name :  Hours of operation,
-#	description :  List current operating hours here,
-#	width :  600px,
-#	height :  150px,
-#	usewysiwygeditor :  0
-#
+global_template_values: []
+    #hours_of_operation :
+    #	name :  Hours of operation,
+    #	description :  List current operating hours here,
+    #	width :  600px,
+    #	height :  150px,
+    #	usewysiwygeditor :  0
+    #
 
 
 # -----------------------------------
@@ -1240,8 +1241,8 @@ login_logo: ca_logo.png
 #
 report_header_enabled: 1
 report_img: menu_logo.png
-report_color: FFFFFF
-report_text_color: 000000
+report_color: 'FFFFFF'
+report_text_color: '000000'
 
 # For Microsoft Word output of results set this
 # to include labels next to field values
@@ -1267,10 +1268,10 @@ summary_header_enabled: 1
 summary_page_numbers: 1
 summary_footer_enabled: 1
 summary_img: ca_wide.png
-summary_color: FFFFFF
-summary_text_color: 000000
-summary_footer_color: FFFFFF
-summary_footer_text_color: 000000
+summary_color: 'FFFFFF'
+summary_text_color: '000000'
+summary_footer_color: 'FFFFFF'
+summary_footer_text_color: '000000'
 
 #
 # The following options control what additional information can be printed on your PDF summary. Enter a non-zero
@@ -1316,7 +1317,7 @@ annotation_class_element:
 # theme to use when user is not logged in (when they're logged in their preferred theme is used)
 #
 theme: default
-themes_directory: '%ca_base_dir%/themes'
+themes_directory: "<ca_base_dir>/themes"
 themes_url: <ca_url_root>/themes
 views_directory: <themes_directory>/<theme>/views
 

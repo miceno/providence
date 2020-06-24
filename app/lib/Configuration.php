@@ -214,7 +214,7 @@ class Configuration {
 		# try loading global.yaml file
 		$vs_global_path = join("/", $va_config_path_components).'/global.yaml';
         if (file_exists($vs_global_path)) {
-            $this->loadYaml($vs_global_path, false);
+            $config = $this->loadYaml($vs_global_path, false);
         }
 
 		# try loading global.conf file
@@ -808,8 +808,12 @@ class Configuration {
 	public function loadYaml($ps_filepath, $pb_die_on_error=false) {
 
 		try {
-			$config = Yaml::parseFile( $ps_filepath );
-		} catch ( ParseException $e ) {
+			$config = Yaml::parseFile( $ps_filepath, Yaml::PARSE_CONSTANT);
+            // TODO: interpolate recursively
+            array_walk_recursive($config, function(&$value){
+                $value = $this->_interpolateScalar($value);
+            });
+        } catch ( ParseException $e ) {
 			$this->ops_error = "Couldn't open configuration file '" . $ps_filepath . "'";
 			if ( $pb_die_on_error ) {
 				$this->_dieOnError();
@@ -1074,12 +1078,6 @@ class Configuration {
 		} else {
 			$ps_scalar_value = trim($ps_scalar_value);
 		}
-		// perform constant var substitution
-		if (preg_match("/^(__[A-Za-z0-9\_]+)(?=__)/", $ps_scalar_value, $va_matches)) {
-			if (defined($va_matches[1].'__')) {
-				return str_replace($va_matches[1].'__', constant($va_matches[1].'__'), $ps_scalar_value);
-			}
-		}
 		return $ps_scalar_value;
 	}
 	/* ---------------------------------------- */
@@ -1096,9 +1094,16 @@ class Configuration {
 			}
 		}
 
-		// attempt translation if text is enclosed in _( and ) ... for example _t(translate me)
+        // perform constant var substitution
+        if (preg_match("/^(__[A-Za-z0-9\_]+)(?=__)/", $ps_text, $va_matches)) {
+            if (defined($va_matches[1].'__')) {
+                $ps_text = str_replace($va_matches[1].'__', constant($va_matches[1].'__'), $ps_text);
+            }
+        }
+
+        // attempt translation if text is enclosed in _( and ) ... for example _t(translate me)
 		// assumes translation function _t() is present; if not loaded will not attempt translation
-		if (preg_match("/_\(([^\"\)]+)\)/", $ps_text, $va_matches)) {
+		if (preg_match("/_[t]?\([\"']+([^\)]+)[\"']\)/", $ps_text, $va_matches)) {
 			if(function_exists('_t')) {
 				$vs_trans_text = $ps_text;
 				array_shift($va_matches);
