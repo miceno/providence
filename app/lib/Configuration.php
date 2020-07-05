@@ -124,7 +124,7 @@ class Configuration {
 	 * @param string $ps_file_path Absolute path to configuration file to parse
 	 * @param bool $pb_die_on_error If true, request processing will halt with call to die() on error in parsing config file. [Default is false]
 	 * @param bool $pb_dont_cache If true, file will be parsed even if it's already cached. [Default is false]
-	 * @param bool $pb_dont_load_from_default_path Don't attempt to load additional configuration files from default paths (defined by __CA_LOCAL_CONFIG_DIRECTORY__ and __CA_LOCAL_CONFIG_DIRECTORY__). [Default is false]
+	 * @param bool $pb_dont_load_from_default_path Don't attempt to load additional configuration files from default paths (defined by __CA_LOCAL_CONFIG_DIRECTORY__ and __CA_DEFAULT_THEME_CONFIG_DIRECTORY__). [Default is false]
 	 *
 	 *
 	 */
@@ -809,7 +809,7 @@ class Configuration {
 
 		try {
 			$config = Yaml::parseFile( $ps_filepath, Yaml::PARSE_CONSTANT);
-            // TODO: interpolate recursively
+            // Interpolate recursively
             array_walk_recursive($config, function(&$value){
                 $value = $this->_interpolateScalar($value);
             });
