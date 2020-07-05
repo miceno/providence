@@ -94,5 +94,11 @@ class ConfigurationYamlTest extends TestCase {
 	public function testYamlFalse(){
 		$this->assertFalse($this->yaml_config['ca_object_lots_no_new_submenu']);
 	}
+	public function testYamlInterpolateTranslation(){
+		$this->assertEquals("Open", $this->yaml_config['translated_string']);
+	}
+	public function testYamlInterpolateGlobal(){
+		$this->assertEquals("/app/log", $this->yaml_config['external_export_log_directory']);
+	}
 }
 ?>

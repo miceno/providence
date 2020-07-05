@@ -1108,7 +1108,7 @@ class Configuration {
 				$vs_trans_text = $ps_text;
 				array_shift($va_matches);
 				foreach($va_matches as $vs_match) {
-					$vs_trans_text = str_replace("_({$vs_match})", _t($vs_match), $vs_trans_text);
+					$vs_trans_text = preg_replace(caMakeDelimitedRegexp("_[t]?\([\"']+{$vs_match}[\"']\)"), _t($vs_match), $vs_trans_text);
 				}
 				return $vs_trans_text;
 			}
