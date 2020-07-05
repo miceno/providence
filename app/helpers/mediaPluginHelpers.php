@@ -546,7 +546,8 @@
                 if (is_array($va_coords = caParseEXIFLatLong($va_exif_data))) {
                     foreach($va_georef_containers as $vs_container => $va_info) {
                         $va_tmp = explode('.', $vs_container);
-                        $vs_value_element = array_pop(explode('.', $va_info['value']));
+                        $v = explode('.', $va_info['value']);
+                        $vs_value_element = array_pop($v);
 
                         $va_data = array($vs_value_element => "[".$va_coords['latitude'].", ".$va_coords['longitude']."]", 'locale_id' => $pn_locale_id);
                         if(isset($va_info['map']) && is_array($va_info['map'])) {
@@ -595,7 +596,8 @@
                     $vs_date = 	$va_date_tmp[0].'-'.$va_date_tmp[1].'-'.$va_date_tmp[2].'T'.$va_date_tmp[3].':'.$va_date_tmp[4].':'.$va_date_tmp[5];
                     foreach($va_date_containers as $vs_container => $va_info) {
                         $va_tmp = explode('.', $vs_container);
-                        $vs_value_element = array_pop(explode('.', $va_info['value']));
+                        $v = explode('.', $va_info['value']);
+                        $vs_value_element = array_pop($v);
 
                         $va_data = array($vs_value_element => $vs_date, 'locale_id' => $pn_locale_id);
                         if(isset($va_info['map']) && is_array($va_info['map'])) {
@@ -740,7 +742,7 @@
 
         if($vs_representation_export = caExportMediaMetadataForRecord('ca_object_representations', $ps_rep_type_code, $pn_rep_pk)) {
             $vs_export_filename = caGetTempFileName('mediaMetadataRepExport','xml');
-            if(@file_put_contents($vs_export_filename, $vs_representation_Export) === false) { return false; }
+            if(@file_put_contents($vs_export_filename, $vs_representation_export) === false) { return false; }
             caExec("{$vs_path_to_exif_tool} -tagsfromfile {$vs_export_filename} -all:all ".caEscapeShellArg($vs_tmp_filepath), $va_output, $vn_return);
             @unlink($vs_export_filename);
             @unlink("{$vs_tmp_filepath}_original");
@@ -774,7 +776,8 @@
 
         $tag_args = [];
         foreach($tags as $t) {
-            $ns = array_shift(array_keys($t->getNamespaces()));
+            $v = array_keys($t->getNamespaces());
+            $ns = array_shift($v);
             $n = $t->getName();
             $v = $t->__toString();
             $tag_args[] = "-{$n}=\"$v\"";
@@ -866,269 +869,268 @@
             return $o_icon_config->get('icon_folder_path').'/'.$va_icons[$va_selected_size['size']];
         }
 
-        return null;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     *
-     *
-     */
-    function caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options=null) {
-        $o_config = Configuration::load();
-        $o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
+		return null;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 *
+	 *
+	 */
+	function caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options=null) {
+		$o_config = Configuration::load();
+		$o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
 
-        $vs_selected_size = null;
-        if (is_array($va_icons = $o_icon_config->getAssoc($ps_type))) {
-            $vn_min_diff_x = $vn_min_diff_y = 1000000;
-            $vs_selected_size = null;
-            foreach($va_icons as $vs_size => $vs_filename) {
-                $va_tmp = explode('x', $vs_size);
+		$vs_selected_size = null;
+		if (is_array($va_icons = $o_icon_config->getAssoc($ps_type))) {
+			$vn_min_diff_x = $vn_min_diff_y = 1000000;
+			$vs_selected_size = null;
+			foreach($va_icons as $vs_size => $vs_filename) {
+				$va_tmp = explode('x', $vs_size);
 
-                if (
-                        ((($vn_diff_x = ((int)$pn_width - (int)$va_tmp[0])) >= 0) && ($vn_diff_x <= $vn_min_diff_x))
-                        &&
-                        ((($vn_diff_y = ((int)$pn_height - (int)$va_tmp[1])) >= 0) && ($vn_diff_y <= $vn_min_diff_y))
-                ) {
-                    $vn_min_diff_x = $vn_diff_x;
-                    $vn_min_diff_y = $vn_diff_y;
-                    $vs_selected_size = $vs_size;
-                }
-            }
-            if (!$vs_selected_size) {
-                $va_tmp = array_keys($va_icons);
-                $vs_selected_size = array_shift($va_tmp);
-            }
-        }
-        $va_tmp = explode('x', $vs_selected_size);
-        return array('size' => $vs_selected_size, 'width' => $va_tmp[0], 'height' => $va_tmp[1]);
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Resolve media identifiers in the form <type>:<id> or <type>:<id>:<page> into references suitable for using with the IIIF service.
-     * Identifier types include: "representation", "attribute", "object", "entity", "place", "occurrence", "collection" and "location"
-     *
-     * "representation" reference to a representation by representation_id
-     * "attribute" refers to a media attribute by value_id
-     * "object", "entity" and other table referencing types refer to the primary representation attached the specified row.
-     *
-     * For valid identifiers an array is returned with the following information:
-     *
-     * type = the "type" portion of resolved IIIF identifier. This will always be either "representation" or "attribute", no matter what the type in the original identifer is.
-     * id = the "id" portion of the resolved identifier. This will be a representation_id or attribute value_id
-     * page = the "page" portion of the identifer, if specified. This will be unchanged from the original identifier.
-     * subject = the table name of the subject of the original media identifier. For representations this will be the representation itself. For attributes this will be the table name of the record it is bonud to. For table-related types this will be the table name of the type (Eg. for "objects", this will be "ca_objects")
-     * subject_id = the primary key of the subject row. For representations this will be the representation_id. For attributes this will be the id of the row to which the attribute is bound. For table-related types this will be the id of the referenced row.
-     * instance = An instance of the resolved media (ca_object_representations or ca_attribute_values) when the "includeInstance" option is set.
-     * subject_instance = An instance of the resolved subject (ca_object_representations, ca_objects, or other primary table) when the "includeInstance" option is set.
-     *
-     * @param string $ps_identifier The identifier
-     * @param array $pa_options Options include:
-     *      includeInstance = Include resolved media and subject instances in return value. [Default is false]
-     *      checkAccess = check resolved media and subject against provided access values and return null if access is not allowed. [Default is null]
-     *
-     * @return array
-     */
-    function caParseMediaIdentifier($ps_identifier, $pa_options=null) {
-        $pb_include_instance = caGetOption('includeInstance', $pa_options, false);
-        $va_tmp = explode(':', $ps_identifier);
+				if (
+					((($vn_diff_x = ((int)$pn_width - (int)$va_tmp[0])) >= 0) && ($vn_diff_x <= $vn_min_diff_x))
+					&&
+					((($vn_diff_y = ((int)$pn_height - (int)$va_tmp[1])) >= 0) && ($vn_diff_y <= $vn_min_diff_y))
+				) {
+					$vn_min_diff_x = $vn_diff_x;
+					$vn_min_diff_y = $vn_diff_y;
+					$vs_selected_size = $vs_size;
+				}
+			}
+			if (!$vs_selected_size) {
+				$va_tmp = array_keys($va_icons);
+				$vs_selected_size = array_shift($va_tmp);
+			}
+		}
+		$va_tmp = explode('x', $vs_selected_size);
+		return array('size' => $vs_selected_size, 'width' => $va_tmp[0], 'height' => $va_tmp[1]);
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Resolve media identifiers in the form <type>:<id> or <type>:<id>:<page> into references suitable for using with the IIIF service.
+	 * Identifier types include: "representation", "attribute", "object", "entity", "place", "occurrence", "collection" and "location"
+	 * 
+	 * "representation" reference to a representation by representation_id
+	 * "attribute" refers to a media attribute by value_id
+	 * "object", "entity" and other table referencing types refer to the primary representation attached the specified row.
+	 *
+	 * For valid identifiers an array is returned with the following information:
+	 *
+	 * type = the "type" portion of resolved IIIF identifier. This will always be either "representation" or "attribute", no matter what the type in the original identifer is.
+	 * id = the "id" portion of the resolved identifier. This will be a representation_id or attribute value_id
+	 * page = the "page" portion of the identifer, if specified. This will be unchanged from the original identifier.
+	 * subject = the table name of the subject of the original media identifier. For representations this will be the representation itself. For attributes this will be the table name of the record it is bonud to. For table-related types this will be the table name of the type (Eg. for "objects", this will be "ca_objects")
+	 * subject_id = the primary key of the subject row. For representations this will be the representation_id. For attributes this will be the id of the row to which the attribute is bound. For table-related types this will be the id of the referenced row.
+	 * instance = An instance of the resolved media (ca_object_representations or ca_attribute_values) when the "includeInstance" option is set.
+	 * subject_instance = An instance of the resolved subject (ca_object_representations, ca_objects, or other primary table) when the "includeInstance" option is set.
+	 *
+	 * @param string $ps_identifier The identifier
+	 * @param array $pa_options Options include:
+	 *      includeInstance = Include resolved media and subject instances in return value. [Default is false]
+	 *      checkAccess = check resolved media and subject against provided access values and return null if access is not allowed. [Default is null]
+	 *
+	 * @return array
+	 */
+	function caParseMediaIdentifier($ps_identifier, $pa_options=null) {
+		$pb_include_instance = caGetOption('includeInstance', $pa_options, false);
+		$va_tmp = explode(':', $ps_identifier);
+		
+		$va_ret = null;
+		switch($vs_type = strtolower($va_tmp[0])) {
+			case 'representation':
+			    Datamodel::getInstance('ca_object_representations', true);
+				$va_ret = ['type' => $vs_type, 'id' => (int)$va_tmp[1], 'page' => isset($va_tmp[2]) ? (int)$va_tmp[2] : null, 'subject' => 'ca_object_representations', 'subject_id' => (int)$va_tmp[1]];
+				if (!($t_rep = ca_object_representations::find((int)$va_tmp[1], $pa_options))) { return null; } // ca_object_representations::find() performs checkAccess
+				if ($pb_include_instance) {
+				    $va_ret['instance'] = $t_rep;
+				}
+				break;
+			case 'attribute':
+			    Datamodel::getInstance('ca_attribute_values', true);
+			    $t_val = new ca_attribute_values((int)$va_tmp[1]);
+			    if (!$t_val->isLoaded()) { return null; }
+			    $t_attr = new ca_attributes($t_val->get('attribute_id'));
+			    $vs_table_name  = Datamodel::getTableName($t_attr->get('table_num'));
+			    $vn_subject_id = (int)$t_attr->get('row_id');
+			    if (!($t_subject = $vs_table_name::find($vn_subject_id, $pa_options))) { return null; } // table::find() performs checkAccess
+			    
+			    $va_ret = ['type' => $vs_type, 'id' => (int)$va_tmp[1], 'page' => isset($va_tmp[2]) ? (int)$va_tmp[2] : null, 'subject' => $vs_table_name, 'subject_id' => $vn_subject_id];
+				
+				if ($pb_include_instance) {
+				    $va_ret['instance'] = $t_val;
+				    $va_ret['subject_instance'] = $t_subject;
+				}
+			    break;
+			default:
+			    if (($vs_table = caMediaIdentifierTypeToTable($vs_type)) && Datamodel::getInstance($vs_table, true) && ($t_instance = $vs_table::find((int)$va_tmp[1], $pa_options)) && ($vn_rep_id = $t_instance->getPrimaryRepresentationID($pa_options))) {
+			        // return primary representation (access checkAccess performed by table::find() )
+			        $va_ret = ['type' => 'representation', 'id' => (int)$vn_rep_id, 'page' => null, 'subject' => $vs_table, 'subject_id' => (int)$va_tmp[1]];
+			        
+			        if ($pb_include_instance) {
+			            $va_ret['subject_instance'] = $t_instance;
+			        }
+				} elseif (is_numeric($va_tmp[0])) {
+			        Datamodel::getInstance('ca_object_representations', true);
+				    if (!($t_rep = ca_object_representations::find((int)$va_tmp[1], $pa_options))) { return null; }     // ca_object_representations::find() performs checkAccess
+				    
+					$va_ret = ['type' => 'representation', 'id' => (int)$va_tmp[0], 'page' => isset($va_tmp[1]) ? (int)$va_tmp[1] : null, 'subject' => 'ca_object_representations', 'subject_id' => (int)$va_tmp[0]];
+				}
+				if ($va_ret && $pb_include_instance) {
+				    $va_ret['instance'] = $t_rep;
+				}
+				break;
+		}
+		return $va_ret;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Transform table-related media identifier types (Eg. object, entity, place) to table names
+	 * 
+	 * @param string $ps_type A table-related media type
+	 * @param array $pa_options Options include:
+	 *      returnInstance = Return instance of table rather than name. [Default is false]
+	 *
+	 * @return mixed
+	 */
+	function caMediaIdentifierTypeToTable($ps_type, $pa_options=null) {
+	    $va_map = [
+	        'object' => 'ca_objects', 'objects' => 'ca_objects',
+	        'entity' => 'ca_entities', 'entities' => 'ca_entities',
+	        'place' => 'ca_places', 'places' => 'ca_places',
+	        'occurrence' => 'ca_occurrences', 'occurrences' => 'ca_occurrences',
+	        'collection' => 'ca_collections', 'collections' => 'ca_collections',
+	        'location' => 'ca_storage_locations', 'locations' => 'ca_storage_locations'
+	    ];
+	    
+	    $vs_table = isset($va_map[strtolower($ps_type)]) ? $va_map[strtolower($ps_type)] : null;
+	    if ($vs_table && caGetOption('returnInstance', $pa_options, false)) {
+	        return Datamodel::getInstanceByTableName($vs_table, true);
+	    } 
+	
+	    return $vs_table;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 *
+	 *
+	 */
+	function caGetPDFInfo($ps_filepath) {
+		$o_config = Configuration::load();
+		
+		// try ZendPDF
+		if(!$o_config->get('dont_use_zendpdf_to_identify_pdfs')) {
+			try {
+				include_once(__CA_LIB_DIR__."/Zend/Pdf.php");
+				$o_pdf = Zend_Pdf::load($ps_filepath);
+			} catch(Exception $e){
+				$o_pdf = null;
+			}
+			if ($o_pdf && (sizeof($o_pdf->pages) > 0)) { 
+				$o_page = $o_pdf->pages[0];
+				return [
+					'title' => $o_pdf->properties['Title'],
+					'author' => $o_pdf->properties['Author'],
+					'producer' => $o_pdf->properties['Producer'],
+					'pages' => sizeof($o_pdf->pages),
+					'width' => $o_page->getWidth(),
+					'height' => $o_page->getHeight()
+				];
+			} 
+		}
+		
+		// try graphicsmagick
+		if ((!$o_config->get('dont_use_graphicsmagick_to_identify_pdfs')) && caMediaPluginGraphicsMagickInstalled()) {
+			$vs_graphicsmagick_path = caGetExternalApplicationPath('graphicsmagick');
+			caExec($vs_graphicsmagick_path.' identify -format "%m;%w;%h;%p\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
 
-        $va_ret = null;
-        switch($vs_type = strtolower($va_tmp[0])) {
-            case 'representation':
-                Datamodel::getInstance('ca_object_representations', true);
-                $va_ret = ['type' => $vs_type, 'id' => (int)$va_tmp[1], 'page' => isset($va_tmp[2]) ? (int)$va_tmp[2] : null, 'subject' => 'ca_object_representations', 'subject_id' => (int)$va_tmp[1]];
-                if (!($t_rep = ca_object_representations::find((int)$va_tmp[1], $pa_options))) { return null; } // ca_object_representations::find() performs checkAccess
-                if ($pb_include_instance) {
-                    $va_ret['instance'] = $t_rep;
-                }
-                break;
-            case 'attribute':
-                Datamodel::getInstance('ca_attribute_values', true);
-                $t_val = new ca_attribute_values((int)$va_tmp[1]);
-                if (!$t_val->isLoaded()) { return null; }
-                $t_attr = new ca_attributes($t_val->get('attribute_id'));
-                $vs_table_name  = Datamodel::getTableName($t_attr->get('table_num'));
-                Datamodel::getInstance($vs_table_name, true);
-                $vn_subject_id = (int)$t_attr->get('row_id');
-                if (!($t_subject = $vs_table_name::find($vn_subject_id, $pa_options))) { return null; } // table::find() performs checkAccess
-
-                $va_ret = ['type' => $vs_type, 'id' => (int)$va_tmp[1], 'page' => isset($va_tmp[2]) ? (int)$va_tmp[2] : null, 'subject' => $vs_table_name, 'subject_id' => $vn_subject_id];
-
-                if ($pb_include_instance) {
-                    $va_ret['instance'] = $t_val;
-                    $va_ret['subject_instance'] = $t_subject;
-                }
-                break;
-            default:
-                if (($vs_table = caMediaIdentifierTypeToTable($vs_type)) && Datamodel::getInstance($vs_table, true) && ($t_instance = $vs_table::find((int)$va_tmp[1], $pa_options)) && ($vn_rep_id = $t_instance->getPrimaryRepresentationID($pa_options))) {
-                    // return primary representation (access checkAccess performed by table::find() )
-                    $va_ret = ['type' => 'representation', 'id' => (int)$vn_rep_id, 'page' => null, 'subject' => $vs_table, 'subject_id' => (int)$va_tmp[1]];
-
-                    if ($pb_include_instance) {
-                        $va_ret['subject_instance'] = $t_instance;
-                    }
-                } elseif (is_numeric($va_tmp[0])) {
-                    Datamodel::getInstance('ca_object_representations', true);
-                    if (!($t_rep = ca_object_representations::find((int)$va_tmp[1], $pa_options))) { return null; }     // ca_object_representations::find() performs checkAccess
-
-                    $va_ret = ['type' => 'representation', 'id' => (int)$va_tmp[0], 'page' => isset($va_tmp[1]) ? (int)$va_tmp[1] : null, 'subject' => 'ca_object_representations', 'subject_id' => (int)$va_tmp[0]];
-                }
-                if ($va_ret && $pb_include_instance) {
-                    $va_ret['instance'] = $t_rep;
-                }
-                break;
-        }
-        return $va_ret;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Transform table-related media identifier types (Eg. object, entity, place) to table names
-     *
-     * @param string $ps_type A table-related media type
-     * @param array $pa_options Options include:
-     *      returnInstance = Return instance of table rather than name. [Default is false]
-     *
-     * @return mixed
-     */
-    function caMediaIdentifierTypeToTable($ps_type, $pa_options=null) {
-        $va_map = [
-                'object' => 'ca_objects', 'objects' => 'ca_objects',
-                'entity' => 'ca_entities', 'entities' => 'ca_entities',
-                'place' => 'ca_places', 'places' => 'ca_places',
-                'occurrence' => 'ca_occurrences', 'occurrences' => 'ca_occurrences',
-                'collection' => 'ca_collections', 'collections' => 'ca_collections',
-                'location' => 'ca_storage_locations', 'locations' => 'ca_storage_locations'
-        ];
-
-        $vs_table = isset($va_map[strtolower($ps_type)]) ? $va_map[strtolower($ps_type)] : null;
-        if ($vs_table && caGetOption('returnInstance', $pa_options, false)) {
-            return Datamodel::getInstanceByTableName($vs_table, true);
-        }
-
-        return $vs_table;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     *
-     *
-     */
-    function caGetPDFInfo($ps_filepath) {
-        $o_config = Configuration::load();
-
-        // try ZendPDF
-        if(!$o_config->get('dont_use_zendpdf_to_identify_pdfs')) {
-            try {
-                include_once(__CA_LIB_DIR__."/Zend/Pdf.php");
-                $o_pdf = Zend_Pdf::load($ps_filepath);
-            } catch(Exception $e){
-                $o_pdf = null;
-            }
-            if ($o_pdf && (sizeof($o_pdf->pages) > 0)) {
-                $o_page = $o_pdf->pages[0];
-                return [
-                        'title' => $o_pdf->properties['Title'],
-                        'author' => $o_pdf->properties['Author'],
-                        'producer' => $o_pdf->properties['Producer'],
-                        'pages' => sizeof($o_pdf->pages),
-                        'width' => $o_page->getWidth(),
-                        'height' => $o_page->getHeight()
-                ];
-            }
-        }
-
-        // try graphicsmagick
-        if ((!$o_config->get('dont_use_graphicsmagick_to_identify_pdfs')) && caMediaPluginGraphicsMagickInstalled()) {
-            $vs_graphicsmagick_path = caGetExternalApplicationPath('graphicsmagick');
-            caExec($vs_graphicsmagick_path.' identify -format "%m;%w;%h;%p\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
-
-            array_pop($va_output); // last line is blank
-            if (is_array($va_output) && (sizeof($va_output) > 0)) {
-                do {
-                    $va_tmp = explode(';', array_shift($va_output));
-                    if ($va_tmp[0] === 'PDF') {
-                        return array(
-                                'width' => intval($va_tmp[1]),
-                                'height' => intval($va_tmp[2]),
-                                'pages' => sizeof($va_output) + 1
-                        );
-                    }
-                } while((sizeof($va_output) > 0) && ($va_tmp[0] !== 'PDF'));
-            }
-        }
-
-        // try imagemagick
-        if ((!$o_config->get('dont_use_imagemagick_to_identify_pdfs')) && caMediaPluginImageMagickInstalled()) {
-            $vs_imagemagick_path = caGetExternalApplicationPath('imagemagick');
-            caExec($vs_imagemagick_path.'/identify -format "%m;%w;%h;%p\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
-
-            array_pop($va_output); // last line is blank
-            if (is_array($va_output) && (sizeof($va_output) > 0)) {
-                do {
-                    $va_tmp = explode(';', array_shift($va_output));
-                    if ($va_tmp[0] === 'PDF') {
-                        return array(
-                                'width' => intval($va_tmp[1]),
-                                'height' => intval($va_tmp[2]),
-                                'pages' => sizeof($va_output) + 1
-                        );
-                    }
-                } while((sizeof($va_output) > 0) && ($va_tmp[0] !== 'PDF'));
-            }
-        }
-
-        // try pdfinfo
-        if (caMediaPluginPdftotextInstalled()) {
-            $vs_path_to_pdf_to_text = str_replace("pdftotext", "pdfinfo", caGetExternalApplicationPath('pdftotext'));
-
-            caExec("{$vs_path_to_pdf_to_text} ".caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
-
-            if (($vn_return == 0) && sizeof($va_output) > 0) {
-                $va_info = [];
-                foreach($va_output as $vs_line) {
-                    $va_line = explode(":", $vs_line);
-
-                    $vs_tag = strtolower(trim(array_shift($va_line)));
-                    $vs_value = trim(join(":", $va_line));
-
-                    switch($vs_tag) {
-                        case 'pages':
-                            $va_info['pages'] = (int)$vs_value;
-                            break;
-                        case 'page size':
-                            if (preg_match_all("!([\d\.]+)!", $vs_value, $va_dims)) {
-                                $va_info['width'] = ceil((float)$va_dims[1][0]);
-                                $va_info['height'] = ceil((float)$va_dims[1][1]);
-                            }
-                            break;
-                        case 'pdf version':
-                            $va_info['version'] = (float)$vs_value;
-                            break;
-                        case 'producer':
-                            $va_info['software'] = $vs_value;
-                            break;
-                        case 'author':
-                        case 'title':
-                            $va_info[$vs_tag] = $vs_value;
-                            break;
-                    }
-                }
-                return $va_info;
-            }
-        }
-
-        // ok, we're stumped
-        return null;
-    }
-    # ------------------------------------------------------------------------------------------------
-    /**
-     * Determine if permissions are set properly for the media directory
-     *
-     * @return bool True if permissions are set correctly, false if error
-     */
-    function caCheckMediaDirectoryPermissions() {
-        $o_config = Configuration::load();
-
-        $vs_media_root = $o_config->get('ca_media_root_dir');
+			array_pop($va_output); // last line is blank
+			if (is_array($va_output) && (sizeof($va_output) > 0)) {
+				do {
+					$va_tmp = explode(';', array_shift($va_output));
+					if ($va_tmp[0] === 'PDF') {
+						return array(
+							'width' => intval($va_tmp[1]),
+							'height' => intval($va_tmp[2]),
+							'pages' => sizeof($va_output) + 1
+						);
+					}
+				} while((sizeof($va_output) > 0) && ($va_tmp[0] !== 'PDF'));
+			}
+		}
+		
+		// try imagemagick
+		if ((!$o_config->get('dont_use_imagemagick_to_identify_pdfs')) && caMediaPluginImageMagickInstalled()) {
+			$vs_imagemagick_path = caGetExternalApplicationPath('imagemagick');
+			caExec($vs_imagemagick_path.'/identify -format "%m;%w;%h;%p\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
+		
+			array_pop($va_output); // last line is blank
+			if (is_array($va_output) && (sizeof($va_output) > 0)) {
+				do {
+					$va_tmp = explode(';', array_shift($va_output));
+					if ($va_tmp[0] === 'PDF') {
+						return array(
+							'width' => intval($va_tmp[1]),
+							'height' => intval($va_tmp[2]),
+							'pages' => sizeof($va_output) + 1
+						);
+					}
+				} while((sizeof($va_output) > 0) && ($va_tmp[0] !== 'PDF'));
+			}
+		}
+		
+		// try pdfinfo
+		if (caMediaPluginPdftotextInstalled()) {
+			$vs_path_to_pdf_to_text = str_replace("pdftotext", "pdfinfo", caGetExternalApplicationPath('pdftotext'));
+			
+			caExec("{$vs_path_to_pdf_to_text} ".caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
+			
+			if (($vn_return == 0) && sizeof($va_output) > 0) {
+				$va_info = [];
+				foreach($va_output as $vs_line) {
+					$va_line = explode(":", $vs_line);
+					
+					$vs_tag = strtolower(trim(array_shift($va_line)));
+					$vs_value = trim(join(":", $va_line));
+				
+					switch($vs_tag) {
+						case 'pages':
+							$va_info['pages'] = (int)$vs_value;
+							break;
+						case 'page size':
+							if (preg_match_all("!([\d\.]+)!", $vs_value, $va_dims)) {
+								$va_info['width'] = ceil((float)$va_dims[1][0]);
+								$va_info['height'] = ceil((float)$va_dims[1][1]);
+							}
+							break;
+						case 'pdf version':
+							$va_info['version'] = (float)$vs_value;
+							break;
+						case 'producer':
+							$va_info['software'] = $vs_value;
+							break;
+						case 'author':
+						case 'title':
+							$va_info[$vs_tag] = $vs_value;
+							break;
+					}
+				}
+				return $va_info;
+			}
+		}
+		
+		// ok, we're stumped
+		return null;
+	}
+	# ------------------------------------------------------------------------------------------------
+	/**
+	 * Determine if permissions are set properly for the media directory
+	 *
+	 * @return bool True if permissions are set correctly, false if error
+	 */
+	function caCheckMediaDirectoryPermissions() {
+	    $o_config = Configuration::load();
+	    
+		$vs_media_root = $o_config->get('ca_media_root_dir');
         $vs_base_dir = $o_config->get('ca_base_dir');
         $va_tmp = explode('/', $vs_media_root);
 
