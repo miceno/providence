@@ -230,9 +230,17 @@
 			                
 			                $pv = $o_value->getDisplayValue();
 			                if (
-			                	(strlen($pa_values[$vn_element_id] && ($pa_values[$vn_element_id] != $pv)))
+			                	(
+			                		array_key_exists($vn_element_id, $pa_values)
+			                		&&
+			                		((strlen($pa_values[$vn_element_id] && ($pa_values[$vn_element_id] != $pv))) || !strlen($pa_values[$vn_element_id]))
+			                	)
 			            		||
-			            		(strlen($pa_values[$vs_element_code] && ($pa_values[$vs_element_code] != $pv)))
+			            		(
+			            			array_key_exists($vs_element_code, $pa_values)
+			            			&&
+			            			((strlen($pa_values[$vs_element_code] && ($pa_values[$vs_element_code] != $pv))) || !strlen($pa_values[$vs_element_code]))
+			            		)
 			            	) {
 			                    continue(2);
 			                }
@@ -273,7 +281,7 @@
 					unset($element_codes[$vs_element_code]);
 					if (
 						(
-							isset($pa_values[$vn_element_id]) && ($pa_values[$vn_element_id] !== $o_attr_value->getDisplayValue()) 
+							array_key_exists($vn_element_id, $pa_values) && ($pa_values[$vn_element_id] !== $o_attr_value->getDisplayValue()) 
 							&& 
 							!(($pa_values[$vn_element_id] == "") && (is_null($o_attr_value->getDisplayValue())))
 							&& 
@@ -281,7 +289,7 @@
 						)
 						||
 						(
-							isset($pa_values[$vs_element_code]) && ($pa_values[$vs_element_code] !== $o_attr_value->getDisplayValue()) 
+							array_key_exists($vs_element_code, $pa_values) && ($pa_values[$vs_element_code] !== $o_attr_value->getDisplayValue()) 
 							&&
 							!(($pa_values[$vs_element_code] == "") && (is_null($o_attr_value->getDisplayValue())))
 							&& 
@@ -291,14 +299,14 @@
 						(
 							in_array($vn_element_datatype, [__CA_ATTRIBUTE_VALUE_MEDIA__, __CA_ATTRIBUTE_VALUE_FILE__])
 							&& 
-							isset($pa_values[$vs_element_code]) && is_array($pa_values[$vs_element_code]) && sizeof($pa_values[$vs_element_code])
+							array_key_exists($vs_element_code, $pa_values) && is_array($pa_values[$vs_element_code]) && sizeof($pa_values[$vs_element_code])
 							
 						)
 						||
 						(
 							in_array($vn_element_datatype, [__CA_ATTRIBUTE_VALUE_MEDIA__, __CA_ATTRIBUTE_VALUE_FILE__])
 							&& 
-							isset($pa_values[$vn_element_id]) && is_array($pa_values[$vn_element_id]) && sizeof($pa_values[$vn_element_id])
+							array_key_exists($vn_element_id, $pa_values) && is_array($pa_values[$vn_element_id]) && sizeof($pa_values[$vn_element_id])
 							
 						)
 					) {
@@ -1864,8 +1872,7 @@
 			$t_attr = new ca_attributes();
 			$t_attr->purify($this->purify());
 			
-			$va_element_codes = array();
-			$va_elements_by_container = array();
+			$va_element_codes = $va_elements_by_container = [];
 			
 			if (sizeof($va_element_set) > 1) {
 				$vs_format = isset($pa_options['multivalueFormat']) ? $pa_options['multivalueFormat'] : null;
@@ -1879,6 +1886,7 @@
 			foreach($va_element_set as $va_element) {
 				$va_override_options = array();
 				if ($va_element['datatype'] == 0) {		// containers are not active form elements
+					unset($pa_options['name']);
 					continue;
 				}
 				

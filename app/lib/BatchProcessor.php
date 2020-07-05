@@ -543,7 +543,7 @@
  				$o_eventlog->log(array(
 					"CODE" => 'ERR',
 					"SOURCE" => "mediaImport",
-					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is invalid", $pa_options['importFromDirectory'])
+					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is not a directory", $pa_options['importFromDirectory'])
 				));
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
 				$o_log->logError($vs_msg);
@@ -555,7 +555,7 @@
  				$o_eventlog->log(array(
 					"CODE" => 'ERR',
 					"SOURCE" => "mediaImport",
-					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is invalid", $pa_options['importFromDirectory'])
+					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is not within the configured root %2", $pa_options['importFromDirectory'], $vs_batch_media_import_root_directory)
 				));
 				$o_log->logError($vs_msg);
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
@@ -948,7 +948,7 @@
 					$t_instance->setMode(ACCESS_WRITE);
 
 					if ($use_existing_representation_id) {
-						$t_instance->addRelationship('ca_object_representations', $use_existing_representation_id, $vn_rel_type_id);
+						if (!($t_new_rep = $t_instance->addRelationship('ca_object_representations', $use_existing_representation_id, $vn_rel_type_id))) { continue; }
 					} else {
 						$t_new_rep = $t_instance->addRepresentation(
 							$vs_directory.'/'.$f, $vn_rep_type_id, // path
@@ -1128,7 +1128,9 @@
 						$format = $t_mapping->getSetting('inputFormats');
 						if(is_array($format)) { $format = array_shift($format); }
 						if ($o_log) { $o_log->logDebug(_t('Using embedded media mapping %1 (format %2)', $t_mapping->get('importer_code'), $format)); }
-						ca_data_importers::importDataFromSource($vs_directory.'/'.$f, $vn_mapping_id, ['logLevel' => $o_config->get('embedded_metadata_extraction_mapping_log_level'), 'format' => $format, 'forceImportForPrimaryKeys' => [$t_instance->getPrimaryKey()]]); 
+						
+						$t_importer = new ca_data_importers();
+						$t_importer->importDataFromSource($vs_directory.'/'.$f, $vn_mapping_id, ['logLevel' => $o_config->get('embedded_metadata_extraction_mapping_log_level'), 'format' => $format, 'forceImportForPrimaryKeys' => [$t_instance->getPrimaryKey()]]); 
 					}
 					
 					
@@ -1149,7 +1151,9 @@
 						$format = $t_mapping->getSetting('inputFormats');
 						if(is_array($format)) { $format = array_shift($format); }
 						if ($o_log) { $o_log->logDebug(_t('Using embedded media mapping %1 (format %2)', $t_mapping->get('importer_code'), $format)); }
-						ca_data_importers::importDataFromSource($vs_directory.'/'.$f, $vn_object_representation_mapping_id, ['logLevel' => $o_config->get('embedded_metadata_extraction_mapping_log_level'), 'format' => $format, 'forceImportForPrimaryKeys' => [$t_new_rep->getPrimaryKey()]]); 
+						
+						$t_importer = new ca_data_importers();
+						$t_importer->importDataFromSource($vs_directory.'/'.$f, $vn_object_representation_mapping_id, ['logLevel' => $o_config->get('embedded_metadata_extraction_mapping_log_level'), 'format' => $format, 'forceImportForPrimaryKeys' => [$t_new_rep->getPrimaryKey()]]); 
 					}
 
 					$va_notices[$t_instance->getPrimaryKey()] = array(
@@ -1367,7 +1371,8 @@
 			$vn_file_num = 0;
 			foreach($va_sources as $vs_source) {
 				$vn_file_num++;
-				if (!ca_data_importers::importDataFromSource($vs_source, $ps_importer, array('originalFilename' => caGetOption('originalFilename', $pa_options, null), 'fileNumber' => $vn_file_num, 'numberOfFiles' => sizeof($va_sources), 'logDirectory' => $o_config->get('batch_metadata_import_log_directory'), 'request' => $po_request,'format' => $ps_input_format, 'showCLIProgressBar' => false, 'useNcurses' => false, 'progressCallback' => isset($pa_options['progressCallback']) ? $pa_options['progressCallback'] : null, 'reportCallback' => isset($pa_options['reportCallback']) ? $pa_options['reportCallback'] : null,  'logDirectory' => $vs_log_dir, 'logLevel' => $vn_log_level, 'limitLogTo' => $limit_log_to, 'dryRun' => $vb_dry_run, 'importAllDatasets' => $vb_import_all_datasets))) {
+				$t_importer = new ca_data_importers();
+				if (!$t_importer->importDataFromSource($vs_source, $ps_importer, array('originalFilename' => caGetOption('originalFilename', $pa_options, null), 'fileNumber' => $vn_file_num, 'numberOfFiles' => sizeof($va_sources), 'logDirectory' => $o_config->get('batch_metadata_import_log_directory'), 'request' => $po_request,'format' => $ps_input_format, 'showCLIProgressBar' => false, 'progressCallback' => isset($pa_options['progressCallback']) ? $pa_options['progressCallback'] : null, 'reportCallback' => isset($pa_options['reportCallback']) ? $pa_options['reportCallback'] : null,  'logDirectory' => $vs_log_dir, 'logLevel' => $vn_log_level, 'limitLogTo' => $limit_log_to, 'dryRun' => $vb_dry_run, 'importAllDatasets' => $vb_import_all_datasets))) {
 					$va_errors['general'][] = array(
 						'idno' => "*",
 						'label' => "*",
