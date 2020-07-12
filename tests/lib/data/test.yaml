@@ -1,8 +1,9 @@
 a_scalar : "Hi there"
-a_translated_scalar : "_(Hej da!)"
+a_translated_scalar : "_('Hej da!')"
 a_scalar_starting_with_a_bracket : "[The bracket is part of the string]"
 a_scalar_using_a_macro : "<macro_scalar>"
 a_scalar_using_an_embedded_macro : 'This scalar is embedded: "<macro_scalar>"'
+a_scalar_using_an_embedded_constant : 'This scalar is embedded: __CA_LOCAL_CONFIG_DIRECTORY__'
 a_scalar_with_utf_8_chars : "Expreß zug: חי תהער"
 a_scalar_with_line_breaks : |
   Foo
@@ -11,7 +12,7 @@ a_scalar_with_line_breaks : |
 
 a_list : [clouds, rain, sun, gewitter]
 a_list_with_quoted_scalars : ["cloudy days", "rainy days, happy nights"]
-a_list_with_translated_scalars : ["_(red)", "_(blue)", "_(green)"]
+a_list_with_translated_scalars : ["_('red')", "_('blue')", "_('green')"]
 a_list_with_a_macro : ["<macro_scalar>", "and so it goes"]
 
 an_associative_list :

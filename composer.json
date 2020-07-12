@@ -37,6 +37,7 @@
   "require": {
     "ext-iconv": "*",
     "ext-simplexml": "*",
+    "ext-json": "*",
     "phpseclib/phpseclib": "^2.0"
   }
 }
