@@ -29,11 +29,12 @@
  *
  * ----------------------------------------------------------------------
  */
+
 use PHPUnit\Framework\TestCase;
 
 define("__CA_DISABLE_CONFIG_CACHING__", true);
 
-require_once(__CA_LIB_DIR__.'/ConfigurationYaml.php');
+require_once(__CA_LIB_DIR__ . '/ConfigurationYaml.php');
 
 class ConfigurationYamlTest extends TestCase {
     /**
@@ -43,7 +44,7 @@ class ConfigurationYamlTest extends TestCase {
 
     protected function setUp(): void {
         parent::setUp();
-        $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__.'/tests/lib/data/test.yaml', false, true);
+        $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test.yaml', false, true);
 
     }
 
@@ -142,7 +143,7 @@ class ConfigurationYamlTest extends TestCase {
 
         $va_keys = $this->o_config->getScalarKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(23, sizeof($va_keys));		// 12 in config file + 1 "LOCALE" value that's automatically inserted
+        $this->assertEquals(23, sizeof($va_keys));        // 12 in config file + 1 "LOCALE" value that's automatically inserted
         $va_keys = $this->o_config->getListKeys();
         $this->assertTrue(is_array($va_keys));
         $this->assertEquals(23, sizeof($va_keys));
@@ -151,5 +152,34 @@ class ConfigurationYamlTest extends TestCase {
         $this->assertEquals(23, sizeof($va_keys));
 
     }
+
+    public function testUpdateConfigFileListReturnsNullandEmpty() {
+        $va_config_file_list = array();
+        list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('config.yaml', $va_config_file_list);
+        $this->assertNull($vs_top_level_config_path);
+        $this->assertEmpty($va_config_file_list);
+    }
+    public function testUpdateConfigFileListReturnsLocalConfig() {
+        $va_config_file_list = array();
+        list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('local_config.yaml', $va_config_file_list);
+        $this->assertNotNull($vs_top_level_config_path);
+        $this->assertEquals(1, sizeof($va_config_file_list));
+        $this->assertStringEndsWith('tests/conf/local_config.yaml', $vs_top_level_config_path);
+    }
+    public function testUpdateConfigFileListReturnsThemeConfig() {
+        $va_config_file_list = array();
+        list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('theme_config.yaml', $va_config_file_list);
+        $this->assertNotNull($vs_top_level_config_path);
+        $this->assertEquals(1, sizeof($va_config_file_list));
+        $this->assertStringEndsWith('tests/conf/theme/theme_config.yaml', $vs_top_level_config_path);
+    }
+    public function testUpdateConfigFileListReturnsAppConfig() {
+        $va_config_file_list = array();
+        list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('app_config.yaml', $va_config_file_list);
+        $this->assertNotNull($vs_top_level_config_path);
+        $this->assertEquals(1, sizeof($va_config_file_list));
+        $this->assertStringEndsWith('tests/conf/app_config_collectiveaccess.yaml', $vs_top_level_config_path);
+    }
 }
+
 ?>

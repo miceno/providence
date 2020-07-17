@@ -57,7 +57,7 @@ class ConfigurationYaml extends Configuration {
 
         $vs_top_level_config_path = $this->ops_config_file_path;
         if (!$pb_dont_load_from_default_path) {
-            list($vs_top_level_config_path, $va_config_file_list) = $this->_updateConfigFileList($vs_config_filename, $va_config_file_list);
+            list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList($vs_config_filename, $va_config_file_list);
         }
         $o_config = (($vs_top_level_config_path===$this->ops_config_file_path) ? $this:static::load($vs_top_level_config_path, false, false, true));
 
@@ -247,11 +247,14 @@ class ConfigurationYaml extends Configuration {
     }
 
     /**
+     * Update configuration file list to include local, theme and app-specific configuration
+     * files.
+     *
      * @param string $vs_config_filename
      * @param array $va_config_file_list
      * @return array
      */
-    protected function _updateConfigFileList(string $vs_config_filename, array $va_config_file_list): array {
+    public static function _updateConfigFileList(string $vs_config_filename, array $va_config_file_list): array {
         $vs_top_level_config_path = null;
 
         if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists($local_config_path = __CA_LOCAL_CONFIG_DIRECTORY__ . '/' . $vs_config_filename)) {
