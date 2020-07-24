@@ -1391,7 +1391,7 @@
      * @return bool
      */
     function caIsGzipDisabled($vs_controller, $vs_action){
-        $conf = Configuration::load();
+        $conf = new Configuration();
         $va_disable_gzip = $conf->getAssoc('disable_gzip_on_controllers');
         if (($va_acl = caGetOption($vs_controller, $va_disable_gzip, null)) !== null){
             $va_actions = caGetOption('action', $va_acl, array());
