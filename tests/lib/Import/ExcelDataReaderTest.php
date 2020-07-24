@@ -98,6 +98,7 @@ class ExcelDataReaderTest extends TestCase {
 		$row = $this->reader->getRow();
 
 		// columns are 1-based, there is a null on position 0.
+        // Configuration sets ca_max_columns_delimited_files=3, so there is a max of 4 columns
 		$this->assertEquals( 4, sizeof( $row ) );
 
 	}
