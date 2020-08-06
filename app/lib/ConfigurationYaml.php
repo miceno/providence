@@ -389,7 +389,6 @@ class ConfigurationYaml extends Configuration {
     }
 
     protected function _interpolateScalar($ps_text) {
-        $ps_text = parent::_interpolateScalar($ps_text);
 
         if (preg_match_all("/<([A-Za-z0-9_\-\.]+)>/", $ps_text, $va_matches)) {
             foreach($va_matches[1] as $vs_key) {
@@ -400,9 +399,11 @@ class ConfigurationYaml extends Configuration {
         }
 
         // perform constant var substitution
-        if (preg_match("/^(__[A-Za-z0-9\_]+)(?=__)/", $ps_text, $va_matches)) {
-            if (defined($va_matches[1].'__')) {
-                $ps_text = str_replace($va_matches[1].'__', constant($va_matches[1].'__'), $ps_text);
+        if (preg_match("/(__[A-Za-z0-9\_]+__)/", $ps_text, $va_matches)) {
+
+            $vs_constant_name = $va_matches[1];
+            if (defined($vs_constant_name)) {
+                $ps_text = str_replace($vs_constant_name, constant($vs_constant_name), $ps_text);
             }
         }
 
@@ -415,7 +416,7 @@ class ConfigurationYaml extends Configuration {
                 foreach($va_matches as $vs_match) {
                     $vs_trans_text = preg_replace(caMakeDelimitedRegexp("_[t]?\([\"']+{$vs_match}[\"']\)"), _t($vs_match), $vs_trans_text);
                 }
-                return $vs_trans_text;
+                $ps_text = $vs_trans_text;
             }
         }
         return $ps_text;
