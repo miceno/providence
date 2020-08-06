@@ -82,7 +82,7 @@ class ConfigurationYaml extends Configuration {
         # try loading global.yaml file
         $vs_global_path = join("/", $va_config_path_components) . '/global.yaml';
         if (file_exists($vs_global_path)) {
-            $config = $this->loadFile($vs_global_path, false);
+            $this->loadFile($vs_global_path, false);
         }
 
         //
@@ -386,15 +386,6 @@ class ConfigurationYaml extends Configuration {
     public function getScalarKeys() {
         $this->ops_error = "";
         return @array_keys($this->ops_config_settings);
-    }
-
-    protected function _trimScalar($ps_scalar_value) {
-        if (preg_match("/^[ ]+$/", $ps_scalar_value)) {
-            $ps_scalar_value = " ";
-        } else {
-            $ps_scalar_value = trim($ps_scalar_value);
-        }
-        return $ps_scalar_value;
     }
 
     protected function _interpolateScalar($ps_text) {
