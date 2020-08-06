@@ -50,13 +50,13 @@ class ConfigurationYamlTest extends TestCase {
 
     public function testScalars() {
 
-        $this->assertEquals('Hi there', $this->o_config->get('a_scalar'));
-        $this->assertEquals('Hej da!', $this->o_config->get('a_translated_scalar'));
-        $this->assertEquals('[The bracket is part of the string]', $this->o_config->get('a_scalar_starting_with_a_bracket'));
-        $this->assertEquals('/usr/local/fish', $this->o_config->get('a_scalar_using_a_macro'));
-        $this->assertEquals('This scalar is embedded: "/usr/local/fish"', $this->o_config->get('a_scalar_using_an_embedded_macro'));
-        $this->assertEquals('Expreß zug: חי תהער', $this->o_config->get('a_scalar_with_utf_8_chars'));
-        $this->assertEquals("Foo\nHello\nWorld\n", $this->o_config->get('a_scalar_with_line_breaks'));
+        $this->assertEquals('Hi there', $this->o_config->getScalar('a_scalar'));
+        $this->assertEquals('Hej da!', $this->o_config->getScalar('a_translated_scalar'));
+        $this->assertEquals('[The bracket is part of the string]', $this->o_config->getScalar('a_scalar_starting_with_a_bracket'));
+        $this->assertEquals('/usr/local/fish', $this->o_config->getScalar('a_scalar_using_a_macro'));
+        $this->assertEquals('This scalar is embedded: "/usr/local/fish"', $this->o_config->getScalar('a_scalar_using_an_embedded_macro'));
+        $this->assertEquals('Expreß zug: חי תהער', $this->o_config->getScalar('a_scalar_with_utf_8_chars'));
+        $this->assertEquals("Foo\nHello\nWorld\n", $this->o_config->getScalar('a_scalar_with_line_breaks'));
     }
 
     public function testLists() {
@@ -75,24 +75,24 @@ class ConfigurationYamlTest extends TestCase {
 
         $va_array = $this->o_config->getList('a_list_with_translated_scalars');
         $this->assertEquals(sizeof($va_array), 3);
-        $this->assertEquals($va_array[0], 'red');
-        $this->assertEquals($va_array[1], 'blue');
-        $this->assertEquals($va_array[2], 'green');
+        $this->assertEquals('red', $va_array[0]);
+        $this->assertEquals('blue', $va_array[1]);
+        $this->assertEquals('green', $va_array[2]);
 
         $va_array = $this->o_config->getList('a_list_with_a_macro');
-        $this->assertEquals(sizeof($va_array), 2);
-        $this->assertEquals($va_array[0], '/usr/local/fish');
-        $this->assertEquals($va_array[1], 'and so it goes');
+        $this->assertEquals(2, sizeof($va_array));
+        $this->assertEquals('/usr/local/fish', $va_array[0]);
+        $this->assertEquals('and so it goes', $va_array[1]);
 
 
         $va_array = $this->o_config->getList('macro_list');
-        $this->assertEquals(sizeof($va_array), 3, 'Size of list defined in global.conf is not 3');
-        $this->assertEquals($va_array[0], 'flounder');
-        $this->assertEquals($va_array[1], 'lobster');
-        $this->assertEquals($va_array[2], 'haddock');
+        $this->assertEquals(3, sizeof($va_array), 'Size of list defined in global.conf is not 3');
+        $this->assertEquals('flounder', $va_array[0]);
+        $this->assertEquals('lobster', $va_array[1]);
+        $this->assertEquals('haddock', $va_array[2]);
 
         $va_array = $this->o_config->getList('a_list_with_embedded_brackets');
-        $this->assertEquals($va_array[0], 'Hello [there]');
+        $this->assertEquals('Hello [there]', $va_array[0]);
     }
 
     public function testAssocLists() {
@@ -143,13 +143,13 @@ class ConfigurationYamlTest extends TestCase {
 
         $va_keys = $this->o_config->getScalarKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(23, sizeof($va_keys));        // 12 in config file + 1 "LOCALE" value that's automatically inserted
+        $this->assertEquals(24, sizeof($va_keys));        // 12 in config file + 1 "LOCALE" value that's automatically inserted
         $va_keys = $this->o_config->getListKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(23, sizeof($va_keys));
+        $this->assertEquals(24, sizeof($va_keys));
         $va_keys = $this->o_config->getAssocKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(23, sizeof($va_keys));
+        $this->assertEquals(24, sizeof($va_keys));
 
     }
 
@@ -159,6 +159,7 @@ class ConfigurationYamlTest extends TestCase {
         $this->assertNull($vs_top_level_config_path);
         $this->assertEmpty($va_config_file_list);
     }
+
     public function testUpdateConfigFileListReturnsLocalConfig() {
         $va_config_file_list = array();
         list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('local_config.yaml', $va_config_file_list);
@@ -166,6 +167,7 @@ class ConfigurationYamlTest extends TestCase {
         $this->assertEquals(1, sizeof($va_config_file_list));
         $this->assertStringEndsWith('tests/conf/local_config.yaml', $vs_top_level_config_path);
     }
+
     public function testUpdateConfigFileListReturnsThemeConfig() {
         $va_config_file_list = array();
         list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('theme_config.yaml', $va_config_file_list);
@@ -173,6 +175,7 @@ class ConfigurationYamlTest extends TestCase {
         $this->assertEquals(1, sizeof($va_config_file_list));
         $this->assertStringEndsWith('tests/conf/theme/theme_config.yaml', $vs_top_level_config_path);
     }
+
     public function testUpdateConfigFileListReturnsAppConfig() {
         $va_config_file_list = array();
         list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('app_config.yaml', $va_config_file_list);
@@ -180,6 +183,11 @@ class ConfigurationYamlTest extends TestCase {
         $this->assertEquals(1, sizeof($va_config_file_list));
         $this->assertStringEndsWith('tests/conf/app_config_collectiveaccess.yaml', $vs_top_level_config_path);
     }
+
+    public function testInterpolateScalarWithConstant() {
+        $this->assertEquals('This scalar is embedded: ' . __CA_LOCAL_CONFIG_DIRECTORY__, $this->o_config->getScalar('a_scalar_using_an_embedded_constant'));
+    }
+
 }
 
 ?>
