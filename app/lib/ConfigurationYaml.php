@@ -118,6 +118,13 @@ class ConfigurationYaml extends Configuration {
         }
     }
 
+    /**
+     * @param mixed $pm_key
+     * @return array|false|mixed|string|null
+     */
+    public function get($pm_key) {
+        return $this->getValue($pm_key);
+    }
     /* ---------------------------------------- */
     /**
      * Parses CONF configuration file located at $ps_file_path.
@@ -302,7 +309,7 @@ class ConfigurationYaml extends Configuration {
         if (isset($this->ops_config_settings[$ps_key])) {
             return $this->ops_config_settings[$ps_key];
         } else {
-            return false;
+            return null;
         }
     }
     /* ---------------------------------------- */
