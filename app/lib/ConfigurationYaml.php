@@ -34,6 +34,7 @@
  *
  */
 
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 class ConfigurationYaml extends Configuration {
@@ -42,12 +43,12 @@ class ConfigurationYaml extends Configuration {
         global $g_ui_locale, $g_configuration_cache_suffix;
 
         # path to configuration file
-        $this->ops_config_file_path = $ps_file_path ? $ps_file_path:__CA_APP_CONFIG__;
+        $this->ops_config_file_path = $ps_file_path ? $ps_file_path : __CA_APP_CONFIG__;
 
         $va_config_file_list = [];
 
         // cache key for on-disk caching
-        $vs_path_as_md5 = md5($_SERVER['HTTP_HOST'] . $this->ops_config_file_path . '/' . $g_ui_locale . (isset($g_configuration_cache_suffix) ? '/' . $g_configuration_cache_suffix:''));
+        $vs_path_as_md5 = md5($_SERVER['HTTP_HOST'] . $this->ops_config_file_path . '/' . $g_ui_locale . (isset($g_configuration_cache_suffix) ? '/' . $g_configuration_cache_suffix : ''));
 
         #
         # Is configuration file already cached?
@@ -95,7 +96,7 @@ class ConfigurationYaml extends Configuration {
         # load specified config file
         #
         $vs_config_file_path = array_shift($va_config_file_list);
-        if (file_exists($vs_config_file_path) && $this->loadFile($vs_config_file_path, false, false)) {
+        if (file_exists($vs_config_file_path) && $this->loadFile($vs_config_file_path, $pb_die_on_error, null)) {
             $this->ops_config_file_path = $vs_config_file_path;
         }
 
@@ -103,7 +104,7 @@ class ConfigurationYaml extends Configuration {
         if (sizeof($va_config_file_list) > 0) {
             foreach ($va_config_file_list as $vs_config_file_path) {
                 if (file_exists($vs_config_file_path)) {
-                    $this->loadFile($vs_config_file_path, false, false, true);
+                    $this->loadFile($vs_config_file_path, $pb_die_on_error, null);
                 }
             }
         }
@@ -134,14 +135,14 @@ class ConfigurationYaml extends Configuration {
      * @param $pn_num_lines_to_read - if set to a positive integer, will abort parsing after the first $pn_num_lines_to_read lines of the config file are read. This is useful for reading in headers in config files without having to parse the entire file.
      * @return boolean - returns true if parse succeeded, false if parse failed
      */
-    public function loadFile($ps_filepath, $pb_die_on_error=false, $pn_num_lines_to_read=null) {
+    public function loadFile($ps_filepath, $pb_die_on_error = false, $pn_num_lines_to_read = null) {
         $yaml_config = $this->loadYaml($ps_filepath, $pb_die_on_error);
 
         $this->ops_config_settings = static::mergeAndReplaceConfig($this->ops_config_settings, $yaml_config);
         return true;
     }
 
-        /* ---------------------------------------- */
+    /* ---------------------------------------- */
     /**
      * Parses YAML configuration file located at $ps_file_path.
      *
@@ -292,7 +293,7 @@ class ConfigurationYaml extends Configuration {
      * @return string
      */
     public function getScalar($ps_key) {
-        return $this->getValue( $ps_key );
+        return $this->getValue($ps_key);
     }
     /* ---------------------------------------- */
     /**
@@ -324,7 +325,7 @@ class ConfigurationYaml extends Configuration {
      */
     public function getAssoc($ps_key) {
         $this->ops_error = "";
-        $assoc = $this->getValue( $ps_key );
+        $assoc = $this->getValue($ps_key);
         if (is_array($assoc)) {
             return $assoc;
         } else {
@@ -343,7 +344,7 @@ class ConfigurationYaml extends Configuration {
      */
     public function getList($ps_key) {
         $this->ops_error = "";
-        $list = $this->getValue( $ps_key );
+        $list = $this->getValue($ps_key);
         if (is_array($list)) {
             return $list;
         } else {
