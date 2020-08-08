@@ -143,19 +143,19 @@ class ConfigurationYamlTest extends TestCase {
 
         $va_keys = $this->o_config->getScalarKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(24, sizeof($va_keys));        // 12 in config file + 1 "LOCALE" value that's automatically inserted
+        $this->assertEquals(25, sizeof($va_keys));        // 24 in config file + 1 "LOCALE" value that's automatically inserted
         $va_keys = $this->o_config->getListKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(24, sizeof($va_keys));
+        $this->assertEquals(25, sizeof($va_keys));
         $va_keys = $this->o_config->getAssocKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(24, sizeof($va_keys));
+        $this->assertEquals(25, sizeof($va_keys));
 
     }
 
     public function testUpdateConfigFileListReturnsNullandEmpty() {
         $va_config_file_list = array();
-        list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('config.yaml', $va_config_file_list);
+        list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList('not_exists_config.yaml', $va_config_file_list);
         $this->assertNull($vs_top_level_config_path);
         $this->assertEmpty($va_config_file_list);
     }
@@ -186,6 +186,20 @@ class ConfigurationYamlTest extends TestCase {
 
     public function testInterpolateScalarWithConstant() {
         $this->assertEquals('This scalar is embedded: ' . __CA_LOCAL_CONFIG_DIRECTORY__, $this->o_config->getScalar('a_scalar_using_an_embedded_constant'));
+    }
+
+    public function testUpdateInheritedConfigFileList() {
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_with_inheritance.yaml', true, false);
+
+        $this->assertNotNull($o_config);
+        self::markTestIncomplete();
+    }
+
+    public function testLoadCached() {
+        self::markTestIncomplete();
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_with_inheritance.yaml', false, false);
+
+        $this->assertNotNull($o_config);
     }
 
 }
