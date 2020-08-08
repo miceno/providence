@@ -57,9 +57,10 @@ class ConfigurationYaml extends Configuration {
 
         $vs_top_level_config_path = $this->ops_config_file_path;
         if (!$pb_dont_load_from_default_path) {
-            list($vs_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList($vs_config_filename, $va_config_file_list);
+            list($vs_proposed_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList($vs_config_filename, $va_config_file_list);
+            $vs_top_level_config_path = $vs_proposed_top_level_config_path===null ? $this->ops_config_file_path : $vs_proposed_top_level_config_path;
         }
-        $o_config = (($vs_top_level_config_path===$this->ops_config_file_path) ? $this:static::load($vs_top_level_config_path, false, false, true));
+        $o_config = (($vs_top_level_config_path===$this->ops_config_file_path) ? $this : static::load($vs_top_level_config_path, false, false, true));
 
         $vs_filename = pathinfo($ps_file_path, PATHINFO_BASENAME);
         if (($vb_inherit_config = $o_config->get('allowThemeInheritance')) && !$pb_dont_load_from_default_path) {
