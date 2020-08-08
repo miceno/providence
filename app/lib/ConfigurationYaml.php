@@ -398,16 +398,16 @@ class ConfigurationYaml extends Configuration {
 
     protected function _interpolateScalar($ps_text) {
 
-        if (preg_match_all("/<([A-Za-z0-9_\-\.]+)>/", $ps_text, $va_matches)) {
-            foreach($va_matches[1] as $vs_key) {
-                if (($vs_val = $this->getScalar($vs_key)) !== false) {
+        if (preg_match_all("/<([A-Za-z0-9_\-.]+)>/", $ps_text, $va_matches)) {
+            foreach ($va_matches[1] as $vs_key) {
+                if (($vs_val = $this->getScalar($vs_key))!==false) {
                     $ps_text = preg_replace("/<$vs_key>/", $vs_val, $ps_text);
                 }
             }
         }
 
         // perform constant var substitution
-        if (preg_match("/(__[A-Za-z0-9\_]+__)/", $ps_text, $va_matches)) {
+        if (preg_match("/(__[A-Za-z0-9_]+__)/", $ps_text, $va_matches)) {
 
             $vs_constant_name = $va_matches[1];
             if (defined($vs_constant_name)) {
@@ -417,11 +417,11 @@ class ConfigurationYaml extends Configuration {
 
         // attempt translation if text is enclosed in _( and ) ... for example _t(translate me)
         // assumes translation function _t() is present; if not loaded will not attempt translation
-        if (preg_match("/_[t]?\([\"']+([^\)]+)[\"']\)/", $ps_text, $va_matches)) {
-            if(function_exists('_t')) {
+        if (preg_match("/_[t]?\([\"']+([^)]+)[\"']\)/", $ps_text, $va_matches)) {
+            if (function_exists('_t')) {
                 $vs_trans_text = $ps_text;
                 array_shift($va_matches);
-                foreach($va_matches as $vs_match) {
+                foreach ($va_matches as $vs_match) {
                     $vs_trans_text = preg_replace(caMakeDelimitedRegexp("_[t]?\([\"']+{$vs_match}[\"']\)"), _t($vs_match), $vs_trans_text);
                 }
                 $ps_text = $vs_trans_text;
