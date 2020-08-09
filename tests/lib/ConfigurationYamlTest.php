@@ -59,19 +59,19 @@ class ConfigurationYamlTest extends BaseTestClearCache {
 
     public function testLists() {
         $va_array = $this->o_config->getList('a_list');
-        $this->assertEquals(sizeof($va_array), 4);
-        $this->assertEquals($va_array[0], 'clouds');
-        $this->assertEquals($va_array[1], 'rain');
-        $this->assertEquals($va_array[2], 'sun');
-        $this->assertEquals($va_array[3], 'gewitter');
+        $this->assertEquals(4, sizeof($va_array));
+        $this->assertEquals('clouds', $va_array[0]);
+        $this->assertEquals('rain', $va_array[1]);
+        $this->assertEquals('sun', $va_array[2]);
+        $this->assertEquals('gewitter', $va_array[3]);
 
         $va_array = $this->o_config->getList('a_list_with_quoted_scalars');
-        $this->assertEquals(sizeof($va_array), 2);
-        $this->assertEquals($va_array[0], 'cloudy days');
-        $this->assertEquals($va_array[1], 'rainy days, happy nights');
+        $this->assertEquals(2, sizeof($va_array));
+        $this->assertEquals('cloudy days', $va_array[0]);
+        $this->assertEquals('rainy days, happy nights', $va_array[1]);
 
         $va_array = $this->o_config->getList('a_list_with_translated_scalars');
-        $this->assertEquals(sizeof($va_array), 3);
+        $this->assertEquals(3, sizeof($va_array));
         $this->assertEquals('red', $va_array[0]);
         $this->assertEquals('blue', $va_array[1]);
         $this->assertEquals('green', $va_array[2]);
@@ -93,31 +93,31 @@ class ConfigurationYamlTest extends BaseTestClearCache {
 
     public function testAssocLists() {
         $va_assoc = $this->o_config->getAssoc('an_associative_list');
-        $this->assertEquals(sizeof(array_keys($va_assoc)), 1);
-        $this->assertEquals(sizeof(array_keys($va_assoc['key 1'])), 5);
-        $this->assertEquals($va_assoc['key 1']['subkey1'], 1);
-        $this->assertEquals($va_assoc['key 1']['subkey2'], 2);
+        $this->assertEquals(1, sizeof(array_keys($va_assoc)));
+        $this->assertEquals(5, sizeof(array_keys($va_assoc['key 1'])));
+        $this->assertEquals(1, $va_assoc['key 1']['subkey1']);
+        $this->assertEquals(2, $va_assoc['key 1']['subkey2']);
         $this->assertTrue(is_array($va_assoc['key 1']['subkey3']));
-        $this->assertEquals($va_assoc['key 1']['subkey3']['subsubkey1'], 'at the bottom of the hole');
-        $this->assertEquals($va_assoc['key 1']['subkey3']['subsubkey2'], 'this is a quoted string');
+        $this->assertEquals('at the bottom of the hole', $va_assoc['key 1']['subkey3']['subsubkey1']);
+        $this->assertEquals('this is a quoted string', $va_assoc['key 1']['subkey3']['subsubkey2']);
         $this->assertTrue(is_array($va_assoc['key 1']['subkey4']));
-        $this->assertEquals($va_assoc['key 1']['subkey4'][0], 'Providence');
-        $this->assertEquals($va_assoc['key 1']['subkey4'][1], 'Pawtucket');
-        $this->assertEquals($va_assoc['key 1']['subkey4'][2], 'Woonsocket');
-        $this->assertEquals($va_assoc['key 1']['subkey4'][3], 'Narragansett');
-        $this->assertEquals($va_assoc['key 1']['subkey5'], '/usr/local/fish');
+        $this->assertEquals('Providence', $va_assoc['key 1']['subkey4'][0]);
+        $this->assertEquals('Pawtucket', $va_assoc['key 1']['subkey4'][1]);
+        $this->assertEquals('Woonsocket', $va_assoc['key 1']['subkey4'][2]);
+        $this->assertEquals('Narragansett', $va_assoc['key 1']['subkey4'][3]);
+        $this->assertEquals('/usr/local/fish', $va_assoc['key 1']['subkey5']);
 
         $va_assoc = $this->o_config->getAssoc('macro_assoc');
-        $this->assertEquals(sizeof(array_keys($va_assoc)), 3);
-        $this->assertEquals(sizeof(array_keys($va_assoc['fish'])), 3);
-        $this->assertEquals(sizeof(array_keys($va_assoc['shellfish'])), 3);
-        $this->assertEquals(sizeof(array_keys($va_assoc['other'])), 3);
-        $this->assertEquals($va_assoc['fish'][0], 'flounder');
-        $this->assertEquals($va_assoc['shellfish'][0], 'scallop');
-        $this->assertEquals($va_assoc['other'][0], 'chicken');
+        $this->assertEquals(3, sizeof(array_keys($va_assoc)));
+        $this->assertEquals(3, sizeof(array_keys($va_assoc['fish'])));
+        $this->assertEquals(3, sizeof(array_keys($va_assoc['shellfish'])));
+        $this->assertEquals(3, sizeof(array_keys($va_assoc['other'])));
+        $this->assertEquals('flounder', $va_assoc['fish'][0]);
+        $this->assertEquals('scallop', $va_assoc['shellfish'][0]);
+        $this->assertEquals('chicken', $va_assoc['other'][0]);
 
         $va_assoc = $this->o_config->getAssoc('an_assoc_list_with_embedded_brackets');
-        $this->assertEquals($va_assoc['test'], 'Hello {there}');
+        $this->assertEquals('Hello {there}', $va_assoc['test']);
     }
 
     public function testBoolean() {
