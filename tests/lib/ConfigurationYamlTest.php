@@ -30,11 +30,11 @@
  * ----------------------------------------------------------------------
  */
 
-
 define("__CA_DISABLE_CONFIG_CACHING__", true);
 
 require_once(__CA_LIB_DIR__ . '/ConfigurationYaml.php');
-require_once(__CA_BASE_DIR__.'/tests/BaseTestClearCache.php');
+require_once(__CA_BASE_DIR__ . '/tests/BaseTestClearCache.php');
+
 
 class ConfigurationYamlTest extends BaseTestClearCache {
     /**
@@ -45,11 +45,9 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     protected function setUp(): void {
         parent::setUp();
         $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test.yaml', true, true);
-
     }
 
     public function testScalars() {
-
         $this->assertEquals('Hi there', $this->o_config->getScalar('a_scalar'));
         $this->assertEquals('Hej da!', $this->o_config->getScalar('a_translated_scalar'));
         $this->assertEquals('[The bracket is part of the string]', $this->o_config->getScalar('a_scalar_starting_with_a_bracket'));
@@ -60,7 +58,6 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     }
 
     public function testLists() {
-
         $va_array = $this->o_config->getList('a_list');
         $this->assertEquals(sizeof($va_array), 4);
         $this->assertEquals($va_array[0], 'clouds');
@@ -84,7 +81,6 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $this->assertEquals('/usr/local/fish', $va_array[0]);
         $this->assertEquals('and so it goes', $va_array[1]);
 
-
         $va_array = $this->o_config->getList('macro_list');
         $this->assertEquals(3, sizeof($va_array), 'Size of list defined in global.conf is not 3');
         $this->assertEquals('flounder', $va_array[0]);
@@ -96,7 +92,6 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     }
 
     public function testAssocLists() {
-
         $va_assoc = $this->o_config->getAssoc('an_associative_list');
         $this->assertEquals(sizeof(array_keys($va_assoc)), 1);
         $this->assertEquals(sizeof(array_keys($va_assoc['key 1'])), 5);
@@ -126,7 +121,6 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     }
 
     public function testBoolean() {
-
         $vb_scalar = $this->o_config->getBoolean('boolean_yes');
         $this->assertTrue($vb_scalar);
         $vb_scalar = $this->o_config->getBoolean('boolean_ja');
@@ -140,7 +134,6 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     }
 
     public function testMisc() {
-
         $va_keys = $this->o_config->getScalarKeys();
         $this->assertTrue(is_array($va_keys));
         $this->assertEquals(25, sizeof($va_keys));        // 24 in config file + 1 "LOCALE" value that's automatically inserted
@@ -150,7 +143,6 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $va_keys = $this->o_config->getAssocKeys();
         $this->assertTrue(is_array($va_keys));
         $this->assertEquals(25, sizeof($va_keys));
-
     }
 
     public function testUpdateConfigFileListReturnsNullandEmpty() {
@@ -188,20 +180,4 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $this->assertEquals('This scalar is embedded: ' . __CA_LOCAL_CONFIG_DIRECTORY__, $this->o_config->getScalar('a_scalar_using_an_embedded_constant'));
     }
 
-    public function testUpdateInheritedConfigFileList() {
-        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_with_inheritance.yaml', true, false);
-
-        $this->assertNotNull($o_config);
-        self::markTestIncomplete();
-    }
-
-    public function testLoadCached() {
-        self::markTestIncomplete();
-        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_with_inheritance.yaml', false, false);
-
-        $this->assertNotNull($o_config);
-    }
-
 }
-
-?>
