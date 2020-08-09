@@ -30,13 +30,13 @@
  * ----------------------------------------------------------------------
  */
 
-use PHPUnit\Framework\TestCase;
 
 define("__CA_DISABLE_CONFIG_CACHING__", true);
 
 require_once(__CA_LIB_DIR__ . '/ConfigurationYaml.php');
+require_once(__CA_BASE_DIR__.'/tests/BaseTestClearCache.php');
 
-class ConfigurationYamlTest extends TestCase {
+class ConfigurationYamlTest extends BaseTestClearCache {
     /**
      * @var ConfigurationYaml
      */
@@ -44,7 +44,7 @@ class ConfigurationYamlTest extends TestCase {
 
     protected function setUp(): void {
         parent::setUp();
-        $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test.yaml', false, true);
+        $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test.yaml', true, true);
 
     }
 

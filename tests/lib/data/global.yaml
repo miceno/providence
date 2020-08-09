@@ -1,7 +1,9 @@
+override_value: "global"
+
 macro_scalar : /usr/local/fish
 macro_list : [flounder, lobster, haddock]
 macro_assoc : {
-	fish : [flounder, cod, haddock],
-	shellfish : [scallop, crab, clam],
-	other : [chicken, pig, cow]
+  fish : [flounder, cod, haddock],
+  shellfish : [scallop, crab, clam],
+  other : [chicken, pig, cow]
 }
