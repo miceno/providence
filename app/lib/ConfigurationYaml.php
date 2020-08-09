@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * ----------------------------------------------------------------------
  * ConfigurationYaml.php
@@ -93,14 +92,12 @@ class ConfigurationYaml extends Configuration {
 
         $vs_filename = pathinfo($ps_file_path, PATHINFO_BASENAME);
         if (($vb_inherit_config = $o_config->get('allowThemeInheritance')) && !$pb_dont_load_from_default_path) {
-
             $va_config_file_list = $this->_updateInheritedConfigFileList($o_config, $vs_filename, $va_config_file_list);
         }
         array_unshift($va_config_file_list, $this->ops_config_file_path);
 
         // try to figure out if we can get it from cache
         if ((!defined('__CA_DISABLE_CONFIG_CACHING__') || !__CA_DISABLE_CONFIG_CACHING__) && !$pb_dont_cache) {
-
             if (self::_loadConfigFromCache($vs_path_as_md5, $va_config_file_list)) {
                 return;
             }
@@ -112,7 +109,7 @@ class ConfigurationYaml extends Configuration {
         # try loading global.yaml file
         $vs_global_path = join("/", $va_config_path_components) . '/global.yaml';
         if (file_exists($vs_global_path)) {
-            $this->loadFile($vs_global_path, false);
+            $this->loadFile($vs_global_path, $pb_die_on_error);
         }
 
         //
@@ -127,7 +124,6 @@ class ConfigurationYaml extends Configuration {
         if (file_exists($vs_config_file_path) && $this->loadFile($vs_config_file_path, $pb_die_on_error, null)) {
             $this->ops_config_file_path = $vs_config_file_path;
         }
-
 
         if (sizeof($va_config_file_list) > 0) {
             foreach ($va_config_file_list as $vs_config_file_path) {
@@ -148,106 +144,32 @@ class ConfigurationYaml extends Configuration {
     }
 
     /**
-     * @param mixed $pm_key
-     * @return array|false|mixed|string|null
-     */
-    public function get($pm_key) {
-        return $this->getValue($pm_key);
-    }
-    /* ---------------------------------------- */
-    /**
-     * Parses CONF configuration file located at $ps_file_path.
+     * Update configuration file list to include local, theme and app-specific configuration
+     * files.
      *
-     * @param $ps_filepath - absolute path to configuration file to parse
-     * @param $pb_die_on_error - if true, die() will be called on parse error halting request; default is false
-     * @param $pn_num_lines_to_read - if set to a positive integer, will abort parsing after the first $pn_num_lines_to_read lines of the config file are read. This is useful for reading in headers in config files without having to parse the entire file.
-     * @return boolean - returns true if parse succeeded, false if parse failed
-     */
-    public function loadFile($ps_filepath, $pb_die_on_error = false, $pn_num_lines_to_read = null) {
-        $yaml_config = $this->loadYaml($ps_filepath, $pb_die_on_error);
-
-        $this->ops_config_settings = static::mergeAndReplaceConfig($this->ops_config_settings, $yaml_config);
-        return true;
-    }
-
-    /* ---------------------------------------- */
-    /**
-     * Parses YAML configuration file located at $ps_file_path.
-     *
-     * @param $ps_filepath - absolute path to configuration file to parse
-     * @param $pb_die_on_error - if true, die() will be called on parse error halting request; default is false
-     * @return boolean - returns true if parse succeeded, false if parse failed
-     */
-    public function loadYaml($ps_filepath, $pb_die_on_error = false) {
-
-        try {
-            $config = Yaml::parseFile($ps_filepath, Yaml::PARSE_CONSTANT);
-            // Interpolate recursively
-            array_walk_recursive($config, function (&$value) {
-                $value = $this->_interpolateScalar($value);
-            });
-        } catch (ParseException $e) {
-            $this->ops_error = "Couldn't open configuration file '" . $ps_filepath . "'";
-            if ($pb_die_on_error) {
-                $this->_dieOnError();
-            }
-            return false;
-        }
-
-        return $config;
-
-    }
-
-    /* ---------------------------------------- */
-    /**
-     * Merge two configurations.
-     *
-     * @param $left
-     * @param $right
+     * @param string $vs_config_filename
+     * @param array $va_config_file_list
      * @return array
      */
-    static public function mergeConfig($left, $right) {
-        return array_merge_recursive($left, $right);
+    public static function _updateConfigFileList(string $vs_config_filename, array $va_config_file_list): array {
+        $vs_top_level_config_path = null;
+
+        if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists($local_config_path = __CA_LOCAL_CONFIG_DIRECTORY__ . '/' . $vs_config_filename)) {
+            $va_config_file_list[] = $vs_top_level_config_path = $local_config_path;
+        }
+
+        // Theme config overrides local config
+        if (defined('__CA_DEFAULT_THEME_CONFIG_DIRECTORY__') && file_exists($theme_config_path = __CA_DEFAULT_THEME_CONFIG_DIRECTORY__ . '/' . $vs_config_filename)) {
+            $va_config_file_list[] = $vs_top_level_config_path = __CA_DEFAULT_THEME_CONFIG_DIRECTORY__ . '/' . $vs_config_filename;
+        }
+
+        // Appname-specific config overrides local config
+        if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists($appname_specific_path = __CA_LOCAL_CONFIG_DIRECTORY__ . '/' . pathinfo($vs_config_filename, PATHINFO_FILENAME) . '_' . __CA_APP_NAME__ . '.' . pathinfo($vs_config_filename, PATHINFO_EXTENSION))) {
+            $va_config_file_list[] = $vs_top_level_config_path = $appname_specific_path;
+        }
+        return array($vs_top_level_config_path, $va_config_file_list);
     }
     /* ---------------------------------------- */
-    /**
-     * Merge with replace two configurations.
-     *
-     * @param $left
-     * @param $right
-     * @return array
-     */
-    static public function mergeAndReplaceConfig($left, $right) {
-        return array_replace_recursive($left, $right);
-    }
-
-    protected function _loadConfigFromCache(string $vs_path_as_md5, array $va_config_file_list) {
-        self::loadConfigCacheInMemory();
-
-        if ($vb_setup_has_changed = caSetupPhpHasChanged()) {
-            self::clearCache();
-        }
-
-        if (!$vb_setup_has_changed && isset(self::$s_config_cache[$vs_path_as_md5])) {
-            $vb_cache_is_invalid = false;
-
-            foreach ($va_config_file_list as $vs_config_file_path) {
-                $vs_config_mtime = caGetFileMTime($vs_config_file_path);
-                if ($vs_config_mtime!=self::$s_config_cache[$k = 'mtime_' . $vs_path_as_md5 . md5($vs_config_file_path)]) { // config file has changed
-                    self::$s_config_cache[$k] = $vs_config_mtime;
-                    $vb_cache_is_invalid = true;
-                    break;
-                }
-            }
-
-            if (!$vb_cache_is_invalid) { // cache is ok
-                $this->ops_config_settings = self::$s_config_cache[$vs_path_as_md5];
-                $this->ops_md5_path = md5($this->ops_config_file_path);
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Update theme configuration file list if configuration inheritance is enabled.
@@ -283,150 +205,82 @@ class ConfigurationYaml extends Configuration {
         return $va_config_file_list;
     }
 
-    /**
-     * Update configuration file list to include local, theme and app-specific configuration
-     * files.
-     *
-     * @param string $vs_config_filename
-     * @param array $va_config_file_list
-     * @return array
-     */
-    public static function _updateConfigFileList(string $vs_config_filename, array $va_config_file_list): array {
-        $vs_top_level_config_path = null;
+    /* ---------------------------------------- */
 
-        if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists($local_config_path = __CA_LOCAL_CONFIG_DIRECTORY__ . '/' . $vs_config_filename)) {
-            $va_config_file_list[] = $vs_top_level_config_path = $local_config_path;
+    protected function _loadConfigFromCache(string $vs_path_as_md5, array $va_config_file_list) {
+        self::loadConfigCacheInMemory();
+
+        if ($vb_setup_has_changed = caSetupPhpHasChanged()) {
+            self::clearCache();
         }
 
-        // Theme config overrides local config
-        if (defined('__CA_DEFAULT_THEME_CONFIG_DIRECTORY__') && file_exists($theme_config_path = __CA_DEFAULT_THEME_CONFIG_DIRECTORY__ . '/' . $vs_config_filename)) {
-            $va_config_file_list[] = $vs_top_level_config_path = __CA_DEFAULT_THEME_CONFIG_DIRECTORY__ . '/' . $vs_config_filename;
-        }
+        if (!$vb_setup_has_changed && isset(self::$s_config_cache[$vs_path_as_md5])) {
+            $vb_cache_is_invalid = false;
 
-        // Appname-specific config overrides local config
-        if (defined('__CA_LOCAL_CONFIG_DIRECTORY__') && file_exists($appname_specific_path = __CA_LOCAL_CONFIG_DIRECTORY__ . '/' . pathinfo($vs_config_filename, PATHINFO_FILENAME) . '_' . __CA_APP_NAME__ . '.' . pathinfo($vs_config_filename, PATHINFO_EXTENSION))) {
-            $va_config_file_list[] = $vs_top_level_config_path = $appname_specific_path;
+            foreach ($va_config_file_list as $vs_config_file_path) {
+                $vs_config_mtime = caGetFileMTime($vs_config_file_path);
+                if ($vs_config_mtime!=self::$s_config_cache[$k = 'mtime_' . $vs_path_as_md5 . md5($vs_config_file_path)]) { // config file has changed
+                    self::$s_config_cache[$k] = $vs_config_mtime;
+                    $vb_cache_is_invalid = true;
+                    break;
+                }
+            }
+
+            if (!$vb_cache_is_invalid) { // cache is ok
+                $this->ops_config_settings = self::$s_config_cache[$vs_path_as_md5];
+                $this->ops_md5_path = md5($this->ops_config_file_path);
+                return true;
+            }
         }
-        return array($vs_top_level_config_path, $va_config_file_list);
+        return false;
     }
 
     /* ---------------------------------------- */
+
     /**
-     * Get scalar configuration value
+     * Parses CONF configuration file located at $ps_file_path.
      *
-     * @param string $ps_key Name of scalar configuration value to get. get() will look for the
-     * configuration value only as a scalar. Like-named list or associative array values are
-     * ignored.
-     *
-     * @return string
+     * @param $ps_filepath - absolute path to configuration file to parse
+     * @param $pb_die_on_error - if true, die() will be called on parse error halting request; default is false
+     * @param $pn_num_lines_to_read - if set to a positive integer, will abort parsing after the first $pn_num_lines_to_read lines of the config file are read. This is useful for reading in headers in config files without having to parse the entire file.
+     * @return boolean - returns true if parse succeeded, false if parse failed
      */
-    public function getScalar($ps_key) {
-        return $this->getValue($ps_key);
+    public function loadFile($ps_filepath, $pb_die_on_error = false, $pn_num_lines_to_read = null) {
+        $yaml_config = $this->loadYaml($ps_filepath, $pb_die_on_error);
+
+        if (!is_null($yaml_config)) {
+            $this->ops_config_settings = static::mergeAndReplaceConfig($this->ops_config_settings, $yaml_config);
+        }
+        return true;
     }
     /* ---------------------------------------- */
+
     /**
-     * Get configuration value
+     * Parses YAML configuration file located at $ps_file_path.
      *
-     * @param string $ps_key Name of  configuration value to get. getValue() will look for the
-     * configuration value only as a scalar. Like-named list or associative array values are
-     * ignored.
-     *
-     * @return string
+     * @param $ps_filepath - absolute path to configuration file to parse
+     * @param $pb_die_on_error - if true, die() will be called on parse error halting request; default is false
+     * @return boolean - returns true if parse succeeded, false if parse failed
      */
-    public function getValue($ps_key) {
-        $this->ops_error = "";
-        if (isset($this->ops_config_settings[$ps_key])) {
-            return $this->ops_config_settings[$ps_key];
-        } else {
+    public function loadYaml($ps_filepath, $pb_die_on_error = false) {
+        try {
+            $config = Yaml::parseFile($ps_filepath, Yaml::PARSE_CONSTANT);
+            // Interpolate recursively
+            array_walk_recursive($config, function (&$value) {
+                $value = $this->_interpolateScalar($value);
+            });
+        } catch (ParseException $e) {
+            $this->ops_error = "Couldn't open configuration file '" . $ps_filepath . "'\n" . $e->getMessage();
+            if ($pb_die_on_error) {
+                $this->_dieOnError();
+            }
             return null;
         }
-    }
-    /* ---------------------------------------- */
-    /**
-     * Get associative configuration value
-     *
-     * @param string $ps_key Name of associative configuration value to get. get() will look for the
-     * configuration value only as an associative array. Like-named scalar or list values are
-     * ignored.
-     *
-     * @return array An associative array
-     */
-    public function getAssoc($ps_key) {
-        $this->ops_error = "";
-        $assoc = $this->getValue($ps_key);
-        if (is_array($assoc)) {
-            return $assoc;
-        } else {
-            return null;
-        }
-    }
-    /* ---------------------------------------- */
-    /**
-     * Get list configuration value
-     *
-     * @param string $ps_key Name of list configuration value to get. get() will look for the
-     * configuration value only as a list. Like-named scalar or associative array values are
-     * ignored.
-     *
-     * @return array An indexed array
-     */
-    public function getList($ps_key) {
-        $this->ops_error = "";
-        $list = $this->getValue($ps_key);
-        if (is_array($list)) {
-            return $list;
-        } else {
-            return null;
-        }
-    }
-    /* ---------------------------------------- */
-    /**
-     * Return currently loaded configuration file as JSON
-     *
-     * @return string
-     */
-    public function toJson() {
-        return caFormatJson(json_encode($this->ops_config_settings));
-    }
 
-    /* ---------------------------------------- */
-    /**
-     * Get keys for associative values
-     *
-     *
-     * @return array List of all possible keys for associative values
-     */
-    public function getAssocKeys() {
-        $this->ops_error = "";
-        return @array_keys($this->ops_config_settings);
-    }
-
-    /* ---------------------------------------- */
-    /**
-     * Get keys for list values
-     *
-     *
-     * @return array List of all possible keys for list values
-     */
-    public function getListKeys() {
-        $this->ops_error = "";
-        return @array_keys($this->ops_config_settings);
-    }
-
-    /* ---------------------------------------- */
-    /**
-     * Get keys for scalar values
-     *
-     *
-     * @return array List of all possible keys for scalar values
-     */
-    public function getScalarKeys() {
-        $this->ops_error = "";
-        return @array_keys($this->ops_config_settings);
+        return $config;
     }
 
     protected function _interpolateScalar($ps_text) {
-
         if (preg_match_all("/<([A-Za-z0-9_\-.]+)>/", $ps_text, $va_matches)) {
             foreach ($va_matches[1] as $vs_key) {
                 if (($vs_val = $this->getScalar($vs_key))!==false) {
@@ -437,7 +291,6 @@ class ConfigurationYaml extends Configuration {
 
         // perform constant var substitution
         if (preg_match("/(__[A-Za-z0-9_]+__)/", $ps_text, $va_matches)) {
-
             $vs_constant_name = $va_matches[1];
             if (defined($vs_constant_name)) {
                 $ps_text = str_replace($vs_constant_name, constant($vs_constant_name), $ps_text);
@@ -457,5 +310,158 @@ class ConfigurationYaml extends Configuration {
             }
         }
         return $ps_text;
+    }
+
+    /**
+     * Get scalar configuration value
+     *
+     * @param string $ps_key Name of scalar configuration value to get. get() will look for the
+     * configuration value only as a scalar. Like-named list or associative array values are
+     * ignored.
+     *
+     * @return string
+     */
+    public function getScalar($ps_key) {
+        return $this->getValue($ps_key);
+    }
+
+    /**
+     * Get configuration value
+     *
+     * @param string $ps_key Name of  configuration value to get. getValue() will look for the
+     * configuration value only as a scalar. Like-named list or associative array values are
+     * ignored.
+     *
+     * @return string
+     */
+    public function getValue($ps_key) {
+        $this->ops_error = "";
+        if (isset($this->ops_config_settings[$ps_key])) {
+            return $this->ops_config_settings[$ps_key];
+        } else {
+            return null;
+        }
+    }
+
+    /* ---------------------------------------- */
+
+    /**
+     * Merge with replace two configurations.
+     *
+     * @param $left
+     * @param $right
+     * @return array
+     */
+    static public function mergeAndReplaceConfig($left, $right) {
+        return array_replace_recursive($left, $right);
+    }
+    /* ---------------------------------------- */
+
+    /**
+     * Merge two configurations.
+     *
+     * @param $left
+     * @param $right
+     * @return array
+     */
+    static public function mergeConfig($left, $right) {
+        return array_merge_recursive($left, $right);
+    }
+    /* ---------------------------------------- */
+
+    /**
+     * @param mixed $pm_key
+     * @return array|false|mixed|string|null
+     */
+    public function get($pm_key) {
+        return $this->getValue($pm_key);
+    }
+    /* ---------------------------------------- */
+
+    /**
+     * Get associative configuration value
+     *
+     * @param string $ps_key Name of associative configuration value to get. get() will look for the
+     * configuration value only as an associative array. Like-named scalar or list values are
+     * ignored.
+     *
+     * @return array An associative array
+     */
+    public function getAssoc($ps_key) {
+        $this->ops_error = "";
+        $assoc = $this->getValue($ps_key);
+        if (is_array($assoc)) {
+            return $assoc;
+        } else {
+            return null;
+        }
+    }
+    /* ---------------------------------------- */
+
+    /**
+     * Get list configuration value
+     *
+     * @param string $ps_key Name of list configuration value to get. get() will look for the
+     * configuration value only as a list. Like-named scalar or associative array values are
+     * ignored.
+     *
+     * @return array An indexed array
+     */
+    public function getList($ps_key) {
+        $this->ops_error = "";
+        $list = $this->getValue($ps_key);
+        if (is_array($list)) {
+            return $list;
+        } else {
+            return null;
+        }
+    }
+
+    /* ---------------------------------------- */
+
+    /**
+     * Return currently loaded configuration file as JSON
+     *
+     * @return string
+     */
+    public function toJson() {
+        return caFormatJson(json_encode($this->ops_config_settings));
+    }
+
+    /* ---------------------------------------- */
+
+    /**
+     * Get keys for associative values
+     *
+     *
+     * @return array List of all possible keys for associative values
+     */
+    public function getAssocKeys() {
+        $this->ops_error = "";
+        return @array_keys($this->ops_config_settings);
+    }
+
+    /* ---------------------------------------- */
+
+    /**
+     * Get keys for list values
+     *
+     *
+     * @return array List of all possible keys for list values
+     */
+    public function getListKeys() {
+        $this->ops_error = "";
+        return @array_keys($this->ops_config_settings);
+    }
+
+    /**
+     * Get keys for scalar values
+     *
+     *
+     * @return array List of all possible keys for scalar values
+     */
+    public function getScalarKeys() {
+        $this->ops_error = "";
+        return @array_keys($this->ops_config_settings);
     }
 }
