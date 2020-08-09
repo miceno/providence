@@ -32,6 +32,34 @@
  *
  * ----------------------------------------------------------------------
  *
+ * A configuration class that reads configuration from a YAML file.
+ *
+ * In addition to Symfony YAML syntax, it allows some more features:
+ *  - interpolation of translated strings. For example:
+ *
+ *          yaml_key: "_t('hello')"
+ *          yaml_another_key: "_('hello')"
+ *
+ *  - interpolation of macro (configuration variables). For example:
+ *
+ *          previously_defined_variable: value
+ *          yaml_key: <previously_defined_variable>
+ *
+ *  - interpolation of PHP constants. For example:
+ *
+ *          yaml_key: __XXXXXXX__
+ *
+ * YAML files are searched in the following order:
+ *
+ *  1. yaml file
+ *  2. __CA_APP_CONF/yaml_file.yaml
+ *  3. __CA_LOCAL_CONFIG_DIRECTORY__/yaml_file.yaml
+ *  4. __CA_DEFAULT_THEME_CONFIG_DIRECTORY__/yaml_file.yaml
+ *  5. __CA_LOCAL_CONFIG_DIRECTORY__/yaml_file.'_'.__CA_APP_NAME__.yaml
+ *
+ * Configuration in a file may override defined variables in previously
+ * loaded files.
+ *
  */
 
 use Symfony\Component\Yaml\Exception\ParseException;
