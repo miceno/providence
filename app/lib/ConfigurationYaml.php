@@ -292,7 +292,7 @@ class ConfigurationYaml extends Configuration {
                 $value = $this->_interpolateScalar($value);
             });
         } catch (ParseException $e) {
-            $this->ops_error = "Couldn't open configuration file '" . $ps_filepath . "'\n" . $e->getMessage();
+            $this->ops_error = "Couldn't parse configuration file '" . $ps_filepath . "'\n" . $e->getMessage();
             if ($pb_die_on_error) {
                 $this->_dieOnError();
             }
