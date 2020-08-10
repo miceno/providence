@@ -214,4 +214,95 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     public function testGetValueExistsLast(){
         $this->assertEquals('global', $this->o_config->getValue(['not_exists', 'override_value']));
     }
+
+    public function testJson(){
+        $vs_expected_json = <<<EOT
+{
+  "override_value":"global",
+  "macro_scalar":"\/usr\/local\/fish",
+  "macro_list":[
+    "flounder",
+    "lobster",
+    "haddock"
+  ],
+  "macro_assoc":{
+    "fish":[
+      "flounder",
+      "cod",
+      "haddock"
+    ],
+    "shellfish":[
+      "scallop",
+      "crab",
+      "clam"
+    ],
+    "other":[
+      "chicken",
+      "pig",
+      "cow"
+    ]
+  },
+  "LOCALE":null,
+  "a_scalar":"Hi there",
+  "a_translated_scalar":"Hej da!",
+  "a_scalar_starting_with_a_bracket":"[The bracket is part of the string]",
+  "a_scalar_using_a_macro":"\/usr\/local\/fish",
+  "a_scalar_using_an_embedded_macro":"This scalar is embedded: \"\/usr\/local\/fish\"",
+  "a_scalar_using_an_embedded_constant":"This scalar is embedded: \/Users\/orestes\/devel\/providence\/tests\/conf",
+  "a_scalar_with_utf_8_chars":"Expre\u00df zug: \u05d7\u05d9 \u05ea\u05d4\u05e2\u05e8",
+  "a_scalar_with_line_breaks":"Foo\\nHello\\nWorld\\n",
+  "a_list":[
+    "clouds",
+    "rain",
+    "sun",
+    "gewitter"
+  ],
+  "a_list_with_quoted_scalars":[
+    "cloudy days",
+    "rainy days, happy nights"
+  ],
+  "a_list_with_translated_scalars":[
+    "red",
+    "blue",
+    "green"
+  ],
+  "a_list_with_a_macro":[
+    "\/usr\/local\/fish",
+    "and so it goes"
+  ],
+  "an_associative_list":{
+    "key 1":{
+      "subkey1":1,
+      "subkey2":2,
+      "subkey3":{
+        "subsubkey1":"at the bottom of the hole",
+        "subsubkey2":"this is a quoted string"
+      },
+      "subkey4":[
+        "Providence",
+        "Pawtucket",
+        "Woonsocket",
+        "Narragansett"
+      ],
+      "subkey5":"\/usr\/local\/fish"
+    }
+  },
+  "boolean_yes":"yes",
+  "boolean_ja":1,
+  "boolean_wahr":true,
+  "boolean_nein":0,
+  "boolean_no":"no",
+  "an_assoc_list_with_embedded_brackets":{
+    "test":"Hello {there}"
+  },
+  "a_list_with_embedded_brackets":[
+    "Hello [there]"
+  ]
+}
+
+EOT;
+
+        $vs_json = $this->o_config->toJson();
+        $this->assertEquals($vs_expected_json, $vs_json);
+    }
 }
