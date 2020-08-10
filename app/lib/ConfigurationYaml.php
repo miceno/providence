@@ -350,19 +350,28 @@ class ConfigurationYaml extends Configuration {
     /**
      * Get configuration value
      *
-     * @param string $ps_key Name of  configuration value to get. getValue() will look for the
-     * configuration value only as a scalar. Like-named list or associative array values are
-     * ignored.
+     * @param string $pm_key Name of configuration value to get. If an array of values
+     * are passed get() will try each key in turn until a value is found.
      *
      * @return string
      */
-    public function getValue($ps_key) {
+    public function getValue($pm_key) {
         $this->ops_error = "";
-        if (isset($this->ops_config_settings[$ps_key])) {
-            return $this->ops_config_settings[$ps_key];
-        } else {
-            return null;
+        if (!is_array($pm_key)) {
+            $pm_key = [$pm_key];
         }
+
+        foreach ($pm_key as $ps_key) {
+            if (isset(Configuration::$s_get_cache[$this->ops_md5_path][$ps_key])){
+                return Configuration::$s_get_cache[$this->ops_md5_path][$ps_key];
+            }
+
+            if (isset($this->ops_config_settings[$ps_key])) {
+                Configuration::$s_get_cache[$this->ops_md5_path][$ps_key] = $this->ops_config_settings[$ps_key];
+                return $this->ops_config_settings[$ps_key];
+            }
+        }
+        return null;
     }
 
     /* ---------------------------------------- */
@@ -392,8 +401,15 @@ class ConfigurationYaml extends Configuration {
     /* ---------------------------------------- */
 
     /**
-     * @param mixed $pm_key
-     * @return array|false|mixed|string|null
+     * Get configuration value
+     *
+     * @param mixed $pm_key Name of configuration key to fetch. get() will look for the
+     * key first as a scalar, then as a list and finally as an associative array.
+     * The first value found is returned. If an array of values are passed get() will try
+     * each key in turn until a value is found.
+     *
+     * @return mixed A string, indexed array (list) or associative array, depending upon what
+     * kind of configuration value was found. If no value is found null is returned.
      */
     public function get($pm_key) {
         return $this->getValue($pm_key);

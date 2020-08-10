@@ -199,4 +199,19 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $this->assertFalse($this->o_config->exists('not_exists'));
     }
 
+    public function testGetValueNonExistsNull(){
+        $this->assertNull($this->o_config->getValue('not_exists'));
+    }
+
+    public function testGetAssocNonExistsNull(){
+        $this->assertNull($this->o_config->getAssoc('not_exists'));
+    }
+
+    public function testGetListNonExistsNull(){
+        $this->assertNull($this->o_config->getList('not_exists'));
+    }
+
+    public function testGetValueExistsLast(){
+        $this->assertEquals('global', $this->o_config->getValue(['not_exists', 'override_value']));
+    }
 }
