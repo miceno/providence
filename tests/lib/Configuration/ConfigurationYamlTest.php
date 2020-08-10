@@ -180,4 +180,23 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $this->assertEquals('This scalar is embedded: ' . __CA_LOCAL_CONFIG_DIRECTORY__, $this->o_config->getScalar('a_scalar_using_an_embedded_constant'));
     }
 
+    public function testLocalOverridesConfiguration(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
+
+        $this->assertEquals('local_override', $o_config->get('override_local'));
+    }
+
+    public function testExistsConfiguration(){
+        $this->assertTrue($this->o_config->exists('override_value'));
+    }
+
+    public function testExistsConfigurationFromLocalCache(){
+        $this->o_config->get('override_value');
+        $this->assertTrue($this->o_config->exists('override_value'));
+    }
+
+    public function testDoesNotExistConfiguration(){
+        $this->assertFalse($this->o_config->exists('not_exists'));
+    }
+
 }

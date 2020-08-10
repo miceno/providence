@@ -143,6 +143,28 @@ class ConfigurationYaml extends Configuration {
         }
     }
 
+    /* ---------------------------------------- */
+    /**
+     * Determine if specified key is present in the configuration file.
+     *
+     * @param string $ps_key Name of configuration value.
+     *
+     * @return bool
+     */
+    public function exists($ps_key) {
+        if (isset(Configuration::$s_get_cache[$this->ops_md5_path][$ps_key])) {
+            return true;
+        }
+        $this->ops_error = "";
+
+        if (isset($this->ops_config_settings[$ps_key])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /* ---------------------------------------- */
     /**
      * Update configuration file list to include local, theme and app-specific configuration
      * files.
