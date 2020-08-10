@@ -430,9 +430,8 @@ class ConfigurationYaml extends Configuration {
         $assoc = $this->getValue($ps_key);
         if (is_array($assoc)) {
             return $assoc;
-        } else {
-            return null;
         }
+        return null;
     }
     /* ---------------------------------------- */
 
@@ -450,9 +449,8 @@ class ConfigurationYaml extends Configuration {
         $list = $this->getValue($ps_key);
         if (is_array($list)) {
             return $list;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /* ---------------------------------------- */
