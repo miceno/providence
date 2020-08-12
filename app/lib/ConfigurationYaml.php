@@ -51,7 +51,7 @@
  * YAML files are searched in the following order:
  *
  *  1. yaml file
- *  2. __CA_APP_CONF/yaml_file.yaml
+ *  2. __CA_CONF_DIR/yaml_file.yaml
  *  3. __CA_LOCAL_CONFIG_DIRECTORY__/yaml_file.yaml
  *  4. __CA_DEFAULT_THEME_CONFIG_DIRECTORY__/yaml_file.yaml
  *  5. __CA_LOCAL_CONFIG_DIRECTORY__/yaml_file.'_'.__CA_APP_NAME__.yaml
@@ -64,13 +64,36 @@
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
+
 class ConfigurationYaml extends Configuration {
 
-    public function __construct($ps_file_path = __CA_APP_CONFIG__, $pb_die_on_error = false, $pb_dont_cache = false, $pb_dont_load_from_default_path = false) {
+    const __CA_APP_YAML_CONFIG__ = __CA_CONF_DIR__ . '/app.yaml';
+
+    /* ---------------------------------------- */
+    /**
+     * Load a configuration file
+     *
+     * @param string $ps_file_path
+     * @param bool $pb_dont_cache Don't use config file cached. [Default is false]
+     * @param bool $pb_dont_cache_instance Don't attempt to cache config file Configuration instance. [Default is false]
+     * @param bool $pb_dont_load_from_default_path Don't attempt to load additional configuration files from default paths (defined by __CA_LOCAL_CONFIG_DIRECTORY__ and __CA_LOCAL_CONFIG_DIRECTORY__). [Default is false]
+     * @return Configuration
+     */
+    static function load($ps_file_path=self::__CA_APP_YAML_CONFIG__, $pb_dont_cache=false, $pb_dont_cache_instance=false, $pb_dont_load_from_default_path=false) {
+        if(!$ps_file_path) { $ps_file_path = self::__CA_APP_YAML_CONFIG__; }
+
+        if(!MemoryCache::contains($ps_file_path, 'ConfigurationInstances') || $pb_dont_cache || $pb_dont_cache_instance) {
+            MemoryCache::save($ps_file_path, new self($ps_file_path, true, $pb_dont_cache, $pb_dont_load_from_default_path), 'ConfigurationInstances');
+        }
+
+        return MemoryCache::fetch($ps_file_path, 'ConfigurationInstances');
+    }
+
+    public function __construct($ps_file_path = self::__CA_APP_YAML_CONFIG__, $pb_die_on_error = false, $pb_dont_cache = false, $pb_dont_load_from_default_path = false) {
         global $g_ui_locale, $g_configuration_cache_suffix;
 
         # path to configuration file
-        $this->ops_config_file_path = $ps_file_path ? $ps_file_path : __CA_APP_CONFIG__;
+        $this->ops_config_file_path = $ps_file_path ? $ps_file_path : self::__CA_APP_YAML_CONFIG__;
 
         $va_config_file_list = [];
 
