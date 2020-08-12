@@ -183,7 +183,7 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     public function testLocalOverridesConfiguration(){
         $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
 
-        $this->assertEquals('local_override', $o_config->get('override_local'));
+        $this->assertEquals('override_by_local_value', $o_config->get('override_local'));
     }
 
     public function testExistsConfiguration(){
