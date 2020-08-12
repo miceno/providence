@@ -116,9 +116,11 @@ class ConfigurationYaml extends Configuration {
         }
         $o_config = (($vs_top_level_config_path===$this->ops_config_file_path) ? $this : self::load($vs_top_level_config_path, false, false, true));
 
+        // Add inherited configuration files.
         if (($vb_inherit_config = $o_config->get('allowThemeInheritance')) && !$pb_dont_load_from_default_path) {
             $va_config_file_list = $this->_updateInheritedConfigFileList($o_config, $vs_filename, $va_config_file_list);
         }
+        // Insert current path as the first configuration to read
         array_unshift($va_config_file_list, $this->ops_config_file_path);
 
         //
@@ -131,7 +133,7 @@ class ConfigurationYaml extends Configuration {
             }
         }
 
-        # load hash
+        # Reset configuration values
         $this->ops_config_settings = [];
 
         # try loading global.yaml file
@@ -153,6 +155,7 @@ class ConfigurationYaml extends Configuration {
             $this->ops_config_file_path = $vs_config_file_path;
         }
 
+        // Override specified config file with higher priority configurations
         if (sizeof($va_config_file_list) > 0) {
             foreach ($va_config_file_list as $vs_config_file_path) {
                 if (file_exists($vs_config_file_path)) {
@@ -161,6 +164,7 @@ class ConfigurationYaml extends Configuration {
             }
         }
 
+        // Store in cache
         if ($vs_path_as_md5 && !$pb_dont_cache) {
             self::$s_config_cache[$vs_path_as_md5] = $this->ops_config_settings;
             // we loaded this cfg from file, so we have to write the
