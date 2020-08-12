@@ -98,28 +98,33 @@ class ConfigurationYaml extends Configuration {
         $va_config_file_list = [];
 
         // cache key for on-disk caching
-        $vs_path_as_md5 = md5($_SERVER['HTTP_HOST'] . $this->ops_config_file_path . '/' . $g_ui_locale . (isset($g_configuration_cache_suffix) ? '/' . $g_configuration_cache_suffix : ''));
+        // By setting this to the current locale simultaneous caching of configurations
+        // for various locales (eg. config files with gettext-translated strings in them) is enabled.
+        $vs_path_as_md5 = md5($_SERVER['HTTP_HOST']
+                              . $this->ops_config_file_path
+                              . '/' . $g_ui_locale
+                              . (isset($g_configuration_cache_suffix) ? '/' . $g_configuration_cache_suffix : ''));
 
-        #
-        # Is configuration file already cached?
-        #
-        $va_config_path_components = explode("/", $this->ops_config_file_path);
-        $vs_config_filename = array_pop($va_config_path_components);
-
+        $va_config_path_components = pathinfo($ps_file_path);
+        $vs_filename = $va_config_path_components['basename'];
+        $vs_dirname = $va_config_path_components['dirname'];
         $vs_top_level_config_path = $this->ops_config_file_path;
+
         if (!$pb_dont_load_from_default_path) {
-            list($vs_proposed_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList($vs_config_filename, $va_config_file_list);
+            list($vs_proposed_top_level_config_path, $va_config_file_list) = ConfigurationYaml::_updateConfigFileList($vs_filename, $va_config_file_list);
             $vs_top_level_config_path = $vs_proposed_top_level_config_path===null ? $this->ops_config_file_path : $vs_proposed_top_level_config_path;
         }
-        $o_config = (($vs_top_level_config_path===$this->ops_config_file_path) ? $this : static::load($vs_top_level_config_path, false, false, true));
+        $o_config = (($vs_top_level_config_path===$this->ops_config_file_path) ? $this : self::load($vs_top_level_config_path, false, false, true));
 
-        $vs_filename = pathinfo($ps_file_path, PATHINFO_BASENAME);
         if (($vb_inherit_config = $o_config->get('allowThemeInheritance')) && !$pb_dont_load_from_default_path) {
             $va_config_file_list = $this->_updateInheritedConfigFileList($o_config, $vs_filename, $va_config_file_list);
         }
         array_unshift($va_config_file_list, $this->ops_config_file_path);
 
+        //
+        // Is configuration file already cached?
         // try to figure out if we can get it from cache
+        //
         if ((!defined('__CA_DISABLE_CONFIG_CACHING__') || !__CA_DISABLE_CONFIG_CACHING__) && !$pb_dont_cache) {
             if (self::_loadConfigFromCache($vs_path_as_md5, $va_config_file_list)) {
                 return;
@@ -130,7 +135,7 @@ class ConfigurationYaml extends Configuration {
         $this->ops_config_settings = [];
 
         # try loading global.yaml file
-        $vs_global_path = join("/", $va_config_path_components) . '/global.yaml';
+        $vs_global_path = $vs_dirname . '/global.yaml';
         if (file_exists($vs_global_path)) {
             $this->loadFile($vs_global_path, $pb_die_on_error);
         }
