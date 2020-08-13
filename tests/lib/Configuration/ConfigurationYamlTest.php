@@ -196,25 +196,29 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
 
         $this->assertIsArray($o_config->get('overriden_list'));
-        $this->assertEqualsCanonicalizing(array('list100', 'list200', 'list300'),$o_config->get('overriden_list'));
+        $this->assertEqualsCanonicalizing(array('list100', 'list2', 'list3'),$o_config->get('overriden_list'));
     }
 
-    public function testThemeOverridesConfigurationMapElement(){
+    public function testLocalOverridesConfigurationMapElement(){
         $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
 
-        $this->assertEquals('override_by_map_value', $o_config->get('variable_on_theme'));
+        $this->assertIsArray($o_config->get('overriden_map'));
+        $values = array('value1000', 'value2', 'value3', 'value4000', null);
+        $keys = array('key1', 'key2', 'key3', 'key4', 'key5');
+        $this->assertEquals(array_combine($keys, $values), $o_config->get('overriden_map'));
     }
 
     public function testLocalOverridesConfigurationWholeList(){
-        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_overrides.yaml', true, true);
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
 
-        $this->assertEquals('override_wholelist', $o_config->get('override_local'));
+        $this->assertEquals(array('list100', null, null), $o_config->get('overriden_whole_list'));
     }
 
-    public function testThemeOverridesConfigurationWholeMap(){
-        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_overrides.yaml', true, true);
-
-        $this->assertEquals('override_wholemap', $o_config->get('variable_on_theme'));
+    public function testLocalOverridesConfigurationWholeMap(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
+        $values = array('value100', 'value200', 'value300');
+        $keys = array('key1', 'key2', 'key3');
+        $this->assertEquals(array_combine($keys, $values), $o_config->get('overriden_whole_map'));
     }
 
     public function testExistsConfiguration(){

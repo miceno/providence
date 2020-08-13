@@ -5,4 +5,16 @@ overriden_list :
   - list3
 
 overriden_map :
-  
+  key1: value1
+  key2: value2
+  key3: value3
+
+overriden_whole_list :
+  - list1
+  - list2
+  - list3
+
+overriden_whole_map :
+  key1: value1
+  key2: value2
+  key3: value3
