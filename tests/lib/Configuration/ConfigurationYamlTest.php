@@ -186,6 +186,37 @@ class ConfigurationYamlTest extends BaseTestClearCache {
         $this->assertEquals('override_by_local_value', $o_config->get('override_local'));
     }
 
+    public function testThemeOverridesConfiguration(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_theme_override.yaml', true, true);
+
+        $this->assertEquals('override_by_theme_value', $o_config->get('variable_on_theme'));
+    }
+
+    public function testLocalOverridesConfigurationListElement(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
+
+        $this->assertIsArray($o_config->get('overriden_list'));
+        $this->assertEqualsCanonicalizing(array('list100', 'list200', 'list300'),$o_config->get('overriden_list'));
+    }
+
+    public function testThemeOverridesConfigurationMapElement(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_local_override.yaml', true, true);
+
+        $this->assertEquals('override_by_map_value', $o_config->get('variable_on_theme'));
+    }
+
+    public function testLocalOverridesConfigurationWholeList(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_overrides.yaml', true, true);
+
+        $this->assertEquals('override_wholelist', $o_config->get('override_local'));
+    }
+
+    public function testThemeOverridesConfigurationWholeMap(){
+        $o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test_overrides.yaml', true, true);
+
+        $this->assertEquals('override_wholemap', $o_config->get('variable_on_theme'));
+    }
+
     public function testExistsConfiguration(){
         $this->assertTrue($this->o_config->exists('override_value'));
     }
