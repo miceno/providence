@@ -1,0 +1,18 @@
+override_local: "override_by_local_value"
+overriden_list :
+  - list100
+
+overriden_map :
+  key1: value1000
+  key4: value4000
+  key5: null
+
+overriden_whole_list :
+  0: list100
+  1:
+  2:
+
+overriden_whole_map :
+  key1: value100
+  key2: value200
+  key3: value300

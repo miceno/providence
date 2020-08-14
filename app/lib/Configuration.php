@@ -57,35 +57,35 @@ class Configuration {
 	 *
 	 * @access private
 	 */
-	private $ops_config_settings;
+	protected $ops_config_settings;
 
 	/**
 	 * Error message
 	 *
 	 * @access private
 	 */
-	private $ops_error="";		#  error message - blank if no error
+	protected $ops_error="";		#  error message - blank if no error
 
 	/**
 	 * Absolute path to configuration file
 	 *
 	 * @access private
 	 */
-	private $ops_config_file_path;
+	protected $ops_config_file_path;
 
 	/**
 	 * Display debugging info
 	 *
 	 * @access private
 	 */
-	private $opb_debug = false;
+	protected $opb_debug = false;
 	
 	/**
 	 * MD5 hash for current configuration file path
 	 *
 	 * @access private
 	 */
-	private $ops_md5_path;
+	protected $ops_md5_path;
 
 	static $s_get_cache;
 	static $s_config_cache = null;
@@ -133,7 +133,10 @@ class Configuration {
 		$va_config_file_list = [];
 		
 		// cache key for on-disk caching
-		$vs_path_as_md5 = md5($_SERVER['HTTP_HOST'].$this->ops_config_file_path.'/'.$g_ui_locale.(isset($g_configuration_cache_suffix) ? '/'.$g_configuration_cache_suffix : ''));
+        $vs_path_as_md5 = md5($_SERVER['HTTP_HOST']
+                              . $this->ops_config_file_path
+                              . '/' . $g_ui_locale
+                              . (isset($g_configuration_cache_suffix) ?: '/' . $g_configuration_cache_suffix));
 
 		#
 		# Is configuration file already cached?
@@ -798,7 +801,7 @@ class Configuration {
 		return true;
 	}
 	/* ---------------------------------------- */
-	private function _formatTokenHistory($pa_token_history, $pa_options=null) {
+	protected function _formatTokenHistory($pa_token_history, $pa_options=null) {
 		if (!is_array($pa_options)) { $pa_options = array(); }
 		$vs_output = '';
 		if (isset($pa_options['outputAsHTML']) && $pa_options['outputAsHTML']) {
@@ -1028,7 +1031,7 @@ class Configuration {
 		return $this->ops_error;
 	}
 	/* ---------------------------------------- */
-	private function _trimScalar($ps_scalar_value) {
+	protected function _trimScalar($ps_scalar_value) {
 		if (preg_match("/^[ ]+$/", $ps_scalar_value)) {
 			$ps_scalar_value = " ";
 		} else {
@@ -1043,11 +1046,11 @@ class Configuration {
 		return $ps_scalar_value;
 	}
 	/* ---------------------------------------- */
-	private function _dieOnError() {
+	protected function _dieOnError() {
 		die("Error loading configuration file '".$this->ops_config_file_path."': ".$this->ops_error."\n");
 	}
 	/* ---------------------------------------- */
-	private function _interpolateScalar($ps_text) {
+	protected function _interpolateScalar($ps_text) {
 		if (preg_match_all("/<([A-Za-z0-9_\-\.]+)>/", $ps_text, $va_matches)) {
 			foreach($va_matches[1] as $vs_key) {
 				if (($vs_val = $this->getScalar($vs_key)) !== false) {

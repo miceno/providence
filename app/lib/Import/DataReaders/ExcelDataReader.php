@@ -56,7 +56,7 @@ class ExcelDataReader extends BaseDataReader {
 		$this->ops_description = _t('Reads Microsoft Excel XLSX files');
 		
 		$this->opa_formats     = array('xlsx');	// must be all lowercase to allow for case-insensitive matching
-		$config                = Configuration::load();
+		$config                = new Configuration();
 		$this->opn_max_columns = $config->get('ca_max_columns_delimited_files')?: 512;
 	}
 	# -------------------------------------------------------
