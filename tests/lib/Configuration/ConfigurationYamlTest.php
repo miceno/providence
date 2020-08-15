@@ -40,7 +40,7 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     /**
      * @var ConfigurationYaml
      */
-    private $o_config;
+    protected $o_config;
 
     protected function setUp(): void {
         parent::setUp();

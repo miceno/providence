@@ -40,13 +40,8 @@ require_once(__CA_LIB_DIR__ . '/ConfigurationYaml.php');
 require_once(__CA_BASE_DIR__ . '/tests/lib/Configuration/ConfigurationYamlTest.php');
 
 class ConfigurationYamlTestWithCaching extends ConfigurationYamlTest {
-    /**
-     * @var ConfigurationYaml
-     */
-    private $o_config;
 
     protected function setUp(): void {
-        parent::setUp();
         $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test.yaml', false, false);
 
     }
