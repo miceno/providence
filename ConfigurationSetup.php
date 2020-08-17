@@ -34,21 +34,40 @@
 
 require_once 'Zend/Config/Yaml.php';
 
-class CaSetup extends Zend_Config_Yaml {
-    public function __construct($yaml, $section = null, $options = false) {
-        parent::__construct($yaml, $section, $options);
+class CaSetup {
+    protected $_config;
+
+    public function __construct($config, $section = null, $options = false) {
+        $this->_config = $config;
     }
 
-    public function get($name, $default = null) {
-        if (!is_array($name)){
-            $name = explode('.', $name);
+    public function get($names, $default = null) {
+        if (!is_array($names)){
+            $names = explode('.', $names);
         }
-
-        $result = array_reduce($name,
-                function ($o, $p) { return parent::get($p); }, $this);
+        // To avoid infinite recursion, call parent get, since it is not overridden.
+        $result = array_reduce($names,
+                function ($o, $p) { return $o->$p; }, $this->_config);
 
         return $result;
     }
+
+    public function set($names, $value) {
+        if (!is_array($names)){
+            $names = explode('.', $names);
+        }
+
+        $arr = $this->_config;
+        $last = array_pop($names);
+        foreach ($names as $key) {
+            $arr = $arr->$key;
+        }
+
+        $arr->__set($last, $value);
+
+        return $this;
+    }
+
 };
 
 $o_setup = new CaSetup(
