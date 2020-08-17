@@ -35,6 +35,7 @@
 # 		If you must to set this manually, enter the correct directory but omit trailing slashes!
 # 		For Windows hosts, use a notation similar to "C:/PATH/TO/COLLECTIVEACCESS"; do NOT use backslashes
 #
+# TODO: Replace all `define` with ConfigurationSetup::set
 if (!defined("__CA_BASE_DIR__")) {
 	define("__CA_BASE_DIR__", ($_SERVER['SCRIPT_FILENAME'] && (php_sapi_name() !== 'cli'))  ? preg_replace("!/install$!", "", pathinfo($_SERVER['SCRIPT_FILENAME'], PATHINFO_DIRNAME)) :  join(DIRECTORY_SEPARATOR, array_slice(explode(DIRECTORY_SEPARATOR, __FILE__), 0, -3)));
 }
