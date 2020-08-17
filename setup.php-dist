@@ -245,12 +245,6 @@ require(__DIR__."/app/helpers/post-setup.php");
  * ----------------------------------------------------------------------
  */
 
-$ga_setup = array(
-    // Global namespace includes global configuration options
-    'global' => array(
-        // Default format for configuration files
-        'config_format' => 'yaml'
-    )
-);
+define('APPLICATION_ENV', 'production');
 
 require(__DIR__ . '/ConfigurationSetup.php');

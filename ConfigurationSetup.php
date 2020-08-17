@@ -32,63 +32,26 @@
  *
  */
 
+require_once 'Zend/Config/Yaml.php';
 
-class AbstractSetup {
-    protected $opa_settings = array();
+class CaSetup extends Zend_Config_Yaml {
+    public function __construct($yaml, $section = null, $options = false) {
+        parent::__construct($yaml, $section, $options);
+    }
 
-    public function __construct($pa_settings) {
-        if (!is_null($pa_settings)) {
-            $this->setOpaSettings($pa_settings);
+    public function get($name, $default = null) {
+        if (!is_array($name)){
+            $name = explode('.', $name);
         }
-    }
 
-    /**
-     * @return array
-     */
-    public function &getOpaSettings(): array {
-        return $this->opa_settings;
-    }
+        $result = array_reduce($name,
+                function ($o, $p) { return parent::get($p); }, $this);
 
-    /**
-     * @param array $opa_settings
-     */
-    public function setOpaSettings(array $opa_settings): void {
-        $this->opa_settings = $opa_settings;
-    }
-
-    public function clear(): void {
-        $this->setOpaSettings([]);
-    }
-
-    public function set($ps_key, $pm_value): void {
-        $this->getOpaSettings()[$ps_key] = $pm_value;
-    }
-
-    /**
-     * Get the value of a configuration option.
-     *
-     * @param      $pm_option           A dot string option or an array.
-     * @param null $pm_default Default value
-     * @param null $pa_parse_options Options (see \utilityHelpers\caGetOption)
-     *
-     * @return array|array[]|bool|float|int|mixed|null[]|string|string[]
-     */
-    public function get($pm_option, $pm_default = null, $pa_parse_options = null) {
-        $pm_elements = preg_split('/\./', $pm_option);
-        $result = $this->getOpaSettings();
-        foreach ($pm_elements as $pm_element) {
-            $result = caGetOption($pm_element,
-                    $result,
-                    $pm_default,
-                    $pa_parse_options);
-        }
         return $result;
     }
-}
+};
 
-
-class Setup extends AbstractSetup {
-}
-
-
-$o_setup = new Setup($ga_setup);
+$o_setup = new CaSetup(
+        __DIR__ . '/setup.yaml',
+        APPLICATION_ENV
+);
