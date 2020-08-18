@@ -38,6 +38,7 @@ class CaSetup {
 
     public function __construct($config) {
         $this->_config = $config;
+        $this->init();
     }
 
     /**
@@ -84,9 +85,26 @@ class CaSetup {
         return $this;
     }
 
+    /**
+     *  Initialize setup, creating constants for each key matching '__CA'
+     */
+    public function init(){
+        $this->_toConstants();
+    }
+
+    protected function _toConstants(): void {
+        $vm_all_config = $this->_config;
+        foreach ($vm_all_config as $key => $value) {
+            if (strpos($key, '__CA')===0) {
+                if(!defined($key)){
+                    define($key, $value);
+                }
+            }
+        }
+    }
 };
 
 $o_setup = new CaSetup(
-        __DIR__ . '/setup.yaml',
+        new Zend_Config_Yaml(__CA_SETUP_FILE__),
         APPLICATION_ENV
 );
