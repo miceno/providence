@@ -32,26 +32,42 @@
  *
  */
 
-require_once 'Zend/Config/Yaml.php';
 
 class CaSetup {
     protected $_config;
 
-    public function __construct($config, $section = null, $options = false) {
+    public function __construct($config) {
         $this->_config = $config;
     }
 
+    /**
+     * Retrieve a value and return $default if there is no element set.
+     *
+     * @param      $names       A dot string or an array of the elements in the path
+     * @param null $default
+     *
+     * @return mixed|null
+     */
     public function get($names, $default = null) {
         if (!is_array($names)){
             $names = explode('.', $names);
         }
         // To avoid infinite recursion, call parent get, since it is not overridden.
         $result = array_reduce($names,
-                function ($o, $p) { return $o->$p; }, $this->_config);
+                function ($o, $p) use ($default) { return $o->get($p, $default); }, $this->_config);
 
         return $result;
     }
 
+    /**
+     * Only allow setting of a property if $allowModifications
+     * was set to true on construction. Otherwise, throw an exception.
+     *
+     * @param $names    A dot string or an array of the elements in the path
+     * @param $value
+     *
+     * @return $this
+     */
     public function set($names, $value) {
         if (!is_array($names)){
             $names = explode('.', $names);
