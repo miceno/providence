@@ -34,7 +34,7 @@
  *
  */
 
-require_once(__CA_LIB_DIR__.'/Zend/Cache.php');
+//require_once(__CA_LIB_DIR__.'/Zend/Cache.php');
 
 class SearchCache {
 	# ------------------------------------------------------

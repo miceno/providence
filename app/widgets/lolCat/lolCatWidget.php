@@ -27,8 +27,8 @@
  */
  	require_once(__CA_LIB_DIR__.'/BaseWidget.php');
  	require_once(__CA_LIB_DIR__.'/IWidget.php');
- 	require_once(__CA_LIB_DIR__.'/Zend/Feed.php');
- 	require_once(__CA_LIB_DIR__.'/Zend/Feed/Rss.php');
+// 	require_once(__CA_LIB_DIR__.'/Zend/Feed.php');
+// 	require_once(__CA_LIB_DIR__.'/Zend/Feed/Rss.php');
  
 	class lolCatWidget extends BaseWidget implements IWidget {
 		# -------------------------------------------------------

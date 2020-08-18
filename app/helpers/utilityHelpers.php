@@ -39,7 +39,7 @@ require_once(__CA_LIB_DIR__.'/Configuration.php');
 require_once(__CA_LIB_DIR__.'/Parsers/ZipFile.php');
 require_once(__CA_LIB_DIR__.'/Logging/Eventlog.php');
 require_once(__CA_LIB_DIR__.'/Utils/Encoding.php');
-require_once(__CA_LIB_DIR__.'/Zend/Measure/Length.php');
+// require_once(__CA_LIB_DIR__.'/Zend/Measure/Length.php');
 require_once(__CA_LIB_DIR__.'/Parsers/ganon.php');
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Exception;

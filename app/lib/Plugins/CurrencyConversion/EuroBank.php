@@ -26,7 +26,7 @@
  * ----------------------------------------------------------------------
  */
 	require_once(__CA_LIB_DIR__."/Plugins/CurrencyConversion/BaseCurrencyConversionPlugin.php");
-	require_once(__CA_LIB_DIR__."/Zend/Currency.php");
+//	require_once(__CA_LIB_DIR__."/Zend/Currency.php");
 	
 	class WLPlugCurrencyConversionEuroBank Extends BaseCurrencyConversionPlugIn implements IWLPlugCurrencyConversion {
 		# ------------------------------------------------
