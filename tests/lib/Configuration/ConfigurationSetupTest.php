@@ -37,7 +37,7 @@ use PHPUnit\Framework\TestCase;
 require_once(__CA_BASE_DIR__ . '/ConfigurationSetup.php');
 
 
-class AbstractConfigurationTest extends TestCase {
+class ConfigurationSetupTest extends TestCase {
 
     protected $o_setup = null;
 
