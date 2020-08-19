@@ -27,30 +27,30 @@ production:
   #
   # __CA_DB_HOST__ = Database server host name (often 'localhost')
   #
-  __CA_DB_HOST__: localhost
+  # __CA_DB_HOST__: localhost
 
   # __CA_DB_USER__ = Database login user name
   #
-  __CA_DB_USER__: my_database_user
+  # __CA_DB_USER__: my_database_user
 
   # __CA_DB_PASSWORD__ = Database login password
   #
-  __CA_DB_PASSWORD__: my_database_password
+  # __CA_DB_PASSWORD__: my_database_password
 
   # __CA_DB_DATABASE__ = The name of your CollectiveAccess database
   #
-  __CA_DB_DATABASE__: name_of_my_database
+  # __CA_DB_DATABASE__: name_of_my_database
 
   # __CA_APP_DISPLAY_NAME__ = the name of your system, for display purposes
   #
   # This value will be used on emails, on the login screen, in window titles, etc.
   #
-  __CA_APP_DISPLAY_NAME__: My First CollectiveAccess System
+  # __CA_APP_DISPLAY_NAME__: My First CollectiveAccess System
 
 
   # __CA_ADMIN_EMAIL__ = the email address from which to send administrative messages
   #
-  __CA_ADMIN_EMAIL__: info@put-your-domain-here.com
+  # __CA_ADMIN_EMAIL__: info@put-your-domain-here.com
 
 
   # Outgoing email
@@ -108,7 +108,7 @@ production:
   # queue processing script to run (usually via CRON) if you set this option. Set up details are 
   # available at http://docs.collectiveaccess.org
   #
-  __CA_QUEUE_ENABLED__: 0
+  # __CA_QUEUE_ENABLED__: 0
 
 
   # __CA_DEFAULT_LOCALE__ = The locale to use when no user-preferred locale has been set
@@ -121,7 +121,7 @@ production:
   # Note that whatever locale you set here *MUST* be present in your system locale list.
   # The default value is US/English, which exists in most configurations.
   # 
-  __CA_DEFAULT_LOCALE__: en_US
+  # __CA_DEFAULT_LOCALE__: en_US
 
 
   # __CA_USE_CLEAN_URLS__ = Determines if clean urls should be generated
@@ -132,7 +132,7 @@ production:
   # Only set this if your web server includes mod_rewrite and it is enabled using
   # the provided .htaccess file
   # 
-  __CA_USE_CLEAN_URLS__: 0
+  # __CA_USE_CLEAN_URLS__: 0
 
 
   # __CA_APP_NAME__ = a short name alphanumeric-only (no spaces or punctuation) identifier for this CollectiveAccess installation
@@ -143,7 +143,7 @@ production:
   #
   # If you don't know what to set this to then leave it as is. 
   #
-  __CA_APP_NAME__: collectiveaccess
+  # __CA_APP_NAME__: collectiveaccess
 
 
   # __CA_GOOGLE_MAPS_KEY__ = A Google Maps key to use for mapping and geocoding featured (optional)
@@ -183,7 +183,7 @@ production:
   # configure them here and your PHP installation doesn't have the required extension you
   # may see critical errors. sqlite requires the PHP PDO extension and a working install
   # of sqlite. This is not guaranteed to be present on your server, but often is.
-  __CA_CACHE_BACKEND__: file
+  # __CA_CACHE_BACKEND__: file
 
   # Options for the caching back-ends you may wish to set include:
   # __CA_CACHE_FILEPATH__ = Path to on on disk location for storage of cached data 
@@ -225,7 +225,7 @@ production:
   #
   # Note that in overwriting your database you will destroy *all* data in the database 
   # including any non-CollectiveAccess tables. Use this option at your own risk!
-  __CA_ALLOW_INSTALLER_TO_OVERWRITE_EXISTING_INSTALLS__: false
+  # __CA_ALLOW_INSTALLER_TO_OVERWRITE_EXISTING_INSTALLS__: false
 
   # __CA_STACKTRACE_ON_EXCEPTION__
   #
@@ -234,7 +234,7 @@ production:
   # exception messages are useful but full debugging output is not required. 
   # For production use you should set this to false. Note that exceptions are always
   # logged to the application log in app/log, regardless of what is set here.
-  __CA_STACKTRACE_ON_EXCEPTION__: false
+  # __CA_STACKTRACE_ON_EXCEPTION__: false
 
   #
   # __CA_BASE_DIR__ = the absolute server path to the directory containing your CollectiveAccess installation
@@ -283,7 +283,7 @@ production:
   #
   #		The default value is based on the URL being used to access the site.  To force a protocol, set it explicitly.
   #
-  __CA_SITE_PROTOCOL__: https
+  # __CA_SITE_PROTOCOL__: https
 
   # Path to CollectiveAccess 'app' directory
   #
@@ -308,10 +308,10 @@ production:
   #		Use 'pdo_mysql' to use the PHP MySQL PDO driver. This has not been fully tested yet but should generally work ok.
   #
   #  When in doubt, try MySQLi first and then fall back to mysql
-  __CA_DB_TYPE__: mysqli
+  # __CA_DB_TYPE__: mysqli
 
   # The path to the main instance configuration file defined as a constant
-  __CA_APP_CONFIG__: $_CA_CONFIG_PATH
+  # __CA_APP_CONFIG__: $_CA_CONFIG_PATH
 
   # Path to CollectiveAccess 'themes' directory containing visual presentation elements
   #
@@ -362,7 +362,7 @@ production:
   # security risk if your system is publicly accessible on the internet. The risk is that 
   # by exposing the update control on a public url on a publicly accessible site you are 
   # potentially allowing anyone to initiate the update. 
-  __CA_ALLOW_AUTOMATIC_UPDATE_OF_VENDOR_DIR__: true
+  # __CA_ALLOW_AUTOMATIC_UPDATE_OF_VENDOR_DIR__: true
 
   # __CA_ALLOW_DRAG_AND_DROP_PROFILE_UPLOAD_IN_INSTALLER__
   #
@@ -370,7 +370,7 @@ production:
   # you to avoid having to FTP new profiles or changes to existing ones. Note that this can
   # be a security risk as it allows anyone to upload files to your server. You should leave 
   # it set to false unless you really need it.
-  __CA_ALLOW_DRAG_AND_DROP_PROFILE_UPLOAD_IN_INSTALLER__: false
+  # __CA_ALLOW_DRAG_AND_DROP_PROFILE_UPLOAD_IN_INSTALLER__: false
 
   # __CA_DISABLE_CONFIG_CACHING__
   #
@@ -378,7 +378,7 @@ production:
   # files in __CA_CONF_DIR__ on each page refresh. This will have a significant negative
   # impact on performance. However, there are certain scenarios where want to prevent
   # caching, e.g. for debugging. DO NOT touch this unless you know what you're doing!
-  __CA_DISABLE_CONFIG_CACHING__: false
+  # __CA_DISABLE_CONFIG_CACHING__: false
 
   # __CA_ENABLE_DEBUG_OUTPUT__
   #
@@ -388,7 +388,7 @@ production:
   # (see app/helpers/utilityHelpers.php) will trigger a detailed output of the
   # variable content. Note that utilityHelpers.php has to be included to use the function,
   # but it usually is.
-  __CA_ENABLE_DEBUG_OUTPUT__: false
+  # __CA_ENABLE_DEBUG_OUTPUT__: false
 
   # __CA_ALLOW_AUTOMATIC_UPDATE_OF_DATABASE__
   #
@@ -397,9 +397,9 @@ production:
   # security risk if your system is publicly accessible on the internet. The risk is that
   # by exposing the update control on a public url on a publicly accessible site you are
   # potentially allowing anyone to initiate the database update.
-  __CA_ALLOW_AUTOMATIC_UPDATE_OF_DATABASE__: true
+  # __CA_ALLOW_AUTOMATIC_UPDATE_OF_DATABASE__: true
 
   # __CA_APP_TYPE__
   #
   # Flag indicating application type to code libraries
-  __CA_APP_TYPE__: "PROVIDENCE"
+  # __CA_APP_TYPE__: "PROVIDENCE"
