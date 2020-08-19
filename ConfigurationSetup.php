@@ -53,7 +53,6 @@ class CaSetup {
         if (!is_array($names)) {
             $names = explode('.', $names);
         }
-        // To avoid infinite recursion, call parent get, since it is not overridden.
         $result = array_reduce($names,
                 function ($o, $p) use ($default) {
                     return $o->get($p, $default);
@@ -100,6 +99,9 @@ class CaSetup {
             if (strpos($key, '__CA')===0) {
                 if (!defined($key)) {
                     define($key, $value);
+                } else {
+                    // Show a warning
+                    trigger_error("Trying to redefine a defined variable $key", E_USER_NOTICE);
                 }
             }
         }
@@ -107,7 +109,7 @@ class CaSetup {
 }
 
 
-$o_setup = new CaSetup(
-        new Zend_Config_Yaml(__CA_SETUP_FILE__),
-        APPLICATION_ENV
-);
+$o_setup = new CaSetup(new Zend_Config_Yaml(
+        __CA_SETUP_FILE__,
+        APPLICATION_ENV,
+        array('allow_modifications' => false)));

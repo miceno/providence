@@ -22,4 +22,4 @@ define('APPLICATION_ENV', 'test');
 define('__CA_SETUP_FILE__', __DIR__ . '/setup-tests.yaml');
 
 // Use remaining settings from main config.
-require_once(__CA_BASE_DIR__ . '/setup.php-dist');
+require_once(__CA_BASE_DIR__ . '/setup.php');

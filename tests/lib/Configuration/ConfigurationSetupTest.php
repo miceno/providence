@@ -44,7 +44,9 @@ class ConfigurationSetupTest extends TestCase {
     protected function setUp(): void {
         parent::setUp();
         define('__CA_TEST_CONSTANT__', 'overridden value');
-        $this->o_setup = new \CaSetup(new Zend_Config_Yaml(__CA_BASE_DIR__ . '/tests/setup-tests.yaml', null,
+        $this->o_setup = new \CaSetup(new Zend_Config_Yaml(
+                __CA_BASE_DIR__ . '/tests/conf/setup-config-tests.yaml',
+                null,
                 array('allow_modifications' => true)));
     }
 
@@ -97,14 +99,14 @@ class ConfigurationSetupTest extends TestCase {
         $this->assertNull($result);
     }
 
-    public function testDefinedConstant(){
+    public function testDefinedConstant() {
         $o_setup = $this->o_setup;
 
         $this->assertTrue(defined('__CA_LOCAL_CONFIG_DIRECTORY__'));
         $this->assertEquals(__CA_BASE_DIR__ . '/tests/conf', __CA_LOCAL_CONFIG_DIRECTORY__);
     }
 
-    public function testDefinedConstantIsNotOverriddenBySetup(){
+    public function testDefinedConstantIsNotOverriddenBySetup() {
         $o_setup = $this->o_setup;
 
         $this->assertTrue(defined('__CA_TEST_CONSTANT__'));
