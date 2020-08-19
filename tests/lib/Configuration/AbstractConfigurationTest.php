@@ -44,7 +44,7 @@ class AbstractConfigurationTest extends TestCase {
     protected function setUp(): void {
         parent::setUp();
         define('__CA_TEST_CONSTANT__', 'overridden value');
-        $this->o_setup = new \CaSetup(new Zend_Config_Yaml(__CA_BASE_DIR__ . '/tests/test-setup.yaml', null,
+        $this->o_setup = new \CaSetup(new Zend_Config_Yaml(__CA_BASE_DIR__ . '/tests/setup-tests.yaml', null,
                 array('allow_modifications' => true)));
     }
 
