@@ -17,6 +17,7 @@ find $VENDOR_DIR -maxdepth 3 -type d | grep -i example | xargs rm -rf
 REMOVE_FOLDERS="\
 phpoffice/phppresentation/samples \
 phpoffice/phppresentation/.git \
+phpoffice/phpspreadsheet/samples \
 "
 for i in $REMOVE_FOLDERS; do
     echo "Removing folder: $i"
