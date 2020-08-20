@@ -337,6 +337,17 @@ class ConfigurationYaml extends Configuration {
         return $config;
     }
 
+    /**
+     * Interpolates a scalar value. Allowed interpolations are:
+     *
+     *  - macro, like in <macro>
+     *  - constant, like in __XXXXX__
+     *  - translation, like in _t('hello') or _('hello')
+     *
+     * @param $ps_text
+     *
+     * @return mixed|string|string[]|null
+     */
     protected function _interpolateScalar($ps_text) {
         do {
             $last_text = $ps_text;
