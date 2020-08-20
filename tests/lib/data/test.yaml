@@ -4,6 +4,8 @@ a_scalar_starting_with_a_bracket : "[The bracket is part of the string]"
 a_scalar_using_a_macro : "<macro_scalar>"
 a_scalar_using_an_embedded_macro : 'This scalar is embedded: "<macro_scalar>"'
 a_scalar_using_an_embedded_constant : 'This scalar is embedded: __CA_LOCAL_CONFIG_DIRECTORY__'
+a_scalar_using_an_embedded_constant_with_macro : 'This scalar is constant with macro: __CONSTANT_WITH_MACRO__'
+a_scalar_using_an_embedded_macro_with_constant : 'This scalar is a macro with constant: <a_scalar_using_an_embedded_constant>'
 a_scalar_with_utf_8_chars : "Expreß zug: חי תהער"
 a_scalar_with_line_breaks : |
   Foo

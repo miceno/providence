@@ -44,6 +44,7 @@ class ConfigurationYamlTest extends BaseTestClearCache {
 
     protected function setUp(): void {
         parent::setUp();
+        define('__CONSTANT_WITH_MACRO__', '<macro_scalar>');
         $this->o_config = new ConfigurationYaml(__CA_BASE_DIR__ . '/tests/lib/data/test.yaml', true, true);
     }
 
@@ -136,13 +137,13 @@ class ConfigurationYamlTest extends BaseTestClearCache {
     public function testMisc() {
         $va_keys = $this->o_config->getScalarKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(25, sizeof($va_keys));        // 24 in config file + 1 "LOCALE" value that's automatically inserted
+        $this->assertEquals(27, sizeof($va_keys));        // 24 in config file + 1 "LOCALE" value that's automatically inserted
         $va_keys = $this->o_config->getListKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(25, sizeof($va_keys));
+        $this->assertEquals(27, sizeof($va_keys));
         $va_keys = $this->o_config->getAssocKeys();
         $this->assertTrue(is_array($va_keys));
-        $this->assertEquals(25, sizeof($va_keys));
+        $this->assertEquals(27, sizeof($va_keys));
     }
 
     public function testUpdateConfigFileListReturnsNullandEmpty() {
@@ -178,6 +179,20 @@ class ConfigurationYamlTest extends BaseTestClearCache {
 
     public function testInterpolateScalarWithConstant() {
         $this->assertEquals('This scalar is embedded: ' . __CA_LOCAL_CONFIG_DIRECTORY__, $this->o_config->getScalar('a_scalar_using_an_embedded_constant'));
+    }
+
+    public function testInterpolateScalarWithMacro() {
+        $this->assertEquals("This scalar is embedded: \"/usr/local/fish\"", $this->o_config->getScalar('a_scalar_using_an_embedded_macro'));
+    }
+
+    public function testInterpolateScalarWithConstantWithMacro() {
+        $this->assertEquals("This scalar is constant with macro: /usr/local/fish", $this->o_config->getScalar('a_scalar_using_an_embedded_constant_with_macro'));
+    }
+
+    public function testInterpolateScalarWithMacroWithConstant() {
+        $this->assertEquals("This scalar is a macro with constant: " .
+                            "This scalar is embedded: /Users/orestes/devel/providence/tests/conf",
+                $this->o_config->getScalar('a_scalar_using_an_embedded_macro_with_constant'));
     }
 
     public function testLocalOverridesConfiguration(){
@@ -284,6 +299,8 @@ class ConfigurationYamlTest extends BaseTestClearCache {
   "a_scalar_using_a_macro":"\/usr\/local\/fish",
   "a_scalar_using_an_embedded_macro":"This scalar is embedded: \"\/usr\/local\/fish\"",
   "a_scalar_using_an_embedded_constant":"This scalar is embedded: \/Users\/orestes\/devel\/providence\/tests\/conf",
+  "a_scalar_using_an_embedded_constant_with_macro":"This scalar is constant with macro: \/usr\/local\/fish",
+  "a_scalar_using_an_embedded_macro_with_constant":"This scalar is a macro with constant: This scalar is embedded: \/Users\/orestes\/devel\/providence\/tests\/conf",
   "a_scalar_with_utf_8_chars":"Expre\u00df zug: \u05d7\u05d9 \u05ea\u05d4\u05e2\u05e8",
   "a_scalar_with_line_breaks":"Foo\\nHello\\nWorld\\n",
   "a_list":[

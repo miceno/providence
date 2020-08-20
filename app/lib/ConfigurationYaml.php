@@ -90,6 +90,8 @@ class ConfigurationYaml extends Configuration {
     }
 
     public function __construct($ps_file_path = self::__CA_APP_YAML_CONFIG__, $pb_die_on_error = false, $pb_dont_cache = false, $pb_dont_load_from_default_path = false) {
+        // TODO: Refactor parent class to an interface/abstract class to avoid warning on missing
+        //  call to parent constructor
         global $g_ui_locale, $g_configuration_cache_suffix;
 
         # path to configuration file
@@ -302,9 +304,6 @@ class ConfigurationYaml extends Configuration {
     public function loadFile($ps_filepath, $pb_die_on_error = false, $pn_num_lines_to_read = null) {
         $yaml_config = $this->loadYaml($ps_filepath, $pb_die_on_error);
 
-        if (!is_null($yaml_config)) {
-            $this->ops_config_settings = static::mergeAndReplaceConfig($this->ops_config_settings, $yaml_config);
-        }
         return true;
     }
     /* ---------------------------------------- */
@@ -319,8 +318,12 @@ class ConfigurationYaml extends Configuration {
     public function loadYaml($ps_filepath, $pb_die_on_error = false) {
         try {
             $config = Yaml::parseFile($ps_filepath, Yaml::PARSE_CONSTANT);
+            if (!is_null($config)) {
+                $this->ops_config_settings = static::mergeAndReplaceConfig($this->ops_config_settings, $config);
+            }
+
             // Interpolate recursively
-            array_walk_recursive($config, function (&$value) {
+            array_walk_recursive($this->ops_config_settings, function (&$value) {
                 $value = $this->_interpolateScalar($value);
             });
         } catch (ParseException $e) {
@@ -335,34 +338,41 @@ class ConfigurationYaml extends Configuration {
     }
 
     protected function _interpolateScalar($ps_text) {
-        if (preg_match_all("/<([A-Za-z0-9_\-.]+)>/", $ps_text, $va_matches)) {
-            foreach ($va_matches[1] as $vs_key) {
-                if (($vs_val = $this->getScalar($vs_key))!==false) {
-                    $ps_text = preg_replace("/<$vs_key>/", $vs_val, $ps_text);
+        do {
+            $last_text = $ps_text;
+
+            // perform macro/variable substitution
+            if (preg_match_all("/<([A-Za-z0-9_\-.]+)\>/", $ps_text, $va_matches)) {
+                foreach ($va_matches[1] as $vs_key) {
+                    if (($vs_val = $this->get($vs_key))!==false) {
+                        $ps_text = preg_replace("/<$vs_key>/", $vs_val, $ps_text);
+                    }
                 }
             }
-        }
 
-        // perform constant var substitution
-        if (preg_match("/(__[A-Za-z0-9_]+__)/", $ps_text, $va_matches)) {
-            $vs_constant_name = $va_matches[1];
-            if (defined($vs_constant_name)) {
-                $ps_text = str_replace($vs_constant_name, constant($vs_constant_name), $ps_text);
-            }
-        }
-
-        // attempt translation if text is enclosed in _( and ) ... for example _t(translate me)
-        // assumes translation function _t() is present; if not loaded will not attempt translation
-        if (preg_match("/_[t]?\([\"']+([^)]+)[\"']\)/", $ps_text, $va_matches)) {
-            if (function_exists('_t')) {
-                $vs_trans_text = $ps_text;
-                array_shift($va_matches);
-                foreach ($va_matches as $vs_match) {
-                    $vs_trans_text = preg_replace(caMakeDelimitedRegexp("_[t]?\([\"']+{$vs_match}[\"']\)"), _t($vs_match), $vs_trans_text);
+            // perform constant substitution
+            if (preg_match("/(__[A-Za-z0-9_]+__)/", $ps_text, $va_matches)) {
+                $vs_constant_name = $va_matches[1];
+                if (defined($vs_constant_name)) {
+                    $ps_text = str_replace($vs_constant_name, constant($vs_constant_name), $ps_text);
                 }
-                $ps_text = $vs_trans_text;
             }
-        }
+
+            // attempt translation if text is enclosed in _( and ) ... for example _t(translate me)
+            // assumes translation function _t() is present; if not loaded will not attempt translation
+            if (preg_match("/_[t]?\([\"']+([^)]+)[\"']\)/", $ps_text, $va_matches)) {
+                if (function_exists('_t')) {
+                    $vs_trans_text = $ps_text;
+                    array_shift($va_matches);
+                    foreach ($va_matches as $vs_match) {
+                        $vs_trans_text = preg_replace(caMakeDelimitedRegexp("_[t]?\([\"']+{$vs_match}[\"']\)"),
+                                _t($vs_match), $vs_trans_text);
+                    }
+                    $ps_text = $vs_trans_text;
+                }
+            }
+        } while ($ps_text!==$last_text);
+
         return $ps_text;
     }
 
