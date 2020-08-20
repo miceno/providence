@@ -152,7 +152,7 @@ abstract class BaseExternalExportFormatPlugin Extends WLPlug {
 	/**
 	 *
 	 */
-	public function _processFiles($t_instance, $content_spec) {
+	public function _processFiles($t_instance, $content_spec, $options=null) {
 		$file_list = [];
 		$file_mimetypes = [];
 		$total_filesize = 0;
@@ -169,6 +169,8 @@ abstract class BaseExternalExportFormatPlugin Extends WLPlug {
 		$restrict_to_types = caGetOption('restrictToTypes', $content_spec, null);
 		$restrict_to_mimetypes = caGetOption('restrictToMimeTypes', $content_spec, null);
 		
+		$media_index = caGetOption('mediaIndex', $options, null);
+		
 		foreach($instance_list as $t) {
 			if (is_array($restrict_to_types) && sizeof($restrict_to_types) && !in_array($t->getTypeCode(), $restrict_to_types)) { continue; }
 			foreach($content_spec['files'] as $get_spec => $export_filename_spec) {
@@ -179,11 +181,11 @@ abstract class BaseExternalExportFormatPlugin Extends WLPlug {
 				$mimetypes = $t->get("{$pathless_spec}.mimetype",['returnAsArray' => true, 'filterNonPrimaryRepresentations' => false]);
 				$file_mod_times = $t->get("{$pathless_spec}.fileModificationTime",['returnAsArray' => true, 'filterNonPrimaryRepresentations' => false]);
 			   
-				$ids = $t->get("{$pathless_spec}.id", ['returnAsArray' => true, 'filterNonPrimaryRepresentations' => false]);
 				$files = $t->get($get_spec, ['returnAsArray' => true, 'filterNonPrimaryRepresentations' => false]);
 				
 				$seen_files = [];
 				foreach($files as $i => $f) {
+					if(!is_null($media_index) && ((int)$i !== (int)$media_index)) { continue; }
 					$m = $mimetypes[$i];
 					$t = $file_mod_times[$i];
 					if(is_array($restrict_to_mimetypes) && sizeof($restrict_to_mimetypes) && !sizeof(array_filter($restrict_to_mimetypes, function($v) use ($m) { return caCompareMimetypes($m, $v); }))) { continue; }
@@ -194,7 +196,7 @@ abstract class BaseExternalExportFormatPlugin Extends WLPlug {
 					
 					$e = $export_filename = self::processExportFilename($export_filename_spec, [
 						'extension' => $extension,
-						'original_filename' => $original_basename ? "{$original_basename}.{$extension}" : null, 'original_basename' => $original_basename,
+						'original_filename' => $original_basename ? "{$original_basename}.{$extension}" : "media_{$i}.{$extension}", 'original_basename' => $original_basename,
 						'filename' => "{$basename}.{$extension}", "basename" => $basename, 
 					]);
 					
