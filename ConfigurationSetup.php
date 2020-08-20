@@ -31,6 +31,7 @@
  * ----------------------------------------------------------------------
  *
  */
+
 use Symfony\Component\Yaml\Yaml;
 
 // TODO: Add base configuration class with common code for configuration subclasses
@@ -41,8 +42,13 @@ use Symfony\Component\Yaml\Yaml;
 class ConfigurationBase {
     protected $_config;
 
-    public function __construct($config) {
-        $this->_config = $config;
+    public function __construct($config, $section = null) {
+        $section_config = $config;
+        if (!is_null($section)) {
+            $section_config = $config[$section];
+        }
+
+        $this->_config = $section_config;
     }
 
     /**
@@ -145,8 +151,8 @@ class ConfigurationBase {
 class CaSetup extends ConfigurationBase {
     protected $_config;
 
-    public function __construct($config) {
-        parent::__construct($config);
+    public function __construct($config, $section = null) {
+        parent::__construct($config, $section);
         $this->init();
     }
 
@@ -180,4 +186,7 @@ class CaSetup extends ConfigurationBase {
     }
 }
 
-$o_setup = new CaSetup(Yaml::parseFile(__CA_SETUP_FILE__, Yaml::PARSE_CONSTANT));
+
+$o_setup = new CaSetup(
+    Yaml::parseFile(__CA_SETUP_FILE__, Yaml::PARSE_CONSTANT),
+    APPLICATION_ENV);
