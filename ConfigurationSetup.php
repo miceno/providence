@@ -31,14 +31,18 @@
  * ----------------------------------------------------------------------
  *
  */
+use Symfony\Component\Yaml\Yaml;
 
+// TODO: Add base configuration class with common code for configuration subclasses
+//  (ConfigurationYaml, ConfigurationSetup, etc.) like:
+//   - dot notation access to fields
+//   - etc.
 
-class CaSetup {
+class ConfigurationBase {
     protected $_config;
 
     public function __construct($config) {
         $this->_config = $config;
-        $this->init();
     }
 
     /**
@@ -49,13 +53,13 @@ class CaSetup {
      *
      * @return mixed|null
      */
-    public function get($names, $default = null) {
+    public function get($names) {
         if (!is_array($names)) {
             $names = explode('.', $names);
         }
         $result = array_reduce($names,
-                function ($o, $p) use ($default) {
-                    return $o->get($p, $default);
+                function ($o, $p) {
+                    return $o[$p];
                 }, $this->_config);
 
         return $result;
@@ -75,21 +79,82 @@ class CaSetup {
             $names = explode('.', $names);
         }
 
-        $arr = $this->_config;
+        $arr = &$this->_config;
         $last = array_pop($names);
         foreach ($names as $key) {
-            $arr = $arr->$key;
+            $arr = &$arr[$key];
         }
 
-        $arr->__set($last, $value);
+        $arr[$last] = $value;
 
         return $this;
+    }
+
+    /**
+     * Interpolates a scalar value. Allowed interpolations are:
+     *
+     *  - macro, like in <macro>
+     *  - constant, like in __XXXXX__
+     *  - translation, like in _t('hello') or _('hello')
+     *
+     * @param $ps_text
+     *
+     * @return mixed|string|string[]|null
+     */
+    protected function _interpolateScalar($ps_text) {
+        do {
+            $last_text = $ps_text;
+
+            // perform macro/variable substitution
+            if (preg_match_all("/<([A-Za-z0-9_\-.]+)\>/", $ps_text, $va_matches)) {
+                foreach ($va_matches[1] as $vs_key) {
+                    if (($vs_val = $this->get($vs_key))!==false) {
+                        $ps_text = preg_replace("/<$vs_key>/", $vs_val, $ps_text);
+                    }
+                }
+            }
+
+            // perform constant substitution
+            if (preg_match("/(__[A-Za-z0-9_]+__)/", $ps_text, $va_matches)) {
+                $vs_constant_name = $va_matches[1];
+                if (defined($vs_constant_name)) {
+                    $ps_text = str_replace($vs_constant_name, constant($vs_constant_name), $ps_text);
+                }
+            }
+
+            // attempt translation if text is enclosed in _( and ) ... for example _t(translate me)
+            // assumes translation function _t() is present; if not loaded will not attempt translation
+            if (preg_match("/_[t]?\([\"']+([^)]+)[\"']\)/", $ps_text, $va_matches)) {
+                if (function_exists('_t')) {
+                    $vs_trans_text = $ps_text;
+                    array_shift($va_matches);
+                    foreach ($va_matches as $vs_match) {
+                        $vs_trans_text = preg_replace(caMakeDelimitedRegexp("_[t]?\([\"']+{$vs_match}[\"']\)"),
+                                _t($vs_match), $vs_trans_text);
+                    }
+                    $ps_text = $vs_trans_text;
+                }
+            }
+        } while ($ps_text!==$last_text);
+        return $ps_text;
+    }
+
+}
+
+
+class CaSetup extends ConfigurationBase {
+    protected $_config;
+
+    public function __construct($config) {
+        parent::__construct($config);
+        $this->init();
     }
 
     /**
      *  Initialize setup, creating constants for each key matching '__CA'
      */
     public function init() {
+        $this->_interpolate();
         $this->_toConstants();
     }
 
@@ -99,17 +164,20 @@ class CaSetup {
             if (strpos($key, '__CA')===0) {
                 if (!defined($key)) {
                     define($key, $value);
-                } else {
+                }
+                else {
                     // Show a warning
                     trigger_error("Trying to redefine a defined variable $key", E_USER_NOTICE);
                 }
             }
         }
     }
+
+    private function _interpolate() {
+        array_walk_recursive($this->_config, function (&$value) {
+            $value = $this->_interpolateScalar($value);
+        });
+    }
 }
 
-
-$o_setup = new CaSetup(new Zend_Config_Yaml(
-        __CA_SETUP_FILE__,
-        APPLICATION_ENV,
-        array('allow_modifications' => false)));
+$o_setup = new CaSetup(Yaml::parseFile(__CA_SETUP_FILE__, Yaml::PARSE_CONSTANT));

@@ -33,6 +33,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Yaml;
 
 require_once(__CA_BASE_DIR__ . '/ConfigurationSetup.php');
 
@@ -44,10 +45,10 @@ class ConfigurationSetupTest extends TestCase {
     protected function setUp(): void {
         parent::setUp();
         define('__CA_TEST_CONSTANT__', 'overridden value');
-        $this->o_setup = new \CaSetup(new Zend_Config_Yaml(
-                __CA_BASE_DIR__ . '/tests/conf/setup-config-tests.yaml',
-                null,
-                array('allow_modifications' => true)));
+        $this->o_setup = new CaSetup(
+                Yaml::parseFile(
+                        __CA_BASE_DIR__ . '/tests/conf/setup-config-tests.yaml',
+                        Yaml::PARSE_CONSTANT));
     }
 
     public function testSet() {
