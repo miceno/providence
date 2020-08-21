@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2014-2019 Whirl-i-Gig
+ * Copyright 2014-2020 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -30,7 +30,9 @@
  * ----------------------------------------------------------------------
  */
 
- /**
+use Zend\Stdlib\Glob;
+
+/**
    *
    */
 	require_once(__CA_LIB_DIR__."/Print/PDFRenderer.php");
@@ -44,7 +46,7 @@
 	/**
 	 *
 	 *
-	 * @return string
+	 * @return array|string
 	 */
 	function caGetPrintTemplateDirectoryPath($ps_type) {
 		$va_paths = [];
@@ -118,11 +120,11 @@
 				if(!file_exists($vs_path)) { continue; }
 		
 				if (is_array($va_cached_list)) {
-					$f = array_map("filemtime", glob("{$vs_template_path}/*.{php,css}", GLOB_BRACE));
+					$f = array_map("filemtime", Glob::glob("{$vs_template_path}/*.{php,css}", Glob::GLOB_BRACE));
 					sort($f);
 					$vn_template_rev = file_exists($vs_template_path) ? array_pop($f) : 0;
 					
-					$f = array_map("filemtime", glob("{$vs_template_path}/local/*.{php,css}", GLOB_BRACE));
+					$f = array_map("filemtime", Glob::glob("{$vs_template_path}/local/*.{php,css}", Glob::GLOB_BRACE));
 					sort($f);
 					$vn_local_rev = file_exists("{$vs_template_path}/local") ? array_pop($f) : 0;
 					
@@ -217,7 +219,7 @@
 			$vs_cache_key = caMakeCacheKeyFromOptions($pa_options, $ps_type.'/'.$vs_template_path);
 			if (ExternalCache::contains($vs_cache_key, 'PrintTemplateDetails')) {
 				$va_list = ExternalCache::fetch($vs_cache_key, 'PrintTemplateDetails');
-				if(!is_array($files = glob("{$vs_template_path}/*.{php,css}", GLOB_BRACE))) {
+				if(!is_array($files = Glob::glob("{$vs_template_path}/*.{php,css}", Glob::GLOB_BRACE))) {
 					$files = [$vs_template_path];
 				}
 				
@@ -343,10 +345,12 @@
 	 * the units specified by the $ps_units parameter. Units are limited to inches, centimeters, millimeters, pixels and points as
 	 * this function is primarily used to switch between units used when generating PDFs.
 	 *
+	 * If the output units are omitted or otherwise not valid, pixels are assumed.
+	 *
 	 * @param $ps_value string The value to convert. Valid units are in, cm, mm, px and p. If units are invalid or omitted points are assumed.
 	 * @param $ps_units string A valid measurement unit: in, cm, mm, px, p (inches, centimeters, millimeters, pixels, points) respectively.
 	 *
-	 * @return int Converted measurement. If the output units are omitted or otherwise not valid, pixels are assumed.
+	 * @return array Converted measurement as array with two keys: value and units. 
 	 */
 	function caParseMeasurement($ps_value, $pa_options=null) {
 		if (!preg_match("/^([\d\.]+)[ ]*([A-Za-z]*)$/", $ps_value, $va_matches)) {
@@ -536,16 +540,12 @@
 	/** 
 	 *
 	 */
-	function caGetPrintFormatsListAsHTMLForRelatedBundles($ps_id_prefix, $po_request, $pt_primary, $pt_related, $pt_relation, $pa_initial_values) {
+	function caGetPrintFormatsListAsHTMLForRelatedBundles($ps_id_prefix, $po_request, $pt_primary, $pt_related, $pt_relation, $placement_id) {
 		$va_formats = caGetAvailablePrintTemplates('results', ['table' => $pt_related->tableName(), 'type' => null, 'showOnlyIn' => 'editor_relationship_bundle']);
 		if(!is_array($va_formats)) { $va_formats = []; }
 		$vs_pk = $pt_related->primaryKey();
 		
 		$va_ids = [];
-		
-		foreach($pa_initial_values as $vn_relation_id => $va_info) {
-			$va_ids[$vn_relation_id] = $va_info[$vs_pk];
-		}
 		
 		$va_options = [];
 		if (sizeof($va_formats) > 0) {
@@ -577,7 +577,7 @@
 			<script type='text/javascript'>
 				function caGetExport{$ps_id_prefix}() {
 					var s = jQuery('#{$ps_id_prefix}_reportList').val();
-					var f = jQuery('<form id=\"caTempExportForm\" action=\"{$vs_url}/export_format/' + s + '\" method=\"post\" style=\"display:none;\"><textarea name=\"ids\">".json_encode($va_ids)."</textarea></form>');
+					var f = jQuery('<form id=\"caTempExportForm\" action=\"{$vs_url}/export_format/' + s + '\" method=\"post\" style=\"display:none;\"><input type=\"hidden\" name=\"placement_id\" value=\"{$placement_id}\"></form>');
 					jQuery('body #caTempExportForm').replaceWith(f).hide();
 					f.submit();
 				}

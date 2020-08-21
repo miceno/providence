@@ -249,7 +249,7 @@
 				}
 
 				foreach(array(
-							'policy', 'displayMode', 'dateMode', 'row_id', 'locationTrackingMode', 'width', 'height', 'readonly', 'documentation_url', 'expand_collapse',
+							'policy', 'displayMode', 'dateMode', 'row_id', 'width', 'height', 'readonly', 'documentation_url', 'expand_collapse',
 							'label', 'description', 'useHierarchicalBrowser', 'hide_add_to_loan_controls', 'hide_add_to_movement_controls', 'hide_update_location_controls', 'hide_return_to_home_location_controls',
 							'hide_add_to_occurrence_controls', 'hide_include_child_history_controls', 'add_to_occurrence_types', 
 							'hide_add_to_collection_controls', 'add_to_collection_types', 'hide_add_to_object_controls', 'hide_add_to_entity_controls', 'add_to_entity_types', 
@@ -296,7 +296,7 @@
 		}
 		# ------------------------------------------------------
 		/**
-		 * Return default policy for table
+		 * Return default policy for table. This is a non-static version of getDefaultHistoryTrackingCurrentValuePolicyForTable()
 		 *
 		 * @return string Policy name
 		 */
@@ -1690,7 +1690,7 @@
 						);
 
 						if (!$va_date['sortable']) { continue; }
-						if (sizeof($va_location_types) && !in_array($vn_rel_type_id = $qr_locations->get("{$linking_table}.type_id"), $va_location_types)) { continue; }
+						if (sizeof($va_location_types) && sizeof($va_location_types) && !in_array($vn_rel_type_id = $qr_locations->get("{$linking_table}.type_id"), $va_location_types)) { continue; }
 						
 						if ($pb_get_current_only && (($va_date['bounds'][0] > $vn_current_date))) { continue; }
 						

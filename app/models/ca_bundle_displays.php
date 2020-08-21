@@ -1722,6 +1722,14 @@ if (!$pb_omit_editing_info) {
 					'label' => _t('Sort using'),
 					'description' => _t('Override sort option for this field. Use this if you want result lists to sort on a different field when clicking on this bundle.')
 				),
+				'numPerPage' => array(
+					'formatType' => FT_NUMBER,
+					'displayType' => DT_FIELD,
+					'default' => 100,
+					'width' => "5", 'height' => 1,
+					'label' => _t('Number of items to load per page'),
+					'description' => _t('Maximum number of items to render on initial load.')
+				)
 			);
 			
 			
@@ -2243,7 +2251,8 @@ if (!$pb_omit_editing_info) {
 						if ($vs_sort_attr = ($vs_sort) ? "sort=\"{$rel_table}.{$vs_sort}\"" : "") {
 						    $vs_sort_dir_attr = ($vs_sort_dir) ? "sortDirection=\"{$vs_sort_dir}\"" : "";
 						}
-						$vs_unit_tag = "<unit relativeTo=\"".$va_path[1]."\" delimiter=\"".$pa_options['delimiter']."\" {$vs_restrict_to_types} {$vs_restrict_to_relationship_types} {$vs_sort_attr} {$vs_sort_dir_attr}>";
+						$max_items = (int)caGetOption('numPerPage', $va_settings, 0);
+						$vs_unit_tag = "<unit ".(($max_items > 0) ? "length=\"{$max_items}\"" : '')." relativeTo=\"".$va_path[1]."\" delimiter=\"".$pa_options['delimiter']."\" {$vs_restrict_to_types} {$vs_restrict_to_relationship_types} {$vs_sort_attr} {$vs_sort_dir_attr}>";
 
 						switch(sizeof($va_path)) {
 							case 3:
@@ -2284,7 +2293,10 @@ if (!$pb_omit_editing_info) {
 			}
 			
 			if ($vb_include_nonprimary_media) { $po_result->filterNonPrimaryRepresentations(false); }
-			$vs_val = $po_result->get(join(".", $va_bundle_bits), array_merge(['doRefSubstitution' => true], array_merge($pa_options, ['policy' => $va_settings['policy']])));	// policy passed for history tracking current value
+			
+			// policy passed for history tracking current value
+			// returnPath passed to force absolute file path to be used when running reports – some systems cannot handle urls in PDFs due to DNS configuration
+			$vs_val = $po_result->get(join(".", $va_bundle_bits), array_merge(['doRefSubstitution' => true], $pa_options, ['policy' => $va_settings['policy'], 'returnPath' => $pa_options['forReport']]));	
 			if ($vb_include_nonprimary_media) { $po_result->filterNonPrimaryRepresentations(true); }
 		}
 		

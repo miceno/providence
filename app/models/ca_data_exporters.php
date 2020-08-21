@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2012-2019 Whirl-i-Gig
+ * Copyright 2012-2020 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -496,6 +496,21 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 	}
 	# ------------------------------------------------------
 	/**
+	 * Check if exporter with code (and optionally table name/num exists
+	 *
+	 * @param string $exporter_code 
+	 * @param mixed $table Optional numeric table number or name
+	 * @param array $options No options are currently supported.
+	 *
+	 * @return bool
+	 */
+	static public function exporterExists($exporter_code, $table=null, $options=null) {
+		$d = ['exporter_code' => $exporter_code];
+		if (!is_null($table)) { $d['table_num'] = Datamodel::getTableName($table); }
+		return (self::find($d, ['returnAs' => 'count']) > 0);
+	}
+	# ------------------------------------------------------
+	/**
 	 * Return list of available data exporters
 	 *
 	 * @param int $pn_table_num
@@ -711,7 +726,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 		$pa_errors = array();
 
-		$o_excel = PHPExcel_IOFactory::load($ps_source);
+		$o_excel = \PhpOffice\PhpSpreadsheet\IOFactory::load($ps_source);
 		$o_sheet = $o_excel->getSheet(0);
 
 		$vn_row = 0;
@@ -725,27 +740,29 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 			}
 
 			$vn_row_num = $o_row->getRowIndex();
-			$o_cell = $o_sheet->getCellByColumnAndRow(0, $vn_row_num);
-			$vs_mode = (string)$o_cell->getValue();
+			$o_cell = $o_sheet->getCellByColumnAndRow(1, $vn_row_num);
+			$vs_mode = strtolower((string)$o_cell->getValue());
 
-			switch(strtolower($vs_mode)) {
+			switch($vs_mode) {
 				case 'mapping':
 				case 'constant':
 				case 'variable':
 				case 'repeatmappings':
-					$o_id = $o_sheet->getCellByColumnAndRow(1, $o_row->getRowIndex());
-					$o_parent = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
-					$o_element = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
-					$o_source = $o_sheet->getCellByColumnAndRow(4, $o_row->getRowIndex());
-					$o_options = $o_sheet->getCellByColumnAndRow(5, $o_row->getRowIndex());
-					$o_orig_values = $o_sheet->getCellByColumnAndRow(7, $o_row->getRowIndex());
-					$o_replacement_values = $o_sheet->getCellByColumnAndRow(8, $o_row->getRowIndex());
+				case 'template':
+					$o_id = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+					$o_parent = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
+					$o_element = $o_sheet->getCellByColumnAndRow(4, $o_row->getRowIndex());
+					$o_source = $o_sheet->getCellByColumnAndRow(5, $o_row->getRowIndex());
+					$o_options = $o_sheet->getCellByColumnAndRow(6, $o_row->getRowIndex());
+					$o_orig_values = $o_sheet->getCellByColumnAndRow(8, $o_row->getRowIndex());
+					$o_replacement_values = $o_sheet->getCellByColumnAndRow(9, $o_row->getRowIndex());
 
 					if($vs_id = trim((string)$o_id->getValue())) {
 						$va_ids[] = $vs_id;
 					}
 
-					if($vs_parent_id = trim((string)$o_parent->getValue())) {
+					$vs_parent_id = trim((string)$o_parent->getValue());
+					if(($vs_mode !== 'template') && $parent_id) {
 						if(!in_array($vs_parent_id, $va_ids) && ($vs_parent_id != $vs_id)) {
 							$pa_errors[] = $m = _t("Warning: skipped mapping at row %1 because parent id was invalid",$vn_row);
 							$o_log->logWarn($m);
@@ -802,7 +819,8 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 						'source' => ($vs_mode == "RepeatMappings" ? null : $vs_source),
 						'options' => $va_options,
 						'original_values' => $va_original_values,
-						'replacement_values' => $va_replacement_values
+						'replacement_values' => $va_replacement_values,
+						'skip' => ($vs_mode === 'template')
 					);
 
 					// allow mapping repetition
@@ -813,7 +831,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 						$va_new_items = array();
 
-						$va_mapping_items_to_repeat = explode(',', $vs_source);
+						$va_mapping_items_to_repeat = preg_split('/[,;]/', $vs_source);
 
 						foreach($va_mapping_items_to_repeat as $vs_mapping_item_to_repeat) {
 							$vs_mapping_item_to_repeat = trim($vs_mapping_item_to_repeat);
@@ -824,21 +842,24 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 							}
 
 							// add item to repeat under current item
-
 							$va_new_items[$vs_key."_:_".$vs_mapping_item_to_repeat] = $va_mapping[$vs_mapping_item_to_repeat];
 							$va_new_items[$vs_key."_:_".$vs_mapping_item_to_repeat]['parent_id'] = $vs_key;
+							
+							unset($va_new_items[$vs_key."_:_".$vs_mapping_item_to_repeat]['skip']);
 
 							// Find children of item to repeat (and their children) and add them as well, preserving the hierarchy
 							// the code below banks on the fact that hierarchy children are always defined AFTER their parents
 							// in the mapping document.
 
-							$va_keys_to_lookup = array($vs_mapping_item_to_repeat);
+							$va_keys_to_lookup = [$vs_mapping_item_to_repeat];
 
 							foreach($va_mapping as $vs_item_key => $va_item) {
-								if(in_array($va_item['parent_id'], $va_keys_to_lookup)) {
+								if(in_array($va_item['parent_id'], $va_keys_to_lookup, true)) {
 									$va_keys_to_lookup[] = $vs_item_key;
 									$va_new_items[$vs_key."_:_".$vs_item_key] = $va_item;
 									$va_new_items[$vs_key."_:_".$vs_item_key]['parent_id'] = $vs_key . ($va_item['parent_id'] ? "_:_".$va_item['parent_id'] : "");
+									
+									unset($va_new_items[$vs_key."_:_".$vs_item_key]['skip']);
 								}
 							}
 						}
@@ -848,8 +869,8 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 					break;
 				case 'setting':
-					$o_setting_name = $o_sheet->getCellByColumnAndRow(1, $o_row->getRowIndex());
-					$o_setting_value = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+					$o_setting_name = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+					$o_setting_value = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
 
 					switch($vs_setting_name = (string)$o_setting_name->getValue()) {
 						case 'typeRestrictions':		// older mapping worksheets use "inputTypes" instead of the preferred "inputFormats"
@@ -868,7 +889,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 		}
 
 		// try to extract replacements from 2nd sheet in file
-		// PHPExcel will throw an exception if there's no such sheet
+		// \PhpOffice\PhpSpreadsheet\Spreadsheet will throw an exception if there's no such sheet
 		try {
 			$o_sheet = $o_excel->getSheet(1);
 			$vn_row = 0;
@@ -879,15 +900,15 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 				}
 
 				$vn_row_num = $o_row->getRowIndex();
-				$o_cell = $o_sheet->getCellByColumnAndRow(0, $vn_row_num);
+				$o_cell = $o_sheet->getCellByColumnAndRow(1, $vn_row_num);
 				$vs_mapping_num = trim((string)$o_cell->getValue());
 
 				if(strlen($vs_mapping_num)<1) {
 					continue;
 				}
 
-				$o_search = $o_sheet->getCellByColumnAndRow(1, $o_row->getRowIndex());
-				$o_replace = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+				$o_search = $o_sheet->getCellByColumnAndRow(2, $o_row->getRowIndex());
+				$o_replace = $o_sheet->getCellByColumnAndRow(3, $o_row->getRowIndex());
 
 				if(!isset($va_mapping[$vs_mapping_num])) {
 					$pa_errors[] = $m = _t("Warning: Replacement sheet references invalid mapping number '%1'. Ignoring row.",$vs_mapping_num);
@@ -917,7 +938,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 				$vn_row++;
 			}
-		} catch(PHPExcel_Exception $e) {
+		} catch(\PhpOffice\PhpSpreadsheet\Exception $e) {
 			// noop, because we don't care: mappings without replacements are still valid
 		}
 
@@ -1009,15 +1030,17 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 			$vn_parent_id = null;
 			if($va_info['parent_id']) { $vn_parent_id = $va_id_map[$va_info['parent_id']]; }
 
-			$t_item = $t_exporter->addItem($vn_parent_id,$va_info['element'],$va_info['source'],$va_item_settings);
+			if(!$va_info['skip']) {
+				$t_item = $t_exporter->addItem($vn_parent_id,$va_info['element'],$va_info['source'],$va_item_settings);
 
-			if ($t_exporter->numErrors()) {
-				$pa_errors[] = $m = _t("Error adding item to exporter: %1", join("; ", $t_exporter->getErrors()));
-				$o_log->logError($m);
-				return;
+				if ($t_exporter->numErrors()) {
+					$pa_errors[] = $m = _t("Error adding item to exporter: %1", join("; ", $t_exporter->getErrors()));
+					$o_log->logError($m);
+					return;
+				}
+
+				$va_id_map[$vs_mapping_id] = $t_item->getPrimaryKey();
 			}
-
-			$va_id_map[$vs_mapping_id] = $t_item->getPrimaryKey();
 		}
 
 		$va_mapping_errors = ca_data_exporters::checkMapping($t_exporter->get('exporter_code'));
@@ -1334,7 +1357,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 			}
 
 			if ($vb_show_cli_progress_bar) {
-				print CLIProgressBar::next(1, _t("Exporting records ..."));
+				print CLIProgressBar::next(1, _t("Exporting records..."));
 			}
 
 			$vn_num_processed++;
@@ -1660,7 +1683,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
             $vn_new_table_num = $vs_new_table_name = $vs_key = null;
             if (sizeof($tmp = explode('.', $vs_context)) == 2) {
-                // convert <table>.<spec> contexts to just <spec> when table i
+                // convert <table>.<spec> contexts to just <spec> when table is present
                 $vn_new_table_num = Datamodel::getTableNum($tmp[0]);
                 
                 if ($pn_table_num != $vn_new_table_num) {
@@ -1671,14 +1694,13 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
                 } else {
                     $vn_new_table_num = null;
                 }
-            } else {
-                if($vn_new_table_num = Datamodel::getTableNum($vs_context)) { // switch to new table
-                    $vs_key = Datamodel::primaryKey($vs_context);
-                    $vs_new_table_name = Datamodel::getTableName($vs_context);
-                } else { // this table, i.e. hierarchy context switch
-                    $vs_key = $t_instance->primaryKey();
-			    }
+            } elseif($vn_new_table_num = Datamodel::getTableNum($vs_context)) { // switch to new table
+				$vs_key = Datamodel::primaryKey($vs_context);
+				$vs_new_table_name = Datamodel::getTableName($vs_context);
+			} else { // this table, i.e. hierarchy context switch
+				$vs_key = $t_instance->primaryKey();
 			}
+			
 			$vb_context_is_related_table = false;
 			$va_related = null;
 			$vb_force_context = false;
@@ -1788,8 +1810,8 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 			$va_info = array();
 
-			if(is_array($va_related)) {
-				$o_log->logDebug(_t("The current mapping will now be repreated for these items: %1", print_r($va_related,true)));
+			if(is_array($va_related) && sizeof($va_related)) {
+				$o_log->logDebug(_t("The current mapping will now be repeated for these items: %1", print_r($va_related,true)));
 				if(!$vn_new_table_num) { $vn_new_table_num = $pn_table_num; }
 
 				foreach($va_related as $va_rel) {
@@ -1885,7 +1907,11 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 		if($t_exporter_item->getSetting('timeOmit')) {
 			$va_get_options['timeOmit'] = true;
 		}
-
+		
+		if($t_exporter_item->getSetting('stripTags')) {
+			$va_get_options['stripTags'] = true;
+		}
+		
 		if($t_exporter_item->getSetting('dontReturnValueIfOnSameDayAsStart')) {
 			$va_get_options['dontReturnValueIfOnSameDayAsStart'] = true;
 		}
@@ -1961,7 +1987,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 					foreach ($va_values as $vo_val) {
 					    if ($vo_val->getElementCode() !== $vs_source)  { continue; }
 					
-						$va_display_val_options = array();
+						$va_display_val_options = is_array($va_get_options) ? $va_get_options : []; 
 						switch($vo_val->getDatatype()) {
 							case __CA_ATTRIBUTE_VALUE_LIST__: //if ($vo_val instanceof ListAttributeValue) {
 								// figure out list_id -- without it we can't pull display values
@@ -2007,6 +2033,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 								$o_log->logDebug(_t("Trying to match code from array %1 and the code we're looking for %2.", $vo_val->getElementCode(), $vs_source));
 								if ($vo_val->getElementCode() == $vs_source) {
 									$vs_display_value = $vo_val->getDisplayValue($va_display_val_options);
+									$vs_display_value_raw = $vo_val->getDisplayValue();
 									$o_log->logDebug(_t("Found value %1.", $vs_display_value));
 
 								}
@@ -2015,6 +2042,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 						$va_item_info[] = array(
 							'text' => $vs_display_value,
+							'text_raw' => $vs_display_value_raw,
 							'element' => $vs_element,
 						);
 					}
@@ -2055,11 +2083,13 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 
 					$va_item_info[] = array(
 						'text' => $vs_get,
+						'text_raw' => $t_instance->get($vs_source),
 						'element' => $vs_element,
 					);
 				} else { // user wants current element repeated in case of multiple returned values
 					
 					$va_values = $t_instance->get($vs_source, array_merge($va_get_options, ['returnAsArray' => true]));
+					$va_values_raw = $t_instance->get($vs_source, ['returnAsArray' => true]);
 					$o_log->logDebug(_t("Source is a get() that should be repeated for multiple values. Value for this mapping is '%1'. It includes the custom delimiter ';#;' that is later used to split the value into multiple values.", $vs_values));
 					$o_log->logDebug(_t("get() options are: %1", print_r($va_get_options,true)));
 
@@ -2067,7 +2097,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 						// handle skipIfExpression setting
 						if($vs_skip_if_expr) {
 							// Add current value as variable "value", accessible in expressions as ^value
-							$va_vars = array_merge(array('value' => $vs_text), ca_data_exporters::$s_variables);
+							$va_vars = array_merge(array('value' => $vs_text, 'value_raw' => $va_values_raw[$vn_i]), ca_data_exporters::$s_variables);
 				
 							if(is_array($va_expr_tags)) {
 								foreach($va_expr_tags as $vs_expr_tag) {
@@ -2082,6 +2112,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 						$va_item_info[] = array(
 							'element' => $vs_element,
 							'text' => $vs_text,
+							'text_raw' => $va_values_raw[$vn_i]
 						);
 					}
 				}
@@ -2146,6 +2177,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 				// Add current value as variable "value", accessible in expressions as ^value
 				$va_vars = ca_data_exporters::$s_variables;
 				$va_vars['value'] = $va_item['text'];
+				$va_vars['value_raw'] = $va_item['text_raw'];
 				
 				if(is_array($va_expr_tags)) {
 					foreach($va_expr_tags as $vs_expr_tag) {
@@ -2284,7 +2316,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 		
 	    $a_to_z = range('A', 'Z');
 		
-	    $workbook = new PHPExcel();
+	    $workbook = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 	    $o_sheet = $workbook->getActiveSheet();
 	    $columntitlestyle = array(
 			'font'=>array(
@@ -2292,28 +2324,28 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
 					'size' => 12,
 					'bold' => true),
 			'alignment'=>array(
-					'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-					'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER,
+					'horizontal'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					'vertical'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
 					'wrap' => true,
 					'shrinkToFit'=> true),
 			'borders' => array(
 					'allborders'=>array(
-							'style' => PHPExcel_Style_Border::BORDER_THICK)));
+							'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK)));
         $cellstyle = array(
                 'font'=>array(
                         'name' => 'Arial',
                         'size' => 11,
                         'bold' => false),
                 'alignment'=>array(
-                        'horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                        'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                        'horizontal'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                        'vertical'=>\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
                         'wrap' => true,
                         'shrinkToFit'=> true),
                 'borders' => array(
                         'allborders'=>array(
-                                'style' => PHPExcel_Style_Border::BORDER_THIN)));
+                                'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)));
 
-        $o_sheet->getDefaultStyle()->applyFromArray($cellstyle);
+        $o_sheet->getParent()->getDefaultStyle()->applyFromArray($cellstyle);
         $o_sheet->setTitle(_t("Exporter %1", $exporter_code));
         
         $o_sheet->getRowDimension($vn_line)->setRowHeight(30);
@@ -2377,7 +2409,7 @@ class ca_data_exporters extends BundlableLabelableBaseModelWithAttributes {
             }
         }
         
-        $o_writer = new PHPExcel_Writer_Excel2007($workbook);
+        $o_writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($workbook);
  	    $o_writer->save($file);
         return true;   
 	}

@@ -741,18 +741,36 @@ class BaseModel extends BaseObject {
 			||
 			((sizeof($va_tmp) === 1) && in_array($va_tmp[0], array('created', 'lastModified'))) 
 		)  {
+			$va_data = (in_array('lastModified', $va_tmp, true)) ? $this->getLastChangeTimestamp() : $this->getCreationTimestamp();
+			if ($va_tmp[0] !== $this->tableName()) { array_unshift($va_tmp, $this->tableName()); }
+			$vs_subfield = (isset($va_tmp[2]) && isset($va_data[$va_tmp[2]])) ? $va_tmp[2] : null;
 			if ($vb_return_as_array) {
-				return ($va_tmp[1] == 'lastModified') ? $this->getLastChangeTimestamp() : $this->getCreationTimestamp();
-			} else {
-				$va_data = ($va_tmp[1] == 'lastModified') ? $this->getLastChangeTimestamp() : $this->getCreationTimestamp();
-				$vs_subfield = (isset($va_tmp[2]) && isset($va_data[$va_tmp[2]])) ? $va_tmp[2] : 'timestamp';
-				
-				$vm_val = $va_data[$vs_subfield];
-		
-				if ($vs_subfield == 'timestamp') {
+				if($vs_subfield) {
+					$vm_val = [$va_data[$vs_subfield]];
+				} elseif($vb_return_with_structure) {
+					$vm_val = $va_data;
+				} else {
 					$o_tep = new TimeExpressionParser();
-					$o_tep->setUnixTimestamps($vm_val, $vm_val);
-					$vm_val = $o_tep->getText($pa_options);
+					$o_tep->setUnixTimestamps($va_data['timestamp'], $va_data['timestamp']);
+					$vm_val = [$o_tep->getText($pa_options)];
+				}
+				return $vm_val;
+			} else {
+				switch($vs_subfield) {
+					case 'user':
+					case 'fname':
+					case 'lname':
+					case 'email':
+						$vm_val = $va_data[$vs_subfield];
+						break;
+					case 'timestamp':
+						// noop
+						break;
+					default:
+						$o_tep = new TimeExpressionParser();
+						$o_tep->setUnixTimestamps($va_data['timestamp'], $va_data['timestamp']);
+						$vm_val = $o_tep->getText($pa_options);
+						break;
 				}
 				return $vm_val;
 			}
@@ -2708,7 +2726,6 @@ class BaseModel extends BaseObject {
 						$this->postError($vn_err_num, $o_e->getErrorDescription().' ['.$vn_err_num.']', "BaseModel->insert()", $this->tableName().'.'.$vs_field);
 						break;
 				}
-
 			}
 			if ($vb_we_set_transaction) { $this->removeTransaction(false); }
 			if ($we_set_change_log_unit_id) { BaseModel::unsetChangeLogUnitID(); }
@@ -3171,7 +3188,7 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 				} 
 				
 				SearchResult::clearResultCacheForRow($this->tableName(), $this->getPrimaryKey());
-                if (($fields_changed > 0) && method_exists($this, "deriveHistoryTrackingCurrentValue") && !caGetOption('dontUpdateHistoryCurrentValueTracking', $pa_options, false)) {
+                if (($fields_changed > 0) && method_exists($this, "deriveHistoryTrackingCurrentValue") && !caGetOption('dontUpdateHistoryCurrentValueTracking', $pa_options, false) && !defined('__CA_DONT_UPDATE_HISTORY_TRACKING_CACHE__')) {
                     $table = $this->tableName();
                     $this->deriveHistoryTrackingCurrentValue();
                     if ($table::isHistoryTrackingCriterion($table)) { $this->updateDependentHistoryTrackingCurrentValues(); }
@@ -5900,6 +5917,9 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 	 * @return array 
 	 */
 	public function &getSnapshot($pb_changes_only=false) {
+		$is_attr_table = in_array($this->tableName(), ['ca_attributes', 'ca_attribute_values'], true);
+		if ($is_attr_table) { $pb_changes_only = false; }
+		
 		$va_field_list = $this->getFormFields(true, true);
 		$va_snapshot = array();
 
@@ -5912,7 +5932,7 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 		// We need to include the element_id when storing snapshots of ca_attributes and ca_attribute_values
 		// whether is has changed or not (actually, it shouldn't really be changing after insert in normal use)
 		// We need it available to assist in proper display of attributes in the change log
-		if (in_array($this->tableName(), array('ca_attributes', 'ca_attribute_values'))) {
+		if ($is_attr_table) {
 			$va_snapshot['element_id'] = $this->get('element_id');
 			$va_snapshot['attribute_id'] = $this->get('attribute_id');
 		}
@@ -6625,8 +6645,11 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 				'user_id' => $qr_res->get('user_id'),
 				'fname' => $qr_res->get('fname'),
 				'lname' => $qr_res->get('lname'),
+				'user' => $qr_res->get('fname').' '.$qr_res->get('lname'),
 				'email' => $qr_res->get('email'),
-				'timestamp' => $qr_res->get('log_datetime')
+				'timestamp' => $qr_res->get('log_datetime'),
+				'date' => caGetLocalizedDate($qr_res->get('log_datetime'), ['timeOmit' => true]),
+				'datetime' => caGetLocalizedDate($qr_res->get('log_datetime'))
 			);
 		}
 		
@@ -6668,8 +6691,11 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 				'user_id' => $qr_res->get('user_id'),
 				'fname' => $qr_res->get('fname'),
 				'lname' => $qr_res->get('lname'),
+				'user' => $qr_res->get('fname').' '.$qr_res->get('lname'),
 				'email' => $qr_res->get('email'),
-				'timestamp' => $qr_res->get('log_datetime')
+				'timestamp' => $qr_res->get('log_datetime'),
+				'date' => caGetLocalizedDate($qr_res->get('log_datetime'), ['timeOmit' => true]),
+				'datetime' => caGetLocalizedDate($qr_res->get('log_datetime'))
 			);
 		}
 		
@@ -9062,7 +9088,7 @@ $pa_options["display_form_field_tips"] = true;
 					$t_item_rel->insert();
 					
 					if ($t_item_rel->numErrors() > 0) {
-						$this->errors = array_merge($this->getErrors(), $t_item_rel->getErrors());
+						$this->errors = array_merge($this->errors(), $t_item_rel->errors());
 						return false;
 					}
 					
@@ -9075,7 +9101,7 @@ $pa_options["display_form_field_tips"] = true;
 							$t_item_rel->update();
 							
 							if ($t_item_rel->numErrors() > 0) {
-								$this->errors = array_merge($this->getErrors(), $t_item_rel->getErrors());
+								$this->errors = array_merge($this->errors(), $t_item_rel->errors());
 								return false;
 							}
 						} else {
@@ -9085,7 +9111,7 @@ $pa_options["display_form_field_tips"] = true;
 							$t_item_rel->insert();
 							
 							if ($t_item_rel->numErrors() > 0) {
-								$this->errors = array_merge($this->getErrors(), $t_item_rel->getErrors());
+								$this->errors = array_merge($this->errors(), $t_item_rel->errors());
 								return false;
 							}
 						}
@@ -9095,7 +9121,7 @@ $pa_options["display_form_field_tips"] = true;
 						$this->update();
 					
 						if ($this->numErrors() > 0) {
-							$this->errors = array_merge($this->getErrors(), $t_item_rel->getErrors());
+							$this->errors = array_merge($this->errors(), $t_item_rel->errors());
 							return false;
 						}
 						return $this;
@@ -11379,12 +11405,14 @@ $pa_options["display_form_field_tips"] = true;
 	 * @param int $pn_id Primary key value
 	 * @param array $pa_options Options include:
 	 *      checkAccess = Array of access values to filter returned values on. If omitted no filtering is performed. [Default is null]
+	 *		transaction = optional Transaction instance. If set then all database access is done within the context of the transaction
 	 *
 	 * @return string idno value, null if id does not exist or false if id exists but fails checkAccess checks
 	 */
 	public static function getIdnoForID($pn_id, $pa_options=null) {
+		$o_trans = caGetOption('transaction', $pa_options, null);
 		if (($t_instance = Datamodel::getInstance(static::class, true)) && ($vs_idno_fld = $t_instance->getProperty('ID_NUMBERING_ID_FIELD'))) {
-			$o_db = new Db();
+			$o_db = $o_trans ? $o_trans->getDb() : new Db();
 			$qr_res = $o_db->query("SELECT {$vs_idno_fld} FROM ".$t_instance->tableName()." WHERE ".$t_instance->primaryKey()." = ?", [(int)$pn_id]);
 			
 			$pa_check_access = caGetOption('checkAccess', $pa_options, null);
@@ -11402,12 +11430,14 @@ $pa_options["display_form_field_tips"] = true;
 	 * @param string $ps_idno Identifier value
 	 * @param array $pa_options Options include:
 	 *      checkAccess = Array of access values to filter returned values on. If omitted no filtering is performed. [Default is null]
+	 *		transaction = optional Transaction instance. If set then all database access is done within the context of the transaction
 	 *
 	 * @return int primary key id value, null if idno does not exist or false if id exists but fails checkAccess checks
 	 */
 	public static function getIDForIdno($ps_idno, $pa_options=null) {
+		$o_trans = caGetOption('transaction', $pa_options, null);
 		if (($t_instance = Datamodel::getInstance(static::class, true)) && ($vs_idno_fld = $t_instance->getProperty('ID_NUMBERING_ID_FIELD'))) {
-			$o_db = new Db();
+			$o_db = $o_trans ? $o_trans->getDb() : new Db();
 			$vs_pk = $t_instance->primaryKey();
 			$qr_res = $o_db->query("SELECT {$vs_pk} FROM ".$t_instance->tableName()." WHERE {$vs_idno_fld} = ?", [$ps_idno]);
 			
@@ -11466,7 +11496,8 @@ $pa_options["display_form_field_tips"] = true;
 	 *
 	 *			The default is ids
 	 *	
-	 *		limit = if searchResult, ids or modelInstances is set, limits number of returned matches. Default is no limit
+	 *		start = if searchResult, ids or modelInstances is set, starts returned list of matches at specified index. Default is 0.
+	 *		limit = if searchResult, ids or modelInstances is set, limits number of returned matches. Default is no limit.
 	 *		boolean = determines how multiple field values in $pa_values are combined to produce the final result. Possible values are:
 	 *			AND						= find rows that match all criteria in $pa_values
 	 *			OR						= find rows that match any criteria in $pa_values
@@ -11647,7 +11678,7 @@ $pa_options["display_form_field_tips"] = true;
 						if (is_null($vm_value) && !$t_instance->getFieldInfo($vs_field, 'IS_NULL')) { $vs_op = '='; }
 					}
 					
-					if (is_null($vm_value)) {
+					if (is_null($vm_value) || ($vs_op === 'IS')) {
 						if ($vs_op !== '=') { $vs_op = 'IS'; }
 						$va_sql_wheres[] = "({$vs_field} {$vs_op} NULL)";
 					} elseif (is_array($vm_value) && sizeof($vm_value)) {
@@ -11712,8 +11743,14 @@ $pa_options["display_form_field_tips"] = true;
 			$o_db = new Db();
 		}
 		
-		$vn_limit = (isset($pa_options['limit']) && ((int)$pa_options['limit'] > 0)) ? (int)$pa_options['limit'] : null;
-		$qr_res = $o_db->query($vs_sql, array_merge($va_sql_params, $va_type_restriction_params));
+		$start = (isset($pa_options['start']) && ((int)$pa_options['start'] > 0)) ? (int)$pa_options['start'] : 0;
+		$limit = (isset($pa_options['limit']) && ((int)$pa_options['limit'] > 0)) ? (int)$pa_options['limit'] : null;
+		
+		$limit_sql = '';
+		if ($start > 0) { $limit_sql = "{$start}"; }
+		if ($limit > 0) { $limit_sql .= $limit_sql ? ", {$limit}" : "{$limit}"; }
+		
+		$qr_res = $o_db->query($vs_sql.($limit_sql ? " LIMIT {$limit_sql}" : ''), array_merge($va_sql_params, $va_type_restriction_params));
 
 		if ($vb_purify_with_fallback && ($qr_res->numRows() == 0)) {
 			return self::find($pa_values, array_merge($pa_options, ['purifyWithFallback' => false, 'purify' => false]));
@@ -11745,7 +11782,7 @@ $pa_options["display_form_field_tips"] = true;
 					if ($t_instance->load($qr_res->get($vs_pk))) {
 						$va_instances[] = $t_instance;
 						$vn_c++;
-						if ($vn_limit && ($vn_c >= $vn_limit)) { break; }
+						if ($limit && ($vn_c >= $limit)) { break; }
 					}
 				}
 				return $va_instances;
@@ -11764,7 +11801,7 @@ $pa_options["display_form_field_tips"] = true;
 				while($qr_res->nextRow()) {
 					$va_rows[] = $qr_res->getRow();
 					$vn_c++;
-					if ($vn_limit && ($vn_c >= $vn_limit)) { break; }
+					if ($limit && ($vn_c >= $limit)) { break; }
 				}
 				return $va_rows;
 				break;
@@ -11774,7 +11811,7 @@ $pa_options["display_form_field_tips"] = true;
 				$va_ids = array();
 				while($qr_res->nextRow()) {
 					$va_ids[$vn_v = $qr_res->get($vs_pk)] = $vn_v;
-					if ($vn_limit && (sizeof($va_ids) >= $vn_limit)) { break; }
+					if ($limit && (sizeof($va_ids) >= $limit)) { break; }
 				}
 				if ($ps_return_as == 'searchresult') {
 					return $t_instance->makeSearchResult($t_instance->tableName(), array_values($va_ids));

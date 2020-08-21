@@ -78,6 +78,14 @@ $_ca_attribute_settings['InformationServiceAttributeValue'] = array(		// global
 		'label' => _t('Does not use locale setting'),
 		'description' => _t('Check this option if you don\'t want your values to be locale-specific. (The default is to not be.)')
 	),
+	'allowDuplicateValues' => array(
+		'formatType' => FT_NUMBER,
+		'displayType' => DT_CHECKBOXES,
+		'default' => 0,
+		'width' => 1, 'height' => 1,
+		'label' => _t('Allow duplicate values?'),
+		'description' => _t('Check this option if you want to allow duplicate values to be set when element is not in a container and is repeating.')
+	),
 	'canBeUsedInSort' => array(
 		'formatType' => FT_NUMBER,
 		'displayType' => DT_CHECKBOXES,
@@ -224,7 +232,7 @@ class InformationServiceAttributeValue extends AttributeValue implements IAttrib
 		));
 
 		//if (!trim($ps_value)) {
-		//$this->postError(1970, _t('Entry was blank.'), 'InformationServiceAttributeValue->parseValue()');
+		//$this->postError(1970, _t('Entry for <em>%1</em> was blank.', $pa_element_info['displayLabel']), 'InformationServiceAttributeValue->parseValue()');
 		//	return false;
 		//}
 

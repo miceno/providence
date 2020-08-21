@@ -561,8 +561,7 @@
 		public static function fix_permissionsParamList() {
 			return array(
 				"user|u=s" => _t("Set ownership of directories to specifed user. If not set, an attempt will be made to determine the name of the web server user automatically. If the web server user cannot be determined the current user will be used."),
-				"group|g=s" => _t("Set ownership of directories to specifed group. If not set, the current group will be used."),
-				"quiet|q" => _t("Run without outputting progress information.")
+				"group|g=s" => _t("Set ownership of directories to specifed group. If not set, the current group will be used.")
 			);
 		}
 		# -------------------------------------------------------
@@ -1159,7 +1158,6 @@
 				"file|o=s" => _t('Location to write report to. The placeholder %date may be included to date/time stamp the report.'),
 				"format|f-s" => _t('Output format. (text|tab|csv)'),
 				"email|m-s" => _t('Email address to send report to.'),
-				"quiet|q" => _t('Suppress progress messages.'),
 				"start_id|s-n" => _t('Representation id to start checking at'),
 				"end_id|e-n" => _t('Representation id to end checking at'),
 				"id|i-n" => _t('Representation id to check'),
@@ -1459,7 +1457,8 @@
 				$va_sources[] = $vs_source;
 			}
 
-			ca_data_importers::importDataFromSource(join(',', $va_sources), $vs_mapping, array('format' => 'ULAN', 'showCLIProgressBar' => true, 'logDirectory' => $vs_log_dir, 'logLevel' => $vn_log_level));
+			$t_importer = new ca_data_importers();
+			$t_importer->importDataFromSource(join(',', $va_sources), $vs_mapping, array('format' => 'ULAN', 'showCLIProgressBar' => true, 'logDirectory' => $vs_log_dir, 'logLevel' => $vn_log_level));
 
 			return true;
 		}
@@ -1972,7 +1971,7 @@
 			        }
 			        
 			        while($qr_res->nextHit()) {
-			            $va_value_list = $qr_res->get("{$vs_table_name}.{$vs_root_code}", ["returnWithStructure" => true]);
+			            $va_value_list = $qr_res->get("{$vs_table_name}.{$vs_root_code}", ['returnWithStructure' => true, 'convertCodesToDisplayText' => true]);
 			            foreach($va_value_list as $vn_row_id => $va_values_by_attribute_id) {
 			                CLIUtils::addMessage(_t('Processing row %1 for %2.%3', $vn_row_id, $vs_root_code, $va_element['element_code']));
 			                foreach($va_values_by_attribute_id as $vn_attr_id => $va_values) {
