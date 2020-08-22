@@ -35,7 +35,7 @@ you will need to use:
 where:
 * `%o` is the output file.
 * `%c` is the charset in case it is not the default one.
-* `%k` is a keyword.
+* `%k` is a keyword. Keywords are `_` and `_t`.
 * `%F` is for your files.
 
 Editing translation
