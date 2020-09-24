@@ -1453,9 +1453,10 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 									}
 								}
 
-								if (($vs_intrinsic_field_name = $t_table->fieldName($vn_fld_num))
-                                        && ($vn_intrinsic_type = $t_table->getFieldInfo($vs_intrinsic_field_name, 'FIELD_TYPE'))
-                                        && ($vn_intrinsic_type == FT_BIT)) {
+								$vs_intrinsic_field_name = $t_table->fieldName($vn_fld_num);
+								$vn_intrinsic_type = $t_table->getFieldInfo($vs_intrinsic_field_name, 'FIELD_TYPE');
+								
+								if ($vs_intrinsic_field_name && ($vn_intrinsic_type == FT_BIT)) {
 									$vb_ft_bit_optimization = true;
 								} elseif($vn_intrinsic_type == FT_HISTORIC_DATERANGE) {
 									$vb_all_numbers = true;
@@ -1656,7 +1657,7 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 											break;
 									}
 
-									$pa_direct_sql_query_params = null;
+									$pa_direct_sql_query_params = array();
 								}
 							}
 						}
