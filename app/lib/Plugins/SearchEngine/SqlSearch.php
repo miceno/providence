@@ -114,7 +114,7 @@ class WLPlugSearchEngineSqlSearch extends BaseSearchPlugin implements IWLPlugSea
 		if (!is_array(WLPlugSearchEngineSqlSearch::$s_metadata_elements)) {
 			WLPlugSearchEngineSqlSearch::$s_metadata_elements = ca_metadata_elements::getRootElementsAsList();
 		}
-		$this->debug = false;
+		$this->debug = true;
 	}
 	# -------------------------------------------------------
 	# Initialization and capabilities
