@@ -4307,7 +4307,7 @@ if (!$vb_batch) {
 											$vs_tmp_directory = caGetTempDirPath();
 										}
                                     	$vs_path = $vs_tmp_directory.'/'.$va_values['tmp_name'];
-                                    	$md = json_decode(file_get_contents("{$vs_path}_metadata"), true);
+                                    	$md = json_decode(@file_get_contents("{$vs_path}_metadata"), true);
                                         $vs_original_name = $md['original_filename'];
                                     } else {
                                         $vs_path = $va_values['tmp_name'];
@@ -4752,15 +4752,14 @@ if (!$vb_batch) {
 				
 						$va_users_to_set = array();
 						foreach($_REQUEST as $vs_key => $vs_val) { 
+							// any to delete?
+							if (preg_match("!^{$vs_placement_code}{$vs_form_prefix}_([\d]+)_delete$!", $vs_key, $va_matches)) {
+								$this->removeCaptionFile((int)$va_matches[1]);
+							}
 							if (preg_match("!^{$vs_placement_code}{$vs_form_prefix}_locale_id(.*)$!", $vs_key, $va_matches)) {
 								$vn_locale_id = (int)$po_request->getParameter("{$vs_placement_code}{$vs_form_prefix}_locale_id".$va_matches[1], pInteger);
-								$this->addCaptionFile($_FILES["{$vs_placement_code}{$vs_form_prefix}_caption_file".$va_matches[1]]['tmp_name'], $vn_locale_id, array('originalFilename' => $_FILES["{$vs_placement_code}{$vs_form_prefix}_captions_caption_file".$va_matches[1]]['name']));
-							} else {
-								// any to delete?
-								if (preg_match("!^{$vs_placement_code}{$vs_form_prefix}_([\d]+)_delete$!", $vs_key, $va_matches)) {
-									$this->removeCaptionFile((int)$va_matches[1]);
-								}
-							}
+								$this->addCaptionFile($_FILES["{$vs_placement_code}{$vs_form_prefix}_caption_file".$va_matches[1]]['tmp_name'], $vn_locale_id, array('originalFilename' => $_FILES["{$vs_placement_code}{$vs_form_prefix}_caption_file".$va_matches[1]]['name']));
+							} 
 						}
 						
 						break;
@@ -5014,6 +5013,7 @@ if (!$vb_batch) {
 					
 						$this->set('is_deaccessioned', $vb_is_deaccessioned = $po_request->getParameter("{$vs_placement_code}{$vs_form_prefix}is_deaccessioned", pInteger));
 						$this->set('deaccession_notes', $po_request->getParameter("{$vs_placement_code}{$vs_form_prefix}deaccession_notes", pString));
+						$this->set('deaccession_authorized_by', $po_request->getParameter("{$vs_placement_code}{$vs_form_prefix}deaccession_authorized_by", pString));
 						$this->set('deaccession_type_id', $po_request->getParameter("{$vs_placement_code}{$vs_form_prefix}deaccession_type_id", pString));
 	
 						$this->set('deaccession_date', $po_request->getParameter("{$vs_placement_code}{$vs_form_prefix}deaccession_date", pString));

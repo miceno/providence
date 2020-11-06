@@ -1029,7 +1029,7 @@ class SearchResult extends BaseObject {
 		
 		$config = Configuration::load();
 		
-		if($pa_options['filterTypes'] && !is_array($pa_options['filterTypes'])) { $pa_options['filterTypes'] = [$pa_options['filterTypes']]; }
+		if($pa_options['filterTypes'] && !is_array($pa_options['filterTypes'])) { $pa_options['filterTypes'] = preg_split('![,;]+!',$pa_options['filterTypes']); }
 		
 		if ($vb_return_with_structure) { $pa_options['returnAsArray'] = $vb_return_as_array = true; } // returnWithStructure implies returnAsArray
 		
@@ -1423,7 +1423,8 @@ class SearchResult extends BaseObject {
 						$va_ids = array($vn_row_id);
 					}
 					
-					$va_hier_list = array();
+					if (!is_array($va_ids)) { $va_ids = []; }
+					$va_hier_list = [];
 					foreach($va_ids as $vn_id) {
 						if (
 							!is_array(SearchResult::$opa_hierarchy_children_prefetch_cache[$va_path_components['table_name']][$vn_id][$vs_opt_md5])
@@ -3650,6 +3651,28 @@ class SearchResult extends BaseObject {
 			}
 		}
 		return $this->opa_cached_result_counts[$vs_key] = $va_result;
+	}
+	# ------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public function hasValueForBundle(string $bundle, ?array $options=null){
+		if (($vn_cur_row_index = $this->opo_engine_result->currentRow()) < 0) {
+			$vn_cur_row_index = 0;
+		}
+		self::seek(0);
+		
+		while(self::nextHit()) {
+			if($this->get($bundle) !== null) { 
+				self::seek($vn_cur_row_index);	// restore current position
+				return true; 
+			}
+		}
+		
+		// restore current position
+		self::seek($vn_cur_row_index);
+		
+		return false;
 	}
 	# ------------------------------------------------------------------
 	/**
