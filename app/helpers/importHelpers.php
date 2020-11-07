@@ -312,9 +312,7 @@
 	 * @return array
 	 */
 	function caProcessRefineryAttributes($pa_attributes, $pa_source_data, $pa_item, $pn_c, $pa_options=null) {
-		$o_log = caGetOption('log', $pa_options, null);
 		$o_reader = caGetOption('reader', $pa_options, null);
-		$o_trans = caGetOption('transaction', $pa_options, null);
 		$vs_batch_media_directory = Configuration::load()->get('batch_media_import_root_directory');
 		$ps_refinery_name = caGetOption('refineryName', $pa_options, null);
 
@@ -450,7 +448,6 @@
 	 */
 	function caProcessInterstitialAttributes($ps_refinery_name, $pm_import_tablename_or_num, $pm_target_tablename_or_num, $pa_source_data, $pa_item, $pn_c, $pa_options=null) {
 		$o_reader = caGetOption('reader', $pa_options, null);
-		$o_log = caGetOption('log', $pa_options, null);
 		$o_trans = caGetOption('transaction', $pa_options, null);
 
 		if (is_array($pa_item['settings']["{$ps_refinery_name}_interstitial"])) {
@@ -1132,8 +1129,8 @@
 							        $vs_name = pathinfo($vs_item, PATHINFO_FILENAME);
 							    }
 
-								if(!isset($va_val['preferred_labels']) || !strlen($va_val['preferred_labels'])) { $va_val['preferred_labels'] = $vs_name ? $vs_name : '['.caGetBlankLabelText().']'; }
-
+								if(!isset($va_val['preferred_labels']) || !strlen($va_val['preferred_labels'])) { $va_val['preferred_labels'] = $vs_name ? $vs_name : '['.caGetBlankLabelText('ca_object_representations').']'; }
+					
 								if ($va_val['media']['media'] || $vs_item) {
 									// Search for files in import directory (or subdirectory of import directory specified by mediaPrefix)
 									$vs_media_dir_prefix = isset($pa_item['settings']['objectRepresentationSplitter_mediaPrefix']) ? '/'.$pa_item['settings']['objectRepresentationSplitter_mediaPrefix'] : '';
@@ -1237,7 +1234,6 @@
  * @param $va_attr_vals array
  */
 function caProcessRefineryRelatedMultiple($po_refinery_instance, &$pa_item, $pa_source_data, $pn_value_index, $o_log, $o_reader, &$va_val, &$va_attr_vals, $pa_options=null) {
-	$o_trans = caGetOption('transaction', $pa_options, null);
 
 	$vs_relationship_settings_key = $po_refinery_instance->getName() . '_relationships';
 	// Set relatedEntities to support legacy mappings
