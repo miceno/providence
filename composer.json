@@ -42,5 +42,8 @@
     "ext-simplexml": "*",
     "ext-json": "*",
     "phpseclib/phpseclib": "^2.0"
+  },
+  "config": {
+  	"discard-changes": true
   }
 }
