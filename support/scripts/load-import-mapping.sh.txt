@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+BASEDIR=$(dirname $0)
+PHP_BIN=${PHB_BIN:-php7.3-cli}
+
+#
+# Import mapping description.
+#
+
+if [ $# -lt 1 ];
+then
+    echo "$(basename $0): FILE"
+    exit 1
+fi
+
+$PHP_BIN $BASEDIR/../bin/caUtils load-import-mapping \
+    -d DEBUG \
+    -f "$1"

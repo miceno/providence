@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -a
+
+BASEDIR=$(dirname $0)
+PARSER_TESTDIR=${BASEDIR}/../../tests/lib/Parsers
+
+function get_parse() {
+  grep -E '(->parse\()' ${PARSER_TESTDIR}/TimeExpressionParser_caTest.php \
+          | sed -E "s/([^\"']*)[\"']([^\"']*)[\"']([^\"']*)/\2/g" | sort -f | uniq
+
+}
+
+function get_gettext() {
+    grep -E '(\$o_tep\->getText\(\))' ${PARSER_TESTDIR}/TimeExpressionParser_caTest.php \
+        | sed -E "s/([^\"']*)[\"']([^\"']*)[\"'](.*)/\2    \*\*\*/g" | sort -f | uniq
+}
+
+{ get_parse & get_gettext ;} | sort -f | uniq
+
+echo
+echo
+echo "*** Fechas normalizadas tal y como aparecerán en la visualización e informes."

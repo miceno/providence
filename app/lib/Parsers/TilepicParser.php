@@ -103,6 +103,7 @@ class TilepicParser {
 	var $backend;
 	
 	var $opo_config;
+	var $opo_external_app_config;
 	var $ops_imagemagick_path;
 	var $ops_graphicsmagick_path;
 	
@@ -110,8 +111,9 @@ class TilepicParser {
 	function TilepicParser($filename="") {
 		$this->opo_config = Configuration::load();
 		$vs_external_app_config_path = $this->opo_config->get('external_applications');
-		
-		$this->ops_imagemagick_path = caMediaPluginImageMagickInstalled();
+        $this->opo_external_app_config = Configuration::load($vs_external_app_config_path);
+
+        $this->ops_imagemagick_path = caMediaPluginImageMagickInstalled();
 		$this->ops_graphicsmagick_path = caMediaPluginGraphicsMagickInstalled();
 		
 		// edit ranking of preferred backends for tilepic processing here
@@ -341,9 +343,16 @@ class TilepicParser {
 	}
 	# ------------------------------------------------
 	private function _imageMagickRead($ps_filepath) {
-		if ($this->ops_imagemagick_path) {
-			caExec($this->ops_imagemagick_path.'/identify -format "%m;%w;%h\n" '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""), $va_output, $vn_return);
-			
+		if (caMediaPluginImageMagickInstalled($this->ops_imagemagick_path)) {
+			$identify_args = $this->opo_external_app_config->get('imagemagick_identify_args');
+			caExec( join( ' ', array(
+				$this->ops_imagemagick_path . '/identify',
+				$identify_args,
+				'-format "%m;%w;%h\n"',
+				caEscapeShellArg( $ps_filepath ),
+				( caIsPOSIX() ? " 2> /dev/null" : "" )
+			) ), $va_output, $vn_return );
+
 			$va_tmp = explode(';', $va_output[0]);
 			if (sizeof($va_tmp) != 3) {
 				return null;
@@ -431,7 +440,14 @@ class TilepicParser {
 					break;
 			}
 		}
-		caExec($this->ops_imagemagick_path.'/convert '.caEscapeShellArg($ps_source_filepath.'[0]').' '.join(' ', $va_ops).' "'.$ps_dest_filepath.'"');
+		$convert_args = $this->opo_external_app_config->get('imagemagick_convert_args');
+		caExec( join( ' ', array(
+			$this->ops_imagemagick_path . '/convert',
+			$convert_args,
+			caEscapeShellArg( $ps_source_filepath . '[0]' ),
+			join( ' ', $va_ops ),
+			'"' . $ps_dest_filepath . '"'
+		) ) );
 		return true;
 	}
 	# ------------------------------------------------
@@ -492,8 +508,14 @@ class TilepicParser {
 	}
 	# ------------------------------------------------
 	private function _imageMagickImageFromTiles($ps_dest_filepath, $pa_tiles, $pn_tile_width, $pn_tile_height) {
-		
-		caExec($this->ops_imagemagick_path.'/montage '.join(' ', $pa_tiles).' -mode Concatenate -tile '.$pn_tile_width.'x'.$pn_tile_height.' "'.$ps_dest_filepath.'"');
+		$montage_args = $this->opo_external_app_config->get('imagemagick_montage_args');
+		caExec( join( ' ', array(
+			$this->ops_imagemagick_path . '/montage',
+			$montage_args,
+			join( ' ', $pa_tiles ),
+			'-mode Concatenate -tile ' . $pn_tile_width . 'x' . $pn_tile_height,
+			'"' . $ps_dest_filepath . '"'
+		) ) );
 	
 		return true;
 	}

@@ -34,7 +34,9 @@
     "phpunit/phpunit": "8.5",
     "scholarslab/bagit": "*",
     "srmklive/flysystem-dropbox-v2": ">=1.0.0",
-    "tedivm/stash": "0.14.*"
+    "tedivm/stash": "0.14.*",
+    "wamania/php-stemmer": "*",
+    "zendframework/zend-stdlib": "^3.2"
   },
   "require": {
     "ext-iconv": "*",

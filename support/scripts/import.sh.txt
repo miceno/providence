@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+BASEDIR=$(dirname $0)
+PHP_BIN=${PHB_BIN:-php7.3-cli}
+
+#
+# Import using a mapping
+#
+
+if [ $# -lt 3 ];
+then
+    echo "$(basename $0): FILE MAPPING_NAME SET_NAME"
+    exit 1
+fi
+
+LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+DRY_RUN=${DRY_RUN:- --dryrun}
+
+$PHP_BIN $BASEDIR/../bin/caUtils import-data \
+    -d "$LOG_LEVEL" \
+    $DRY_RUN \
+    -f XLSX \
+    --source "$1" \
+    --mapping "$2" \
+    -t "$3"

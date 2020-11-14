@@ -3206,6 +3206,7 @@ require_once(__CA_LIB_DIR__.'/Media/MediaInfoCoder.php');
 	function caCreateLinksFromText($pa_text, $ps_table_name, $pa_row_ids, $ps_class=null, $ps_target=null, $pa_options=null) {
 		if (!in_array(__CA_APP_TYPE__, array('PROVIDENCE', 'PAWTUCKET'))) { return $pa_text; }
 		if (__CA_APP_TYPE__ == 'PAWTUCKET') {
+		    // TODO: Unused variable $o_config
 			$o_config = Configuration::load();
 		}
 

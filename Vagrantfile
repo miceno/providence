@@ -1,30 +1,46 @@
-# -*- mode: ruby -*-
+	# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
 
   config.vm.box = "ubuntu/xenial64"
 
+  # Uncomment this line to skip box update check
+  config.vm.box_check_update = false
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
+  # Providence server port
   config.vm.network "forwarded_port", guest: 80, host: 8080
+  # Pawtucket2 server port
+  config.vm.network "forwarded_port", guest: 88, host: 8888
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   #
   config.vm.provider "virtualbox" do |v|
-    v.memory = "1024"
-    v.cpus = 1
+    v.memory = "2048"
+    v.cpus = 2
     v.name = "collectiveaccess"
   end
 
   config.vm.synced_folder "./", "/vagrant",
     id: "vagrant-root",
-    owner: "vagrant",
+    owner: "www-data",
     group: "www-data",
     mount_options: ["dmode=775,fmode=664"]
+
+  # Mount pawtucket2 in case it exists
+  pawtucket2_source="../pawtucket2"
+  if File.directory?(File.expand_path(pawtucket2_source))
+    config.vm.synced_folder pawtucket2_source, "/pawtucket2",
+		id: "pawtucket2-root",
+		owner: "www-data",
+		group: "www-data",
+		mount_options: ["dmode=775,fmode=664"]
+  end
+
 
   # provision via shell script
   #

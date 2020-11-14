@@ -12,23 +12,8 @@
           <description>The date a loan will enter the institution.</description>
         </label>
       </labels>
-      <settings>
-        <setting name="fieldWidth">40</setting>
-        <setting name="fieldHeight">1</setting>
-        <setting name="minChars">0</setting>
-        <setting name="maxChars">255</setting>
-      </settings>
-      <typeRestrictions>
-        <restriction code="ca_loans">
-          <table>ca_loans</table>
-          <type>out</type>
-          <settings>
-            <setting name="minAttributesPerRow">0</setting>
-            <setting name="maxAttributesPerRow">1</setting>
-            <setting name="minimumAttributeBundlesToDisplay">1</setting>
-          </settings>
-        </restriction>
-      </typeRestrictions>
+      <settings/>
+      <typeRestrictions/>
     </metadataElement>
   </elementSets>
   <userInterfaces/>

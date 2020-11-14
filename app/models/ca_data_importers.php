@@ -1095,8 +1095,9 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 		
 		foreach($va_mapping as $vs_group => $va_mappings_for_group) {
 			$vs_group_dest = ca_data_importers::_getGroupDestinationFromItems($va_mappings_for_group);
-			if (!$vs_group_dest) { 
-				$va_item = array_shift(array_shift($va_mappings_for_group));
+			if (!$vs_group_dest) {
+                $_ = array_shift($va_mappings_for_group);
+                $va_item = array_shift($_);
 				$pa_errors[] = _t("Skipped items for %1 because no common grouping could be found", $va_item['destination'])."\n";
 				if ($o_log) { $o_log->logWarn(_t("[loadImporterFromFile:%1] Skipped items for %2 because no common grouping could be found", $ps_source, $va_item['destination'])); }
 				continue;
@@ -1999,7 +2000,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 					}
 				}
 				
-				if ($merge_only && !$t_subject->getPrimaryKey()) { 
+				if ($merge_only && !$t_subject->getPrimaryKey()) {
 					if ($log_erp) { $o_log->logInfo(_t('[%1] Skipping because mergeOnly option is set and could not match existing record by policy %2.', $vs_idno, $vs_existing_record_policy)); }
 					continue;
 				}
@@ -3680,7 +3681,7 @@ class ca_data_importers extends BundlableLabelableBaseModelWithAttributes {
 									case 'ca_object_representations':
 										if ($vn_rel_id = DataMigrationUtils::getObjectRepresentationID($vs_name, $va_element_data['_type'], $vn_locale_id, $va_data_for_rel_table, array('logReference' => $vs_idno, 'forceUpdate' => true, 'dontCreate' => $vb_dont_create, 'matchOn' => $va_match_on, 'log' => $o_log, 'transaction' => $o_trans, 'importEvent' => $o_event, 'importEventSource' => $vn_row, 'nonPreferredLabels' => $va_nonpreferred_labels, 'matchMediaFilesWithoutExtension' => true))) {
 											$t_subject->linkRepresentation($vn_rel_id, true, ['type_id' => trim($va_element_data['_relationship_type'])]);
-										
+
 											if ($vs_error = DataMigrationUtils::postError($t_subject, _t("[%1] Could not add related object representation with:", $vs_idno), __CA_DATA_IMPORT_ERROR__, array('dontOutputLevel' => true, 'dontPrint' => true))) {
 												$this->logImportError($vs_error, array_merge($va_log_import_error_opts, ['bundle' => $vs_table_name, 'notes' => null]));
 												if ($vs_item_error_policy == 'stop') {

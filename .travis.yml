@@ -9,6 +9,10 @@ addons:
       - mysql-client-core-5.7
       - mysql-client-5.7
 
+jobs:
+  exclude:
+  - php: 7.2
+
 git:
   depth: 5
 
@@ -39,16 +43,19 @@ before_install:
   - tests/database_setup.sh
 
 install:
+  # install all of the dependencies you need here
   # Create setup.php
   - export PROFILE=${PROFILE:-testing}
   - ln -s .travis.setup.php setup.php
   - tests/update_dependencies.sh
   # Install the testing profile
   - tests/profile_setup.sh "$PROFILE"
+  - composer show -i
 
 before_script:
-# execute all of the commands which need to be executed
-# before running actual tests
+  # execute all of the commands which need to be executed
+  # before running actual tests
+  echo "nothing to run before script"
 
 script:
   # execute all of the commands which
@@ -61,4 +68,4 @@ branches:
   only:
     - develop
     - master
-    - master-fix
+    - wip/playground

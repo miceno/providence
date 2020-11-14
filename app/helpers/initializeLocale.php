@@ -48,7 +48,19 @@
    		if (file_exists($vs_locale_path = __CA_APP_DIR__.'/locale/'.$ps_locale.'/messages.mo')) { $va_locale_paths[] = $vs_locale_path; }	
    		
    		return (sizeof($va_locale_paths) > 0) ? $va_locale_paths : false;
-	}	
+	}
+    # ----------------------------------------
+    /**
+     *
+     */
+    function caGetLanguageFromLocale($ps_locale) {
+        if ($ps_locale === null){
+            $ps_locale = Configuration::load()->get('locale_default');
+        }
+        $vs_country = explode('_', $ps_locale);
+        $result = $vs_country[0];
+        return $result;
+    }
 	# ----------------------------------------
 	/**
 	 *
@@ -118,4 +130,17 @@
 		}
 		return array_merge($o_config->getList('definiteArticles'), $o_config->getList('indefiniteArticles'));
 	}
-	# ----------------------------------------
+    # ----------------------------------------
+    /**
+     * Filter a list of system locales by their language
+     *
+     * @param array $va_system_locales
+     * @param array $va_locale_codes
+     *
+     * @return array List of locales
+     */
+
+    function caFilterLocalesByCode($va_system_locales, $va_locale_codes) {
+        $va_result = array_intersect_key($va_system_locales, array_flip($va_locale_codes));
+        return $va_result;
+    }

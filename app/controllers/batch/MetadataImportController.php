@@ -169,7 +169,8 @@
  				'fileInput' => $this->request->getParameter("fileInput", pString),
  				'fileImportPath' => $this->request->getParameter("fileImportPath", pString),
  				
- 				'importAllDatasets' => (bool)$this->request->getParameter("importAllDatasets", pInteger), 
+ 				'importAllDatasets' => (bool)$this->request->getParameter("importAllDatasets", pInteger),
+ 				# TODO: Undefined variable $vs_name
  				'originalFilename' => $vs_name
  			);
  			

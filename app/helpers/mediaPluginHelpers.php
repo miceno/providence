@@ -542,234 +542,236 @@
             $pa_metadata['system']['filename'] = $vs_original_filename;
         }
 
-		// set extracted georef?
- 		$va_georef_elements = $o_metadata_config->getList('extract_embedded_exif_georeferencing_to');
- 		$va_georef_containers = $o_metadata_config->getAssoc('extract_embedded_exif_georeferencing_to_container');
- 		$va_date_elements = $o_metadata_config->getList('extract_embedded_exif_creation_date_to');
- 		$va_date_containers = $o_metadata_config->getAssoc('extract_embedded_exif_creation_date_to_container');
+        // set extracted georef?
+        $va_georef_elements = $o_metadata_config->getList('extract_embedded_exif_georeferencing_to');
+        $va_georef_containers = $o_metadata_config->getAssoc('extract_embedded_exif_georeferencing_to_container');
+        $va_date_elements = $o_metadata_config->getList('extract_embedded_exif_creation_date_to');
+        $va_date_containers = $o_metadata_config->getAssoc('extract_embedded_exif_creation_date_to_container');
 
- 		if (isset($pa_metadata['EXIF']) && is_array($pa_metadata['EXIF']) && ((is_array($va_georef_elements) && sizeof($va_georef_elements)) || (is_array($va_georef_containers) && sizeof($va_georef_containers))  || (is_array($va_date_elements) && sizeof($va_date_elements))  || (is_array($va_date_containers) && sizeof($va_date_containers)))) {
-			$va_exif_data = $pa_metadata['EXIF'];
+        if (isset($pa_metadata['EXIF']) && is_array($pa_metadata['EXIF']) && ((is_array($va_georef_elements) && sizeof($va_georef_elements)) || (is_array($va_georef_containers) && sizeof($va_georef_containers))  || (is_array($va_date_elements) && sizeof($va_date_elements))  || (is_array($va_date_containers) && sizeof($va_date_containers)))) {
+            $va_exif_data = $pa_metadata['EXIF'];
 
-			if (is_array($va_georef_elements)) {
-				if (is_array($va_coords = caParseEXIFLatLong($va_exif_data))) {
-					foreach($va_georef_elements as $vs_element) {
-						$va_tmp = explode('.', $vs_element);
-						$po_instance->addAttribute(array($va_tmp[1] => "[".$va_coords['latitude'].", ".$va_coords['longitude']."]", 'locale_id' => $pn_locale_id), $va_tmp[1]);
-					}
-					$vb_did_mapping = true;
-				}
-			}
+            if (is_array($va_georef_elements)) {
+                if (is_array($va_coords = caParseEXIFLatLong($va_exif_data))) {
+                    foreach($va_georef_elements as $vs_element) {
+                        $va_tmp = explode('.', $vs_element);
+                        $po_instance->addAttribute(array($va_tmp[1] => "[".$va_coords['latitude'].", ".$va_coords['longitude']."]", 'locale_id' => $pn_locale_id), $va_tmp[1]);
+                    }
+                    $vb_did_mapping = true;
+                }
+            }
 
-			if (is_array($va_georef_containers)) {
-				if (is_array($va_coords = caParseEXIFLatLong($va_exif_data))) {
-					foreach($va_georef_containers as $vs_container => $va_info) {
-						$va_tmp = explode('.', $vs_container);
-						$vs_value_element = array_pop(explode('.', $va_info['value']));
+            if (is_array($va_georef_containers)) {
+                if (is_array($va_coords = caParseEXIFLatLong($va_exif_data))) {
+                    foreach($va_georef_containers as $vs_container => $va_info) {
+                        $va_tmp = explode('.', $vs_container);
+                        $v = explode('.', $va_info['value']);
+                        $vs_value_element = array_pop($v);
 
-						$va_data = array($vs_value_element => "[".$va_coords['latitude'].", ".$va_coords['longitude']."]", 'locale_id' => $pn_locale_id);
-						if(isset($va_info['map']) && is_array($va_info['map'])) {
-							foreach($va_info['map'] as $vs_sub_element => $vs_value) {
-								$va_tmp2 = explode('.', $vs_sub_element);
-								$vs_sub_element = array_pop($va_tmp2);
-								if ($t_element = ca_metadata_elements::getInstance($vs_sub_element)) {
-									switch($t_element->get('datatype')) {
-										case 3:	// List
-											$t_list = new ca_lists();
-											$va_data[$vs_sub_element] = $t_list->getItemIDFromList($t_element->get('list_id'), $vs_value);
-											break;
-										default:
-											$va_data[$vs_sub_element] = $vs_value;
-											break;
-									}
-								}
-							}
-						}
-						$po_instance->addAttribute($va_data, $va_tmp[1]);
-					}
-					$vb_did_mapping = true;
-				}
-			}
+                        $va_data = array($vs_value_element => "[".$va_coords['latitude'].", ".$va_coords['longitude']."]", 'locale_id' => $pn_locale_id);
+                        if(isset($va_info['map']) && is_array($va_info['map'])) {
+                            foreach($va_info['map'] as $vs_sub_element => $vs_value) {
+                                $va_tmp2 = explode('.', $vs_sub_element);
+                                $vs_sub_element = array_pop($va_tmp2);
+                                if ($t_element = ca_metadata_elements::getInstance($vs_sub_element)) {
+                                    switch($t_element->get('datatype')) {
+                                        case 3:	// List
+                                            $t_list = new ca_lists();
+                                            $va_data[$vs_sub_element] = $t_list->getItemIDFromList($t_element->get('list_id'), $vs_value);
+                                            break;
+                                        default:
+                                            $va_data[$vs_sub_element] = $vs_value;
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        $po_instance->addAttribute($va_data, $va_tmp[1]);
+                    }
+                    $vb_did_mapping = true;
+                }
+            }
 
-			if (is_array($va_date_elements)) {
-				if (($vs_raw_date = $va_exif_data['IFD0']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['EXIF']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['ExifIFD']['DateTimeOriginal'])) {
-					$va_date_tmp = preg_split('![: ]+!', $vs_raw_date);
-					$vs_date = 	$va_date_tmp[0].'-'.$va_date_tmp[1].'-'.$va_date_tmp[2].'T'.$va_date_tmp[3].':'.$va_date_tmp[4].':'.$va_date_tmp[5];
-					foreach($va_date_elements as $vs_element) {
-						$va_tmp = explode('.', $vs_element);
-						if(strlen($po_instance->get($vs_element))>0) {
-							$po_instance->addAttribute(array($va_tmp[1] => $vs_date, 'locale_id' => $pn_locale_id), $va_tmp[1]);
-						} else {
-							$po_instance->replaceAttribute(array($va_tmp[1] => $vs_date, 'locale_id' => $pn_locale_id), $va_tmp[1]);
-						}
-					}
-					$vb_did_mapping = true;
-				}
-			}
+            if (is_array($va_date_elements)) {
+                if (($vs_raw_date = $va_exif_data['IFD0']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['EXIF']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['ExifIFD']['DateTimeOriginal'])) {
+                    $va_date_tmp = preg_split('![: ]+!', $vs_raw_date);
+                    $vs_date = 	$va_date_tmp[0].'-'.$va_date_tmp[1].'-'.$va_date_tmp[2].'T'.$va_date_tmp[3].':'.$va_date_tmp[4].':'.$va_date_tmp[5];
+                    foreach($va_date_elements as $vs_element) {
+                        $va_tmp = explode('.', $vs_element);
+                        if(strlen($po_instance->get($vs_element))>0) {
+                            $po_instance->addAttribute(array($va_tmp[1] => $vs_date, 'locale_id' => $pn_locale_id), $va_tmp[1]);
+                        } else {
+                            $po_instance->replaceAttribute(array($va_tmp[1] => $vs_date, 'locale_id' => $pn_locale_id), $va_tmp[1]);
+                        }
+                    }
+                    $vb_did_mapping = true;
+                }
+            }
 
-			if (is_array($va_date_containers)) {
-				$t_list = new ca_lists();
-				if (($vs_raw_date = $va_exif_data['IFD0']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['EXIF']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['ExifIFD']['DateTimeOriginal'])) {
-					$va_date_tmp = preg_split('![: ]+!', $vs_raw_date);
-					$vs_date = 	$va_date_tmp[0].'-'.$va_date_tmp[1].'-'.$va_date_tmp[2].'T'.$va_date_tmp[3].':'.$va_date_tmp[4].':'.$va_date_tmp[5];
-					foreach($va_date_containers as $vs_container => $va_info) {
-						$va_tmp = explode('.', $vs_container);
-						$vs_value_element = array_pop(explode('.', $va_info['value']));
+            if (is_array($va_date_containers)) {
+                $t_list = new ca_lists();
+                if (($vs_raw_date = $va_exif_data['IFD0']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['EXIF']['DateTimeOriginal']) || ($vs_raw_date = $va_exif_data['ExifIFD']['DateTimeOriginal'])) {
+                    $va_date_tmp = preg_split('![: ]+!', $vs_raw_date);
+                    $vs_date = 	$va_date_tmp[0].'-'.$va_date_tmp[1].'-'.$va_date_tmp[2].'T'.$va_date_tmp[3].':'.$va_date_tmp[4].':'.$va_date_tmp[5];
+                    foreach($va_date_containers as $vs_container => $va_info) {
+                        $va_tmp = explode('.', $vs_container);
+                        $v = explode('.', $va_info['value']);
+                        $vs_value_element = array_pop($v);
 
-						$va_data = array($vs_value_element => $vs_date, 'locale_id' => $pn_locale_id);
-						if(isset($va_info['map']) && is_array($va_info['map'])) {
-							foreach($va_info['map'] as $vs_sub_element => $vs_value) {
-								$va_tmp2 = explode('.', $vs_sub_element);
-								$vs_sub_element = array_pop($va_tmp2);
-								if ($t_element = ca_metadata_elements::getInstance($vs_sub_element)) {
-									switch($t_element->get('datatype')) {
-										case 3:	// List
-											$va_data[$vs_sub_element] = $t_list->getItemIDFromList($t_element->get('list_id'), $vs_value);
-											break;
-										default:
-											$va_data[$vs_sub_element] = $vs_value;
-											break;
-									}
-								}
-							}
-						}
-						$po_instance->addAttribute($va_data, $va_tmp[1]);
-					}
-					$vb_did_mapping = true;
-				}
-			}
-		}
+                        $va_data = array($vs_value_element => $vs_date, 'locale_id' => $pn_locale_id);
+                        if(isset($va_info['map']) && is_array($va_info['map'])) {
+                            foreach($va_info['map'] as $vs_sub_element => $vs_value) {
+                                $va_tmp2 = explode('.', $vs_sub_element);
+                                $vs_sub_element = array_pop($va_tmp2);
+                                if ($t_element = ca_metadata_elements::getInstance($vs_sub_element)) {
+                                    switch($t_element->get('datatype')) {
+                                        case 3:	// List
+                                            $va_data[$vs_sub_element] = $t_list->getItemIDFromList($t_element->get('list_id'), $vs_value);
+                                            break;
+                                        default:
+                                            $va_data[$vs_sub_element] = $vs_value;
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        $po_instance->addAttribute($va_data, $va_tmp[1]);
+                    }
+                    $vb_did_mapping = true;
+                }
+            }
+        }
 
-		if (!isset($va_mappings[$po_instance->tableName()])) { return $vb_did_mapping; }
-		$va_mapping = $va_mappings[$vs_tablename];
+        if (!isset($va_mappings[$po_instance->tableName()])) { return $vb_did_mapping; }
+        $va_mapping = $va_mappings[$vs_tablename];
 
-		$vs_type = $po_instance->getTypeCode();
-		if (isset($va_mapping[$vs_type]) && is_array($va_mapping[$vs_type])) {
-			$va_mapping = $va_mapping[$vs_type];
-		} else {
-			if (isset($va_mapping['__default__']) && is_array($va_mapping['__default__'])) {
-				$va_mapping = $va_mapping['__default__'];
-			} else {
-				return $vb_did_mapping;
-			}
-		}
+        $vs_type = $po_instance->getTypeCode();
+        if (isset($va_mapping[$vs_type]) && is_array($va_mapping[$vs_type])) {
+            $va_mapping = $va_mapping[$vs_type];
+        } else {
+            if (isset($va_mapping['__default__']) && is_array($va_mapping['__default__'])) {
+                $va_mapping = $va_mapping['__default__'];
+            } else {
+                return $vb_did_mapping;
+            }
+        }
 
-		foreach($va_mapping as $vs_metadata => $va_attr) {
-			$va_tmp = explode(":", $vs_metadata);
-			$vs_delimiter = caGetOption('delimiter', $va_attr, false);
+        foreach($va_mapping as $vs_metadata => $va_attr) {
+            $va_tmp = explode(":", $vs_metadata);
+            $vs_delimiter = caGetOption('delimiter', $va_attr, false);
 
-			foreach($va_attr as $vs_attr) {
-				if($vs_attr == 'delimiter') { continue; }
+            foreach($va_attr as $vs_attr) {
+                if($vs_attr == 'delimiter') { continue; }
 
-				$va_metadata =& $pa_metadata;
-				foreach($va_tmp as $vs_el) {
-					if (isset($va_metadata[$vs_el])) {
-						$va_metadata =& $va_metadata[$vs_el];
-					} else {
-						continue(2);
-					}
-				}
+                $va_metadata =& $pa_metadata;
+                foreach($va_tmp as $vs_el) {
+                    if (isset($va_metadata[$vs_el])) {
+                        $va_metadata =& $va_metadata[$vs_el];
+                    } else {
+                        continue(2);
+                    }
+                }
 
-				if(is_array($va_metadata)) { $va_metadata = join(";", $va_metadata); }
-				if(!is_int($va_metadata)){ // pass ints through for values like WhiteBalance = 0
-					if (!trim($va_metadata)) { continue(2); }
-				}
-				if(!caSeemsUTF8($va_metadata)) { $va_metadata = caEncodeUTF8Deep($va_metadata); }
+                if(is_array($va_metadata)) { $va_metadata = join(";", $va_metadata); }
+                if(!is_int($va_metadata)){ // pass ints through for values like WhiteBalance = 0
+                    if (!trim($va_metadata)) { continue(2); }
+                }
+                if(!caSeemsUTF8($va_metadata)) { $va_metadata = caEncodeUTF8Deep($va_metadata); }
 
-				$va_tmp2 = explode(".", $vs_attr);
+                $va_tmp2 = explode(".", $vs_attr);
 
-				switch($va_tmp2[0]) {
-					case 'preferred_labels':
-						$po_instance->replaceLabel(array($va_tmp2[1] => $va_metadata), $pn_locale_id, null, true);
-						break;
-					case 'nonpreferred_labels':
-						$po_instance->replaceLabel(array($va_tmp2[1] => $va_metadata), $pn_locale_id, null, false);
-						break;
-					default:
-						if($po_instance->hasField($vs_attr)) {
-							$po_instance->set($vs_attr, $va_metadata);
-						} else {
-							// try as attribute
-							if(sizeof($va_tmp2)==2){ // format ca_objects.foo, we only want "foo"
-								if($vs_delimiter) {
-									$va_m = explode($vs_delimiter, $va_metadata);
-									$po_instance->removeAttributes($va_tmp2[1]);
-									foreach($va_m as $vs_m) {
-										$po_instance->addAttribute(array(
-											$va_tmp2[1] => trim($vs_m),
-											'locale_id' => $pn_locale_id
-										),$va_tmp2[1]);
-									}
-								} else {
-									$po_instance->replaceAttribute(array(
-										$va_tmp2[1] => $va_metadata,
-										'locale_id' => $pn_locale_id
-									),$va_tmp2[1]);
-								}
-							}
-						}
-				}
-				$vb_did_mapping = true;
-			}
-		}
+                switch($va_tmp2[0]) {
+                    case 'preferred_labels':
+                        $po_instance->replaceLabel(array($va_tmp2[1] => $va_metadata), $pn_locale_id, null, true);
+                        break;
+                    case 'nonpreferred_labels':
+                        $po_instance->replaceLabel(array($va_tmp2[1] => $va_metadata), $pn_locale_id, null, false);
+                        break;
+                    default:
+                        if($po_instance->hasField($vs_attr)) {
+                            $po_instance->set($vs_attr, $va_metadata);
+                        } else {
+                            // try as attribute
+                            if(sizeof($va_tmp2)==2){ // format ca_objects.foo, we only want "foo"
+                                if($vs_delimiter) {
+                                    $va_m = explode($vs_delimiter, $va_metadata);
+                                    $po_instance->removeAttributes($va_tmp2[1]);
+                                    foreach($va_m as $vs_m) {
+                                        $po_instance->addAttribute(array(
+                                                $va_tmp2[1] => trim($vs_m),
+                                                'locale_id' => $pn_locale_id
+                                        ),$va_tmp2[1]);
+                                    }
+                                } else {
+                                    $po_instance->replaceAttribute(array(
+                                            $va_tmp2[1] => $va_metadata,
+                                            'locale_id' => $pn_locale_id
+                                    ),$va_tmp2[1]);
+                                }
+                            }
+                        }
+                }
+                $vb_did_mapping = true;
+            }
+        }
 
-		return $vb_did_mapping;
-	}
+        return $vb_did_mapping;
+    }
 
-	# ------------------------------------------------------------------------------------------------
-	/**
-	 * Embed media metadata into given file. Embedding is performed on a copy of the file and placed into the
-	 * system tmp directory. The given file is never modified.
-	 *
-	 * @param string $ps_file The file to embed metadata into
-	 * @param string $ps_table Table name of the subject record. This is used to figure out the appropriate mapping to use from media_metadata.conf
-	 * @param int $pn_pk Primary key of the subject record. This is used to run the export for the right record.
-	 * @param string $ps_type_code Optional type code for the subject record
-	 * @param int $pn_rep_pk Primary key of the subject representation.
-	 * 		If there are export mapping for object representations, we run them after the mapping for the subject table.
-	 * 		Fields that get exported here should overwrite fields from the subject table export.
-	 * @param string $ps_rep_type_code type code for object representation
-	 * @return string File name of a temporary file with the embedded metadata, false on failure
-	 */
-	function caEmbedMediaMetadataIntoFile($ps_file, $ps_table, $pn_pk, $ps_type_code, $pn_rep_pk, $ps_rep_type_code) {
-		require_once(__CA_MODELS_DIR__.'/ca_data_exporters.php');
-		if(!caExifToolInstalled()) { return false; } // we need exiftool for embedding
-		$vs_path_to_exif_tool = caGetExternalApplicationPath('exiftool');
+    # ------------------------------------------------------------------------------------------------
+    /**
+     * Embed media metadata into given file. Embedding is performed on a copy of the file and placed into the
+     * system tmp directory. The given file is never modified.
+     *
+     * @param string $ps_file The file to embed metadata into
+     * @param string $ps_table Table name of the subject record. This is used to figure out the appropriate mapping to use from media_metadata.conf
+     * @param int $pn_pk Primary key of the subject record. This is used to run the export for the right record.
+     * @param string $ps_type_code Optional type code for the subject record
+     * @param int $pn_rep_pk Primary key of the subject representation.
+     * 		If there are export mapping for object representations, we run them after the mapping for the subject table.
+     * 		Fields that get exported here should overwrite fields from the subject table export.
+     * @param string $ps_rep_type_code type code for object representation
+     * @return string File name of a temporary file with the embedded metadata, false on failure
+     */
+    function caEmbedMediaMetadataIntoFile($ps_file, $ps_table, $pn_pk, $ps_type_code, $pn_rep_pk, $ps_rep_type_code) {
+        require_once(__CA_MODELS_DIR__.'/ca_data_exporters.php');
+        if(!caExifToolInstalled()) { return false; } // we need exiftool for embedding
+        $vs_path_to_exif_tool = caGetExternalApplicationPath('exiftool');
 
-		if (!@is_readable($ps_file)) { return false; }
-		if (!preg_match("/^image\//", mime_content_type($ps_file))) { return false; } // Don't try to embed in files other than images
+        if (!@is_readable($ps_file)) { return false; }
+        if (!preg_match("/^image\//", mime_content_type($ps_file))) { return false; } // Don't try to embed in files other than images
 
-		// make a temporary copy (we won't touch the original)
-		copy($ps_file, $vs_tmp_filepath = caGetTempDirPath()."/".time().md5($ps_file));
+        // make a temporary copy (we won't touch the original)
+        copy($ps_file, $vs_tmp_filepath = caGetTempDirPath()."/".time().md5($ps_file));
 
-		//
-		// SUBJECT TABLE
-		//
-		if($vs_subject_table_export = caExportMediaMetadataForRecord($ps_table, $ps_type_code, $pn_pk)) {
-			$vs_export_filename = caGetTempFileName('mediaMetadataSubjExport','xml');
-			if(@file_put_contents($vs_export_filename, $vs_subject_table_export) === false) { return false; }
-			caExec("{$vs_path_to_exif_tool} -tagsfromfile {$vs_export_filename} -all:all ".caEscapeShellArg($vs_tmp_filepath), $va_output, $vn_return);
-			@unlink($vs_export_filename);
-			@unlink("{$vs_tmp_filepath}_original");
-		}
+        //
+        // SUBJECT TABLE
+        //
+        if($vs_subject_table_export = caExportMediaMetadataForRecord($ps_table, $ps_type_code, $pn_pk)) {
+            $vs_export_filename = caGetTempFileName('mediaMetadataSubjExport','xml');
+            if(@file_put_contents($vs_export_filename, $vs_subject_table_export) === false) { return false; }
+            caExec("{$vs_path_to_exif_tool} -tagsfromfile {$vs_export_filename} -all:all ".caEscapeShellArg($vs_tmp_filepath), $va_output, $vn_return);
+            @unlink($vs_export_filename);
+            @unlink("{$vs_tmp_filepath}_original");
+        }
 
-		//
-		// REPRESENTATION
-		//
+        //
+        // REPRESENTATION
+        //
 
-		if($vs_representation_export = caExportMediaMetadataForRecord('ca_object_representations', $ps_rep_type_code, $pn_rep_pk)) {
-			$vs_export_filename = caGetTempFileName('mediaMetadataRepExport','xml');
-			if(@file_put_contents($vs_export_filename, $vs_representation_export) === false) { return false; }
-			caExec("{$vs_path_to_exif_tool} -tagsfromfile {$vs_export_filename} -all:all ".caEscapeShellArg($vs_tmp_filepath), $va_output, $vn_return);
-			@unlink($vs_export_filename);
-			@unlink("{$vs_tmp_filepath}_original");
-		}
+        if($vs_representation_export = caExportMediaMetadataForRecord('ca_object_representations', $ps_rep_type_code, $pn_rep_pk)) {
+            $vs_export_filename = caGetTempFileName('mediaMetadataRepExport','xml');
+            if(@file_put_contents($vs_export_filename, $vs_representation_export) === false) { return false; }
+            caExec("{$vs_path_to_exif_tool} -tagsfromfile {$vs_export_filename} -all:all ".caEscapeShellArg($vs_tmp_filepath), $va_output, $vn_return);
+            @unlink($vs_export_filename);
+            @unlink("{$vs_tmp_filepath}_original");
+        }
 
-		return $vs_tmp_filepath;
-	}
-	# ------------------------------------------------------------------------------------------------
-	function caGetExifTagArgsForExport($data) {
-	    $xml = new SimpleXMLElement($data);	
+        return $vs_tmp_filepath;
+    }
+    # ------------------------------------------------------------------------------------------------
+    function caGetExifTagArgsForExport($data) {
+        $xml = new SimpleXMLElement($data);
         $xml->registerXPathNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         $xml->registerXPathNamespace('et', 'http://ns.exiftool.ca/1.0/');
         $xml->registerXPathNamespace('ExifTool', 'http://ns.exiftool.ca/1.0/');
@@ -788,102 +790,103 @@
         $xml->registerXPathNamespace('ICC-view', 'http://ns.exiftool.ca/ICC_Profile/ICC-view/1.0/');
         $xml->registerXPathNamespace('IVV-meas', 'http://ns.exiftool.ca/ICC_Profile/ICC-meas/1.0/');
         $xml->registerXPathNamespace('Composite', 'http://ns.exiftool.ca/Composite/1.0/');
-        
+
         $tags = $xml->xpath('rdf:Description/*');
-		
+
         $tag_args = [];
         foreach($tags as $t) {
-            $ns = array_shift(array_keys($t->getNamespaces()));
+            $v = array_keys($t->getNamespaces());
+            $ns = array_shift($v);
             $n = $t->getName();
             $v = $t->__toString();
             $tag_args[] = "-{$n}=\"$v\"";
         }
         return $tag_args;
-	}
-	# ------------------------------------------------------------------------------------------------
-	function caExportMediaMetadataForRecord($ps_table, $ps_type_code, $pn_id) {
-		$o_app_config = Configuration::load();
+    }
+    # ------------------------------------------------------------------------------------------------
+    function caExportMediaMetadataForRecord($ps_table, $ps_type_code, $pn_id) {
+        $o_app_config = Configuration::load();
 
-		if (!($vs_media_metadata_config = $o_app_config->get('media_metadata'))) { return false; }
-		$o_metadata_config = Configuration::load($vs_media_metadata_config);
+        if (!($vs_media_metadata_config = $o_app_config->get('media_metadata'))) { return false; }
+        $o_metadata_config = Configuration::load($vs_media_metadata_config);
 
-		$va_mappings = $o_metadata_config->getAssoc('export_mappings');
-		if(!isset($va_mappings[$ps_table])) { return false; }
+        $va_mappings = $o_metadata_config->getAssoc('export_mappings');
+        if(!isset($va_mappings[$ps_table])) { return false; }
 
-		if(isset($va_mappings[$ps_table][$ps_type_code])) {
-			$vs_export_mapping = $va_mappings[$ps_table][$ps_type_code];
-		} elseif(isset($va_mappings[$ps_table]['__default__'])) {
-			$vs_export_mapping = $va_mappings[$ps_table]['__default__'];
-		} else {
-			$vs_export_mapping = false;
-		}
+        if(isset($va_mappings[$ps_table][$ps_type_code])) {
+            $vs_export_mapping = $va_mappings[$ps_table][$ps_type_code];
+        } elseif(isset($va_mappings[$ps_table]['__default__'])) {
+            $vs_export_mapping = $va_mappings[$ps_table]['__default__'];
+        } else {
+            $vs_export_mapping = false;
+        }
 
-		if($vs_export_mapping) {
-			return ca_data_exporters::exportRecord($vs_export_mapping, $pn_id);
-		}
+        if($vs_export_mapping) {
+            return ca_data_exporters::exportRecord($vs_export_mapping, $pn_id);
+        }
 
-		return false;
-	}
-	# ------------------------------------------------------------------------------------------------
-	/**
-	 * Get HTML tag for default media icon
-	 *
-	 * @param string $ps_type
-	 * @param int $pn_width  Width of media
-	 * @param int $pn_height Height of media
-	 * @param array $pa_options
-	 *
-	 * @return string Media ICON <img> tag
-	 */
-	function caGetDefaultMediaIconTag($ps_type, $pn_width, $pn_height, $pa_options=null) {
-		if (is_array($va_selected_size = caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options))) {
-			$o_config = Configuration::load();
-			$o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
-			$va_icons = $o_icon_config->getAssoc($ps_type);
-			return caHTMLImage($o_icon_config->get('icon_folder_url').'/'.$va_icons[$va_selected_size['size']], array('width' => $va_selected_size['width'], 'height' => $va_selected_size['height']));
-		}
+        return false;
+    }
+    # ------------------------------------------------------------------------------------------------
+    /**
+     * Get HTML tag for default media icon
+     *
+     * @param string $ps_type
+     * @param int $pn_width  Width of media
+     * @param int $pn_height Height of media
+     * @param array $pa_options
+     *
+     * @return string Media ICON <img> tag
+     */
+    function caGetDefaultMediaIconTag($ps_type, $pn_width, $pn_height, $pa_options=null) {
+        if (is_array($va_selected_size = caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options))) {
+            $o_config = Configuration::load();
+            $o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
+            $va_icons = $o_icon_config->getAssoc($ps_type);
+            return caHTMLImage($o_icon_config->get('icon_folder_url').'/'.$va_icons[$va_selected_size['size']], array('width' => $va_selected_size['width'], 'height' => $va_selected_size['height']));
+        }
 
-		return null;
-	}
-	# ------------------------------------------------------------------------------------------------
-	/**
-	 * Get URL for default media icon
-	 *
-	 * @param string $ps_type
-	 * @param int $pn_width  Width of media
-	 * @param int $pn_height Height of media
-	 * @param array $pa_options
-	 *
-	 * @return string Media ICON <img> tag
-	 */
-	function caGetDefaultMediaIconUrl($ps_type, $pn_width, $pn_height, $pa_options=null) {
-		if (is_array($va_selected_size = caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options))) {
-			$o_config = Configuration::load();
-			$o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
-			$va_icons = $o_icon_config->getAssoc($ps_type);
-			return $o_icon_config->get('icon_folder_url').'/'.$va_icons[$va_selected_size['size']];
-		}
+        return null;
+    }
+    # ------------------------------------------------------------------------------------------------
+    /**
+     * Get URL for default media icon
+     *
+     * @param string $ps_type
+     * @param int $pn_width  Width of media
+     * @param int $pn_height Height of media
+     * @param array $pa_options
+     *
+     * @return string Media ICON <img> tag
+     */
+    function caGetDefaultMediaIconUrl($ps_type, $pn_width, $pn_height, $pa_options=null) {
+        if (is_array($va_selected_size = caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options))) {
+            $o_config = Configuration::load();
+            $o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
+            $va_icons = $o_icon_config->getAssoc($ps_type);
+            return $o_icon_config->get('icon_folder_url').'/'.$va_icons[$va_selected_size['size']];
+        }
 
-		return null;
-	}
-	# ------------------------------------------------------------------------------------------------
-	/**
-	 * Get file path for default media icon
-	 *
-	 * @param string $ps_type
-	 * @param int $pn_width  Width of media
-	 * @param int $pn_height Height of media
-	 * @param array $pa_options
-	 *
-	 * @return string Media ICON <img> tag
-	 */
-	function caGetDefaultMediaIconPath($ps_type, $pn_width, $pn_height, $pa_options=null) {
-		if (is_array($va_selected_size = caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options))) {
-			$o_config = Configuration::load();
-			$o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
-			$va_icons = $o_icon_config->getAssoc($ps_type);
-			return $o_icon_config->get('icon_folder_path').'/'.$va_icons[$va_selected_size['size']];
-		}
+        return null;
+    }
+    # ------------------------------------------------------------------------------------------------
+    /**
+     * Get file path for default media icon
+     *
+     * @param string $ps_type
+     * @param int $pn_width  Width of media
+     * @param int $pn_height Height of media
+     * @param array $pa_options
+     *
+     * @return string Media ICON <img> tag
+     */
+    function caGetDefaultMediaIconPath($ps_type, $pn_width, $pn_height, $pa_options=null) {
+        if (is_array($va_selected_size = caGetMediaIconForSize($ps_type, $pn_width, $pn_height, $pa_options))) {
+            $o_config = Configuration::load();
+            $o_icon_config = Configuration::load(__CA_CONF_DIR__.'/default_media_icons.conf');
+            $va_icons = $o_icon_config->getAssoc($ps_type);
+            return $o_icon_config->get('icon_folder_path').'/'.$va_icons[$va_selected_size['size']];
+        }
 
 		return null;
 	}
@@ -1147,31 +1150,32 @@
 	    
 		$vs_media_root = $o_config->get('ca_media_root_dir');
         $vs_base_dir = $o_config->get('ca_base_dir');
-		$va_tmp = explode('/', $vs_media_root);
-		
-		$vb_perm_media_error = false;
-		$vs_perm_media_path = null;
-		$vb_at_least_one_part_of_the_media_path_exists = false;
-		while(sizeof($va_tmp)) {
-			if (!file_exists(join('/', $va_tmp))) {
-				array_pop($va_tmp);
-				continue;
-			}
-			if (!is_writeable(join('/', $va_tmp))) {
-				$vb_perm_media_error = true;
-				$vs_perm_media_path = join('/', $va_tmp);
-				break;
-			}
-			$vb_at_least_one_part_of_the_media_path_exists = true;
-			break;
-		}
+        $va_tmp = explode('/', $vs_media_root);
 
-		// check web root for write-ability
-		if (!$vb_perm_media_error && !$vb_at_least_one_part_of_the_media_path_exists && !is_writeable($vs_base_dir)) {
-			$vb_perm_media_error = true;
-			$vs_perm_media_path = $vs_base_dir;
-		}
+        $vb_perm_media_error = false;
+        $vs_perm_media_path = null;
+        $vb_at_least_one_part_of_the_media_path_exists = false;
+        while(sizeof($va_tmp)) {
+            if (!file_exists(join('/', $va_tmp))) {
+                array_pop($va_tmp);
+                continue;
+            }
+            if (!is_writeable(join('/', $va_tmp))) {
+                $vb_perm_media_error = true;
+                $vs_perm_media_path = join('/', $va_tmp);
+                break;
+            }
+            $vb_at_least_one_part_of_the_media_path_exists = true;
+            break;
+        }
 
-		return !$vb_perm_media_error;
-	}
-	# ------------------------------------------------------------------------------------------------
+        // check web root for write-ability
+        if (!$vb_perm_media_error && !$vb_at_least_one_part_of_the_media_path_exists && !is_writeable($vs_base_dir)) {
+            $vb_perm_media_error = true;
+            $vs_perm_media_path = $vs_base_dir;
+        }
+
+        return !$vb_perm_media_error;
+    }
+
+# ------------------------------------------------------------------------------------------------

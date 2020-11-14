@@ -1,0 +1,143 @@
+# *** use ONLY lowercase letters in lists: input will be forced to lowercase for comparison ***
+
+# List month names; used whenever name of month needs to be displayed
+monthList = [gener, febrer, març, abril, maig, juny, juliol, agost, setembre, octubre, novembre, desembre]
+
+# *** the following list of months is for display and *SHOULD* be capitalized where appropriate
+monthListDisplay = [gener, febrer, març, abril, maig, juny, juliol, agost, setembre, octubre, novembre, desembre]
+
+# Hash table mapping acceptable month names to the display names defined in 'monthList'
+monthTable = {
+	jan = gener, jan. = gener,
+	feb = febrer, feb. = febrer,
+	mar = març, mar. = març,
+	apr = abril, apr. = abril,
+	ma = maig,
+	jun = juny, jun. = juny,
+	jul = juliol, jul. = juliol,
+	aug = agost, aug. = agost,
+	sep = setembre, sep. = setembre,
+	oct = octubre, oct. = octubre,
+	nov = novembre, nov. = novembre,
+	dec = desembre, dec. = desembre
+}
+
+# List of day names, starting with Sunday
+dayListDisplay = [diumenge, dilluns, dimarts, dimecres, dijous, divendres, dissabte]
+
+rangePreConjunctions = [des de, des, de, d', dels, entre]
+rangeConjunctions = [-, i, .., fins]
+
+dateTimeConjunctions = [a les, a l', a, @]
+
+dateDelimiters = [/,-,.]
+timeDelimiters = [:,.]
+
+timeAMMeridian = am
+timePMMeridian = pm
+
+meridianTable = {
+	a.m. = am,
+	p.m. = pm
+}
+
+dateCircaIndicator = [circa, c, c., ca, ca.]
+dateProbablyIndicator = [cap a]
+dateUncertaintyIndicator = [~,?]
+dateUncertaintyYearIndicator = [??,a,y]
+dateUncertaintyDayIndicator = [?,d]
+
+# What to use to indicate a geological date ("millions of years ago")
+# mda = milions d'anys
+dateMYA = [mda]
+
+# What to use to indicate radiocarbon dates ("before present")
+dateBP = [bp]
+
+dateADIndicator = dc
+dateBCIndicator = ac
+
+ADBCTable = {
+	a.c = ac,
+	a.C = ac,
+	a.c. = ac,
+	a.C. = ac,
+	a.e.c. = ac,
+	ac = ac,
+	AC = ac,
+	aC = ac,
+	ac. = ac,
+	aC. = ac,
+	aec = ac,
+	aec. = ac,
+	d.c = dc,
+	d.C = dc,
+	d.c. = dc,
+	d.C. = dc,
+	d.c. = dc,
+	d.C. = dc,
+	dc = dc,
+	dC = dc,
+	DC = dc,
+	dc. = dc,
+	dC. = dc,
+	e.c = dc,
+	e.c. = dc,
+	ec = dc,
+	ec. = dc
+}
+
+nowDate = [ara]
+todayDate = [avui]
+yesterdayDate = [ahir]
+tomorrowDate = [demà]
+undatedDate = [desconegut]
+
+presentDate = [present, ?, ??, ???, ????]
+beforeQualifier = [abans,pre]
+earlyQualifier = [principis del, principis, cap, principi, començament, començaments, primeria, l'entrada]
+midQualifier = [mitjans del, mig del, mig de, mig dels, mig,meitat dels, meitat, meitat del, mitjans de]
+lateQualifier = [finals del, finals de, finals, fi]
+diedQualifier = [mort, morta, d, d.]
+afterQualifier = [després,post]
+bornQualifier = [nascut, nascuda, n, n.]
+
+# Text to indicate century (as in "20th century")
+centuryIndicator = [segle]
+
+# Text to indicate decade (as in "1920s")
+decadeIndicator = [s]
+
+ordinalWords = [cero, primer, segon, tercer, quart, cinquè, sisè, setè, vuitè, novè, desè, onzè, dotzè, tretzè, catorzè, quinzè, setzè, dissetè, divuitè, dinou, vint]
+
+# list of numeric suffixes, starting with the one for zero
+# (eg. 0th, 1st, 2nd, 3rd would be a list like so: [th, st, nd, rd])
+
+ordinalSuffixes = [ è, r, n, r, t]
+ordinalSuffixDefault = è
+
+# in delimited dates (ex. 12/10/2009) is the first number a month or a day?
+# set to "0" for European style dates (day comes first); "1" for American-style dates (month comes first)
+monthComesFirstInDelimitedDate = 0
+
+# character(s) to append to day in full (not delimited) date
+# eg. in the date "1. February 2009", "." is the daySuffix
+# Note: you can put arbitrary text here - only punctuation
+daySuffix = 
+
+# Definite articles
+definiteArticles = [el, l', la, les, les, de, del, dels, d']
+
+# Indefinite articles
+indefiniteArticles = [un, una]
+
+# Seasons
+winterSeason = [hivern]
+springSeason = [primavera]
+summerSeason = [estiu]
+autumnSeason = [tardor, otoño]
+
+useQuarterCenturySyntaxForDisplay = 0
+
+# If true century only dates (eg "18th century") will be output in roman numerals like "XVIIIth century"
+useRomanNumeralsForCenturies = 1

@@ -1982,6 +1982,7 @@ class SearchResult extends BaseObject {
 		if ($pa_options['returnAsArray']) { return is_array($va_return_values) ? $va_return_values : array(); } 
 		
 		if ($vb_return_as_link) {
+		    // TODO: Undefined variable $va_relation_info
 			$va_return_values = caCreateLinksFromText($va_return_values, $t_rel_instance->tableName(), array($va_relation_info[$vs_pk]));
 		}
 		

@@ -33,9 +33,7 @@ if (!defined("__CA_LOCAL_CONFIG_DIRECTORY__")) {
 
 // If you require any overrides in setup.php that are specific to running unit tests, put them here.
 
-if (!defined('__CA_CACHE_BACKEND__')) {
-	define('__CA_CACHE_BACKEND__', 'file');
-}
+define('__CA_CACHE_BACKEND__', 'file');
 
 // Use remaining settings from main config.
 require_once(__CA_BASE_DIR__ . '/setup.php-dist');

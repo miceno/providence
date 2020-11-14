@@ -486,6 +486,7 @@
 		 *		progressCallback =
 		 *		reportCallback =
 		 *		sendMail =
+		 *		filenameEncoding = Encoding of the filename
 		 *		log = log directory path
 		 *		logLevel = KLogger constant for minimum log level to record. Default is KLogger::INFO. Constants are, in descending order of shrillness:
 		 *			KLogger::EMERG = Emergency messages (system is unusable)
@@ -546,7 +547,7 @@
 					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is not a directory", $pa_options['importFromDirectory'])
 				));
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
-				$o_log->logError($vs_msg);
+				$o_log->logError($vs_msg . " at " . __LINE__);
  				return null;
  			}
 
@@ -557,7 +558,7 @@
 					"SOURCE" => "mediaImport",
 					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is not within the configured root %2", $pa_options['importFromDirectory'], $vs_batch_media_import_root_directory)
 				));
-				$o_log->logError($vs_msg);
+				$o_log->logError($vs_msg . " with root " . $vs_batch_media_import_root_directory);
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
  				return null;
  			}
@@ -568,7 +569,7 @@
 					"SOURCE" => "mediaImport",
 					"MESSAGE" => $vs_msg = _t("Specified import directory '%1' is invalid", $pa_options['importFromDirectory'])
 				));
-				$o_log->logError($vs_msg);
+				$o_log->logError($vs_msg . " at " . __LINE__);
 				BatchProcessor::$s_import_error_list[] = $vs_msg;
  				return null;
  			}
@@ -607,6 +608,9 @@
 
  			$vs_skip_file_list					= $pa_options['skipFileList'];
  			$vb_allow_duplicate_media			= $pa_options['allowDuplicateMedia'];
+
+ 			// TODO: Use mb_list_encodings() to check if an encoding is supported before using it.
+ 			$vs_filename_encoding			    = caGetOption('filenameEncoding', $pa_options, 'UTF-8');
 
  			$va_relationship_type_id_for = array();
  			if (is_array($va_create_relationship_for = $pa_options['create_relationship_for'])) {
@@ -728,9 +732,10 @@
  			$vn_start_time = time();
  			
  			foreach($va_files_to_process as $vs_file) {
+ 			    // TODO: use path functions to split paths, not string functions
  				$va_tmp = explode("/", $vs_file);
- 				$f = array_pop($va_tmp);
- 				$d = array_pop($va_tmp);
+ 				$f = iconv($vs_filename_encoding, 'UTF-8', array_pop($va_tmp));
+ 				$d = iconv($vs_filename_encoding, 'UTF-8', array_pop($va_tmp));
  				array_push($va_tmp, $d);
  				$vs_directory = join("/", $va_tmp);
 

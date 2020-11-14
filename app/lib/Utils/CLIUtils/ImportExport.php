@@ -57,7 +57,7 @@
 				CLIUtils::addError(_t('Set %1 does not exist', $vs_add_to_set));
 				return false;
 			}
-			
+
 			$vn_user_id = null;
 			if ($vs_user_name = $po_opts->getOption('username')) {
 				if ($t_user = ca_users::find(['user_name' => $vs_user_name], ['returnAs' => 'firstModelInstance'])) {
@@ -295,7 +295,8 @@
 				'representation-idno-mode|M-s' => _t('Sets how identifiers of newly created representations are set. Valid values are AUTO, FILENAME, FILENAME_NO_EXT, DIRECTORY_AND_FILENAME. Set to AUTO to use an identifier calculated according to system numbering settings; set to FILENAME to use the file name as identifier; set to FILENAME_NO_EXT to use the file name stripped of extension as the identifier; use DIRECTORY_AND_FILENAME to set the identifer to the directory name and file name with extension. Default is AUTO.'),
 				'representation-access|A-s' => _t('Set access for newly created representations. Possible values are %1. Default is %2.', $access_status_list_str, $access_status_default_str),
 				'representation-status|W-s' => _t('Set status for newly created representations. Possible values are %1. Default is %2.', $workflow_status_list_str, $workflow_status_default_str),
-				'remove-media-on-import|R' => _t('Remove media from directory after it has been successfully imported. Default is false.')
+                'representation-mapping-s' => _t('Allow user to choose mapping used for metadata extraction for representations.'),
+                'remove-media-on-import|R' => _t('Remove media from directory after it has been successfully imported. Default is false.')
 			);
 		}
 		# -------------------------------------------------------
