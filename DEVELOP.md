@@ -23,15 +23,21 @@ Then you will get a lot of updates on your `vendor` folder, and on the `composer
 Vagrant
 =======
 
-Setup
- 
-    vagrant up
-
-For Virtualbox, add add-ons plugin
+For Virtualbox, first add add-ons plugin
 
     vagrant plugin install ssh 
     vagrant plugin install vagrant-vbguest 
     vagrant plugin install vagrant-scp 
+
+Then bring up the VM:
+ 
+    vagrant up
+
+Run a custom vagrant configuration:
+
+    VAGRANT_VAGRANTFILE=Vagrantfile.focal \
+    VAGRANT_DOTFILE_PATH=.vagrant_focal \
+    vagrant up
 
 Testing
 =======
@@ -105,3 +111,25 @@ Se trata de buscar las expresiones
     
 El script `support/scripts/extract_date_expression.sh.txt` permite extraerlas, y genera
 un informe ordenado, marcando las formas canónicas de visualización (con tres asteriscos `*`).
+
+Database setup
+==============
+
+Importing a database
+====================
+
+1. drop existing database
+   ```shell
+   echo "drop database collectiveaccess;" | mysql -u root -p
+   ```
+1. create database
+   ```shell
+   echo "create database if not exists collectiveaccess;" | mysql -u root -p
+   ```
+1. import database
+   ```shell
+   mysql -u root -p collectiveaccess < DATABASE_BACKUP.sql 
+   ```
+
+Migrations
+==========
