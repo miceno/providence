@@ -1,4 +1,4 @@
-	# -*- mode: ruby -*-
+# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
@@ -67,9 +67,11 @@ Vagrant.configure(2) do |config|
     apt-get -q -y -o Dpkg::Options::=--force-confold install php7.2 libapache2-mod-php7.2 php7.2-curl php7.2-mysql
     apt-get -q -y -o Dpkg::Options::=--force-confold install php7.2-xml php7.2-zip php7.2-gd 
     apt-get -q -y -o Dpkg::Options::=--force-confold install php7.2-redis php7.2-json php7.2-imap
+    apt-get -q -y -o Dpkg::Options::=--force-confold install php-xdebug
     apt-get -q -y -o Dpkg::Options::=--force-confold install htop screen vim apachetop vnstat git
     apt-get -q -y -o Dpkg::Options::=--force-confold install ffmpeg graphicsmagick python-pdfminer
     apt-get -q -y -o Dpkg::Options::=--force-confold install ghostscript dcraw xpdf mediainfo exiftool phantomjs
+    systemctl stop apt-daily.service
     # slooooow setup with gmagick and libreoffice. if you want a shiny media processing setup, uncomment the following lines
     #
     # apt-get -q -y -o Dpkg::Options::=--force-confold install php5-dev php-pear libgraphicsmagick1-dev libreoffice abiword
@@ -103,5 +105,9 @@ Vagrant.configure(2) do |config|
     service apache2 restart
     service mysql restart
     touch /var/lock/vagrant-provision
+
+    # Configure xdebug
+    cp /vagrant/support/scripts/xdebug.ini /etc/php/7.2/apache2/conf.d/20-xdebug.ini
+
   SHELL
 end
