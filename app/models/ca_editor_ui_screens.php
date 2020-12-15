@@ -1200,7 +1200,7 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 							'default' => 'NEW_UI',
 							'multiple' => false,
 							'label' => _t('User interface style'),
-							'description' => _t('')
+							'description' => ''
 						];
 						
 						$va_additional_settings['showBundlesForEditing'] = [
@@ -1248,7 +1248,7 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 						);
 					}
 
-					if ($vs_bundle == 'ca_objects') {
+					if (in_array($vs_bundle, ['ca_objects', 'ca_collections', 'ca_object_lots', 'ca_object_representations'], true)) {
 						$va_additional_settings['showReturnToHomeLocations'] = array(
 							'formatType' => FT_TEXT,
 							'displayType' => DT_CHECKBOXES,

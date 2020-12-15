@@ -886,8 +886,9 @@ class BundlableLabelableBaseModelWithAttributes extends LabelableBaseModelWithAt
 	public function checkForDupeLabel($pn_locale_id, $pa_label_values, $pb_preferred_only=true) {
 		$o_db = $this->getDb();
 		$t_label = $this->getLabelTableInstance();
-		//unset($pa_label_values['displayname']);
-		$va_wheres = array();
+		unset($pa_label_values['displayname']);	// Don't include display name in label check as it's derived from other fields
+		
+		$va_wheres = [];
 		foreach($pa_label_values as $vs_field => $vs_value) {
 			$va_wheres[] = "(l.{$vs_field} = ?)";
 		}
@@ -904,10 +905,13 @@ class BundlableLabelableBaseModelWithAttributes extends LabelableBaseModelWithAt
 			$va_wheres[] = "(l.".$this->primaryKey()." <> ?)";
 		}
 		$vs_sql = "SELECT ".$t_label->primaryKey()."
-	 	FROM ".$t_label->tableName()." l
-	 	INNER JOIN ".$this->tableName()." AS t ON t.".$this->primaryKey()." = l.".$this->primaryKey()."
-	 	WHERE ".join(' AND ', $va_wheres);
-		$va_values = array_values($pa_label_values);
+			FROM ".$t_label->tableName()." l
+			INNER JOIN ".$this->tableName()." AS t ON t.".$this->primaryKey()." = l.".$this->primaryKey()."
+			WHERE ".join(' AND ', $va_wheres);
+			
+		// normalize nulls to blanks for comparison purposes
+		$va_values = array_map(function($v) { return is_null($v) ? '' : $v; }, array_values($pa_label_values));	
+		
 		if($pn_locale_id && $t_label->hasField('locale_id')) {
 			$va_values[] = (int)$pn_locale_id;
 		}
@@ -1825,12 +1829,12 @@ class BundlableLabelableBaseModelWithAttributes extends LabelableBaseModelWithAt
 						
 						break;
 					# -------------------------------
-					// This bundle is only available for objects
-					case 'ca_objects_deaccession':		// object deaccession information
+					// This bundle is available for objects, object lots and collections
+					case 'ca_objects_deaccession':		// deaccession information
 						if (!$vb_batch && !$this->getPrimaryKey()) { return null; }	// not supported for new records
 						if (!$pa_options['request']->user->canDoAction('can_edit_ca_objects')) { break; }
 					
-						$vs_element .= $this->getObjectDeaccessionHTMLFormBundle($pa_options['request'], $pa_options['formName'], $ps_placement_code, $pa_bundle_settings, $pa_options);
+						$vs_element .= $this->getDeaccessionHTMLFormBundle($pa_options['request'], $pa_options['formName'], $ps_placement_code, $pa_bundle_settings, $pa_options);
 						
 						break;
 					# -------------------------------
@@ -3699,7 +3703,7 @@ if (!$vb_batch) {
 							$vn_element_id = $va_element_info['element_id'];
 							
 							$vs_k = $vs_placement_code.$vs_form_prefix.'_attribute_'.$vn_element_set_id.'_'.$vn_element_id.'_'.$vn_attribute_id;
-							if(is_null($po_request->parameterExists($vs_k))) { continue; }
+							if(is_null($po_request->parameterExists($vs_k)) && !isset($_FILES[$vs_k])) { continue; }
 							$vs_attr_val = $po_request->getParameter($vs_k, pString);
 							if (isset($_FILES[$vs_k]) && ($va_val = $_FILES[$vs_k])) {
 								if ($va_val['size'] > 0) {	// is there actually a file?
@@ -3859,7 +3863,7 @@ if (!$vb_batch) {
 								$vn_label_type_id = $po_request->getParameter($vs_placement_code.$vs_form_prefix.'_Pref'.'type_id_'.$va_label['label_id'], pInteger);
 								if(is_array($va_label_values = $this->getLabelUIValuesFromRequest($po_request, $vs_placement_code.$vs_form_prefix, $va_label['label_id'], true))) {
 									if ($vb_check_for_dupe_labels && $this->checkForDupeLabel($vn_label_locale_id, $va_label_values)) {
-										$this->postError(1125, _t('Value <em>%1</em> is already used and duplicates are not allowed', join("/", $va_label_values)), "BundlableLabelableBaseModelWithAttributes->saveBundlesForScreen()", $this->tableName().'.preferred_labels');
+										$this->postError(1125, _t('Value <em>%1</em> is already used and duplicates are not allowed', join('', array_map(function($v) { return "<code>{$v}</code>"; }, array_filter($va_label_values, function($v) { return (bool)strlen($v); })))), "BundlableLabelableBaseModelWithAttributes->saveBundlesForScreen()", $this->tableName().'.preferred_labels');
 										$po_request->addActionErrors($this->errors(), 'preferred_labels');
 										continue;
 									}
@@ -3953,7 +3957,7 @@ if (!$vb_batch) {
 							}
 							
 							if ($vb_check_for_dupe_labels && $this->checkForDupeLabel($vn_new_label_locale_id, $va_label_values)) {
-								$this->postError(1125, _t('Value <em>%1</em> is already used and duplicates are not allowed', join("/", $va_label_values)), "BundlableLabelableBaseModelWithAttributes->saveBundlesForScreen()", $this->tableName().'.preferred_labels');
+								$this->postError(1125, _t('Value <em>%1</em> is already used and duplicates are not allowed', join('', array_map(function($v) { return "<code>{$v}</code>"; }, array_filter($va_label_values, function($v) { return (bool)strlen($v); })))), "BundlableLabelableBaseModelWithAttributes->saveBundlesForScreen()", $this->tableName().'.preferred_labels');
 								$po_request->addActionErrors($this->errors(), 'preferred_labels');
 								$vb_error_inserting_pref_label = true;
 								continue;

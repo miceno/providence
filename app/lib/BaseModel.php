@@ -1239,7 +1239,7 @@ class BaseModel extends BaseObject {
 		", array($va_ids));
 		
 		$va_vals = array();
-		$vs_single_fld = (sizeof($va_fld_list) == 1) ? $va_fld_list[0] : null;
+		$vs_single_fld = (sizeof($va_fld_list) == 1) ? str_replace('`', '', $va_fld_list[0]) : null;
 		while($qr_res->nextRow()) {
 			if ($vs_single_fld) {
 				$va_vals[(int)$qr_res->get($vs_pk)] = $qr_res->get($vs_single_fld);
@@ -6381,7 +6381,7 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 					}
 				}
 				
-				if(is_array($va_subject_config['RELATED_TABLES'])) {
+				if(is_array($va_subject_config['RELATED_TABLES']) && !$vb_is_metadata && !$vb_is_metadata_value) {
 					$o_db = $this->getDb();
 					if (!isset($o_db) || !$o_db) {
 						$o_db = new Db();
@@ -8372,7 +8372,8 @@ $pa_options["display_form_field_tips"] = true;
 									'readonly' => $pa_options['readonly'],
 									'restrictTypeListForTable' => $this->tableName(),
 									'limitToItemsWithID' => $va_limit_list ? $va_limit_list : null,
-									'checkAccess' => $pa_options['checkAccess']
+									'checkAccess' => $pa_options['checkAccess'],
+									'width' => $pa_options['width']
 								)
 							);
 							
@@ -9133,6 +9134,10 @@ $pa_options["display_form_field_tips"] = true;
 
 		if ($va_rel_info['related_table_name'] == $this->tableName()) {
 			// is self relation
+			if ($pn_rel_id === $this->getPrimaryKey()) {
+				$this->postError(1100, _t('Cannot relate a record to itself'), 'BaseModel->addRelationship', $va_rel_info['related_table_name']);
+				return false;
+			}	
 			
 			// is self relationship
 			if ($ps_direction == 'rtol') {
@@ -9272,6 +9277,10 @@ $pa_options["display_form_field_tips"] = true;
 		
 		if ($va_rel_info['related_table_name'] == $this->tableName()) {
 			// is self relation
+			if ($pn_rel_id === $this->getPrimaryKey()) {
+				$this->postError(1100, _t('Cannot relate a record to itself'), 'BaseModel->editRelationship', $va_rel_info['related_table_name']);
+				return false;
+			}
 			if ($t_item_rel->load($pn_relation_id)) {
 				
 				if ($ps_direction == 'rtol') {
