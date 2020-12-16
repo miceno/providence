@@ -57,6 +57,13 @@ You can create a dump of the testing environment for faster test initialization.
     	define('__CA_ALLOW_INSTALLER_TO_OVERWRITE_EXISTING_INSTALLS__', true);
     }
     ```
+1. Create test user and database:
+    ```mysql
+    
+    create user 'ca_test'@'localhost' identified by 'password';
+    
+    GRANT ALL PRIVILEGES ON ca_test.* TO 'ca_test'@'localhost';
+    ```
 1. Run:
 
     ```shell script
