@@ -301,7 +301,8 @@
 		 */
 		public static function purge_deleted($po_opts=null) {
 			require_once(__CA_LIB_DIR__."/Logging/Downloadlog.php");
-		
+
+			// TODO: Undefined variable '$vn_current_revision'
 			CLIUtils::addMessage(_t("Are you sure you want to PERMANENTLY remove all deleted records? This cannot be undone.\n\nType 'y' to proceed or 'N' to cancel, then hit return ", $vn_current_revision, __CollectiveAccess_Schema_Rev__));
             flush();
             ob_flush();
@@ -401,7 +402,13 @@
 				CLIUtils::addMessage(_t("Are you sure you want to update your CollectiveAccess database from revision %1 to %2?\nNOTE: you should backup your database before applying updates!\n\nType 'y' to proceed or 'N' to cancel, then hit return ", $vn_current_revision, __CollectiveAccess_Schema_Rev__));
 				flush();
 				ob_flush();
-				$confirmation  =  trim( fgets( STDIN ) );
+                if (!$po_opts->getOption('yes')) {
+                    $confirmation = trim(fgets(STDIN));
+                }
+                else {
+                    $confirmation = 'y';
+                    print $confirmation;
+                }
 				if ( $confirmation !== 'y' ) {
 					// The user did not say 'y'.
 					return false;
@@ -424,9 +431,11 @@
 		/**
 		 *
 		 */
-		public static function update_database_schemaParamList() {
-			return array();
-		}
+        public static function update_database_schemaParamList() {
+            return array(
+                "yes" => _t("Flag to answer yes to all prompts."),
+            );
+        }
 		# -------------------------------------------------------
 		/**
 		 *
@@ -1125,7 +1134,7 @@
 					$attachment = [
 						'path' => $ps_file_path,
 						'name' => _t('%1_fixity_report_%2.%3', $a, date("Y-m-d_h\hi\m"), $extension),
-						'mimetype' => $mimetyype
+						'mimetype' => $mimetype
 					];
 				}
 				
