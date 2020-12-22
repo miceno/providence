@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+# Installs a CollectiveAccess profile.
+# It also applies schema updates and dumps the database to allow faster
+# install in future runs.
+#
+# Usage
+#    profile_setup.sh PROFILE
+#
+# Params:
+#  PROFILE: name of the profile to install
+
+# Variables:
+#
+# * USE_CACHED_PROFILE: in case it is defined, it will use a dump of the database, and will
+#   not install the profile.
+#
+
 export BASE_DIR=$(dirname $0)
 
 # Set environment variables
