@@ -11,14 +11,14 @@ export PATH="$PATH:$COLLECTIVEACCESS_HOME/support/bin"
 export PHP_BIN=${PHP_BIN:-php}
 
 # Install the testing profile
-if test ! -e "$CACHE_DIR/$PROFILE.sql" -o -n "$SKIP_CACHED_PROFILE"; then
+if test -z "$USE_CACHED_PROFILE"; then
   echo "Installing profile $PROFILE..."
   "$PHP_BIN" "$COLLECTIVEACCESS_HOME"/support/bin/caUtils install --hostname=localhost \
     --setup="tests/setup-tests.php" \
     --skip-roles --profile-name="$PROFILE" --admin-email=support@collectiveaccess.org
 else
   echo "Skipping profile install"
-  if test -e "$CACHE_DIR/$PROFILE.sql" -a -z "$SKIP_CACHED_PROFILE"; then
+  if test -e "$CACHE_DIR/$PROFILE.sql"; then
     echo "Found cached database file $CACHE_DIR/$PROFILE.sql. Importing..."
     sudo mysql -uroot "$DB_NAME" <"$CACHE_DIR/$PROFILE.sql"
   fi
