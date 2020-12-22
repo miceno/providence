@@ -6516,7 +6516,7 @@ create table ca_sql_search_words
   primary key (word_id)
 ) engine=innodb CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-create unique index u_word on ca_sql_search_words(word);
+create unique index u_word on ca_sql_search_words(word,locale_id);
 create index i_stem on ca_sql_search_words(stem);
 create index i_locale_id on ca_sql_search_words(locale_id);
 

@@ -14,12 +14,12 @@ create table if not exists ca_media_upload_sessions (
    completed_on              int unsigned                   null,
    last_activity_on          int unsigned                   null,
    cancelled                 tinyint unsigned               not null default 0,
-   
+
    num_files		         int unsigned                   not null,
    total_bytes		         bigint unsigned                not null default 0,
    error_code                smallint unsigned              not null default 0,
    progress		             longtext                       null,
-   
+
    primary key (session_id),
 
    index i_session_id               (session_id),
