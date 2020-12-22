@@ -35,5 +35,9 @@ if test -e vendor/composer.lock -a ! -e .dont_use_cached_dependencies; then
   echo "Restoring previous composer lock file"
   cp vendor/composer.lock composer.lock
 fi
-composer install --prefer-dist
+if test -z "$COMPOSER_UPDATE"; then
+  composer install --prefer-dist
+else
+  composer update
+fi
 cp composer.lock vendor
