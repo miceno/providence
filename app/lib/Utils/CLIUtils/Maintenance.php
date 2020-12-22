@@ -301,7 +301,8 @@
 		 */
 		public static function purge_deleted($po_opts=null) {
 			require_once(__CA_LIB_DIR__."/Logging/Downloadlog.php");
-		
+
+			// TODO: Undefined variable '$vn_current_revision'
 			CLIUtils::addMessage(_t("Are you sure you want to PERMANENTLY remove all deleted records? This cannot be undone.\n\nType 'y' to proceed or 'N' to cancel, then hit return ", $vn_current_revision, __CollectiveAccess_Schema_Rev__));
             flush();
             ob_flush();
@@ -412,6 +413,7 @@
                 else {
                     CLIUtils::addMessage(_t("Proceeding without prompt..."));
                 }
+
 				$va_messages = ConfigurationCheck::performDatabaseSchemaUpdate();
 
 				print CLIProgressBar::start(sizeof($va_messages), _t('Updating database'));
@@ -1133,7 +1135,7 @@
 					$attachment = [
 						'path' => $ps_file_path,
 						'name' => _t('%1_fixity_report_%2.%3', $a, date("Y-m-d_h\hi\m"), $extension),
-						'mimetype' => $mimetyype
+						'mimetype' => $mimetype
 					];
 				}
 				

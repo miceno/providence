@@ -13,12 +13,9 @@ export PHP_BIN=${PHP_BIN:-php}
 # Install the testing profile
 if test ! -e "$CACHE_DIR/$PROFILE.sql" -o -n "$SKIP_CACHED_PROFILE"; then
   echo "Installing profile $PROFILE..."
-  "$PHP_BIN" "$COLLECTIVEACCESS_HOME"/support/bin/caUtils install --hostname=localhost --setup="tests/setup-tests.php" \
-    --skip-roles --profile-name="$PROFILE" --admin-email=support@collectiveaccess.org && (
-        # Export database for later faster import
-        echo "Exporting database to cache file: $CACHE_DIR/$PROFILE.sql"
-        sudo mysqldump -uroot --hex-blob --complete-insert --extended-insert $DB_NAME >"$CACHE_DIR/$PROFILE.sql"
-  )
+  "$PHP_BIN" "$COLLECTIVEACCESS_HOME"/support/bin/caUtils install --hostname=localhost \
+    --setup="tests/setup-tests.php" \
+    --skip-roles --profile-name="$PROFILE" --admin-email=support@collectiveaccess.org
 else
   echo "Skipping profile install"
   if test -e "$CACHE_DIR/$PROFILE.sql" -a -z "$SKIP_CACHED_PROFILE"; then
@@ -35,3 +32,11 @@ else
     )
   fi
 fi
+
+# Update database schema.
+"$PHP_BIN" "$COLLECTIVEACCESS_HOME"/support/bin/caUtils update-database-schema \
+  --hostname=localhost --setup="tests/setup-tests.php" \
+  --yes
+# Export database for later faster import
+echo "Exporting database to cache file: $CACHE_DIR/$PROFILE.sql"
+sudo mysqldump -uroot --hex-blob --complete-insert --extended-insert $DB_NAME >"$CACHE_DIR/$PROFILE.sql"
