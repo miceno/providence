@@ -90,11 +90,27 @@
 		}
 		# ------------------------------------------------------------------
 		/**
+		 * Check if preferred label for a given locale is defined for the current record
+		 *
+		 * @param int $pn_locale_id 
+		 *
+		 * @return bool True if label exists, false if not, null if no record is loaded.
+		 */
+		public function preferredLabelExistsForLocale($pn_locale_id) {
+			if (!($vn_id = $this->getPrimaryKey())) { return null; }
+			if (!($t_label = Datamodel::getInstanceByTableName($this->getLabelTableName()))) { return null; }
+			
+			$l = $this->getLabelTableName();
+			if (is_array($ld = $l::find([$this->primaryKey() => $vn_id, 'locale_id' => $pn_locale_id, 'is_preferred' => 1], ['returnAs' => 'array', 'transaction' => $this->getTransaction()]))) {
+				return (sizeof($ld) > 0);
+			}
+			return false;
+		}
+		# ------------------------------------------------------------------
+		/**
 		 *	Adds a label to the currently loaded row; the $pa_label_values array an associative array where keys are field names 
 		 *	and values are the field values; some label are defined by more than a single field (people's names for instance) which is why
 		 *	the label value is an array rather than a simple scalar value
-		 *	
-		 *	TODO: do checking when inserting preferred label values that a preferred value is not already defined for the locale.
 		 *
 		 * @param array $pa_label_values
 		 * @param int $pn_locale_id
@@ -106,8 +122,9 @@
 		 * @return int id for newly created label, false on error or null if no row is loaded
 		 */ 
 		public function addLabel($pa_label_values, $pn_locale_id, $pn_type_id=null, $pb_is_preferred=false, $pa_options=null) {
+			if(!is_array($pa_options)) { $pa_options = []; }
 			if (!($vn_id = $this->getPrimaryKey())) { return null; }
-			
+			if ($pb_is_preferred && $this->preferredLabelExistsForLocale($pn_locale_id)) { return false; }
 			$vb_truncate_long_labels = caGetOption('truncateLongLabels', $pa_options, false);
 			$pb_queue_indexing = caGetOption('queueIndexing', $pa_options, false);
 			
@@ -147,7 +164,7 @@
 			
 			$this->opo_app_plugin_manager->hookBeforeLabelInsert(array('id' => $this->getPrimaryKey(), 'table_num' => $this->tableNum(), 'table_name' => $this->tableName(), 'instance' => $this, 'label_instance' => $t_label));
 		
-			$vn_label_id = $t_label->insert(array('queueIndexing' => $pb_queue_indexing, 'subject' => $this));
+			$vn_label_id = $t_label->insert(array_merge($pa_options, ['queueIndexing' => $pb_queue_indexing, 'subject' => $this]));
 			
 			$this->opo_app_plugin_manager->hookAfterLabelInsert(array('id' => $this->getPrimaryKey(), 'table_num' => $this->tableNum(), 'table_name' => $this->tableName(), 'instance' => $this, 'label_instance' => $t_label));
 		
@@ -352,9 +369,8 @@
 		/**
 		 * 
 		 */
- 		public function replaceLabel($pa_label_values, $pn_locale_id, $pn_type_id=null, $pb_is_preferred=true, $pa_options = null) {
+ 		public function replaceLabel($pa_label_values, $pn_locale_id, $pn_type_id=null, $pb_is_preferred=true, $pa_options=null) {
  			if (!($vn_id = $this->getPrimaryKey())) { return null; }
- 			
  			$va_labels = $this->getLabels(array($pn_locale_id), $pb_is_preferred ? __CA_LABEL_TYPE_PREFERRED__ : __CA_LABEL_TYPE_NONPREFERRED__);
  			
  			if (sizeof($va_labels)) {
@@ -440,9 +456,13 @@
 		 *
 		 * ["idno" => ['=', '2012.001'], "access" => ['>', 1], 'preferred_labels' => ['name' => ['LIKE', '%Luna Park at Night%']]]
 		 *
-		 * You may also specify lists of values for use with the IN operator:
+		 * You may also specify lists of values for use with the IN and NOT IN operator:
 		 *
 		 * ["idno" => ['=', '2012.001'], "access" => ['IN', [1,2,3]], 'preferred_labels' => ['name' => ['LIKE', '%Luna Park at Night%']]]
+		 *
+		 * Range searches may be performed using the BETWEEN operator:
+		 *
+		 * ["idno" => ['=', '2012.001'], "access" => ['BETWEEN', [1,3]], 'preferred_labels' => ['name' => ['LIKE', '%Luna Park at Night%']]]
 		 *
 		 * Passing an array of values with a 
 		 *
@@ -734,7 +754,7 @@
 									if ($vs_op !== '=') { $vs_op = 'IS'; }
 									$va_label_sql_wheres[] = "({$vs_label_table}.{$vs_field} {$vs_op} NULL)";
 								} elseif (is_array($vm_value) && sizeof($vm_value)) {
-									if ($vs_op !== '=') { $vs_op = 'IN'; }
+									if (strtoupper($vs_op) !== 'NOT IN') { $vs_op = 'IN'; }
 									$va_label_sql_wheres[] = "({$vs_field} {$vs_op} (".join(',', $vm_value)."))";
 								} elseif (caGetOption('allowWildcards', $pa_options, false) && (strpos($vm_value, '%') !== false)) {
 									$va_label_sql_wheres[] = "({$vs_label_table}.{$vs_field} LIKE {$vm_value})";
@@ -775,14 +795,18 @@
 						} elseif (caGetOption('allowWildcards', $pa_options, false) && !is_array($vm_value) && (strpos($vm_value, '%') !== false)) {
 							$va_label_sql[] = "({$vs_table}.{$vs_field} LIKE ?)";
 							$va_sql_params[] = $vm_value;
+						} elseif (is_array($vm_value) && sizeof($vm_value)) {
+							if (!in_array(strtoupper($vs_op), ['=', 'NOT IN', 'BETWEEN'])) { $vs_op = 'IN'; }
+							if (strtoupper($vs_op) === 'BETWEEN') {
+								$va_label_sql[] = "({$vs_table}.{$vs_field} BETWEEN ? AND ?)";
+								$va_sql_params[] = $vm_value[0];
+								$va_sql_params[] = $vm_value[1];
+							} else {
+								$va_label_sql[] = "({$vs_table}.{$vs_field} {$vs_op} (".join(',', $vm_value)."))";
+							}
 						} else {
 							if ($vm_value === '') { continue; }
-							if (($vs_op == 'in') && is_array($vm_value)) {
-								if (!sizeof($vm_value)) { continue; }
-								$va_label_sql[] = "({$vs_table}.{$vs_field} {$vs_op} (?))";
-							} else {
-								$va_label_sql[] = "({$vs_table}.{$vs_field} {$vs_op} ?)";
-							}
+							$va_label_sql[] = "({$vs_table}.{$vs_field} {$vs_op} ?)";
 							$va_sql_params[] = $vm_value;
 						}
 					}
@@ -882,16 +906,24 @@
 											if ($vs_op !== '=') { $vs_op = 'IS'; }
 											$va_q[] = "{$vs_q} (ca_attribute_values.{$vs_fld} {$vs_op} NULL))";
 										} elseif (is_array($vm_value) && sizeof($vm_value)) {
-											if ($vs_op !== '=') { $vs_op = 'IN'; }
-											$va_q[] = "{$vs_q} (ca_attribute_values.{$vs_fld} {$vs_op} (?)))";
+											if (!in_array(strtoupper($vs_op), ['=', 'NOT IN', 'BETWEEN'])) { $vs_op = 'IN'; }
+											if (strtoupper($vs_op) === 'BETWEEN') {
+												$va_q[] = "(ca_attribute_values.{$vs_fld} BETWEEN ? AND ?)";
+												$va_attr_params[] = $vm_value[0];
+												$va_attr_params[] = $vm_value[1];
+											} else {
+												$va_q[] = "{$vs_q} (ca_attribute_values.{$vs_fld} {$vs_op} (?)))";
+												$va_attr_params[] = $vm_value;
+											}
 										} elseif (caGetOption('allowWildcards', $pa_options, false) && (strpos($vm_value, '%') !== false)) {
 											$va_q[] = "{$vs_q} (ca_attribute_values.{$vs_fld} LIKE ?))";
+											$va_attr_params[] = $vm_value;
 										} else {
 											if ($vm_value === '') { break; }
 											$va_q[] = "{$vs_q} (ca_attribute_values.{$vs_fld} {$vs_op} ?))";
+											$va_attr_params[] = $vm_value;
 										}
 								
-										$va_attr_params[] = $vm_value;
 										break;
 								}
 						
@@ -947,7 +979,20 @@
                 $va_sql[] = "({$vs_table}.{$vs_table_pk} IN (?))";
                 $va_sql_params[] = $va_ids;
 			} 
-            $vs_sql = "SELECT DISTINCT {$vs_table}.*".($vs_sort_proc ? ", {$vs_sort_proc}" : "")." FROM {$vs_table}";
+			
+			$vs_pk = $t_instance->primaryKey();
+		
+			switch($ps_return_as) {
+				case 'queryresult':		
+				case 'arrays':
+					$select_flds = '*';
+					break;
+				default:
+					$select_flds = $vs_pk;
+					break;
+			}
+		
+            $vs_sql = "SELECT DISTINCT {$vs_table}.{$select_flds}".($vs_sort_proc ? ", {$vs_sort_proc}" : "")." FROM {$vs_table}";
             $vs_sql .= join("\n", $va_joins);
             $vs_sql .= ((sizeof($va_sql) > 0) ? " WHERE (".join(" AND ", $va_sql).")" : "");
 			
@@ -985,8 +1030,6 @@
 			}
 			
 			$vn_c = 0;
-		
-			$vs_pk = $t_instance->primaryKey();
 		
 			$dont_filter_by_acl = caGetOption('dontFilterByACL', $pa_options, false);
 			
@@ -1994,7 +2037,7 @@
 				
 				if (!(bool)$this->getAppConfig()->get('require_preferred_label_for_'.$this->tableName())) {		// only try to add a default when a label is not mandatory
 					return $this->addLabel(
-						array($this->getLabelDisplayField() => '['.caGetBlankLabelText().']'),
+						array($this->getLabelDisplayField() => '['.caGetBlankLabelText($this->tableName()).']'),
 						$vn_locale_id,
 						null,
 						true

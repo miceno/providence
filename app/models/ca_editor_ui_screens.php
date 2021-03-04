@@ -858,6 +858,25 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 								'width' => "475px", 'height' => '100px',
 								'label' => _t('Relationship display template'),
 								'description' => _t('Layout for relationship when displayed in list (can include HTML). Element code tags prefixed with the ^ character can be used to represent the value in the template. For example: <i>^my_element_code</i>.')
+							),
+							'showCurrentOnly' => array(
+								'formatType' => FT_TEXT,
+								'displayType' => DT_CHECKBOXES,
+								'width' => 10, 'height' => 1,
+								'takesLocale' => false,
+								'showOnSelect' => 'policy',
+								'default' => '0',
+								'label' => _t('Show current only?'),
+								'description' => _t('If checked only current relationships are displayed.')
+							),
+							'policy' => array(
+								'formatType' => FT_TEXT,
+								'displayType' => DT_SELECT,
+								'default' => '__default__',
+								'width' => "275px", 'height' => 1,
+								'useHistoryTrackingReferringPolicyList' => true,
+								'label' => _t('Use history tracking policy'),
+								'description' => ''
 							)
 						);	
 						
@@ -927,29 +946,6 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 								'width' => "200px", 'height' => 1,
 								'label' => _t('Format of relationship list'),
 								'description' => _t('.')
-							),
-							'sort' => array(
-								'formatType' => FT_TEXT,
-								'displayType' => DT_SELECT,
-								'width' => "475px", 'height' => 1,
-								'takesLocale' => false,
-								'default' => '',
-								'label' => _t('Sort using'),
-								'showSortableBundlesFor' => $t_rel->tableName(),
-								'description' => _t('Method used to sort related items.')
-							),
-							'sortDirection' => array(
-								'formatType' => FT_TEXT,
-								'displayType' => DT_SELECT,
-								'width' => "200px", 'height' => 1,
-								'takesLocale' => false,
-								'default' => 'ASC',
-								'options' => array(
-									_t('Ascending') => 'ASC',
-									_t('Descending') => 'DESC'
-								),
-								'label' => _t('Sort direction'),
-								'description' => _t('Direction of sort, when not in a user-specified order.')
 							),
 							'colorFirstItem' => array(
 								'formatType' => FT_TEXT,
@@ -1060,25 +1056,48 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 								'label' => _t('Prepopulate quick add fields with search text'),
 								'description' => _t('Select quickadd form fields to be pre-filled with the user-entered search value. If no fields are selected then the preferred label will be prepopulated by default.')
 							),
+							'sort' => array(
+								'formatType' => FT_TEXT,
+								'displayType' => DT_SELECT,
+								'width' => "475px", 'height' => 1,
+								'takesLocale' => false,
+								'default' => '',
+								'label' => _t('Initially sort using'),
+								'showSortableBundlesFor' => ['table' => $t_rel->tableName(), 'relationship' => $vs_table],
+								'description' => _t('Method used to sort related items.')
+							),
+							'sortDirection' => array(
+								'formatType' => FT_TEXT,
+								'displayType' => DT_SELECT,
+								'width' => "200px", 'height' => "1",
+								'takesLocale' => false,
+								'default' => 'ASC',
+								'options' => array(
+									_t('Ascending') => 'ASC',
+									_t('Descending') => 'DESC'
+								),
+								'label' => _t('Initial sort direction'),
+								'description' => _t('Direction of sort, when not in a user-specified order.')
+							),
 							'disableSorts' => array(
 								'formatType' => FT_TEXT,
 								'displayType' => DT_CHECKBOXES,
 								'width' => 10, 'height' => 1,
 								'takesLocale' => false,
 								'default' => '0',
-								'label' => _t('Disable sorting?'),
+								'label' => _t('Disable user-selectable sorting options?'),
 								'hideOnSelect' => ['allowedSorts'],
 								'description' => _t('If checked sorting of related items will be disabled.')
 							),
 							'allowedSorts' => array(
 								'formatType' => FT_TEXT,
 								'displayType' => DT_SELECT,
-								'options' => array_flip(caGetAvailableSortFields($vs_bundle, null, ['includeInterstitialSortsFor' => $vs_table, 'distinguishInterstitials' => true])),
+								'showSortableBundlesFor' => ['table' => $t_rel->tableName(), 'relationship' => $vs_table],
 								'default' => null,
 								'multiple' => true,
 								'width' => "475px", 'height' => 5,
-								'label' => _t('Sort options'),
-								'description' => _t('Limits sort options on this bundle.')
+								'label' => _t('User-selectable sort options'),
+								'description' => _t('Limits user-selectable sort options on this bundle.')
 							),
 							'showCount' => array(
 								'formatType' => FT_NUMBER,
@@ -1178,10 +1197,10 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 								_t('Classic') => 'CLASSIC',
 								_t('New UI with batch uploading') => 'NEW_UI'
 							],
-							'default' => '',
-							'multiple' => true,
+							'default' => 'NEW_UI',
+							'multiple' => false,
 							'label' => _t('User interface style'),
-							'description' => _t('')
+							'description' => ''
 						];
 						
 						$va_additional_settings['showBundlesForEditing'] = [
@@ -1229,7 +1248,7 @@ class ca_editor_ui_screens extends BundlableLabelableBaseModelWithAttributes {
 						);
 					}
 
-					if ($vs_bundle == 'ca_objects') {
+					if (in_array($vs_bundle, ['ca_objects', 'ca_collections', 'ca_object_lots', 'ca_object_representations'], true)) {
 						$va_additional_settings['showReturnToHomeLocations'] = array(
 							'formatType' => FT_TEXT,
 							'displayType' => DT_CHECKBOXES,

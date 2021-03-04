@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------
  *
  * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
- * Copyright 2008-2020 Whirl-i-Gig
+ * Copyright 2008-2021 Whirl-i-Gig
  *
  * For more information visit http://www.CollectiveAccess.org
  *
@@ -130,6 +130,7 @@ class WLPlugMediaGraphicsMagick Extends BaseMediaPlugin Implements IWLPlugMedia 
 			'layers'			=> 'W',
 			"quality" 			=> 'W',
 			'colorspace'		=> 'W',
+			'background'		=> 'W',
 			'tile_width'		=> 'W',
 			'tile_height'		=> 'W',
 			'antialiasing'		=> 'W',
@@ -1184,6 +1185,9 @@ class WLPlugMediaGraphicsMagick Extends BaseMediaPlugin Implements IWLPlugMedia 
 						break;
 				}
 			}
+			if($background = caGetOption('background', $this->properties, null)) {
+				$pa_handle['ops'][] = ['op' => 'background', 'color' => $background];
+			}
 			
 			$va_ops = array();	
 			foreach($pa_handle['ops'] as $va_op) {
@@ -1248,6 +1252,9 @@ class WLPlugMediaGraphicsMagick Extends BaseMediaPlugin Implements IWLPlugMedia 
 						if (isset($va_op['threshold'])) { $vs_tmp .= '+'.$va_op['threshold'];}
 						$va_ops['convert'][] = $vs_tmp;
 						break;
+					case 'background':
+						$va_ops['convert'][] = '-background "'.$va_op['color'].'"  -extent 0x0';
+						break;
 				}
 			}
 			
@@ -1268,7 +1275,9 @@ class WLPlugMediaGraphicsMagick Extends BaseMediaPlugin Implements IWLPlugMedia 
 				if (!is_null($pn_quality)) {
 					array_unshift($va_ops['convert'], '-quality '.intval($pn_quality));
 				}
-				array_unshift($va_ops['convert'], '-colorspace RGB');
+				if($this->properties["colorspace"] === 'CMYK') {
+					array_unshift($va_ops['convert'], '-colorspace RGB');
+				}
 				caExec($this->ops_graphicsmagick_path.' convert '.caEscapeShellArg($vs_input_file.'[0]').' '.join(' ', $va_ops['convert']).' '.caEscapeShellArg($ps_filepath).(caIsPOSIX() ? " 2> /dev/null" : ""));
 				$vs_input_file = $ps_filepath;
 			}

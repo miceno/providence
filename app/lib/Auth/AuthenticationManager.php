@@ -85,6 +85,8 @@ class AuthenticationManager {
 	 */
 	public static function authenticate($ps_username, $ps_password="", $pa_options=null) {
 		self::init();
+		if(AuthenticationManager::isFree()) { return null; }
+
 		if ($vn_rc = self::$g_authentication_adapter->authenticate($ps_username, $ps_password, $pa_options)) {
 			return $vn_rc;
 		}
@@ -187,14 +189,11 @@ class AuthenticationManager {
 	 */
 	public static function getUserInfo($ps_username, $ps_password, $pa_options=null) {
 		self::init();
-
-        try {
-            if ($vn_rc = self::$g_authentication_adapter->getUserInfo($ps_username, $ps_password, $pa_options)) {
-                return $vn_rc;
-            }
-        } catch(Exception $e) {
-            // noop
-        }
+		if(AuthenticationManager::isFree()) { return null; }
+		
+		if ($vn_rc = self::$g_authentication_adapter->getUserInfo($ps_username, $ps_password, $pa_options)) {
+			return $vn_rc;
+		}
 
 		if ((AuthenticationManager::$g_authentication_conf->get('allow_fallback_to_ca_users_auth')) && !self::$g_authentication_adapter instanceof CaUsersAuthAdapter) {
 			// fall back to ca_users "native" authentication
@@ -234,6 +233,20 @@ class AuthenticationManager {
 		}
 
 		return null;
+	}
+	
+	/**
+	 *
+	 */
+	private static function isFree() {
+		global $g_request;
+		if($g_request) {
+			if(is_array($free_controllers = AuthenticationManager::$g_authentication_conf->get('auth_not_required_for_controllers'))) {
+				$free_controllers = array_map("strtolower", $free_controllers);
+				if (in_array(strtolower($g_request->getController()), $free_controllers)) { return true; }
+			}
+		}
+		return false;
 	}
 }
 

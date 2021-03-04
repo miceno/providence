@@ -1218,7 +1218,7 @@ class ca_sets extends BundlableLabelableBaseModelWithAttributes implements IBund
 			if(!$g_ui_locale_id) { $g_ui_locale_id = 1; }
 
 			$t_item->addLabel(array(
-				'caption' => '['.caGetBlankLabelText().']',
+				'caption' => '['.caGetBlankLabelText('ca_set_items').']',
 			), $g_ui_locale_id);
 			
 			if ($t_item->numErrors()) {
@@ -1873,7 +1873,6 @@ LEFT JOIN ca_object_representations AS cor ON coxor.representation_id = cor.repr
 				
 				if (isset($pa_options['thumbnailVersions']) && is_array($pa_options['thumbnailVersions'])) {
 					foreach($pa_options['thumbnailVersions'] as $vs_version) {
-						$va_row['representation_tag_'.$vs_version.'_as_link'] = caDetailLink($qr_res->getMediaTag('media', $vs_version, array("alt" => $vs_alt_text)), '', $t_rel_table->tableName(), $qr_res->get("ca_set_items.row_id"));
 						$va_row['representation_tag_'.$vs_version] = $qr_res->getMediaTag('media', $vs_version, array("alt" => $vs_alt_text));
 						$va_row['representation_url_'.$vs_version] = $qr_res->getMediaUrl('media', $vs_version);
 						$va_row['representation_path_'.$vs_version] = $qr_res->getMediaPath('media', $vs_version);
@@ -2537,7 +2536,8 @@ LEFT JOIN ca_object_representations AS cor ON coxor.representation_id = cor.repr
 				$va_sets[$set_id = $qr_res->get('set_id')] = array_merge($qr_res->getRow(), [
 					'set_content_type' => $vs_set_type, 'set_type' => $vs_type,
 					'label' => $labels[$set_id], 'count' => isset($counts[$set_id]) ? $counts[$set_id] : 0,
-					'item_type_singular' => Datamodel::getTableProperty($vn_table_num, 'NAME_SINGULAR'), 'item_type_plural' => Datamodel::getTableProperty($vn_table_num, 'NAME_PLURAL')
+					'item_type_singular' => Datamodel::getTableProperty($vn_table_num, 'NAME_SINGULAR'), 'item_type_plural' => Datamodel::getTableProperty($vn_table_num, 'NAME_PLURAL'),
+					'created' => $created['timestamp'], 'created_display' => caGetLocalizedDate($created['timestamp'])
 				]);
 			}
 			return $va_sets;
