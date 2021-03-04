@@ -227,6 +227,9 @@
  			return $vs_val;
 		}
  		# ------------------------------------------------------------------
+ 		/**
+ 		 *
+ 		 */
  		public function parseValue($ps_value, $pa_element_info, $pa_options=null) {
  			$ps_value = trim($ps_value);
  			$va_settings = $this->getSettingValuesFromElementArray(
@@ -276,7 +279,8 @@
 			switch($vs_currency_specifier) {
 				case '$':
 					$o_config = Configuration::load();
-					$vs_currency_specifier = ($vs_dollars_are_this = caGetOption('dollarCurrency', $va_settings, $o_config->get('default_dollar_currency'))) ? $vs_dollars_are_this : 'USD';
+					$vs_dollars_are_this = caGetOption('dollarCurrency', $va_settings, $o_config->get('default_dollar_currency'), ['defaultOnEmptyString' => true]);
+					$vs_currency_specifier = $vs_dollars_are_this ? $vs_dollars_are_this : 'USD';
 					break;
 				case '¥':
 					$vs_currency_specifier = 'JPY';

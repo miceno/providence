@@ -4767,7 +4767,6 @@ if (!isset($pa_options['dontSetHierarchicalIndexing']) || !$pa_options['dontSetH
 							$magic = rand(0,99999);
 							$filepath = $vi["absolutePath"]."/".$dirhash."/".$magic."_".$this->_genMediaName($ps_field)."_".$v;
 
-                            $m->set('colorspace', 'RGB');
 							if (!($vs_output_file = $m->write($filepath, $output_mimetype, $va_media_write_options))) {
 								$this->postError(1600,_t("Couldn't write file: %1", join("; ", $m->getErrors())),"BaseModel->_processMedia()", $this->tableName().'.'.$ps_field);
 								$m->cleanup();
@@ -8865,7 +8864,7 @@ $pa_options["display_form_field_tips"] = true;
 					$post_max_size = caFormatFileSize(caReturnValueInBytes(ini_get( 'post_max_size' )));
 					$upload_max_filesize = caFormatFileSize(caReturnValueInBytes(ini_get( 'upload_max_filesize' )));
 
-					$vs_element = '<div class="formLabelUploadSizeNote"><input type="file" name="'.$pa_options["name"].'" id="'.$pa_options["id"].'" '.$vs_js.'/>'._t("Maximum upload size is ${post_max_size}") . '</div>';
+					$vs_element = '<div class="formLabelUploadSizeNote"><input type="file" name="'.$pa_options["name"].'" id="'.$pa_options["id"].'" '.$vs_js.'/>'._t("Maximum upload size is %1", $post_max_size) . '</div>';
 
 					// show current media icon
 					if ($vs_version = (array_key_exists('displayMediaVersion', $pa_options)) ? $pa_options['displayMediaVersion'] : 'icon') {
@@ -11816,7 +11815,18 @@ $pa_options["display_form_field_tips"] = true;
 		if ($vs_deleted_sql) { $va_sql[] = $vs_deleted_sql;}
 		$va_sql = array_filter($va_sql, function($v) { return strlen($v) > 0; });
 
-		$vs_sql = "SELECT * FROM {$vs_table} ".((sizeof($va_sql) > 0) ? " WHERE (".join(" AND ", $va_sql).")" : "");
+		$vs_pk = $t_instance->primaryKey();
+		
+		switch($ps_return_as) {
+			case 'queryresult':		
+			case 'arrays':
+				$select_flds = '*';
+				break;
+			default:
+				$select_flds = $vs_pk;
+				break;
+		}
+		$vs_sql = "SELECT {$select_flds} FROM {$vs_table} ".((sizeof($va_sql) > 0) ? " WHERE (".join(" AND ", $va_sql).")" : "");
 
 		$vs_orderby = '';
 		if ($vs_sort = caGetOption('sort', $pa_options, null)) {
@@ -11864,7 +11874,6 @@ $pa_options["display_form_field_tips"] = true;
 		
 		$vn_c = 0;
 	
-		$vs_pk = $t_instance->primaryKey();
 		
 		switch($ps_return_as) {
 			case 'queryresult':
